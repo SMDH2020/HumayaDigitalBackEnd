@@ -7,17 +7,15 @@ namespace HDEndpoints.Controllers.Auth
     public class ValidateUserController : MyBase
     {
         private readonly IDependencyResolver _dependencyResolver;
+        //private readonly IUserSession _usuario;
         public ValidateUserController()
         {
             _dependencyResolver = GlobalConfiguration.Configuration.DependencyResolver;
-
         }
         [HttpPost]
         public async Task<IHttpActionResult> Post()
         {
-            var result = _dependencyResolver.BeginScope();
-            var usuario = UserSession;
-            return Ok();
+            return Ok(new { mensaje = "Ok" });
             //if (Login is null)
             //{
             //    return BadRequest("Error en datos enviados");
