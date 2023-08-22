@@ -4,14 +4,14 @@ using HD.Generales.Autenticate;
 
 namespace HD.Generales.Consultas
 {
-    public class AD_UsuarioSesion
+    public class AD_ValidateUser
     {
         private string CadenaConexion;
-        public AD_UsuarioSesion(string _cadenaconexion)
+        public AD_ValidateUser(string _cadenaconexion)
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<mdlDatosSesion> UsuarioSesion(mdlCodigoSeguridad login)
+        public async Task<mdlDatosSesion> UsuarioSesion(string? idusuario)
         {
             try
             {
@@ -19,16 +19,15 @@ namespace HD.Generales.Consultas
 
                 var parametros = new
                 {
-                    usuario = login.usuario,
-                    codigoautenticacion = login.codigoseguridad
+                    usuario=idusuario
                 };
-                var result = await factory.SQL.QueryMultipleAsync("sp_Usuario_Sesion", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("sp_Usuario_Sesion_Validar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 mdlLoginResult? usuario = result.Read<mdlLoginResult>().FirstOrDefault();
                 IEnumerable<mdlModulo> modulos = result.Read<mdlModulo>().ToList();
                 IEnumerable<mdlMenu> menus = result.Read<mdlMenu>().ToList();
                 factory.SQL.Close();
 
-                if(usuario == null) { usuario = new mdlLoginResult(); }
+                if (usuario == null) { usuario = new mdlLoginResult(); }
 
                 return new mdlDatosSesion()
                 {

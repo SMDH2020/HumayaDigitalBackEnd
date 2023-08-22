@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -6,10 +6,6 @@
     <Nullable>enable</Nullable>
     <RootNamespace>$(MSBuildProjectName.Replace("_", "."))</RootNamespace>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.21" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\HD_AccesoDatos\HD_AccesoDatos.csproj" />
