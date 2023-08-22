@@ -1,7 +1,8 @@
+﻿using System.ComponentModel.DataAnnotations;
+
 namespace HD.Generales.Autenticate
 {
-    using System.ComponentModel.DataAnnotations;
-    public class mdlUpdatePAssword
+    public class mdlUpdatePassword
     {
         [Required(ErrorMessage = "El usuario es un valor requerido")]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "El usuario contiene caracteres invalidos")]
@@ -13,12 +14,12 @@ namespace HD.Generales.Autenticate
         [RegularExpression(@"^[A-Za-z0-9!@#$%^&*(),.?:{}|<>]+$", ErrorMessage = "Existen caracteres no permitidos")]
         [MaxLength(20, ErrorMessage = "Solo se permiten 20 caracteres")]
         [MinLength(8, ErrorMessage = "El minimo de caracteres para la contraseña es de 8 caracteres")]
-        public string password { get; set; }="";
+        public string password { get; set; } = "";
 
         [Required(ErrorMessage = "El password es un valor requerido")]
         [RegularExpression(@"^[A-Za-z0-9!@#$%^&*(),.?:{}|<>]+$", ErrorMessage = "Existen caracteres no permitidos")]
         [MaxLength(20, ErrorMessage = "Solo se permiten 20 caracteres")]
         [MinLength(8, ErrorMessage = "El minimo de caracteres para la contraseña es de 8 caracteres")]
-        public string confirmpassword { get; set; }="";
+        public string confirmpassword { get; set; } = "";
     }
 }

@@ -1,11 +1,11 @@
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 
 namespace HD.Security
 {
     public class Encript
     {
-          public static string HashPassword(string password)
+        public static string HashPassword(string password)
         {
             using (SHA256 sha256Hash = SHA256.Create())
             {

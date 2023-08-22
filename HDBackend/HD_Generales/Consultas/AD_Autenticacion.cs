@@ -1,37 +1,44 @@
-using Dapper;
+﻿using Dapper;
 using HD.AccesoDatos;
 using HD.Generales.Autenticate;
 using HD.Security;
+using System.Data;
 
 namespace HD.Generales.Consultas
 {
-    public class AD_Autenticacion : FactoryConectionBase
+    public class AD_Autenticacion 
     {
-        public AD_Autenticacion(string _cadenaconexion) : base(_cadenaconexion)
+        private string CadenaConexion;
+        public AD_Autenticacion(string _cadenaconexion) 
         {
-
+            CadenaConexion = _cadenaconexion;
         }
-        public async Task<mdlSesionresult> Autenticar(mdlLogin _login)
+        public async Task<mdlSesionResult> Autenticar(mdlLogin _login)
         {
             try
             {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                
                 var parametros = new
                 {
                     usuario = _login.user,
                     password = Encript.HashPassword(_login.password)
                 };
+
                 var result = await factory.SQL.QueryMultipleAsync("sp_login", parametros, commandType: System.Data.CommandType.StoredProcedure);
-                var sesion = new mdlSesionresult();
+                
+                var sesion = new mdlSesionResult();
                 sesion.sesion = result.Read<mdlSesion>().FirstOrDefault();
                 sesion.autenticacion = result.Read<mdlSesionCodigoAutenticacion>().FirstOrDefault();
+                
                 factory.SQL.Close();
+
                 return sesion;
+
             }
             catch (Exception ex)
             {
-                Mensaje = ex.Message;
-                Valido=false;
-                return new mdlSesionresult();
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
     }

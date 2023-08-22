@@ -1,16 +1,18 @@
-using System.Data;
-using Microsoft.Data.SqlClient;
+﻿using System.Data;
+using System.Data.SqlClient;
 
 namespace HD.AccesoDatos
 {
-    public class FactoryConection
+    public class FactoryConection 
     {
-        private string _cadenaConexion="";
-        private SqlConnection connection= new SqlConnection();
+        private string _cadenaConexion = "";
+        private SqlConnection connection;
         public FactoryConection(string cadenaconexion)
         {
-              _cadenaConexion = cadenaconexion;
+            _cadenaConexion = cadenaconexion;
+             connection = new SqlConnection(_cadenaConexion);
         }
+
         public void Close()
         {
             if (connection != null && connection.State == ConnectionState.Open)
@@ -19,13 +21,11 @@ namespace HD.AccesoDatos
             }
         }
 
+
         public IDbConnection SQL
         {
             get
             {
-                if (connection is null)
-                    connection = new SqlConnection(_cadenaConexion);
-
                 if (connection.State != ConnectionState.Open)
                     connection.Open();
 

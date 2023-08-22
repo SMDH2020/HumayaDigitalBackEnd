@@ -1,4 +1,4 @@
-namespace HD.Generales.Autenticate
+﻿namespace HD.Generales.Autenticate
 {
     public class mdlSesion
     {

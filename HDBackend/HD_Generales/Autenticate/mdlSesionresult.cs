@@ -1,8 +1,8 @@
-namespace HD.Generales.Autenticate
+﻿namespace HD.Generales.Autenticate
 {
-    public class mdlSesionresult
+    public class mdlSesionResult
     {
-         public mdlSesion? sesion { get; set; }=new mdlSesion();
-        public mdlSesionCodigoAutenticacion? autenticacion { get; set; }= new mdlSesionCodigoAutenticacion();
+        public mdlSesion? sesion { get; set; } = new mdlSesion();
+        public mdlSesionCodigoAutenticacion? autenticacion { get; set; } = new mdlSesionCodigoAutenticacion();
     }
 }

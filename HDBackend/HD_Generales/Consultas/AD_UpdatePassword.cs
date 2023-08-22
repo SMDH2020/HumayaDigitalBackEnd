@@ -1,20 +1,23 @@
-using Dapper;
+﻿using Dapper;
 using HD.AccesoDatos;
 using HD.Generales.Autenticate;
 using HD.Security;
 
 namespace HD.Generales.Consultas
 {
-    public class AD_UpdatePassword : FactoryConectionBase
+    public class AD_UpdatePassword 
     {
-        public AD_UpdatePassword(string _cadenaconexion) : base(_cadenaconexion)
+        private string CadenaConexion;
+        public AD_UpdatePassword(string _cadenaconexion) 
         {
-
+            CadenaConexion = _cadenaconexion;
         }
-        public async Task<string> ActualizarContraseña(mdlUpdatePAssword login)
+        public async Task<string> ActualizarContraseña(mdlUpdatePassword login)
         {
             try
             {
+                FactoryConection factory = new(CadenaConexion);
+
                 var parametros = new
                 {
                     usuario = login.usuario,
@@ -23,12 +26,11 @@ namespace HD.Generales.Consultas
                 await factory.SQL.QueryFirstOrDefaultAsync<mdlLoginResult>("sp_ActualizarPassword", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return "Contraseña Actualizada con exito";
+
             }
             catch (Exception ex)
             {
-                Mensaje = ex.Message;
-                Valido = false;
-                return "";
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
     }
