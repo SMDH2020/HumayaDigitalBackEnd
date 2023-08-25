@@ -7,13 +7,4 @@
     <RootNamespace>$(MSBuildProjectName.Replace("_", "."))</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.0.151" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\HD_AccesoDatos\HD_AccesoDatos.csproj" />
-    <ProjectReference Include="..\HD_Generales\HD_Generales.csproj" />
-  </ItemGroup>
-
 </Project>

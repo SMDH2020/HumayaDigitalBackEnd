@@ -18,7 +18,7 @@ namespace HD.Endpoints.Controllers.Authenticate
         public async Task<ActionResult> Get()
         {
             {
-                string CadenaConexion = Configuracion["ConnectionStrings:conexion"];
+                string CadenaConexion = Configuracion["ConnectionStrings:Login"];
                 AD_ValidateUser datos = new AD_ValidateUser(CadenaConexion);
                 var result = await datos.UsuarioSesion(Sesion.usuario());
 
