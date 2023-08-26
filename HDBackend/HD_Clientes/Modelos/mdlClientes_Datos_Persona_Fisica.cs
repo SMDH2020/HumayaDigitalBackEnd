@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HD.Clientes.Modelos
+﻿namespace HD.Clientes.Modelos
 {
-    public class mdlClientes_Datos_Persona_Fisica
+    public class mdlClientes_Datos_Persona_Fisica : mdlClientes
     {
-        public int idcliente { get; set; }
 
         public string nombre { get; set; }
 
@@ -21,11 +14,8 @@ namespace HD.Clientes.Modelos
         public string sexo { get; set; }
 
         public string estado_civil { get; set; }
+        public int edad { get; set; }
+        public string regimen_conyugal { get; set; } = "NA";
 
-        public string regimen_conyugal { get; set; }
-
-        public bool estatus { get; set; }
-
-        public string? usuario { get; set; } = "";
     }
 }
