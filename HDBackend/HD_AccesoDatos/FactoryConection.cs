@@ -5,14 +5,17 @@ namespace HD.AccesoDatos
 {
     public class FactoryConection 
     {
-        private string _cadenaConexion = "";
         private SqlConnection connection;
-        public FactoryConection(string cadenaconexion)
+        private string _CadenaConexion;
+        public string Mensaje { get; private set; }
+        public FactoryConection(string cadenaconexion,bool _opentransaccion = false)
         {
-            _cadenaConexion = cadenaconexion;
-             connection = new SqlConnection(_cadenaConexion);
-        }
+            _CadenaConexion = cadenaconexion;
+            //_CadenaConexion = "Data Source=DESKTOP-Q0V3OC1\\DEVELOPER; Initial Catalog=equip; integrated security=true;";
 
+            if (_opentransaccion)
+                OpenTransaccion();
+        }
         public void Close()
         {
             if (connection != null && connection.State == ConnectionState.Open)
@@ -20,16 +23,38 @@ namespace HD.AccesoDatos
                 connection.Close();
             }
         }
-
-
         public IDbConnection SQL
         {
             get
             {
+                if (connection is null)
+                    connection = new SqlConnection(_CadenaConexion);
+
                 if (connection.State != ConnectionState.Open)
                     connection.Open();
 
                 return connection;
+            }
+        }
+
+        public IDbTransaction transaccion { get; private set; }
+        private bool OpenTransaccion()
+        {
+            try
+            {
+                if (connection is null)
+                    connection = new SqlConnection(_CadenaConexion);
+
+                if (connection.State != ConnectionState.Open)
+                    connection.Open();
+
+                transaccion = connection.BeginTransaction();
+                return true;
+            }
+            catch (System.Exception ex)
+            {
+                Mensaje = ex.Message;
+                return false;
             }
         }
     }
