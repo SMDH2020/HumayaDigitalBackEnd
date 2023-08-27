@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
+using HD.Clientes.Consultas.ClientesDatosPersonaFisica;
 using HD.Clientes.Modelos;
 
 namespace HD.Clientes.Consultas.Clientes
@@ -11,11 +12,12 @@ namespace HD.Clientes.Consultas.Clientes
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<bool> Guardar(mdlClientes mdl)
+        public async Task<int> Guardar(mdlClientes_Datos_Persona_Fisica mdl)
         {
+            FactoryConection factory = new FactoryConection(CadenaConexion);
             try
             {
-                FactoryConection factory = new FactoryConection(CadenaConexion);
+   
                 var parametros = new
                 {
                     idcliente = mdl.idcliente,
@@ -30,12 +32,17 @@ namespace HD.Clientes.Consultas.Clientes
                     estatus = mdl.estatus,
                     usuario = mdl.usuario
                 };
-                await factory.SQL.QueryAsync("Credito.sp_clientes_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdl.idcliente= await factory.SQL.QueryFirstAsync<int>("Credito.sp_clientes_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                if(mdl.idcliente>0)
+                await new AD_ClientesDatosPersonaFisica_Guardar().GuardarTransaction(mdl, factory);
+                //factory.transaccion.Commit();
                 factory.SQL.Close();
-                return true;
+                return mdl.idcliente;
             }
             catch (Exception ex)
             {
+                //factory.transaccion.Rollback();
+                factory.SQL.Close();
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }

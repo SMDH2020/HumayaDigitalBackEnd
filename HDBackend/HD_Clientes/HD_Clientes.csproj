@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -6,5 +6,13 @@
     <Nullable>enable</Nullable>
     <RootNamespace>$(MSBuildProjectName.Replace("_", "."))</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.151" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HD_AccesoDatos\HD_AccesoDatos.csproj" />
+  </ItemGroup>
 
 </Project>

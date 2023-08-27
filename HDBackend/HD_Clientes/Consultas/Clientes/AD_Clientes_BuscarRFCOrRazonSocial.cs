@@ -4,23 +4,23 @@ using HD.Clientes.Modelos;
 
 namespace HD.Clientes.Consultas.Clientes
 {
-    public class AD_Clientes_BuscarID
+    public class AD_Clientes_BuscarRFCOrRazonSocial
     {
         private string CadenaConexion;
-        public AD_Clientes_BuscarID(string _cadenaconexion)
+        public AD_Clientes_BuscarRFCOrRazonSocial(string _cadenaconexion)
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<mdlClientes_Datos_Persona_Fisica> BuscarID(int idcliente)
+        public async Task<IEnumerable<mdlClientes>> Listado(string value)
         {
             try
             {
-                FactoryConection factory = new FactoryConection(CadenaConexion);
                 var parametros = new
                 {
-                    idcliente
+                    value
                 };
-                mdlClientes_Datos_Persona_Fisica result = await factory.SQL.QueryFirstOrDefaultAsync<mdlClientes_Datos_Persona_Fisica>("Credito.Clientes_Obtener_ID", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdlClientes> result = await factory.SQL.QueryAsync<mdlClientes>("Credito.Sp_Clientes_BuscarRFZORazonSocial", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
