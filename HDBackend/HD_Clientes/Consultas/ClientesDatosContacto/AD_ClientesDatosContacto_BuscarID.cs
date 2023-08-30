@@ -11,14 +11,15 @@ namespace HD.Clientes.Consultas.ClientesDatosContacto
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<mdlClientes_Datos_Contacto> BuscarID(int idcliente)
+        public async Task<mdlClientes_Datos_Contacto> BuscarID(int idcliente,int orden)
         {
             try
             {
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var parametros = new
                 {
-                    idcliente
+                    idcliente,
+                    orden
                 };
                 mdlClientes_Datos_Contacto result = await factory.SQL.QueryFirstOrDefaultAsync<mdlClientes_Datos_Contacto>("Credito.sp_clientes_datos_contacto_obtenerporID", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
