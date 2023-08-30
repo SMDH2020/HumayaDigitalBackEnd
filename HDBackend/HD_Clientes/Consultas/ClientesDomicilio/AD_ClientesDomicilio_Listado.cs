@@ -11,7 +11,7 @@ namespace HD.Clientes.Consultas.ClientesDomicilio
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlClientes_Domicilio>> Listado(int idcliente)
+        public async Task<IEnumerable<mdlClientesDomicilioList>> Listado(int idcliente)
         {
             try
             {
@@ -20,7 +20,7 @@ namespace HD.Clientes.Consultas.ClientesDomicilio
                     idcliente
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdlClientes_Domicilio> result = await factory.SQL.QueryAsync<mdlClientes_Domicilio>("Credito.sp_Clientes_Domicilio_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdlClientesDomicilioList> result = await factory.SQL.QueryAsync<mdlClientesDomicilioList>("Credito.sp_Clientes_Domicilios_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

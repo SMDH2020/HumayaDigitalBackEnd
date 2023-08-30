@@ -11,7 +11,7 @@ namespace HD.Clientes.Consultas.ClientesDomicilio
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<bool> Guardar(mdlClientes_Domicilio mdl)
+        public async Task<IEnumerable<mdlClientesDomicilioList>> Guardar(mdlClientes_Domicilio mdl)
         {
             try
             {
@@ -29,9 +29,9 @@ namespace HD.Clientes.Consultas.ClientesDomicilio
                     estatus = mdl.estatus,
                     usuario = mdl.usuario
                 };
-                await factory.SQL.QueryAsync("Credito.sp_Clientes_Domicilio_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdlClientesDomicilioList>  result =await factory.SQL.QueryAsync<mdlClientesDomicilioList>("Credito.sp_Clientes_Domicilio_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
-                return true;
+                return result;
             }
             catch (Exception ex)
             {
