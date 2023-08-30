@@ -2,25 +2,26 @@
 using HD.AccesoDatos;
 using HD.Clientes.Modelos;
 
-namespace HD.Clientes.Consultas.ClientesDatosContacto
+namespace HD.Clientes.Consultas.ClientesDomicilio
 {
-    public class AD_ClientesDatosContacto_Listado
+    public class AD_ClientesDomicilio_ObtenerPorOrden
     {
         private string CadenaConexion;
-        public AD_ClientesDatosContacto_Listado(string _cadenaconexion)
+        public AD_ClientesDomicilio_ObtenerPorOrden(string _cadenaconexion)
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlClientes_Datos_Contacto>> Listado(int idcliente)
+        public async Task<mdlClientesDomicilioList> Get(int idcliente,int orden)
         {
             try
             {
                 var parametros = new
                 {
-                    idcliente
+                    idcliente,
+                    orden
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdlClientes_Datos_Contacto> result = await factory.SQL.QueryAsync<mdlClientes_Datos_Contacto>("Credito.sp_clientes_datos_contacto_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlClientesDomicilioList result = await factory.SQL.QueryFirstOrDefaultAsync<mdlClientesDomicilioList>("Credito.sp_Clientes_Domicilios_ObtenerPorOrden", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

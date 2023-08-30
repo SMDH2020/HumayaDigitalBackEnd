@@ -1,5 +1,4 @@
 ﻿using HD.Clientes.Consultas.Clientes;
-using HD.Clientes.Consultas.ClientesDatosPersonaFisica;
 using HD.Clientes.Modelos;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +20,7 @@ namespace HD.Endpoints.Controllers.Credito
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Clientes_Guardar datos = new AD_Clientes_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
-            mdl.idcliente= await datos.Guardar(mdl);
+            mdl.idcliente = await datos.Guardar(mdl);
             //AD_ClientesDatosPersonaFisica_Guardar datosfisica = new AD_ClientesDatosPersonaFisica_Guardar(CadenaConexion);
             //await datosfisica.Guardar(mdl);
             return Ok(new { mensaje = "datos cargados con exito" });

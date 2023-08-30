@@ -19,8 +19,11 @@ namespace HD.Clientes.Consultas.ClientesDatosContacto
                 var parametros = new
                 {
                     idcliente = mdl.idcliente,
+                    orden=mdl.orden,
+                    medio_contacto=mdl.medio_contacto,
                     tipo_contacto = mdl.tipo_contacto,
-                    info = mdl.info,
+                    valor = mdl.valor,
+                    comentarios=mdl.comentarios,
                     estatus = mdl.estatus,
                     usuario = mdl.usuario
                 };
