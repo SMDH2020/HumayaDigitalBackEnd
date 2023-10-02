@@ -33,10 +33,15 @@ namespace HD.Clientes.Consultas.Clientes
                     usuario = mdl.usuario
                 };
                 mdl.idcliente= await factory.SQL.QueryFirstAsync<int>("Credito.sp_clientes_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
-                if(mdl.idcliente>0)
-                await new AD_ClientesDatosPersonaFisica_Guardar().GuardarTransaction(mdl, factory);
-                //factory.transaccion.Commit();
-                factory.SQL.Close();
+                if (mdl.idcliente > 0)
+                {
+                    factory.SQL.Close();
+                    await new AD_ClientesDatosPersonaFisica_Guardar(CadenaConexion).Guardar(mdl);
+                }
+                else
+                {
+                    factory.SQL.Close();
+                }
                 return mdl.idcliente;
             }
             catch (Exception ex)

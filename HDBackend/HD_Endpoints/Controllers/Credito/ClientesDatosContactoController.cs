@@ -21,8 +21,8 @@ namespace HD.Endpoints.Controllers.Credito
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_ClientesDatosContacto_Guardar datos = new AD_ClientesDatosContacto_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
-            await datos.Guardar(mdl);
-            return Ok(new { mensaje = "datos cargados con exito" });
+           var result= await datos.Guardar(mdl);
+            return Ok(new { mensaje = "datos cargados con exito",listado=result });
 
         }
 
@@ -37,7 +37,7 @@ namespace HD.Endpoints.Controllers.Credito
         }
 
         [HttpGet]
-        [Route("/api/[controller]/[action]/{id}")]
+        [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> BuscarID(int idcliente, int orden)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
