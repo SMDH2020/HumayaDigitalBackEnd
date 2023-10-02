@@ -23,5 +23,6 @@
         public bool estatus { get; set; } = true;
 
         public string? usuario { get; set; } = "";
+        public string? referencia { get; set; } = "";
     }
 }

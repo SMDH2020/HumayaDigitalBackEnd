@@ -4,7 +4,6 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RootNamespace>$(MSBuildProjectName.Replace("_", "."))</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,10 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HD_AccesoDatos\HD_AccesoDatos.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Consultas\NewFolder\" />
   </ItemGroup>
 
 </Project>

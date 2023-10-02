@@ -11,7 +11,7 @@ namespace HD.Clientes.Consultas.ClientesDatosContacto
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<bool> Guardar(mdlClientes_Datos_Contacto mdl)
+        public async Task<IEnumerable<mdlClientes_Datos_Contacto>> Guardar(mdlClientes_Datos_Contacto mdl)
         {
             try
             {
@@ -27,9 +27,9 @@ namespace HD.Clientes.Consultas.ClientesDatosContacto
                     estatus = mdl.estatus,
                     usuario = mdl.usuario
                 };
-                await factory.SQL.QueryAsync("Credito.sp_clientes_datos_contacto_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdlClientes_Datos_Contacto> result = await factory.SQL.QueryAsync<mdlClientes_Datos_Contacto>("Credito.sp_clientes_datos_contacto_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
-                return true;
+                return result;
             }
             catch (Exception ex)
             {
