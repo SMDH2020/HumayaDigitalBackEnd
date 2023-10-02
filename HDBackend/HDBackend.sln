@@ -3,19 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34009.444
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HD_AccesoDatos", "HD_AccesoDatos\HD_AccesoDatos.csproj", "{C6569143-AD4B-4C60-AC73-B11B905DA4F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HD_AccesoDatos", "HD_AccesoDatos\HD_AccesoDatos.csproj", "{C6569143-AD4B-4C60-AC73-B11B905DA4F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HD_Generales", "HD_Generales\HD_Generales.csproj", "{A8FCA652-44E8-4C4F-9BC0-72B89FF20A1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HD_Generales", "HD_Generales\HD_Generales.csproj", "{A8FCA652-44E8-4C4F-9BC0-72B89FF20A1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HD_Security", "HD_Security\HD_Security.csproj", "{0F559E78-B41C-45AA-85CE-352B8037D4B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HD_Security", "HD_Security\HD_Security.csproj", "{0F559E78-B41C-45AA-85CE-352B8037D4B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HD_Fiscal", "HD_Fiscal\HD_Fiscal.csproj", "{26A0A4BC-A132-4FBA-8343-F21EF38CF98B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HD_Fiscal", "HD_Fiscal\HD_Fiscal.csproj", "{26A0A4BC-A132-4FBA-8343-F21EF38CF98B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HD_Clientes", "HD_Clientes\HD_Clientes.csproj", "{834C809E-AEBA-4F10-9B35-AEDFD20BAF62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HD_Clientes", "HD_Clientes\HD_Clientes.csproj", "{834C809E-AEBA-4F10-9B35-AEDFD20BAF62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HD_Notifications", "HD_Notifications\HD_Notifications.csproj", "{70F132A2-D20F-45C5-970E-D0CF0AF1D221}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HD_Notifications", "HD_Notifications\HD_Notifications.csproj", "{70F132A2-D20F-45C5-970E-D0CF0AF1D221}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HD_Endpoints", "HD_Endpoints\HD_Endpoints.csproj", "{29244661-4665-4854-8301-BF770E204619}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HD_Endpoints", "HD_Endpoints\HD_Endpoints.csproj", "{29244661-4665-4854-8301-BF770E204619}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HD_Dashboard", "HD_Dashboard\HD_Dashboard.csproj", "{DF279170-C696-4725-ADB9-483BC0BB7F90}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{29244661-4665-4854-8301-BF770E204619}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29244661-4665-4854-8301-BF770E204619}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29244661-4665-4854-8301-BF770E204619}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF279170-C696-4725-ADB9-483BC0BB7F90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF279170-C696-4725-ADB9-483BC0BB7F90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF279170-C696-4725-ADB9-483BC0BB7F90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF279170-C696-4725-ADB9-483BC0BB7F90}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

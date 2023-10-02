@@ -11,7 +11,7 @@ namespace HD.Clientes.Consultas.ClientesCultivo
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<mdlClientes_Cultivo> Get(int idcliente, int registro)
+        public async Task<mdlClientes_Cultivo_Listado> Get(int idcliente, int registro)
         {
             try
             {
@@ -21,7 +21,7 @@ namespace HD.Clientes.Consultas.ClientesCultivo
                     registro
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                mdlClientes_Cultivo result = await factory.SQL.QueryFirstOrDefaultAsync<mdlClientes_Cultivo>("Credito.sp_Clientes_Cultivo_ObtenerPorOrden", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlClientes_Cultivo_Listado result = await factory.SQL.QueryFirstOrDefaultAsync<mdlClientes_Cultivo_Listado>("Credito.sp_Clientes_Cultivo_BuscarRegistro", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
