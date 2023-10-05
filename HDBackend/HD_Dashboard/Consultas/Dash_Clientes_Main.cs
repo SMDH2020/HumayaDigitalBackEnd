@@ -25,7 +25,13 @@ namespace HD_Dashboard.Consultas
                 ctl.documentos = result.Read<mdlDashClientes_Documentos>().ToList();
                 ctl.linea = result.Read<mdlDashClientes_Linea>().ToList();
                 ctl.referenciabancaria = result.Read<string>().FirstOrDefault();
-                ctl.totalcredito = ctl.linea.Sum(item => item.importe);
+                ctl.totalcredito = new mdlDashClientes_LineaTotales()
+                {
+                    porvencer= ctl.linea.Sum(item => item.porvencer),
+                    vencido= ctl.linea.Sum(item => item.vencido),
+                    total= ctl.linea.Sum(item => item.importe)
+            };
+                ctl.inventario = result.Read<mdlDashClientes_Inventario>().ToList();
 
 
                 factory.SQL.Close();
