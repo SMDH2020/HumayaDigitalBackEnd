@@ -24,7 +24,6 @@ namespace HD.Endpoints.Controllers.Credito
             //AD_ClientesDatosPersonaFisica_Guardar datosfisica = new AD_ClientesDatosPersonaFisica_Guardar(CadenaConexion);
             //await datosfisica.Guardar(mdl);
             return Ok(new { mensaje = "datos cargados con exito" });
-
         }
 
         [HttpGet]
