@@ -11,12 +11,12 @@ namespace HD.Clientes.Consultas.Clientes
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlClientes>> DropDownList()
+        public async Task<IEnumerable<mdlDropDownList>> DropDownList()
         {
             try
             {
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdlClientes> result = await factory.SQL.QueryAsync<mdlClientes>("sp_clientes_dropdownlist", commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdlDropDownList> result = await factory.SQL.QueryAsync<mdlDropDownList>("Credito.sp_clientes_dropdownlist", commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
