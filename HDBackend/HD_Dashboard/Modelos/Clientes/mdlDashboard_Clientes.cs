@@ -5,10 +5,9 @@ namespace HD_Dashboard.Modelos.Clientes
 {
     public class mdlDashboard_Clientes
     {
-        public int iddocumento { get; set; }
-        public string? documento { get; set; }
-        public string? vigencia  { get; set; }
-        public int estado { get; set; }
-        public string? dato { get; set; }
+        public IEnumerable<mdlDashClientes_Documentos>? documentos { get; set; }
+        public IEnumerable<mdlDashClientes_Linea>? linea { get; set; }
+        public double totalcredito { get; set; }
+        public string? referenciabancaria { get; set; }
     }
 }

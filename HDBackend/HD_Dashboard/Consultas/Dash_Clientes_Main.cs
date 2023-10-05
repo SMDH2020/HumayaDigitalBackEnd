@@ -11,7 +11,7 @@ namespace HD_Dashboard.Consultas
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlDashboard_Clientes>> Dashboard(int idcliente)
+        public async Task<mdlDashboard_Clientes> Dashboard(int idcliente)
         {
             try
             {
@@ -20,9 +20,16 @@ namespace HD_Dashboard.Consultas
                     idcliente
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdlDashboard_Clientes> result = await factory.SQL.QueryAsync<mdlDashboard_Clientes>("Dashboard.sp_Clientes_general", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("Dashboard.sp_Clientes_general", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlDashboard_Clientes ctl = new mdlDashboard_Clientes();
+                ctl.documentos = result.Read<mdlDashClientes_Documentos>().ToList();
+                ctl.linea = result.Read<mdlDashClientes_Linea>().ToList();
+                ctl.referenciabancaria = result.Read<string>().FirstOrDefault();
+                ctl.totalcredito = ctl.linea.Sum(item => item.importe);
+
+
                 factory.SQL.Close();
-                return result;
+                return ctl;
             }
             catch (System.Exception ex)
             {
