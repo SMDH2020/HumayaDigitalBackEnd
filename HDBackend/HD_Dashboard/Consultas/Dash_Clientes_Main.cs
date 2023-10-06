@@ -22,16 +22,17 @@ namespace HD_Dashboard.Consultas
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var result = await factory.SQL.QueryMultipleAsync("Dashboard.sp_Clientes_general", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 mdlDashboard_Clientes ctl = new mdlDashboard_Clientes();
+                ctl.info = result.Read<mdlDashClientes_info>().FirstOrDefault();
                 ctl.documentos = result.Read<mdlDashClientes_Documentos>().ToList();
                 ctl.linea = result.Read<mdlDashClientes_Linea>().ToList();
-                ctl.referenciabancaria = result.Read<string>().FirstOrDefault();
                 ctl.totalcredito = new mdlDashClientes_LineaTotales()
                 {
                     porvencer= ctl.linea.Sum(item => item.porvencer),
                     vencido= ctl.linea.Sum(item => item.vencido),
                     total= ctl.linea.Sum(item => item.importe)
             };
-                ctl.inventario = result.Read<mdlDashClientes_Inventario>().ToList();
+                ctl.inventario = new  List<mdlDashClientes_Inventario>();
+                //ctl.inventario = result.Read<mdlDashClientes_Inventario>().ToList();
 
 
                 factory.SQL.Close();
