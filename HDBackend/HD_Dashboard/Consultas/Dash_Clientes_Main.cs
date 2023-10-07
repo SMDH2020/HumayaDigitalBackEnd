@@ -32,7 +32,7 @@ namespace HD_Dashboard.Consultas
                     total= ctl.linea.Sum(item => item.importe)
             };
                 ctl.inventario = new  List<mdlDashClientes_Inventario>();
-                //ctl.inventario = result.Read<mdlDashClientes_Inventario>().ToList();
+                ctl.inventario = result.Read<mdlDashClientes_Inventario>().ToList();
 
 
                 factory.SQL.Close();
