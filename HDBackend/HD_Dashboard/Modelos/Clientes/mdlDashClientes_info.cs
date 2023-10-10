@@ -6,5 +6,6 @@
         public string? referencia { get; set; }
         public string? celular { get; set; }
         public double limitecredito { get; set; }
+        public double saldo { get; set; }
     }
 }

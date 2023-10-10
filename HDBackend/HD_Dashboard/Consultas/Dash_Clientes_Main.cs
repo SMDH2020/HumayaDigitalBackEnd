@@ -31,9 +31,11 @@ namespace HD_Dashboard.Consultas
                     vencido= ctl.linea.Sum(item => item.vencido),
                     total= ctl.linea.Sum(item => item.importe)
             };
-                ctl.inventario = new  List<mdlDashClientes_Inventario>();
+
                 ctl.inventario = result.Read<mdlDashClientes_Inventario>().ToList();
 
+                ctl.info.saldo= ctl.info.limitecredito - ctl.linea.Where(item => !item.linea.Equals("Ventas"))
+                            .Sum(item => item.importe);
 
                 factory.SQL.Close();
                 return ctl;
