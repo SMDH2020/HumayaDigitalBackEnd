@@ -6,7 +6,7 @@ namespace HD.Generales.Autenticate
     {
         [Required(ErrorMessage = "El usuario es un valor requerido")]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "El usuario contiene caracteres invalidos")]
-        [Range(1, 99999, ErrorMessage = "Los caracteres se encuentran fuera de los limites")]
+        [Range(1, 9999999, ErrorMessage = "Los caracteres se encuentran fuera de los limites")]
         public int user { get; set; }
 
         [Required(ErrorMessage = "El password es un valor requerido")]
