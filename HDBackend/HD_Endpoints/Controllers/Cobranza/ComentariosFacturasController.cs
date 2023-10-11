@@ -19,6 +19,7 @@ namespace HD.Endpoints.Controllers.Cobranza
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             ADCob_ComentariosFacutras datos = new ADCob_ComentariosFacutras(CadenaConexion);
+            obj.usuario = Sesion.usuario();
             var result = await datos.Guardar(obj);
             return Ok(result);
 

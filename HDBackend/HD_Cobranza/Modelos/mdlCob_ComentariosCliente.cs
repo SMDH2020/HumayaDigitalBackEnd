@@ -11,6 +11,6 @@
         public double importeconvenio { get; set; }
         public bool recordatorio { get; set; }
         public DateTime? fecharecordatorio { get; set; }
-        public int usuario { get; set; }
+        public string? usuario { get; set; }
     }
 }
