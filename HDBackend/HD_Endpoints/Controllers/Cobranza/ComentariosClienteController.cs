@@ -26,7 +26,7 @@ namespace HD.Endpoints.Controllers.Cobranza
         }
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> Listado(int idcliente, int idfactura)
+        public async Task<ActionResult> Listado(int idcliente)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             ADCob_ComentariosClientes datos = new ADCob_ComentariosClientes(CadenaConexion);

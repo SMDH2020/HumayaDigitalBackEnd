@@ -11,7 +11,7 @@ namespace HD_Cobranza.Capturas
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<bool> Guardar(mdlCob_ComentariosCliente obj)
+        public async Task<IEnumerable<mdlCob_ComentariosCliente>> Guardar(mdlCob_ComentariosCliente obj)
         {
             try
             {
@@ -29,10 +29,10 @@ namespace HD_Cobranza.Capturas
                     @fecharecordatorio = obj.fecharecordatorio,
                     @usuario = obj.usuario,
                 };
-                
-                await factory.SQL.QueryAsync("Credito.SP_Comentarios_Cliente_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+
+                var result = await factory.SQL.QueryAsync<mdlCob_ComentariosCliente>("Credito.SP_Comentarios_Cliente_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
-                return true;
+                return result;
             }
             catch (System.Exception ex)
             {
