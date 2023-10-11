@@ -23,29 +23,30 @@ namespace HD_Cobranza.Capturas
                 };
                 var result = await factory.SQL.QueryAsync<mdlCob_TotalCarteraPorLinea>("Equip.Credito.sp_obtener_resumen_cartera_por_linea_Sucursal", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
-
                 List<mdlCob_TotalCarteraPorLinea> listado = result.ToList();
+                foreach (var sucursal in result.GroupBy(x => x.idsucursal))
+                {
+                    listado.Add(new mdlCob_TotalCarteraPorLinea()
+                    {
+                        idsucursal = sucursal.Key,
+                        sucursal = result.Where(x => x.idsucursal == sucursal.Key).First().sucursal,
+                        linea = "TOTAL",
+                        mas90 = result.Where(x => x.idsucursal == sucursal.Key).Sum(x => x.mas90),
+                        mas60 = result.Where(x => x.idsucursal == sucursal.Key).Sum(x => x.mas60),
+                        mas30 = result.Where(x => x.idsucursal == sucursal.Key).Sum(x => x.mas30),
+                        mas15 = result.Where(x => x.idsucursal == sucursal.Key).Sum(x => x.mas15),
+                        de1a15 = result.Where(x => x.idsucursal == sucursal.Key).Sum(x => x.de1a15),
+                        vencido = result.Where(x => x.idsucursal == sucursal.Key).Sum(x => x.vencido),
+                        porvencer = result.Where(x => x.idsucursal == sucursal.Key).Sum(x => x.porvencer),
+                        totalcartera = result.Where(x => x.idsucursal == sucursal.Key).Sum(x => x.totalcartera),
+                        saldoafavor = result.Where(x => x.idsucursal == sucursal.Key).Sum(x => x.saldoafavor),
+                        total = result.Where(x => x.idsucursal == sucursal.Key).Sum(x => x.total),
+                    });
+                }
+                
                 if(idsucursal == 0)
                 {
-                    foreach (var sucursal in result.GroupBy(x => x.idsucursal))
-                    {
-                        listado.Add(new mdlCob_TotalCarteraPorLinea()
-                        {
-                            idsucursal = sucursal.Key,
-                            sucursal = result.Where(x => x.idsucursal == sucursal.Key).First().sucursal,
-                            linea = "TOTAL",
-                            mas90 = result.Where(x => x.idsucursal == sucursal.Key).Sum(x => x.mas90),
-                            mas60 = result.Where(x => x.idsucursal == sucursal.Key).Sum(x => x.mas60),
-                            mas30 = result.Where(x => x.idsucursal == sucursal.Key).Sum(x => x.mas30),
-                            mas15 = result.Where(x => x.idsucursal == sucursal.Key).Sum(x => x.mas15),
-                            de1a15 = result.Where(x => x.idsucursal == sucursal.Key).Sum(x => x.de1a15),
-                            vencido = result.Where(x => x.idsucursal == sucursal.Key).Sum(x => x.vencido),
-                            porvencer = result.Where(x => x.idsucursal == sucursal.Key).Sum(x => x.porvencer),
-                            totalcartera = result.Where(x => x.idsucursal == sucursal.Key).Sum(x => x.totalcartera),
-                            saldoafavor = result.Where(x => x.idsucursal == sucursal.Key).Sum(x => x.saldoafavor),
-                            total = result.Where(x => x.idsucursal == sucursal.Key).Sum(x => x.total),
-                        });
-                    }
+
                     foreach (var linea in result.GroupBy(x => x.linea))
                     {
                         listado.Add(new mdlCob_TotalCarteraPorLinea()
@@ -67,7 +68,7 @@ namespace HD_Cobranza.Capturas
                     }
                     listado.Add(new mdlCob_TotalCarteraPorLinea()
                     {
-                        idsucursal = 101,
+                        idsucursal = 100,
                         sucursal = "RESUMEN DE CARTERA POR LINEA",
                         linea = "TOTAL",
                         mas90 = result.Sum(x => x.mas90),
