@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace HD.Clientes.Modelos
 {
     public class mdlSolicitud_Credito_Cultivos
-    {
+    { 
+        public int idsolicitud_cultivo {  get; set; }
         public string folio { get; set; }
 
         public int idcultivo { get; set; }
@@ -24,9 +25,11 @@ namespace HD.Clientes.Modelos
 
         public double precio { get; set; }
 
-        public int mescosecha { get; set; }
+        public int mes_cosecha { get; set; }
 
         public bool estatus { get; set; }
+
+        public int total_toneladas { get; set; }
 
         public string? usuario { get; set; } = "";
     }

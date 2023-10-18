@@ -59,7 +59,7 @@ namespace HD.Endpoints.Controllers.Credito
 
         }
         [HttpGet]
-        [Route("/api/[controller]/[action]/{value}")]
+        [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> BuscarRFCOrRazonSocial(string value)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
