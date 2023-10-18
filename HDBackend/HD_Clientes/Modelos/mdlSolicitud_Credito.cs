@@ -14,7 +14,7 @@
 
         public double importe { get; set; }
 
-        public bool estatus { get; set; }
+        public string estatus { get; set; }
 
         public string? usuario { get; set; } = "";
     }
