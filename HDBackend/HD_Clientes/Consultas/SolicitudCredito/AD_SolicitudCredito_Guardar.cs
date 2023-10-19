@@ -25,7 +25,7 @@ namespace HD.Clientes.Consultas.SolicitudCredito
                     tipo_solicitud = mdl.tipo_solicitud,
                     importe = mdl.importe,
                     estatus = mdl.estatus,
-                    usuario = mdl.usuario
+                    createuser = mdl.usuario
                 };
                 await factory.SQL.QueryAsync("Credito.sp_solicitud_credito_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
