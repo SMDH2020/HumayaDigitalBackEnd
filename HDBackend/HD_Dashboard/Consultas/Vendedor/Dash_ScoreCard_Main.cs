@@ -14,12 +14,12 @@ namespace HD_Dashboard.Consultas.Vendedor
     {
         public Dash_ScoreCard_Main() { }
 
-        public static Task<ScoreCard[]> ScoreCards()
+        public static Task<mdlScoreCardResult[]> ScoreCards()
         {
             try
             {
-                var filePath = "C:\\SDMH\\HumayaDigital\\ScoreCard Navolato.xls";
-                var scoreCards = new List<ScoreCard>();
+                var filePath = "C:\\SMDH\\HumayaDigital\\ScoreCard Navolato.xls";
+                var scoreCards = new List<mdlScoreCardResult>();
                 using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
                 {
                     using (var reader = ExcelReaderFactory.CreateReader(stream))
@@ -36,14 +36,15 @@ namespace HD_Dashboard.Consultas.Vendedor
                         };
 
                         var result = reader.AsDataSet(config);
-                        string mes = DateTime.Now.ToString("MMM", new CultureInfo("es-MX")).TrimEnd('.').ToUpper();
+                        string mes = "JUL";// DateTime.Now.ToString("MMM", new CultureInfo("es-MX")).TrimEnd('.').ToUpper();
                         for (int i = 1; i < result.Tables.Count - 2; i++)
                         {
                             int mesIndex = 0;
 
                             for (int j = 2; j < 26; j++)
                             {
-                                if (result.Tables[i].Rows[7][j].ToString() == mes)
+                                string value = result.Tables[i].Rows[7][j].ToString();
+                                if ( value== mes)
                                 {
                                     mesIndex = j;
                                     break;
@@ -55,8 +56,14 @@ namespace HD_Dashboard.Consultas.Vendedor
                                 Convert.ToInt32(result.Tables[i].Rows[81][mesIndex]), Convert.ToInt32(result.Tables[i].Rows[81][mesIndex + 1]),
                                 Convert.ToInt32(result.Tables[i].Rows[151][mesIndex]), Convert.ToInt32(result.Tables[i].Rows[151][mesIndex + 1]),
                                 Convert.ToInt32(result.Tables[i].Rows[181][mesIndex]), Convert.ToInt32(result.Tables[i].Rows[181][mesIndex + 1]));
-
-                            scoreCards.Add(scoreCard);
+                            mdlScoreCardResult mdlresult = new mdlScoreCardResult();
+                            mdlresult.scorecard = scoreCard;
+                            mdlresult.porcentaje =
+                                Math.Round(((scoreCard.objetivoUsadas == 0 ? 100 : scoreCard.porcentajeUsadas) +
+                                (scoreCard.objetivoTractores == 0 ? 100 : scoreCard.porcentajeTractores) +
+                                (scoreCard.objetivoImplementos == 0 ? 100 : scoreCard.porcentajeImplementos) +
+                                (scoreCard.objetivoCombinadas == 0 ? 100 : scoreCard.porcentajeCombinadas))*.25, 0);
+                            scoreCards.Add(mdlresult);
                             /*
                             Console.WriteLine(scoreCard.nombre);
                             Console.WriteLine("Combinadas ---> Objetivo: {0}, Reales: {1}, Porcentaje: {2}%", scoreCard.objCombinadas, scoreCard.realCombinadas, scoreCard.porcentajeCombinadas);
