@@ -11,13 +11,13 @@ namespace HD.Clientes.Consultas.SolicitudCreditoEstadoResultados
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlSolicitud_Credito_Estado_Resultados>> Listado(short filtrar)
+        public async Task<IEnumerable<mdlSolicitud_Credito_Estado_Resultados>> Listado(string folio)
         {
             try
             {
                 var parametros = new
                 {
-                    filtrar
+                    folio = folio
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdlSolicitud_Credito_Estado_Resultados> result = await factory.SQL.QueryAsync<mdlSolicitud_Credito_Estado_Resultados>("Credito.sp_solicitud_credito_estado_resultados_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
