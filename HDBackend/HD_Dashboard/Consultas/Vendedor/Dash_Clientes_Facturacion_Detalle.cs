@@ -1,26 +1,27 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
-using HD.Clientes.Modelos;
+using HD_Dashboard.Modelos.Clientes;
 
-namespace HD.Clientes.Consultas.SolicitudCreditoOtrosIngresos
+namespace HD_Dashboard.Consultas.Vendedor
 {
-    public class AD_SolicitudCreditoOtrosIngresos_Listado
+    public class Dash_Clientes_Facturacion_Detalle
     {
         private string CadenaConexion;
-        public AD_SolicitudCreditoOtrosIngresos_Listado(string _cadenaconexion)
+        public Dash_Clientes_Facturacion_Detalle(string _cadenaconexion)
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlSolicitud_Credito_Otros_Ingresos>> Listado(string folio)
+        public async Task<IEnumerable<mdlDashClientes_Facturacion_Detalle>> Detalle(int idcliente, string linea)
         {
             try
             {
                 var parametros = new
                 {
-                    folio
+                    idcliente,
+                    linea
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdlSolicitud_Credito_Otros_Ingresos> result = await factory.SQL.QueryAsync<mdlSolicitud_Credito_Otros_Ingresos>("Credito.sp_solicitud_credito_otros_ingresos_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryAsync<mdlDashClientes_Facturacion_Detalle>("Credito.sp_Obtener_Facturacion_Detalle", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

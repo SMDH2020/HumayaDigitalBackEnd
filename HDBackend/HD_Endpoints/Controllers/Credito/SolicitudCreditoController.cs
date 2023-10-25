@@ -1,4 +1,5 @@
-﻿using HD.Clientes.Consultas.GiroEmpresarial;
+﻿using HD.Clientes;
+using HD.Clientes.Consultas.GiroEmpresarial;
 using HD.Clientes.Consultas.SolicitudCredito;
 using HD.Clientes.Modelos;
 using HD.Security;
@@ -22,8 +23,8 @@ namespace HD.Endpoints.Controllers.Credito
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_SolicitudCredito_Guardar datos = new AD_SolicitudCredito_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
-            await datos.Guardar(mdl);
-            return Ok(new { mensaje = "datos cargados con exito" });
+            mdlResultstring result= await datos.Guardar(mdl);
+            return Ok(result);
 
         }
 
