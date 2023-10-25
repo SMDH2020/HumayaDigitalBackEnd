@@ -12,6 +12,7 @@
 
         public char estatus { get; set; }
 
+
         public string? usuario { get; set; } = "";
     }
 }
