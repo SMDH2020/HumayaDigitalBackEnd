@@ -26,6 +26,7 @@ namespace HD.Clientes.Consultas.SolicitudCredito
                 };
                 var folioresult=await factory.SQL.QueryFirstOrDefaultAsync<string>("Credito.sp_solicitud_credito_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
+
                 return new mdlResultstring() { value = folioresult };
             }
             catch (Exception ex)
