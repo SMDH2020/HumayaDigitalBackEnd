@@ -36,33 +36,64 @@ namespace HD_Dashboard.Consultas.Vendedor
                         };
 
                         var result = reader.AsDataSet(config);
-                        string mes = "JUL";// DateTime.Now.ToString("MMM", new CultureInfo("es-MX")).TrimEnd('.').ToUpper();
+                        // string mes = "JUL";// DateTime.Now.ToString("MMM", new CultureInfo("es-MX")).TrimEnd('.').ToUpper();
+                        string mesInicial = "ENE";
+                        string mesActual = DateTime.Now.ToString("MMM", new CultureInfo("es-MX")).TrimEnd('.').ToUpper();
                         for (int i = 1; i < result.Tables.Count - 2; i++)
                         {
-                            int mesIndex = 0;
+                            int mesActualIndex = 0;
+                            int mesInicialIndex = 0;
 
                             for (int j = 2; j < 26; j++)
                             {
-                                string value = result.Tables[i].Rows[7][j].ToString();
-                                if ( value== mes)
+                                if (result.Tables[i].Rows[7][j].ToString() == mesInicial)
                                 {
-                                    mesIndex = j;
+                                    mesInicialIndex = j;
                                     break;
                                 }
                             }
 
-                            ScoreCard scoreCard = new ScoreCard(result.Tables[i].Rows[3][2].ToString(),
-                                Convert.ToInt32(result.Tables[i].Rows[12][mesIndex]), Convert.ToInt32(result.Tables[i].Rows[12][mesIndex + 1]),
-                                Convert.ToInt32(result.Tables[i].Rows[81][mesIndex]), Convert.ToInt32(result.Tables[i].Rows[81][mesIndex + 1]),
-                                Convert.ToInt32(result.Tables[i].Rows[151][mesIndex]), Convert.ToInt32(result.Tables[i].Rows[151][mesIndex + 1]),
-                                Convert.ToInt32(result.Tables[i].Rows[181][mesIndex]), Convert.ToInt32(result.Tables[i].Rows[181][mesIndex + 1]));
+                            for (int j = mesInicialIndex; j < 26; j++)
+                            {
+                                if (result.Tables[i].Rows[7][j].ToString() == mesActual)
+                                {
+                                    mesActualIndex = j;
+                                    break;
+                                }
+                            }
+                            int objCombinadas = 0;
+                            int realCombinadas = 0;
+                            int objTractores = 0;
+                            int realTractores = 0;
+                            int objImplementos = 0;
+                            int realImplementos = 0;
+                            int objUsadas = 0; 
+                            int realUsadas = 0;
+
+
+                            for (int j = mesInicialIndex; j <= mesActualIndex; j += 2)
+                            {
+                                objCombinadas += Convert.ToInt32(result.Tables[i].Rows[12][j]);
+                                realCombinadas += Convert.ToInt32(result.Tables[i].Rows[12][j + 1]);
+                                objTractores += Convert.ToInt32(result.Tables[i].Rows[81][j]);
+                                realTractores += Convert.ToInt32(result.Tables[i].Rows[81][j + 1]);
+                                objImplementos += Convert.ToInt32(result.Tables[i].Rows[151][j]);
+                                realImplementos += Convert.ToInt32(result.Tables[i].Rows[151][j + 1]);
+                                objUsadas += Convert.ToInt32(result.Tables[i].Rows[181][j]);
+                                realUsadas += Convert.ToInt32(result.Tables[i].Rows[181][j + 1]);
+
+                            }
+
+
+                            ScoreCard scoreCard = new ScoreCard(result.Tables[i].Rows[3][2].ToString(), objCombinadas, realCombinadas, objTractores, realTractores, objImplementos, realImplementos, objUsadas, realUsadas);
+
                             mdlScoreCardResult mdlresult = new mdlScoreCardResult();
                             mdlresult.scorecard = scoreCard;
                             mdlresult.porcentaje =
                                 Math.Round(((scoreCard.objetivoUsadas == 0 ? 100 : scoreCard.porcentajeUsadas) +
                                 (scoreCard.objetivoTractores == 0 ? 100 : scoreCard.porcentajeTractores) +
                                 (scoreCard.objetivoImplementos == 0 ? 100 : scoreCard.porcentajeImplementos) +
-                                (scoreCard.objetivoCombinadas == 0 ? 100 : scoreCard.porcentajeCombinadas))*.25, 0);
+                                (scoreCard.objetivoCombinadas == 0 ? 100 : scoreCard.porcentajeCombinadas)) * .25, 0);
                             scoreCards.Add(mdlresult);
                             /*
                             Console.WriteLine(scoreCard.nombre);
