@@ -27,5 +27,16 @@ namespace HD.Endpoints.Controllers.Cobranza
             return Ok(result);
 
         }
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerDetalle(RC_mdl_view obj)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADREC_recuperacion datos = new ADREC_recuperacion(CadenaConexion);
+
+            var result = await datos.ObtenerDetalle(obj);
+            return Ok(result);
+
+        }
     }
 }

@@ -8,8 +8,9 @@
         public int idadr { get; set; }
         public string adr { get; set; }
         public int idsucursal { get; set; }
-        public string sucursal { get; set; }
+        public string? sucursal { get; set; }
         public double saldo { get; set; }
         public double recuperado { get; set; }
+        public double porrecuperado => Math.Round(recuperado / saldo * 100);
     }
 }
