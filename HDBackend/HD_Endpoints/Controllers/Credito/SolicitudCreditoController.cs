@@ -1,4 +1,5 @@
-﻿using HD.Clientes.Consultas.GiroEmpresarial;
+﻿using HD.Clientes;
+using HD.Clientes.Consultas.GiroEmpresarial;
 using HD.Clientes.Consultas.SolicitudCredito;
 using HD.Clientes.Modelos;
 using HD.Security;
@@ -19,32 +20,32 @@ namespace HD.Endpoints.Controllers.Credito
         public async Task<ActionResult> Post(mdlSolicitud_Credito mdl)
         {
 
-            string CadenaConexion = Configuracion["ConnectionStrings:Login"];
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_SolicitudCredito_Guardar datos = new AD_SolicitudCredito_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
-            await datos.Guardar(mdl);
-            return Ok(new { mensaje = "datos cargados con exito" });
+            mdlResultstring result= await datos.Guardar(mdl);
+            return Ok(result);
 
         }
 
         [HttpGet]
-        [Route("/api/[controller]/[action]/{id}")]
-        public async Task<ActionResult> Listado(short filtrar)
+        [Route("/api/[controller]/[action]/{idCliente}")]
+        public async Task<ActionResult> Listado(short idCliente)
         {
-            string CadenaConexion = Configuracion["ConnectionStrings:Login"];
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_SolicitudCredito_Listado datos = new AD_SolicitudCredito_Listado(CadenaConexion);
-            var result = await datos.Listado(filtrar);
+            var result = await datos.Listado(idCliente);
             return Ok(result);
 
         }
 
         [HttpGet]
         [Route("/api/[controller]/[action]/{id}")]
-        public async Task<ActionResult> BuscarID(string folio)
+        public async Task<ActionResult> BuscarID(string id)
         {
-            string CadenaConexion = Configuracion["ConnectionStrings:Login"];
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_SolicitudCredito_BuscarID datos = new AD_SolicitudCredito_BuscarID(CadenaConexion);
-            var result = await datos.BuscarID(folio);
+            var result = await datos.BuscarID(id);
             return Ok(result);
 
         }
