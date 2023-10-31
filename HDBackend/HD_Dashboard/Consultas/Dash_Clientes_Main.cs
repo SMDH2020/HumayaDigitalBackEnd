@@ -27,6 +27,7 @@ namespace HD_Dashboard.Consultas
                 ctl.documentos = result.Read<mdlDashClientes_Documentos>().ToList();
                 ctl.linea = result.Read<mdlDashClientes_Linea>().ToList();
 
+
                 ctl.totalcredito = new mdlDashClientes_LineaTotales()
                 {
                     porvencer= ctl.linea.Sum(item => item.porvencer),

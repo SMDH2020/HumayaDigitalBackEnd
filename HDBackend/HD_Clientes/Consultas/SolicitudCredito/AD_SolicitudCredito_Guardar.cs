@@ -22,7 +22,8 @@ namespace HD.Clientes.Consultas.SolicitudCredito
                     idcliente = mdl.idcliente,
                     tipo_solicitud = mdl.tipo_solicitud,
                     importe = mdl.importe,
-                    usuario = mdl.usuario
+                    usuario = mdl.usuario,
+                    estatus = mdl.estatus
                 };
                 var folioresult=await factory.SQL.QueryFirstOrDefaultAsync<string>("Credito.sp_solicitud_credito_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
