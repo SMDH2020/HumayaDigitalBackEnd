@@ -37,7 +37,7 @@ namespace HD_Dashboard.Consultas
 
                 ctl.inventario = result.Read<mdlDashClientes_Inventario>().ToList();
 
-                ctl.info.saldo= ctl.info.limitecredito - ctl.linea.Where(item => !item.linea.Equals("Maq. Nueva"))
+                ctl.info.saldo= ctl.info.limitecredito - ctl.linea.Where(item => !item.linea.Equals("MAQ. NUEVA"))
                             .Sum(item => item.importe);
 
 
