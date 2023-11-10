@@ -38,7 +38,8 @@ namespace HD_Dashboard.Consultas.Vendedor
                         var result = reader.AsDataSet(config);
                         // string mes = "JUL";// DateTime.Now.ToString("MMM", new CultureInfo("es-MX")).TrimEnd('.').ToUpper();
                         string mesInicial = "ENE";
-                        string mesActual = DateTime.Now.ToString("MMM", new CultureInfo("es-MX")).TrimEnd('.').ToUpper();
+                        string mesActual = DateTime.Parse("30/10/2023").ToString("MMM", new CultureInfo("es-MX")).TrimEnd('.').ToUpper();
+                        //string mesActual = DateTime.Now.ToString("MMM", new CultureInfo("es-MX")).TrimEnd('.').ToUpper();
                         for (int i = 1; i < result.Tables.Count - 2; i++)
                         {
                             int mesActualIndex = 0;
