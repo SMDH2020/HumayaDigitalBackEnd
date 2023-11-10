@@ -38,6 +38,16 @@ namespace HD.Endpoints.Controllers.Credito
             return Ok(result);
 
         }
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> detalle(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_SolicitudCredito_Detalle datos = new AD_SolicitudCredito_Detalle(CadenaConexion);
+            var result = await datos.Detalle(folio);
+            return Ok(result);
+
+        }
 
         [HttpGet]
         [Route("/api/[controller]/[action]/{id}")]
