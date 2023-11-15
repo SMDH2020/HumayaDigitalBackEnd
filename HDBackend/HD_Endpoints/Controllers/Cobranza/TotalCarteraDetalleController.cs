@@ -19,7 +19,7 @@ namespace HD.Endpoints.Controllers.Cobranza
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             ADCob_TotalCarteraDetalle datos = new ADCob_TotalCarteraDetalle(CadenaConexion);
-            var result = await datos.Listado(idsucursal,linea);
+            var result = await datos.Listado(idsucursal,linea,Sesion.usuario());
             return Ok(result);
 
         }

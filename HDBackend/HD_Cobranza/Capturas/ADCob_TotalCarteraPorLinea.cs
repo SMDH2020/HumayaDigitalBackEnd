@@ -46,47 +46,6 @@ namespace HD_Cobranza.Capturas
                     });
                 }
                 
-                //if(idsucursal == 0)
-                //{
-
-                //    foreach (var linea in result.GroupBy(x => x.linea))
-                //    {
-                //        listado.Add(new mdlCob_TotalCarteraPorLinea()
-                //        {
-                //            idsucursal = 100,
-                //            sucursal = "RESUMEN DE CARTERA POR LINEA",
-                //            linea = result.Where(x => x.linea == linea.Key).First().linea,
-                //            mas90 = result.Where(x => x.linea == linea.Key).Sum(x => x.mas90),
-                //            mas60 = result.Where(x => x.linea == linea.Key).Sum(x => x.mas60),
-                //            mas30 = result.Where(x => x.linea == linea.Key).Sum(x => x.mas30),
-                //            mas15 = result.Where(x => x.linea == linea.Key).Sum(x => x.mas15),
-                //            de1a15 = result.Where(x => x.linea == linea.Key).Sum(x => x.de1a15),
-                //            vencido = result.Where(x => x.linea == linea.Key).Sum(x => x.vencido),
-                //            porvencer = result.Where(x => x.linea == linea.Key).Sum(x => x.porvencer),
-                //            totalcartera = result.Where(x => x.linea == linea.Key).Sum(x => x.totalcartera),
-                //            saldoafavor = result.Where(x => x.linea == linea.Key).Sum(x => x.saldoafavor),
-                //            total = result.Where(x => x.linea == linea.Key).Sum(x => x.total),
-                //        });
-                //    }
-                //    listado.Add(new mdlCob_TotalCarteraPorLinea()
-                //    {
-                //        idsucursal = 100,
-                //        sucursal = "RESUMEN DE CARTERA POR LINEA",
-                //        linea = "TOTAL",
-                //        mas90 = result.Sum(x => x.mas90),
-                //        mas60 = result.Sum(x => x.mas60),
-                //        mas30 = result.Sum(x => x.mas30),
-                //        mas15 = result.Sum(x => x.mas15),
-                //        de1a15 = result.Sum(x => x.de1a15),
-                //        vencido = result.Sum(x => x.vencido),
-                //        porvencer = result.Sum(x => x.porvencer),
-                //        totalcartera = result.Sum(x => x.totalcartera),
-                //        saldoafavor = result.Sum(x => x.saldoafavor),
-                //        total = result.Sum(x => x.total),
-                //    });
-                //}
-
-
                 return listado;
             }
             catch (System.Exception ex)

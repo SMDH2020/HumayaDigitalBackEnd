@@ -16,21 +16,40 @@ namespace HD_Cobranza.Capturas
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlCob_TotalCartera_Detalle>> Listado(int idsucursal,string linea)
+        public async Task<IEnumerable<mdlCob_TotalCartera_Detalle>> Listado(int idsucursal,string linea,string? usuario)
         {
             try
             {
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var parametros = new
                 {
-                    region="",
-                    sucursales=idsucursal,
-                    lineas= linea,
-                    usuario =1
+                    idsucursal,
+                    linea,
+                    usuario 
                 };
-                var result = await factory.SQL.QueryAsync<mdlCob_TotalCartera_Detalle>("Equip.Credito.sp_Obtener_TotalCartera_Detalle", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryAsync<mdlCob_TotalCartera_Detalle>("Credito.sp_Obtener_resumen_cartera_por_cliente", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
+                //List<mdlCob_TotalCartera_Detalle> listado = result.ToList();
                 List<mdlCob_TotalCartera_Detalle> listado = result.ToList();
+
+                listado.Add(new mdlCob_TotalCartera_Detalle()
+                {
+                    idsucursal = result.First().idsucursal,
+                    sucursal = result.First().sucursal,
+                    departamento = "TOTAL",
+                    mas90 = result.Sum(x => x.mas90),
+                    mas60 = result.Sum(x => x.mas60),
+                    mas30 = result.Sum(x => x.mas30),
+                    mas15 = result.Sum(x => x.mas15),
+                    de1a15 = result.Sum(x => x.de1a15),
+                    vencido = result.Sum(x => x.vencido),
+                    porvencer = result.Sum(x => x.porvencer),
+                    totalcartera = result.Sum(x => x.totalcartera),
+                    saldoafavor = result.Sum(x => x.saldoafavor),
+                    total = result.Sum(x => x.total),
+                    activo = result.Sum(x => x.activo),
+                    juridico = result.Sum(x => x.juridico),
+                });                
                 return listado;
             }
             catch (System.Exception ex)
