@@ -15,8 +15,4 @@
     <ProjectReference Include="..\HD_AccesoDatos\HD_AccesoDatos.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Consultas\NewFolder\" />
-  </ItemGroup>
-
 </Project>
