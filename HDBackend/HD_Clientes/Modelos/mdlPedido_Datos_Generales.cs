@@ -53,7 +53,7 @@ namespace HD.Clientes.Modelos
 
 
         [Required(ErrorMessage = "El uso de CFDI es un valor requerido")]
-        [RegularExpression(@"^[0-9GIP]+$", ErrorMessage = "El campo uso de cfdi debe estar formado por numeros")]
+        [RegularExpression(@"^[0-9GIP]+$", ErrorMessage = "El campo uso de cfdi debe estar formado por 3 numeros")]
         [StringLength(3, MinimumLength = 3, ErrorMessage = "El campo uso de cfdi debe estar formado por 3 digitos")]
         public string? usocfdi { get; set; }
 
@@ -67,6 +67,8 @@ namespace HD.Clientes.Modelos
         public string? anticipos { get; set; }
 
         public string? foliosanticipos { get; set; }
+
+
         public string? usuario { get; set; }
     }
 }
