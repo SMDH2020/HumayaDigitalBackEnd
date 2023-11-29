@@ -27,9 +27,9 @@ namespace HD.Clientes.Modelos
         [StringLength(150, MinimumLength = 10, ErrorMessage = "El campo Medio de Contacto debe estar formado por 1 digitos")]
         public string? valor { get; set; } = "";
 
-        [Required(ErrorMessage = "El Tipo de comentarios es un valor requerido")]
-        [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "El campo Comentarios debe estar formado por valores alfanumericos")]
-        [StringLength(500, ErrorMessage = "El campo Comentarios debe de contener una longitud maxima de 500 caracteres")]
+  
+        [RegularExpression(@"^[a-zA-Z0-9 ]+$", ErrorMessage = "El campo Comentarios debe estar formado por valores alfanumericos")]
+        [StringLength(maximumLength:500, ErrorMessage = "El campo Comentarios debe de contener una longitud maxima de 500 caracteres")]
         public string? comentarios { get; set; } = "";
 
         public bool estatus { get; set; }

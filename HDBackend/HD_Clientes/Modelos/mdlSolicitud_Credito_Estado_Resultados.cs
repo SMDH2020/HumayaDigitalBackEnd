@@ -11,7 +11,7 @@ namespace HD.Clientes.Modelos
         public string folio { get; set; }
 
         [Required(ErrorMessage = "El Registro es un valor requerido")]
-        [RegularExpression(@"^[0-9]+$", ErrorMessage = "El campo Registro debe estar formado  por numeros")]
+        [RegularExpression(@"^[0-9]|-1$", ErrorMessage = "El campo Registro debe estar formado solo por numeros")]
         public short registro { get; set; }
 
 
