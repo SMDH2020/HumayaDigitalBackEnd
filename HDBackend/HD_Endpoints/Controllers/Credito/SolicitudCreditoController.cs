@@ -1,6 +1,4 @@
-﻿using HD.Clientes;
-using HD.Clientes.Consultas.GiroEmpresarial;
-using HD.Clientes.Consultas.SolicitudCredito;
+﻿using HD.Clientes.Consultas.SolicitudCredito;
 using HD.Clientes.Modelos;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +21,7 @@ namespace HD.Endpoints.Controllers.Credito
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_SolicitudCredito_Guardar datos = new AD_SolicitudCredito_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
-            mdlResultstring result= await datos.Guardar(mdl);
+            var result = await datos.Guardar(mdl);
             return Ok(result);
 
         }

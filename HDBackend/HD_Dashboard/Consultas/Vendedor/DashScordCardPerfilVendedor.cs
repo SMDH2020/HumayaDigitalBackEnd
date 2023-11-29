@@ -1,28 +1,28 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
-using HD.Clientes.Modelos;
+using HD_Dashboard.Modelos;
 
-namespace HD.Clientes.Consultas.PedidoDatosGenerales
+namespace HD_Dashboard.Consultas.Vendedor
 {
-    public class AD_PedidosGenerales_GetByFolio
+    public class DashScordCardPerfilVendedor
     {
         private string CadenaConexion;
-        public AD_PedidosGenerales_GetByFolio(string _cadenaconexion)
+        public DashScordCardPerfilVendedor(string _cadenaconexion)
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<mdlPedido_Datos_Generales> Get(string folio)
+        public async Task<IEnumerable<mdlperfilvendedor>> Listado(string? usuario)
         {
             try
             {
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var parametros = new
                 {
-                    folio
+                    usuario
                 };
-                mdlPedido_Datos_Generales result = await factory.SQL.QueryFirstOrDefaultAsync<mdlPedido_Datos_Generales>("Credito.sp_Pedido_Datos_Solicitante", parametros, commandType: System.Data.CommandType.StoredProcedure);
+
+                IEnumerable<mdlperfilvendedor> result = await factory.SQL.QueryAsync<mdlperfilvendedor>("sp_Vendedores_ScordCard", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
-                if(result == null) { result = new mdlPedido_Datos_Generales(); }
                 return result;
             }
             catch (System.Exception ex)
