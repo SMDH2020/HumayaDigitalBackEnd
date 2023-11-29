@@ -19,7 +19,6 @@ namespace HD.Clientes.Consultas.PedidoDatosGenerales
                 var parametros = new
                 {
                     folio = mdl.folio,
-                    solicitante = mdl.solicitante,
                     celular = mdl.celular,
                     correoelectronico = mdl.correoelectronico,
                     fechaentrega = mdl.fechaentrega,
