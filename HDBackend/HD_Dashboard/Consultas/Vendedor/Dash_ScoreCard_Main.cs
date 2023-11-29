@@ -1,12 +1,7 @@
 ﻿using ExcelDataReader;
 using HD.AccesoDatos;
 using HD_Dashboard.Modelos;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HD_Dashboard.Consultas.Vendedor
 {
@@ -19,6 +14,7 @@ namespace HD_Dashboard.Consultas.Vendedor
             try
             {
                 var filePath = "C:\\SMDH\\HumayaDigital\\ScoreCard Navolato.xls";
+                //var filePath = "C:\\SMDH\\HumayaDigital\\Scordcard.xlsx";
                 var scoreCards = new List<mdlScoreCardResult>();
                 using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
                 {
@@ -68,7 +64,7 @@ namespace HD_Dashboard.Consultas.Vendedor
                             int realTractores = 0;
                             int objImplementos = 0;
                             int realImplementos = 0;
-                            int objUsadas = 0; 
+                            int objUsadas = 0;
                             int realUsadas = 0;
 
 
@@ -85,8 +81,8 @@ namespace HD_Dashboard.Consultas.Vendedor
 
                             }
 
-
-                            ScoreCard scoreCard = new ScoreCard(result.Tables[i].Rows[3][2].ToString(), objCombinadas, realCombinadas, objTractores, realTractores, objImplementos, realImplementos, objUsadas, realUsadas);
+                            string tablename = result.Tables[i].TableName;
+                            ScoreCard scoreCard = new ScoreCard(result.Tables[i].Rows[3][2].ToString(),tablename, objCombinadas, realCombinadas, objTractores, realTractores, objImplementos, realImplementos, objUsadas, realUsadas);
 
                             mdlScoreCardResult mdlresult = new mdlScoreCardResult();
                             mdlresult.scorecard = scoreCard;

@@ -11,7 +11,7 @@ namespace HD.Clientes.Consultas.SolicitudCredito
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<mdlSolicitud_Credito_Detalle> Detalle(string folio)
+        public async Task<mdlView_Solicitud_Credito> Detalle(string folio)
         {
             try
             {
@@ -20,9 +20,15 @@ namespace HD.Clientes.Consultas.SolicitudCredito
                 {
                     folio
                 };
-                mdlSolicitud_Credito_Detalle result = await factory.SQL.QueryFirstOrDefaultAsync<mdlSolicitud_Credito_Detalle>("Credito.sp_Obtener_SolicitudCredito_Detalle", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Obtener_SolicitudCredito_Detalle", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlSolicitud_Credito_Detalle? detalle = result.Read<mdlSolicitud_Credito_Detalle>().FirstOrDefault();
+                mdlSolicitudCredito_Screen? screen = result.Read<mdlSolicitudCredito_Screen>().FirstOrDefault();
                 factory.SQL.Close();
-                return result;
+                return new mdlView_Solicitud_Credito()
+                {
+                    solicitud_credito = detalle,
+                    config = screen,
+                };
             }
             catch (System.Exception ex)
             {

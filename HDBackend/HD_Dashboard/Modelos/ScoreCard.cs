@@ -3,6 +3,7 @@
     public class ScoreCard
     {
         public string nombre;
+        public string hoja;
 
         public double objetivoCombinadas;
         public double realCombinadas;
@@ -20,9 +21,10 @@
         public double realUsadas;
         public double porcentajeUsadas;
 
-        public ScoreCard(string nombre, double objetivoCombinadas, double realCombinadas, double objetivoTractores, double realTractores, double objetivoImplementos, double realImplementos, double objetivoUsadas, double realUsadas)
+        public ScoreCard(string nombre,string hoja, double objetivoCombinadas, double realCombinadas, double objetivoTractores, double realTractores, double objetivoImplementos, double realImplementos, double objetivoUsadas, double realUsadas)
         {
             this.nombre = nombre;
+            this.hoja = hoja;
             this.objetivoUsadas = objetivoUsadas;
             this.realUsadas = realUsadas;
             this.objetivoTractores = objetivoTractores;

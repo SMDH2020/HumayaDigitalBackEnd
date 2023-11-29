@@ -9,10 +9,6 @@ namespace HD.Clientes.Modelos
         [StringLength(13,MinimumLength =13,ErrorMessage ="El campo folio debe estar formado por 13 digitos")]
         public string? folio { get; set; }
 
-        [Required(ErrorMessage = "El solicitante es un valor requerido")]
-        [RegularExpression(@"^[ a-zA-Z]+$", ErrorMessage = "El campo solicitante debe contener solo letras")]
-        [StringLength(50, MinimumLength = 1, ErrorMessage = "El campo solicitante admite como maximo 50 caracteres")]
-        public string? solicitante { get; set; }
 
         [Required(ErrorMessage = "El numero de celular es un valor requerido")]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "El campo folio debe estar formado solo por caracteres numericos")]
@@ -24,6 +20,8 @@ namespace HD.Clientes.Modelos
 
         [Required(ErrorMessage = "La fecha de entrega es un valor requerido")]
         public DateTime fechaentrega { get; set; }
+        public string sfechaentrega => fechaentrega.ToString("dd/MM/yyyy");
+        public string dfechaentrega => fechaentrega.ToString("yyyy-MM-dd");
 
         [Required(ErrorMessage = "El domicilio es un valor requerido")]
         [RegularExpression(@"^[ A-Za-z0-9]+$", ErrorMessage = "El campo domicilio debe estar formado por letras y numeros")]
@@ -36,7 +34,7 @@ namespace HD.Clientes.Modelos
         public string? lugarentrega { get; set; }
 
         [Required(ErrorMessage = "Las condiciones de credito son un valor requerido")]
-        [RegularExpression(@"^[A-Za-z0-9]+$", ErrorMessage = "El campo condiciones de crédito debe estar formado por letras y numeros")]
+        [RegularExpression(@"^[ A-Za-z0-9]+$", ErrorMessage = "El campo condiciones de crédito debe estar formado por letras y numeros")]
         [StringLength(500, MinimumLength = 1, ErrorMessage = "El campo condiciones de crédito admite como maximo 500 caracteres")]
         public string? condicionescredito { get; set; }
 

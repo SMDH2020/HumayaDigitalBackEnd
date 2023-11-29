@@ -2,27 +2,27 @@
 using HD.AccesoDatos;
 using HD.Clientes.Modelos;
 
-namespace HD.Clientes.Consultas.PedidoDatosGenerales
+namespace HD.Clientes.Consultas.PedidoFinanciamiento
 {
-    public class AD_PedidosGenerales_GetByFolio
+    public class AD_PedidoFinanciamiento_Docto
     {
         private string CadenaConexion;
-        public AD_PedidosGenerales_GetByFolio(string _cadenaconexion)
+        public AD_PedidoFinanciamiento_Docto(string _cadenaconexion)
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<mdlPedido_Datos_Generales> Get(string folio)
+        public async Task<mdlPedido_Detalle_Financiamiento> Get(string folio, int docto)
         {
             try
             {
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var parametros = new
                 {
-                    folio
+                    folio,
+                    docto
                 };
-                mdlPedido_Datos_Generales result = await factory.SQL.QueryFirstOrDefaultAsync<mdlPedido_Datos_Generales>("Credito.sp_Pedido_Datos_Solicitante", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlPedido_Detalle_Financiamiento result = await factory.SQL.QueryFirstOrDefaultAsync<mdlPedido_Detalle_Financiamiento>("Credito.sp_Pedido_Detalle_Financiamiento_ByDocto", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
-                if(result == null) { result = new mdlPedido_Datos_Generales(); }
                 return result;
             }
             catch (System.Exception ex)

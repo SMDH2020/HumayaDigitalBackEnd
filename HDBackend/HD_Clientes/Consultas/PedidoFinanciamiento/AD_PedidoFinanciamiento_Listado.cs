@@ -2,16 +2,16 @@
 using HD.AccesoDatos;
 using HD.Clientes.Modelos;
 
-namespace HD.Clientes.Consultas.PedidoDatosGenerales
+namespace HD.Clientes.Consultas.PedidoFinanciamiento
 {
-    public class AD_PedidosGenerales_GetByFolio
+    public class AD_PedidoFinanciamiento_Listado
     {
         private string CadenaConexion;
-        public AD_PedidosGenerales_GetByFolio(string _cadenaconexion)
+        public AD_PedidoFinanciamiento_Listado(string _cadenaconexion)
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<mdlPedido_Datos_Generales> Get(string folio)
+        public async Task<IEnumerable<mdlPedido_Detalle_Financiamiento>> Get(string folio)
         {
             try
             {
@@ -20,9 +20,8 @@ namespace HD.Clientes.Consultas.PedidoDatosGenerales
                 {
                     folio
                 };
-                mdlPedido_Datos_Generales result = await factory.SQL.QueryFirstOrDefaultAsync<mdlPedido_Datos_Generales>("Credito.sp_Pedido_Datos_Solicitante", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdlPedido_Detalle_Financiamiento> result = await factory.SQL.QueryAsync<mdlPedido_Detalle_Financiamiento>("Credito.sp_Pedido_Detalle_Financiamiento_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
-                if(result == null) { result = new mdlPedido_Datos_Generales(); }
                 return result;
             }
             catch (System.Exception ex)
