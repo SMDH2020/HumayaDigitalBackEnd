@@ -42,7 +42,7 @@ namespace HD.Endpoints.Controllers.Credito
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_SolicitudCredito_Detalle datos = new AD_SolicitudCredito_Detalle(CadenaConexion);
-            var result = await datos.Detalle(folio);
+            var result = await datos.Detalle(folio,Sesion.usuario());
             return Ok(result);
 
         }
