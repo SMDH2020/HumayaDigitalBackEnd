@@ -14,7 +14,7 @@ namespace HD.Clientes.Modelos
         public short registro { get; set; }
 
         [Required(ErrorMessage = "La Fuente es un valor requerido")]
-        [RegularExpression(@"^[A-Za-z]+$", ErrorMessage = "El campo Fuente debe estar formado por letras")]
+        [RegularExpression(@"^[ A-Za-z0-9]+$", ErrorMessage = "El campo Fuente debe estar formado por letras")]
         [StringLength(50, MinimumLength = 1, ErrorMessage = "El campo Fuente admite como maximo 50 caracteres")]
         public string fuente { get; set; }
 

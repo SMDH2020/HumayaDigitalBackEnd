@@ -46,6 +46,17 @@ namespace HD.Endpoints.Controllers.Credito
             return Ok(result);
 
         }
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> enviar(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_SolcitudCredito_Enviar datos = new AD_SolcitudCredito_Enviar(CadenaConexion);
+            var result = await datos.Detalle(folio, Sesion.usuario());
+            string mensaje = "Solicitud enviada a revision";
+            return Ok(new { mensaje });
+
+        }
 
         [HttpGet]
         [Route("/api/[controller]/[action]/{id}")]

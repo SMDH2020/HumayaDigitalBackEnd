@@ -13,17 +13,17 @@ namespace HD.Clientes.Modelos
 
         [Required(ErrorMessage = "La Razon Social es un valor requerido")]
         [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "El campo Razon Social debe estar formado solo por caracteres alfabeticos")]
-        public string razon_social { get; set; }
+        public string? razon_social { get; set; }
 
         [Required(ErrorMessage = "El Tipo de Persona es un valor requerido")]
         [RegularExpression(@"^[MF]+$", ErrorMessage = "El campo Tipo Persona debe estar formado por las siguientes opciones [M][F]")]
         [StringLength(1, MinimumLength = 1, ErrorMessage = "El campo Tipo de Persona debe estar formado por 1 digitos")]
-        public string tipo_persona { get; set; }
+        public string? tipo_persona { get; set; }
 
         [Required(ErrorMessage = "El Medio de Contacto es un valor requerido")]
         [RegularExpression(@"^[LWHCOVSMN]+$", ErrorMessage = "El campo Medio de contacto debe estar formado por las siguientes opciones [LL][WH][CO][VS][MN]")]
         [StringLength(2, MinimumLength = 2, ErrorMessage = "El campo Medio de Contacto debe estar formado por 2 digitos")]
-        public string medio_contacto { get; set; }
+        public string? medio_contacto { get; set; }
 
         [Required(ErrorMessage = "El tiempo de agricultor es un valor requerido")]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "El campo Tiempo de Agricultor debe estar formado solo por numeros")]

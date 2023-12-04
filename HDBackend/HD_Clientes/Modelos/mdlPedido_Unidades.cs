@@ -14,7 +14,8 @@ namespace HD.Clientes.Modelos
         public int registro { get; set; }
 
         [Required(ErrorMessage = "El campo nuevo o usado es un valor requerido")]
-        public bool nuevo { get; set; }
+        [RegularExpression(@"^[MN|MU|PA|JW]+$", ErrorMessage = "El campo linea tiene valores no permitidos")]
+        public string? nuevo { get; set; }
 
         [Required(ErrorMessage = "El modelo es un valor requerido")]
         [RegularExpression(@"^[ a-zA-Z0-8]+$", ErrorMessage = "El campo modelo debe contener solo letras")]

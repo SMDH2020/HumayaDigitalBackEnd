@@ -8,27 +8,34 @@ namespace HD.Clientes.Modelos
         [Required(ErrorMessage = "El folio es un valor requerido")]
         [RegularExpression(@"^[SC0-9]+$", ErrorMessage = "El campo folio debe estar formado solo por caracteres numericos e iniciales SC")]
         [StringLength(13, MinimumLength = 13, ErrorMessage = "El campo folio debe estar formado por 13 digitos")]
-        public string folio { get; set; }
+        public string? folio { get; set; }
 
-        [Required(ErrorMessage = "El Registro es un valor requerido")]
-        [RegularExpression(@"^[0-9]|-1$", ErrorMessage = "El campo Registro debe estar formado solo por numeros")]
-        public short registro { get; set; }
-
-
-        public string concepto { get; set; }
-
-        [Required(ErrorMessage = "El Tipo es un valor requerido")]
-        [RegularExpression(@"^[AC|AF|PC|PF]+$", ErrorMessage = "El campo Tipo debe estar formado por las siguientes opciones [AC][AF][PC][PF]")]
-        [StringLength(2, MinimumLength = 2, ErrorMessage = "El campo Tipo debe estar formado por 2 digitos")]
-        public string tipo { get; set; }
-
-        [Required(ErrorMessage = "El Importe es un valor requerido")]
-        [RegularExpression(@"^[0-9]+$", ErrorMessage = "El campo Importe debe estar formado por numeros")]
-        public double importe { get; set; }
-
-        public bool estatus { get; set; }
-
-    
+        public double ac_cajabancos {get;set;}
+        public double ac_clientes {get;set;}
+        public double ac_deudoresdiversos {get;set;}
+        public double ac_ivaporrecuperar {get;set;}
+        public double ac_apoyodegobierno {get;set;}
+        public double ac_inventariodeinsumos {get;set;}
+        public double ac_inversionencultivos {get;set;}
+        public double ac_otrosactivos {get;set;}
+        public double af_terrenosenpropiedad {get;set;}
+        public double af_terrenosenejidal {get;set;}
+        public double af_construcciones {get;set;}
+        public double af_maquinariayequipo {get;set;}
+        public double af_equipodetransporte {get;set;}
+        public double af_mobiliarioyequipo {get;set;}
+        public double af_depresiaciones {get;set;}
+        public double af_otrosactivos { get;set;}
+        public double pc_creditosdirectos {get;set;}
+        public double pc_creditosdeavio {get;set;}
+        public double pc_proveedores {get;set;}
+        public double pc_acreedoresdiversos {get;set;}
+        public double pc_impuestosycuotas {get;set;}
+        public double pc_amortizaciones {get;set;}
+        public double pc_otrospasivos {get;set;}
+        public double pf_creditosrefaccionarios {get;set;}
+        public double pf_creditosdejdfm { get; set; }
+        public double pf_otros {get;set;}
         public string? usuario { get; set; }
     }
 }

@@ -27,7 +27,7 @@ namespace HD.Endpoints.Controllers.Credito
         }
 
         [HttpGet]
-        [Route("/api/[controller]/[action]/{folio}")]
+        [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> Listado(string folio)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
