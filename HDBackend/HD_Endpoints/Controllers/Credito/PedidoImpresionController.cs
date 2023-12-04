@@ -21,7 +21,6 @@ namespace HD.Endpoints.Controllers.Credito
             ADPedido_Impresion_View datos = new ADPedido_Impresion_View(CadenaConexion);
             var result = await datos.Get(folio);
             return Ok(result);
-
         }
     }
 }
