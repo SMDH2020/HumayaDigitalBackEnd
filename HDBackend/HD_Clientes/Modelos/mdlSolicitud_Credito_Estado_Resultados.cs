@@ -6,31 +6,27 @@ namespace HD.Clientes.Modelos
     {
 
         [Required(ErrorMessage = "El folio es un valor requerido")]
-        [RegularExpression(@"^[SC0-9]+$", ErrorMessage = "El campo folio debe estar formado solo por caracteres numericos e iniciales SC")]
+        [RegularExpression("^[SC0-9]+$", ErrorMessage = "El campo folio debe estar formado solo por caracteres numericos e iniciales SC")]
         [StringLength(13, MinimumLength = 13, ErrorMessage = "El campo folio debe estar formado por 13 digitos")]
-        public string folio { get; set; }
+        public string? folio { get; set; }
 
-        [Required(ErrorMessage = "El Registro es un valor requerido")]
-        [RegularExpression(@"^[0-9]|-1$", ErrorMessage = "El campo Registro debe estar formado solo por numeros")]
-        public short registro { get; set; }
-
-
-
-        public string concepto { get; set; }
-
-        [Required(ErrorMessage = "El Tipo es un valor requerido")]
-        [RegularExpression(@"^[INEG]+$", ErrorMessage = "El campo Tipo debe estar formado por las siguientes opciones [IN][EG]")]
-        [StringLength(2, MinimumLength = 2, ErrorMessage = "El campo Tipo debe estar formado por 2 digitos")]
-        public string tipo { get; set; }
-
-
-        [Required(ErrorMessage = "El Importe es un valor requerido")]
-        [RegularExpression(@"^[0-9]+$", ErrorMessage = "El campo Importe debe estar formado por numeros")]
-        public double importe { get; set; }
-
-        public bool estatus { get; set; }
-
-
+        public double in_agricolas { get; set; }
+        public double in_ganado { get; set; }
+        public double in_leche { get; set; }
+        public double in_maquilas { get; set; }
+        public double in_procampo { get; set; }
+        public double in_rentas { get; set; }
+        public double in_sueldos { get; set; }
+        public double in_otros { get; set; }
+        public double eg_agricolas { get; set; }
+        public double eg_ganaderos { get; set; }
+        public double eg_maquilas { get; set; }
+        public double eg_terrenos { get; set; }
+        public double eg_refaccionarios { get; set; }
+        public double eg_intereses { get; set; }
+        public double eg_impuestos { get; set; }
+        public double eg_familiares { get; set; }
+        public double eg_otros { get; set; }
         public string? usuario { get; set; } = "";
     }
 }
