@@ -11,12 +11,7 @@ namespace HD.Clientes.Modelos.Solicitud_Impresion
         public string? folio { get; set; }
         public string? rfc { get; set; }
         public string? tipopersona { get; set; }
-        public string?  curp { get; set; }
         public string? razonsocial { get; set; }
-        public string? sexo { get; set; }
-        public string? estadocivil { get; set; }
-        public string? regimenconyugal { get; set; }
-        public string? edad { get; set; }
         public string? tiempoagricultor { get; set; }
         public string? agrupacion { get; set; }
     }
