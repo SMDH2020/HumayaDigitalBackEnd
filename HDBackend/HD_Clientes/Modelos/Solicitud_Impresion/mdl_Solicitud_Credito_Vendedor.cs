@@ -5,5 +5,7 @@
         public int idvendedor { get; set; }
         public string? vendedor { get; set; }
 
+        public string? sucursal  { get; set; }
+
     }
 }

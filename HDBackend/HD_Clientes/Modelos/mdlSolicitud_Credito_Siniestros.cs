@@ -22,7 +22,7 @@ namespace HD.Clientes.Modelos
 
 
         [Required(ErrorMessage = "El Siniestro es un valor requerido")]
-        [RegularExpression(@"^[A-Za-z]+$", ErrorMessage = "El campo Siniestro debe estar formado por letras")]
+        [RegularExpression(@"^[ A-Za-z]+$", ErrorMessage = "El campo Siniestro debe estar formado por letras")]
         [StringLength(50, MinimumLength = 1, ErrorMessage = "El campo Siniestro admite como maximo 50 caracteres")]
         public string siniestro { get; set; }
 
