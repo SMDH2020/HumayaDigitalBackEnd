@@ -18,12 +18,12 @@ namespace HD.Clientes.Modelos
         public string? nuevo { get; set; }
 
         [Required(ErrorMessage = "El modelo es un valor requerido")]
-        [RegularExpression(@"^[ a-zA-Z0-8]+$", ErrorMessage = "El campo modelo debe contener solo letras")]
+        [RegularExpression(@"^[ a-zA-Z0-9]+$", ErrorMessage = "El campo modelo debe contener solo numeros y letras")]
         [StringLength(20, MinimumLength = 1, ErrorMessage = "El campo modelo admite como maximo 50 caracteres")]
         public string? modelo { get; set; }
 
         [Required(ErrorMessage = "La serie es un valor requerido")]
-        [RegularExpression(@"^[ a-zA-Z0-8]+$", ErrorMessage = "El campo serie debe contener solo letras")]
+        [RegularExpression(@"^[ a-zA-Z0-9]+$", ErrorMessage = "El campo serie debe contener solo numeros y letras")]
         [StringLength(30, MinimumLength = 1, ErrorMessage = "El campo serie admite como maximo 50 caracteres")]
         public string? serie { get; set; }
 
@@ -36,7 +36,7 @@ namespace HD.Clientes.Modelos
         public double precio { get; set; }
 
         [Required(ErrorMessage = "El descuento es un valor requerido")]
-        [Range(1, double.MaxValue, ErrorMessage = "El campo descuento esta fuera de rango")]
+        [Range(0, double.MaxValue, ErrorMessage = "El campo descuento esta fuera de rango")]
         public double descuento { get; set; }
 
         public string? usuario { get; set; }
