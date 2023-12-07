@@ -34,7 +34,7 @@ namespace HD.Clientes.Modelos
         public string? lugarentrega { get; set; }
 
         [Required(ErrorMessage = "Las condiciones de credito son un valor requerido")]
-        [RegularExpression(@"^[ A-Za-z0-9]+$", ErrorMessage = "El campo condiciones de crédito debe estar formado por letras y numeros")]
+        [RegularExpression(@"^[ .,$#%A-Za-z0-9]+$", ErrorMessage = "El campo condiciones de crédito debe estar formado por letras y numeros")]
         [StringLength(500, MinimumLength = 1, ErrorMessage = "El campo condiciones de crédito admite como maximo 500 caracteres")]
         public string? condicionescredito { get; set; }
 
