@@ -1,5 +1,6 @@
 ﻿using HD.Clientes.Consultas.SolicitudCredito;
 using HD.Clientes.Modelos;
+using HD.Clientes.Notificaciones;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
 
@@ -50,6 +51,8 @@ namespace HD.Endpoints.Controllers.Credito
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> enviar(string folio)
         {
+            NOT_Solicitud_Credito.Enviar("desarrolladorti@humaya.com.mx", "AMPLEACION DE LINEA REVOLVENTE","SC06122023001", "JORGE RODRIGUEZ GUEVARA", "JOSE RAMON ALVAREZ ARREOLA","MAQUINARIA NUEVA", "$800000");
+            return Ok();
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_SolcitudCredito_Enviar datos = new AD_SolcitudCredito_Enviar(CadenaConexion);
             var result = await datos.Detalle(folio, Sesion.usuario());
