@@ -10,13 +10,13 @@ namespace HD.Clientes.Modelos
         public string? folio { get; set; }
 
         [Required(ErrorMessage = "El condiciones es un valor requerido")]
-        [RegularExpression(@"^[ a-zA-Z0-9]+$", ErrorMessage = "El campo condiciones debe contener solo letras y numeros")]
-        [StringLength(200, MinimumLength = 1, ErrorMessage = "El campo condiciones admite como maximo 200 caracteres")]
+        [RegularExpression(@"^[. , # $ % ñ Ñ a-zA-Z0-9]+$", ErrorMessage = "El campo condiciones debe contener solo letras y numeros")]
+        [StringLength(500, MinimumLength = 1, ErrorMessage = "El campo condiciones admite como maximo 200 caracteres")]
         public string? condiciones { get; set; }
 
         [Required(ErrorMessage = "El observaciones es un valor requerido")]
-        [RegularExpression(@"^[ a-zA-Z0-9]+$", ErrorMessage = "El campo observaciones debe contener solo letras y numeros")]
-        [StringLength(200, MinimumLength = 1, ErrorMessage = "El campo observaciones admite como maximo 200 caracteres")]
+        [RegularExpression(@"^[. , $ # % ñ Ñ a-zA-Z0-9]+$", ErrorMessage = "El campo observaciones debe contener solo letras y numeros")]
+        [StringLength(500, MinimumLength = 1, ErrorMessage = "El campo observaciones admite como maximo 200 caracteres")]
         public string? observaciones { get; set; }
 
         [Required(ErrorMessage = "El deposito es un valor requerido")]
