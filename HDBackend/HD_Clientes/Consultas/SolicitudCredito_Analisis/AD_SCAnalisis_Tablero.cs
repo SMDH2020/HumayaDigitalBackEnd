@@ -11,7 +11,7 @@ namespace HD.Clientes.Consultas.SolicitudCredito_Analisis
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlSCAnalisis_Tablero>> Get(string usuario)
+        public async Task<mdlSCAnalisis_View> Get(string usuario)
         {
             try
             {
@@ -20,9 +20,17 @@ namespace HD.Clientes.Consultas.SolicitudCredito_Analisis
                 {
                     usuario
                 };
-                IEnumerable<mdlSCAnalisis_Tablero> result = await factory.SQL.QueryAsync<mdlSCAnalisis_Tablero>("Credito.sp_Solicitud_Credito_Tablas", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdlSCAnalisis_Tablero> tablero = await factory.SQL.QueryAsync<mdlSCAnalisis_Tablero>("Credito.sp_Solicitud_Credito_Tablas", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
-                return result;
+                List<mdlSCAnalisis_Vendedor>? vendedor = tablero.GroupBy(item => item.idvendedor).Select(element => new mdlSCAnalisis_Vendedor { idvendedor = element.First().idvendedor, vendedor = element.First().vendedor,idsucursal=element.First().idsucursal }).ToList();
+                List<mdlSCAnalisis_Sucursal> sucursal = tablero.GroupBy(item => item.idsucursal).Select(element => new mdlSCAnalisis_Sucursal { idsucursal = element.First().idsucursal, sucursal = element.First().sucursal }).ToList();
+
+                mdlSCAnalisis_View view = new mdlSCAnalisis_View();
+                view.tablero = tablero;
+                view.vendedor = vendedor;
+                view.sucursal = sucursal;
+
+                return view;
             }
             catch (System.Exception ex)
             {
