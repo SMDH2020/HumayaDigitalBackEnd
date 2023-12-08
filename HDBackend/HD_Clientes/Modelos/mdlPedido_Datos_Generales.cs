@@ -11,8 +11,8 @@ namespace HD.Clientes.Modelos
 
 
         [Required(ErrorMessage = "El numero de celular es un valor requerido")]
-        [RegularExpression(@"^[0-9]+$", ErrorMessage = "El campo folio debe estar formado solo por caracteres numericos")]
-        [StringLength(10, MinimumLength = 10, ErrorMessage = "El campo folio debe estar formado por 10 digitos")]
+        [RegularExpression(@"^[0-9]+$", ErrorMessage = "El campo celular debe estar formado solo por caracteres numericos")]
+        [StringLength(10, MinimumLength = 10, ErrorMessage = "El campo celular debe estar formado por 10 digitos")]
         public string? celular { get; set; }
 
         [Required(ErrorMessage = "El correo electronico es un valor requerido")]
@@ -25,7 +25,7 @@ namespace HD.Clientes.Modelos
 
         [Required(ErrorMessage = "El domicilio es un valor requerido")]
         [RegularExpression(@"^[ A-Za-z0-9]+$", ErrorMessage = "El campo domicilio debe estar formado por letras y numeros")]
-        [StringLength(100, MinimumLength = 1, ErrorMessage = "El campo solicitante admite como maximo 100 caracteres")]
+        [StringLength(100, MinimumLength = 1, ErrorMessage = "El campo domicilio admite como maximo 100 caracteres")]
         public string? domicilio { get; set; }
 
         [Required(ErrorMessage = "El lugar de entrega es un valor requerido")]
