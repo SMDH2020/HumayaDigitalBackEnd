@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
 using HD.Clientes.Modelos.SC_Analisis;
+using HD.Clientes.Modelos.SC_Analisis.Modal;
 
 namespace HD.Clientes.Consultas.AnalisisCredito
 {
@@ -11,7 +12,7 @@ namespace HD.Clientes.Consultas.AnalisisCredito
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<object> BuscarFolio(mdlSCAnalisis_Comentarios comentario)
+        public async Task<mdlSCAnalisis_Pedido_Estado> Guardar(mdlSCAnalisis_Comentarios comentario)
         {
             try
             {
@@ -21,12 +22,13 @@ namespace HD.Clientes.Consultas.AnalisisCredito
                     folio = comentario.folio,
                     idproceso=comentario.idproceso,
                     consecutivo=comentario.consecutivo,
-                    comentario=comentario.comentarios,
+                    comentarios=comentario.comentarios,
+                    estatus=comentario.estatus,
                     usuario = comentario.usuario
                 };
-                 await factory.SQL.QueryAsync("Credito.Solicitud_Credito_Comentarios_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlSCAnalisis_Pedido_Estado result=await factory.SQL.QueryFirstOrDefaultAsync<mdlSCAnalisis_Pedido_Estado>("Credito.SP_Solicitud_Credito_Comentarios_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
-                return new { mensaje="Comentario creado con éxito"};
+                return result;
             }
             catch (System.Exception ex)
             {
