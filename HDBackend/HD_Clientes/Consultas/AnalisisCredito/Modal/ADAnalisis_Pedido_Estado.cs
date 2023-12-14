@@ -1,17 +1,17 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
-using HD.Clientes.Modelos;
+using HD.Clientes.Modelos.SC_Analisis.Modal;
 
-namespace HD.Clientes.Consultas.SolicitudCredito
+namespace HD.Clientes.Consultas.AnalisisCredito.Modal
 {
-    public class AD_SolcitudCredito_Enviar
+    public class ADAnalisis_Pedido_Estado
     {
         private string CadenaConexion;
-        public AD_SolcitudCredito_Enviar(string _cadenaconexion)
+        public ADAnalisis_Pedido_Estado(string _cadenaconexion)
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<mdlSolicitudCredito_Enviar> Detalle(string folio, string usuario)
+        public async Task<mdlSCAnalisis_Pedido_Estado> Get(string folio,string usuario)
         {
             try
             {
@@ -21,7 +21,7 @@ namespace HD.Clientes.Consultas.SolicitudCredito
                     folio,
                     usuario
                 };
-                var result = await factory.SQL.QueryFirstOrDefaultAsync<mdlSolicitudCredito_Enviar>("Credito.sp_Solicitud_Credito_Enviar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlSCAnalisis_Pedido_Estado result = await factory.SQL.QueryFirstOrDefaultAsync<mdlSCAnalisis_Pedido_Estado>("Credito.sp_Analisis_Pedido_Estado", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
