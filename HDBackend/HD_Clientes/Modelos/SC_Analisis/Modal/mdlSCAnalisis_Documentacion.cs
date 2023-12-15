@@ -4,5 +4,8 @@
     {
         public int iddocumento { get; set; }
         public string? documento { get; set; }
+        public bool habilitar { get; set; }
+        public string? comentarios { get; set; }
+        public string? icono { get; set; }
     }
 }
