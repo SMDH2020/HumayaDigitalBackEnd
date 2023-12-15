@@ -7,5 +7,6 @@
         public string? responsablecredito { get; set; }
         public string? tiempoestimado { get; set; }
         public string? tiempotranscurrido { get; set; }
+        public string? pantallacompleta { get; set; }
     }
 }
