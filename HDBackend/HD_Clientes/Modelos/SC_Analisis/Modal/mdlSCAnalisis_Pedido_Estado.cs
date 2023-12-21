@@ -8,5 +8,6 @@
         public string? tiempoestimado { get; set; }
         public string? tiempotranscurrido { get; set; }
         public string? icono { get; set; }
+        public  bool creador { get; set; }
     }
 }
