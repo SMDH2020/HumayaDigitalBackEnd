@@ -7,5 +7,6 @@
         public bool habilitar { get; set; }
         public string? comentarios { get; set; }
         public string? icono { get; set; }
+        public bool tiene_documentacion { get; set; }
     }
 }
