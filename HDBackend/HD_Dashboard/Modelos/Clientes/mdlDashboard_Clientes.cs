@@ -1,7 +1,4 @@
-﻿
-
-
-namespace HD_Dashboard.Modelos.Clientes
+﻿namespace HD_Dashboard.Modelos.Clientes
 {
     public class mdlDashboard_Clientes
     {
@@ -9,7 +6,7 @@ namespace HD_Dashboard.Modelos.Clientes
         public IEnumerable<mdlDashClientes_Documentos>? documentos { get; set; }
         public IEnumerable<mdlDashClientes_Linea>? linea { get; set; }
         public mdlDashClientes_LineaTotales? totalcredito { get; set; }
-
-        public IEnumerable<mdlDashClientes_Inventario>? inventario { get; set; }
+        public IEnumerable<mdlEquipoFacturado>? equipofacturado { get; set; }
+        public IEnumerable<mdlDashCultivos>? cultivos { get; set; }
     }
 }
