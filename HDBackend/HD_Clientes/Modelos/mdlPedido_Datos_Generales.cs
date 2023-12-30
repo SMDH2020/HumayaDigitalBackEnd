@@ -24,12 +24,12 @@ namespace HD.Clientes.Modelos
         public string dfechaentrega => fechaentrega.ToString("yyyy-MM-dd");
 
         [Required(ErrorMessage = "El domicilio es un valor requerido")]
-        [RegularExpression(@"^[ A-Za-z0-9]+$", ErrorMessage = "El campo domicilio debe estar formado por letras y numeros")]
+        [RegularExpression(@"^[ , . #  A-Za-z0-9]+$", ErrorMessage = "El campo domicilio debe estar formado por letras y numeros")]
         [StringLength(100, MinimumLength = 1, ErrorMessage = "El campo domicilio admite como maximo 100 caracteres")]
         public string? domicilio { get; set; }
 
         [Required(ErrorMessage = "El lugar de entrega es un valor requerido")]
-        [RegularExpression(@"^[ A-Za-z0-9]+$", ErrorMessage = "El campo lugar de entrega debe estar formado por letras y numeros")]
+        [RegularExpression(@"^[  , . #  A-Za-z0-9]+$", ErrorMessage = "El campo lugar de entrega debe estar formado por letras y numeros")]
         [StringLength(100, MinimumLength = 1, ErrorMessage = "El campo lugar de entrega admite como maximo 100 caracteres")]
         public string? lugarentrega { get; set; }
 

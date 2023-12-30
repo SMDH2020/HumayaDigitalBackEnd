@@ -1,5 +1,4 @@
-﻿using HD.Clientes.Consultas.SolicitudCredito;
-using HD.Clientes.Consultas.SolicitudCreditoDocumento;
+﻿using HD.Clientes.Consultas.SolicitudCreditoDocumento;
 using HD.Clientes.Modelos;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +24,7 @@ namespace HD.Endpoints.Controllers.Credito
             var result = await datos.Guardar(mdl);
             return Ok(result);
 
-        } 
+        }
         [HttpGet]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> OBtenerListado(string folio)
@@ -38,11 +37,11 @@ namespace HD.Endpoints.Controllers.Credito
         }
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ObtenerDocumento(string folio,int iddocumento)
+        public async Task<ActionResult> ObtenerDocumento(string folio, int iddocumento)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             ADSolicitudCredito_Documentacion_ObtenerDocumento datos = new ADSolicitudCredito_Documentacion_ObtenerDocumento(CadenaConexion);
-            var result = await datos.Obtener(folio,iddocumento);
+            var result = await datos.Obtener(folio, iddocumento);
             if (result is null)
                 return BadRequest("Documento no encontrado");
             return Ok(result);
