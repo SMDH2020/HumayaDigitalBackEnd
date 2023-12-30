@@ -2,8 +2,10 @@ using HD.Endpoints.Middleware;
 using HD.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using QuestPDF.Infrastructure;
 using System.Text;
 
+QuestPDF.Settings.License = LicenseType.Community;
 
 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
