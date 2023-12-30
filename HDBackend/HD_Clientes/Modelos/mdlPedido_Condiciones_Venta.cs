@@ -34,6 +34,8 @@ namespace HD.Clientes.Modelos
         [Required(ErrorMessage = "El plazo es un valor requerido")]
         public string? plazo { get; set; }
 
+        public int tiempo_plazo { get; set; }
+
         [Required(ErrorMessage = "El campo mhusa o jdf es un valor requerido")]
         public string? mhusajdf { get; set; }
 

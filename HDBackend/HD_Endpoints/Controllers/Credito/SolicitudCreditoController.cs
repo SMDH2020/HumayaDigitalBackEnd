@@ -1,5 +1,7 @@
 ﻿using HD.Clientes.Consultas.SolicitudCredito;
 using HD.Clientes.Modelos;
+using HD.Clientes.Notificaciones;
+using HD.Notifications.Analisis;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
 
@@ -54,6 +56,11 @@ namespace HD.Endpoints.Controllers.Credito
             AD_SolcitudCredito_Enviar datos = new AD_SolcitudCredito_Enviar(CadenaConexion);
             var result = await datos.Detalle(folio, Sesion.usuario());
             string mensaje = "Solicitud enviada a revision";
+
+            if (result != null)
+            {
+                await NSolicitud_Enviar.Enviar(result);
+            }
             return Ok(new { mensaje });
 
         }

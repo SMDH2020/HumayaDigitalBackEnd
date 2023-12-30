@@ -18,7 +18,7 @@ namespace HD.Clientes.Modelos
         public string? dvencimiento => vencimiento.ToString("yyyy-MM-dd");
 
         [Required(ErrorMessage = "El campo dias es un valor requerido")]
-        [Range(0, 1000, ErrorMessage = "El campo dias esta fuera de rango")]
+        [Range(0, 2200, ErrorMessage = "El campo dias esta fuera de rango")]
         public short dias { get; set; }
 
         [Required(ErrorMessage = "El campo taza es un valor requerido")]
@@ -37,5 +37,6 @@ namespace HD.Clientes.Modelos
         [Range(1, double.MaxValue, ErrorMessage = "El campo total a pagar esta fuera de rango")]
         public double totalpagar { get; set; }
         public string? usuario { get; set; }
+        public double importe_solicitado { get; set; }
     }
 }

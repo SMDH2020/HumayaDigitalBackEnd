@@ -22,6 +22,7 @@ namespace HD.Clientes.Consultas.PedidoUnidades
                     registro = mdl.registro,
                     nuevo = mdl.nuevo,
                     modelo = mdl.modelo,
+                    descripcion=mdl.descripcion,
                     serie = mdl.serie,
                     cantidad = mdl.cantidad,
                     precio = mdl.precio,
