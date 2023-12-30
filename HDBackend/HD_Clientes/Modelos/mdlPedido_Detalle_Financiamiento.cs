@@ -37,5 +37,6 @@ namespace HD.Clientes.Modelos
         [Range(1, double.MaxValue, ErrorMessage = "El campo total a pagar esta fuera de rango")]
         public double totalpagar { get; set; }
         public string? usuario { get; set; }
+        public double importe_solicitado { get; set; }
     }
 }

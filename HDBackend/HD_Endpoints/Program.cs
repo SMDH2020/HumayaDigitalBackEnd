@@ -52,9 +52,19 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
     app.UseSwaggerUI();
 }
 app.UseHttpsRedirection();
-app.MapControllers();
+app.UseRouting();
+//app.MapControllers();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiddleware<ManejadorMiddlewares>();
 app.UseCors("corsApp");
+
+app.UseDefaultFiles();
+app.UseStaticFiles();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
+    endpoints.MapFallbackToController("Index", "Home");
+});
 app.Run();

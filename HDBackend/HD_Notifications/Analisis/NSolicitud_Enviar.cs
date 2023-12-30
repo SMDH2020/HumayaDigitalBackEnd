@@ -25,7 +25,7 @@ namespace HD.Notifications.Analisis
                 client.Credentials = new System.Net.NetworkCredential(_correo, password);
                 objeto_mail.From = new MailAddress(_correo);
                 objeto_mail.To.Add(new MailAddress("Guadalupeolivas@humaya.com.mx"));
-                objeto_mail.To.Add(new MailAddress("davidtamayos@humaya.com.mx"));
+                objeto_mail.To.Add(new MailAddress("desarrolladorti@humaya.com.mx"));
                 objeto_mail.Subject = "Nueva solicitud de credito";
                 objeto_mail.IsBodyHtml = true;
                 objeto_mail.Body = body(datos_correo);
