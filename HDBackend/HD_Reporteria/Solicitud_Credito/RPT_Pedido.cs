@@ -15,23 +15,36 @@ namespace HD_Reporteria.Solicitud_Credito
                 {
                     document.Page(page =>
                     {
-                        page.MarginTop(50);
 
                         //string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
                         //string imagePath = Path.Combine(desktopPath, "proyecto C#", "Logo.jpg");
 
 
-                        page.Header().AlignCenter().Background("#477c2c").Height(57).Row(row =>
+                        page.Header().Height(120).Row(row =>
                         {
-                            //var rutaImagen = Path.Combine("C:\\Nube\\HumayaDigital\\HumayaDigitalBackEnd\\HDBackend\\HD_Reporteria\\Imagenes\\Logo.jpg");
-                            //byte[] imageData = System.IO.File.ReadAllBytes(rutaImagen);
-                            row.ConstantItem(140).Border(1).Placeholder();
-                            //row.ConstantItem(140).Image(imageData);
 
-                            row.RelativeItem().Padding(10).PaddingLeft(30).Text("PEDIDO DE MAQUINARIA").FontColor("#fff").FontSize(20).Bold().FontFamily("roboto");
+                            //row.ConstantItem(140).Border(1).Placeholder();
+                            row.RelativeItem().PaddingTop(35).Height(50).Background("#477c2c").Row(row2 =>
+                            {
+
+                            });
+
+                            row.ConstantColumn(0).Row(row1 =>
+                            {
+                                var rutaImagen = Path.Combine("C:\\Nube\\HumayaDigital\\HumayaDigitalBackEnd\\HDBackend\\HD_Reporteria\\Imagenes\\Logo.jpg");
+                                byte[] imageData = System.IO.File.ReadAllBytes(rutaImagen);
+                                row.ConstantItem(120).Image(imageData);
+
+                                row.ConstantColumn(450).PaddingTop(35).Height(50).Background("#477c2c").Row(row2 =>
+                                {
+                                    row2.RelativeItem().Padding(10).PaddingLeft(30).Text("PEDIDO DE MAQUINARIA").FontColor("#fff").FontSize(20).Bold().FontFamily("roboto");
+                                });
+                            });
+
+
                         });
 
-                        page.Content().PaddingVertical(10).PaddingLeft(30).PaddingRight(30).Column(col1 =>
+                        page.Content().PaddingLeft(30).PaddingRight(30).Column(col1 =>
                         {
 
 
