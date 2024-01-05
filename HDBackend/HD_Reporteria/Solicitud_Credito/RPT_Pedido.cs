@@ -120,7 +120,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().AlignCenter().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.solicitante?.solicitante).FontSize(10).FontFamily("roboto");
+                                        txt2.Span(mdl.solicitante?.solicitante).FontSize(8).FontFamily("roboto");
                                     });
                                 });
 
@@ -136,7 +136,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().AlignCenter().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.solicitante?.celular).FontSize(10).FontFamily("roboto");
+                                        txt2.Span(mdl.solicitante?.celular).FontSize(8).FontFamily("roboto");
                                     });
                                 });
 
@@ -157,7 +157,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().AlignCenter().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.solicitante?.solicitante).FontSize(10).FontFamily("roboto");
+                                        txt2.Span(mdl.solicitante?.solicitante).FontSize(8).FontFamily("roboto");
                                     });
                                 });
 
@@ -173,7 +173,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().AlignCenter().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span("6673995961").FontSize(10).FontFamily("roboto");
+                                        txt2.Span(mdl.solicitante.celular).FontSize(8).FontFamily("roboto");
                                     });
                                 });
 
@@ -193,7 +193,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().AlignCenter().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.solicitante?.lugarentrega).FontSize(10).FontFamily("roboto");
+                                        txt2.Span(mdl.solicitante?.lugarentrega).FontSize(8).FontFamily("roboto");
                                     });
                                 });
 
@@ -209,7 +209,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().AlignCenter().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.solicitante?.fechaentrega).FontSize(10).FontFamily("roboto");
+                                        txt2.Span(mdl.solicitante?.fechaentrega).FontSize(8).FontFamily("roboto");
                                     });
                                 });
 
@@ -230,7 +230,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().AlignCenter().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.solicitante?.condicionescredito).FontSize(10).FontFamily("roboto");
+                                        txt2.Span(mdl.solicitante?.condicionescredito).FontSize(8).FontFamily("roboto");
                                     });
                                 });
 
@@ -251,7 +251,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().AlignCenter().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.solicitante?.solicitante).FontSize(10).FontFamily("roboto");
+                                        txt2.Span(mdl.solicitante?.solicitante).FontSize(8).FontFamily("roboto");
                                     });
                                 });
 
@@ -272,7 +272,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().AlignCenter().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.solicitante?.rfc).FontSize(10).FontFamily("roboto");
+                                        txt2.Span(mdl.solicitante?.rfc).FontSize(8).FontFamily("roboto");
                                     });
                                 });
 
@@ -293,7 +293,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().AlignCenter().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.solicitante?.domicilio).FontSize(10).FontFamily("roboto");
+                                        txt2.Span(mdl.solicitante?.domicilio).FontSize(8).FontFamily("roboto");
                                     });
                                 });
 
@@ -313,7 +313,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().AlignCenter().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.solicitante?.metodopago).FontSize(10).FontFamily("roboto");
+                                        txt2.Span(mdl.solicitante?.metodopago).FontSize(8).FontFamily("roboto");
                                     });
                                 });
 
@@ -334,7 +334,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().AlignCenter().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.solicitante?.formapago).FontSize(10).FontFamily("roboto");
+                                        txt2.Span(mdl.solicitante?.formapago).FontSize(8).FontFamily("roboto");
                                     });
                                 });
 
@@ -354,7 +354,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().AlignCenter().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.solicitante?.usocfdi).FontSize(10).FontFamily("roboto");
+                                        txt2.Span(mdl.solicitante?.usocfdi).FontSize(8).FontFamily("roboto");
                                     });
                                 });
 
@@ -372,9 +372,9 @@ namespace HD_Reporteria.Solicitud_Credito
 
                                 row1.ConstantItem(435).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
                                 {
-                                    txt1.Item().AlignCenter().Height(15).Text(txt2 =>
+                                    txt1.Item().AlignCenter().PaddingTop(2).Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.solicitante?.tiporelacion).FontSize(10).FontFamily("roboto");
+                                        txt2.Span(mdl.solicitante?.tiporelacion).FontSize(8).FontFamily("roboto");
                                     });
                                 });
 
@@ -394,7 +394,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().AlignCenter().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.solicitante?.anticipos).FontSize(10).FontFamily("roboto");
+                                        txt2.Span(mdl.solicitante?.anticipos).FontSize(8).FontFamily("roboto");
                                     });
                                 });
 
@@ -717,7 +717,7 @@ namespace HD_Reporteria.Solicitud_Credito
                             col1.Item().Text("Se aceptan condiciones de operacion anteriormente descritas e incluye todo lo acordado en la negociacion, firma de comun acuerdo.").FontSize(8).FontFamily("roboto");
                         });
 
-                        page.Footer().Height(60).PaddingLeft(30).PaddingRight(30).Column(col1 =>
+                        page.Footer().Height(80).PaddingLeft(30).PaddingRight(30).Column(col1 =>
                         {
                             col1.Item().PaddingTop(00).Row(row1 =>
                             {
@@ -754,7 +754,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().Height(15).AlignCenter().Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.firmas?.firma_Cliente).FontSize(10).FontFamily("roboto");
+                                        txt2.Span(mdl.firmas?.firma_Cliente).FontSize(10).Bold().FontFamily("roboto");
                                         //txt2.Span("NAVOLATO").FontSize(10);
                                     });
                                 });
