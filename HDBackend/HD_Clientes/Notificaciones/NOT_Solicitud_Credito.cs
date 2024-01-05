@@ -40,7 +40,7 @@ namespace HD.Clientes.Notificaciones
 
                 objeto_mail.To.Add(new MailAddress(Correo));
 
-                objeto_mail.Subject = "Notificación de Incidencia";
+                objeto_mail.Subject = "Nueva solicitud de credito";
 
                 objeto_mail.IsBodyHtml = true;
 
@@ -91,15 +91,15 @@ namespace HD.Clientes.Notificaciones
 
                "<h1 style=\"font-size:16;\"><Font Color='#235B34'>" + _tipoSolicitud + "</Font></h1></P>\n" +
 
-              "<table style=\"border: 1px solid green;border-radius:5px; padding: 10px; spacing: 0;'\">\n" +
+              "<table style=\"border: 1px solid green;border-radius:5px; padding: 10px; spacing: 0;display:flex;align-items:center;justify-content:center;margin-left:80px;margin-right:80px;'\">\n" +
 
                " <tr\">\n" +
 
-               "   <td width= 200px>FOLIO:\n" +
+               "   <td style=\"text-align:center; width:50%;\">FOLIO:\n" +
 
                "   </td>\n" +
 
-               "   <td style=\"text-align: left;\">" + _folio + "\n" +
+               "   <td style=\"text-align: left; width:50%;\">" + _folio + "\n" +
 
                "   </td>\n " +
 
@@ -107,11 +107,11 @@ namespace HD.Clientes.Notificaciones
 
                " <tr>\n" +
 
-               "   <td width= 200px>VENDEDOR:\n" +
+               "   <td style=\"text-align:center; width:50%;\">VENDEDOR:\n" +
 
                "   </td>\n" +
 
-               "   <td style=\"text-align: left;\">" + _vendedor + "\n" +
+               "   <td style=\"text-align: left; width:50%\">" + _vendedor + "\n" +
 
                "   </td>\n" +
 
