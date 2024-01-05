@@ -43,7 +43,7 @@ namespace HD.Endpoints.Controllers.Credito
             ADSolicitudCredito_Documentacion_ObtenerDocumento datos = new ADSolicitudCredito_Documentacion_ObtenerDocumento(CadenaConexion);
             var result = await datos.Obtener(folio, iddocumento);
             if (result is null)
-                return BadRequest("Documento no encontrado");
+                return BadRequest(new {mensaje= "Documento no encontrado. Favor de comunicarse con el administrador del sistema" });
             return Ok(result);
 
         }
