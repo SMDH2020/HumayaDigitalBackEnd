@@ -12,7 +12,7 @@ namespace HD.Clientes.Modelos
         public string? rfc { get; set; } = "";
 
         [Required(ErrorMessage = "La Razon Social es un valor requerido")]
-        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "El campo Razon Social debe estar formado solo por caracteres alfabeticos")]
+        [RegularExpression(@"^[ a-zA-Z]+$", ErrorMessage = "El campo Razon Social debe estar formado solo por caracteres alfabeticos")]
         public string? razon_social { get; set; }
 
         [Required(ErrorMessage = "El Tipo de Persona es un valor requerido")]
@@ -37,7 +37,7 @@ namespace HD.Clientes.Modelos
         [Required(ErrorMessage = "El Regimen Fiscal es un valor requerido")]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "El campo Regimen Fiscal debe estar formado solo por numeros")]
         [StringLength(3, MinimumLength = 3, ErrorMessage = "El campo Regimen Fiscal debe estar formado por 3 digitos")]
-        public string regimen_fiscal { get; set; }
+        public string? regimen_fiscal { get; set; }
 
         [Required(ErrorMessage = "El Tipo de Venta es un valor requerido")]
         [RegularExpression(@"^[COR]+$", ErrorMessage = "El campo Tipo de Venta debe estar formado por las siguientes opciones [CO][CR]")]
