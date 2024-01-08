@@ -31,7 +31,7 @@ namespace HD_Cobranza.Capturas
                 factory.SQL.Close();
                 //List<mdlCob_TotalCartera_Detalle> listado = result.ToList();
                 List<mdlCob_TotalCartera_Detalle> listado = result.ToList();
-
+                if(result.Count()>0)
                 listado.Add(new mdlCob_TotalCartera_Detalle()
                 {
                     idsucursal = result.First().idsucursal,
@@ -57,7 +57,7 @@ namespace HD_Cobranza.Capturas
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
-        public async Task<IEnumerable<mdlCob_TotalCartera_Detalle>> ListadoPorCliente(int cliente)
+        public async Task<IEnumerable<mdlResumenCartera_Clientes>> ListadoPorCliente(int cliente)
         {
             try
             {
@@ -67,9 +67,9 @@ namespace HD_Cobranza.Capturas
                     cliente,
                     usuario = 1
                 };
-                var result = await factory.SQL.QueryAsync<mdlCob_TotalCartera_Detalle>("Equip.Credito.sp_Obtener_TotalCartera_Detalle_Cliente", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryAsync<mdlResumenCartera_Clientes>("Equip.Credito.sp_Obtener_TotalCartera_Detalle_Cliente", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
-                List<mdlCob_TotalCartera_Detalle> listado = result.ToList();
+                List<mdlResumenCartera_Clientes> listado = result.ToList();
                 return listado;
             }
             catch (System.Exception ex)
