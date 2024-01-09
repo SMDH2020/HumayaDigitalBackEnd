@@ -10,7 +10,7 @@ namespace HD.Clientes.Modelos
         public int idcliente { get; set; }
 
         [Required(ErrorMessage = "El Registro es un valor requerido")]
-        [RegularExpression(@"^[0-9]+$", ErrorMessage = "El campo registro debe estar formado solo por numeros")]
+        [RegularExpression(@"^-?[0-9]+$", ErrorMessage = "El campo registro debe estar formado solo por números, pudiendo ser negativo")]
         public int registro { get; set; }
 
 
