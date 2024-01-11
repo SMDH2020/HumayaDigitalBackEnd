@@ -22,7 +22,7 @@ namespace HD.Clientes.Modelos
         public string? terreno{ get; set; }
 
         [Required(ErrorMessage = "Las Hectareas es un valor requerido")]
-        [RegularExpression(@"^[0-9]+$", ErrorMessage = "El campo Hectareas debe estar formado solo por numeros")]
+        [RegularExpression(@"^[0-9.]+$", ErrorMessage = "El campo Hectareas debe estar formado solo por numeros")]
         public double hectareas { get; set; }
 
 
@@ -51,12 +51,12 @@ namespace HD.Clientes.Modelos
 
 
         [Required(ErrorMessage = "El Rendimiento es un valor requerido")]
-        [RegularExpression(@"^[0-9]+$", ErrorMessage = "El campo Rendimiento debe estar formado solo por numeros")]
+        [RegularExpression(@"^[0-9.]+$", ErrorMessage = "El campo Rendimiento debe estar formado solo por numeros")]
         public double rendimiento { get; set; }
 
 
         [Required(ErrorMessage = "El Precio es un valor requerido")]
-        [RegularExpression(@"^[0-9]+$", ErrorMessage = "El campo Precio debe estar formado solo por numeros")]
+        [RegularExpression(@"^[0-9.]+$", ErrorMessage = "El campo Precio debe estar formado solo por numeros")]
         public double precio { get; set; }
 
 
