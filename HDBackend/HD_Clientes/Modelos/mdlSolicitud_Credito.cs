@@ -23,7 +23,7 @@ namespace HD.Clientes.Modelos
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "El campo Importe debe estar formado por numeros")]
         public double importe { get; set; }
 
-        public char estatus { get; set; }
+        public string? estatus { get; set; }
 
         public string? usuario { get; set; } = "";
     }
