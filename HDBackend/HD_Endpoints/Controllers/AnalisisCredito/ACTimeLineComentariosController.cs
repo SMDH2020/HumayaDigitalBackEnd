@@ -22,7 +22,10 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             ADAnalisis_Comentarios datos = new ADAnalisis_Comentarios(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.Guardar(mdl);
-
+            if(result is null)
+            {
+                return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
+            }
             ADAnalisisNotificacion notificacion = new ADAnalisisNotificacion(CadenaConexion);
             var body = await notificacion.GetBody(mdl);
             await NotificacionComentarios.Enviar(body);

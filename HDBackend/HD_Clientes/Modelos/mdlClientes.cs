@@ -7,8 +7,9 @@ namespace HD.Clientes.Modelos
         public int idcliente { get; set; }
 
         [Required(ErrorMessage = "El RFC es un valor requerido")]
+        [StringLength(13, MinimumLength = 12, ErrorMessage = "El campo RFC debe estar formado por 12 digitos personas morales y 13 personas fisicas")]
         [RegularExpression(@"^[A-Z0-9Ñ]+$", ErrorMessage = "El campo RFC debe estar formado solo por caracteres alfanuméricos")]
-        [StringLength(13, MinimumLength = 13, ErrorMessage = "El campo RFC debe estar formado por 13 digitos")]
+
         public string? rfc { get; set; } = "";
 
         [Required(ErrorMessage = "La Razon Social es un valor requerido")]
