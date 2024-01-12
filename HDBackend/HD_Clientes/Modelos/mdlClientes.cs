@@ -8,7 +8,7 @@ namespace HD.Clientes.Modelos
 
         [Required(ErrorMessage = "El RFC es un valor requerido")]
         [RegularExpression(@"^[A-Z0-9]+$", ErrorMessage = "El campo RFC debe estar formado solo por caracteres alfanuméricos")]
-        [StringLength(13, MinimumLength = 13, ErrorMessage = "El campo RFC debe estar formado por 13 digitos")]
+        [StringLength(13, MinimumLength = 12, ErrorMessage = "El campo RFC debe estar formado por 12 digitos personas morales y 13 personas fisicas")]
         public string? rfc { get; set; } = "";
 
         [Required(ErrorMessage = "La Razon Social es un valor requerido")]
