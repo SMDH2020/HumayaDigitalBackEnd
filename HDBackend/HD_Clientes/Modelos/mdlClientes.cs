@@ -7,12 +7,12 @@ namespace HD.Clientes.Modelos
         public int idcliente { get; set; }
 
         [Required(ErrorMessage = "El RFC es un valor requerido")]
-        [RegularExpression(@"^[A-Z0-9]+$", ErrorMessage = "El campo RFC debe estar formado solo por caracteres alfanuméricos")]
+        [RegularExpression(@"^[A-Z0-9Ñ]+$", ErrorMessage = "El campo RFC debe estar formado solo por caracteres alfanuméricos")]
         [StringLength(13, MinimumLength = 13, ErrorMessage = "El campo RFC debe estar formado por 13 digitos")]
         public string? rfc { get; set; } = "";
 
         [Required(ErrorMessage = "La Razon Social es un valor requerido")]
-        [RegularExpression(@"^[ a-zA-Z]+$", ErrorMessage = "El campo Razon Social debe estar formado solo por caracteres alfabeticos")]
+        [RegularExpression(@"^[ a-zA-ZÑ]+$", ErrorMessage = "El campo Razon Social debe estar formado solo por caracteres alfabeticos")]
         public string? razon_social { get; set; }
 
         [Required(ErrorMessage = "El Tipo de Persona es un valor requerido")]
