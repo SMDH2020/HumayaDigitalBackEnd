@@ -59,7 +59,7 @@ namespace HD.Clientes.Modelos
         public double rendimiento { get; set; }
 
         [Required(ErrorMessage = "El Precio es un valor requerido")]
-        [RegularExpression(@"^[0-9]+$", ErrorMessage = "El campo Precio debe estar formado solo por numeros")]
+        [RegularExpression(@"^[0-9.]+$", ErrorMessage = "El campo Precio debe estar formado solo por numeros")]
         public double precio { get; set; }
 
         [Required(ErrorMessage = "El mes de cosecha es un valor requerido")]
