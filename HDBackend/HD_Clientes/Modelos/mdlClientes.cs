@@ -13,7 +13,7 @@ namespace HD.Clientes.Modelos
         public string? rfc { get; set; } = "";
 
         [Required(ErrorMessage = "La Razon Social es un valor requerido")]
-        [RegularExpression(@"^[ a-zA-ZÑ]+$", ErrorMessage = "El campo Razon Social debe estar formado solo por caracteres alfabeticos")]
+        [RegularExpression(@"^[0-9 a-zA-ZÑ]+$", ErrorMessage = "El campo Razon Social debe estar formado solo por caracteres alfabeticos")]
         public string? razon_social { get; set; }
 
         [Required(ErrorMessage = "El Tipo de Persona es un valor requerido")]
