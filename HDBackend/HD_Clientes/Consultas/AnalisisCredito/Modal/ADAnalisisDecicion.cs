@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
+using HD.Clientes.Modelos.SC_Analisis.JDF;
 using HD.Clientes.Modelos.SC_Analisis.Modal;
 
 namespace HD.Clientes.Consultas.AnalisisCredito.Modal
@@ -24,6 +25,26 @@ namespace HD.Clientes.Consultas.AnalisisCredito.Modal
                     responsable = mdl.responsable
                 };
                 mdlSCAnalisis_Decicion result = await factory.SQL.QueryFirstOrDefaultAsync<mdlSCAnalisis_Decicion>("Credito.sp_Analisis_Decicion", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+        public async Task<mdlSCAnalisis_Decicion> GetUndocumento(mdlJDFAnalisis_Un_Documento_Decicion mdl)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    folio = mdl.folio,
+                    idproceso = mdl.idproceso,
+                    usuario = mdl.usuario
+                };
+                mdlSCAnalisis_Decicion result = await factory.SQL.QueryFirstOrDefaultAsync<mdlSCAnalisis_Decicion>("Credito.sp_Analisis_JDF_un_Documento", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
