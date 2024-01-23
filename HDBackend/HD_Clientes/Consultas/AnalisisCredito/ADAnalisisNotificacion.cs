@@ -30,7 +30,9 @@ namespace HD.Clientes.Consultas.AnalisisCredito
                 };
                 mdlAnalisis_Email result = await factory.SQL.QueryFirstOrDefaultAsync<mdlAnalisis_Email>("Credito.sp_Analisis_Notificacion", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
-                result.comentarios = comentario.comentarios;
+                if (result != null)
+                    result.comentarios = comentario.comentarios;
+                else result = new mdlAnalisis_Email();
                 return result;
             }
             catch (System.Exception ex)

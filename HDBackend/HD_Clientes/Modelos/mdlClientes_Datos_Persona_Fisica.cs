@@ -5,26 +5,26 @@ namespace HD.Clientes.Modelos
     public class mdlClientes_Datos_Persona_Fisica : mdlClientes
     {
         [Required(ErrorMessage = "El Nombre es un valor requerido")]
-        [RegularExpression(@"^[ a-zA-Z]+$", ErrorMessage = "El campo Nombre debe estar formado por letras")]
+        [RegularExpression(@"^[ a-zA-ZÑ]+$", ErrorMessage = "El campo Nombre debe estar formado por letras")]
         [StringLength(50, ErrorMessage = "El campo Nombre debe de contener una longitud maxima de 50 caracteres")]
         public string? nombre { get; set; }
 
-        [RegularExpression(@"^[ a-zA-Z]+$", ErrorMessage = "El campo Nombre debe estar formado por letras")]
+        [RegularExpression(@"^[ a-zA-ZÑ]+$", ErrorMessage = "El campo Nombre debe estar formado por letras")]
         [StringLength(50, ErrorMessage = "El campo Nombre debe de contener una longitud maxima de 50 caracteres")]
         public string? nombre2 { get; set; }
 
         [Required(ErrorMessage = "El Apellido Paterno es un valor requerido")]
-        [RegularExpression(@"^[ a-zA-Z]+$", ErrorMessage = "El campo Apellido Paterno debe estar formado por letras")]
+        [RegularExpression(@"^[ a-zA-ZÑ]+$", ErrorMessage = "El campo Apellido Paterno debe estar formado por letras")]
         [StringLength(50, ErrorMessage = "El campo Apellido Paterno debe de contener una longitud maxima de 50 caracteres")]
         public string? apellido_paterno { get; set; }
 
         [Required(ErrorMessage = "El Apellido Materno es un valor requerido")]
-        [RegularExpression(@"^[ a-zA-Z]+$", ErrorMessage = "El campo Apellido Materno debe estar formado por letras")]
+        [RegularExpression(@"^[ a-zA-ZÑ]+$", ErrorMessage = "El campo Apellido Materno debe estar formado por letras")]
         [StringLength(50, ErrorMessage = "El campo Apellido Materno debe de contener una longitud maxima de 50 caracteres")]
         public string? apellido_materno { get; set; }
 
         [Required(ErrorMessage = "El CURP es un valor requerido")]
-        [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "El campo CURP debe estar formado por caracteres alfanumericos")]
+        [RegularExpression(@"^[a-zA-Z0-9Ñ]+$", ErrorMessage = "El campo CURP debe estar formado por caracteres alfanumericos")]
         [StringLength(18, MinimumLength = 18, ErrorMessage = "El campo CURP debe estar formado por 18 digitos")]
         public string? curp { get; set; }
 
