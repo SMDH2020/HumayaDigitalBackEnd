@@ -33,7 +33,7 @@ namespace HD.Clientes.Consultas.AnalisisCredito.Modal
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
-        public async Task<mdlSCAnalisis_Decicion> GetUndocumento(mdlJDFAnalisis_Un_Documento_Decicion mdl)
+        public async Task<mdlJDFAnalisis_Decicion_un_documento> GetUndocumento(mdlJDFAnalisis_Un_Documento_Decicion_View mdl)
         {
             try
             {
@@ -42,9 +42,10 @@ namespace HD.Clientes.Consultas.AnalisisCredito.Modal
                 {
                     folio = mdl.folio,
                     idproceso = mdl.idproceso,
+                    iddocumento=mdl.iddocumento,
                     usuario = mdl.usuario
                 };
-                mdlSCAnalisis_Decicion result = await factory.SQL.QueryFirstOrDefaultAsync<mdlSCAnalisis_Decicion>("Credito.sp_Analisis_JDF_un_Documento", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlJDFAnalisis_Decicion_un_documento result = await factory.SQL.QueryFirstOrDefaultAsync<mdlJDFAnalisis_Decicion_un_documento>("Credito.sp_Analisis_JDF_un_Documento", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

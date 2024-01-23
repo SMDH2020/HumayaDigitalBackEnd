@@ -1,30 +1,27 @@
 ﻿using HD.Clientes.Consultas.AnalisisCredito.Modal;
 using HD.Clientes.Modelos.SC_Analisis.JDF;
-using HD.Clientes.Modelos.SC_Analisis.Modal;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HD.Endpoints.Controllers.AnalisisCredito.Modal
+namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
 {
-    public class ACAnalisisDecicionController:MyBase
+    public class ACJDF_DecicionUnDocumentoController:MyBase
     {
         private readonly IConfiguration Configuracion;
         private readonly ISesion Sesion;
-        public ACAnalisisDecicionController(IConfiguration configuration, ISesion sesion)
+        public ACJDF_DecicionUnDocumentoController(IConfiguration configuration, ISesion sesion)
         {
             Configuracion = configuration;
             Sesion = sesion;
         }
         [HttpPost]
-        public async Task<ActionResult> Get(mdlSCAnalisis_Dedidion_View mdl)
+        public async Task<ActionResult> GetUnDocumento(mdlJDFAnalisis_Un_Documento_Decicion_View mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             ADAnalisisDecicion datos = new ADAnalisisDecicion(CadenaConexion);
             mdl.usuario = Sesion.usuario();
-            var result = await datos.Get(mdl);
+            var result = await datos.GetUndocumento(mdl);
             return Ok(result);
-
         }
-     
     }
 }
