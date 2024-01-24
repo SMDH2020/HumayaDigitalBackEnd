@@ -34,7 +34,7 @@ namespace HD.Clientes.Modelos
         public string? sexo { get; set; }
 
         [Required(ErrorMessage = "El Estado Civil es un valor requerido")]
-        [RegularExpression(@"^[SO|CA|UN]+$", ErrorMessage = "El campo Estado Civil debe estar formado por las siguientes opciones [SO][CA][UN]")]
+        [RegularExpression(@"^[SO|CA|UN|VI|DI]+$", ErrorMessage = "El campo Estado Civil debe estar formado por las siguientes opciones [SO][CA][UN][DI][VI]")]
         [StringLength(2, MinimumLength = 2, ErrorMessage = "El campo Estado Civil debe estar formado por 3 digitos")]
         public string? estado_civil { get; set; }
 

@@ -22,8 +22,11 @@ namespace HD.Clientes.Consultas.PedidoDatosGenerales
                 };
                 mdlPedido_Datos_Generales result = await factory.SQL.QueryFirstOrDefaultAsync<mdlPedido_Datos_Generales>("Credito.sp_Pedido_Datos_Solicitante", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
-                if(result == null) { result = new mdlPedido_Datos_Generales();
+                if(result == null) { 
+                    result = new mdlPedido_Datos_Generales();
                     result.fechaentrega = DateTime.Now;
+                    result.formapago = "99";
+                    result.metodopago = "PPD";
                 }
                 return result;
             }
