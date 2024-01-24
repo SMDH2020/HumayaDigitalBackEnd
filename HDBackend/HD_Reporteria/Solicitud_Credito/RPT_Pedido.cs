@@ -461,7 +461,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                     header.Cell().Background("#ccc").AlignCenter()
                                     .Padding(1).Text("Serie").FontSize(10).Bold().FontFamily(fontFamily);
                                     header.Cell().Background("#ccc").AlignCenter()
-                                    .Padding(1).Text("Preio Lista").FontSize(10).Bold().FontFamily(fontFamily);
+                                    .Padding(1).Text("Precio Lista").FontSize(10).Bold().FontFamily(fontFamily);
                                     header.Cell().Background("#ccc").AlignCenter()
                                     .Padding(1).Text("Descuento").FontSize(10).Bold().FontFamily(fontFamily);
                                     header.Cell().Background("#ccc").AlignCenter()
@@ -490,14 +490,39 @@ namespace HD_Reporteria.Solicitud_Credito
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1)
                                    .Text(item.serie).FontSize(8).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
-                                   .Text(item.precio).FontSize(8).FontFamily(fontFamily);
+                                    if (item.precio > 0)
+                                    {
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                            .Text(item.precio.ToString("N")).FontSize(8).FontFamily(fontFamily);
+                                    }
+                                    else
+                                    {
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                            .Text(item.precio.ToString()).FontSize(8).FontFamily(fontFamily);
+                                    }
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
-                                   .Text(item.descuento).FontSize(8).FontFamily(fontFamily);
+                                    if (item.descuento > 0)
+                                    {
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                            .Text(item.descuento.ToString("N")).FontSize(8).FontFamily(fontFamily);
+                                    }
+                                    else
+                                    {
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                            .Text(item.descuento.ToString()).FontSize(8).FontFamily(fontFamily);
+                                    }
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
-                                   .Text(item.total).FontSize(8).FontFamily(fontFamily);
+
+                                    if (item.total > 0)
+                                    {
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                            .Text(item.total.ToString("N")).FontSize(8).FontFamily(fontFamily);
+                                    }
+                                    else
+                                    {
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                            .Text(item.total.ToString()).FontSize(8).FontFamily(fontFamily);
+                                    }
 
                                     // tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
                                     //.Text($"{formattedTotal}").FontSize(8).FontFamily(fontFamily);
@@ -524,10 +549,19 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().AlignCenter().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.condiciones?.deposito.ToString()).FontSize(10).FontFamily(fontFamily);
-
+                                        // Asegúrate de que mdl.condiciones?.deposito tenga un valor antes de intentar formatearlo
+                                        if (mdl.condiciones?.deposito>0)
+                                        {
+                                            txt2.Span(mdl.condiciones?.deposito.ToString("N")).FontSize(10).FontFamily(fontFamily);
+                                        }
+                                        else
+                                        {
+                                            // Si mdl.condiciones?.deposito es nulo, puedes manejarlo de acuerdo a tus necesidades
+                                            txt2.Span("0").FontSize(10).FontFamily(fontFamily);
+                                        }
                                     });
                                 });
+
 
                                 row1.ConstantItem(350).AlignRight().Column(txt1 =>
                                 {
@@ -603,11 +637,21 @@ namespace HD_Reporteria.Solicitud_Credito
                                     });
                                 });
 
+
                                 row1.ConstantItem(065).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
                                 {
                                     txt1.Item().AlignCenter().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.condiciones?.anticipo.ToString()).FontSize(10).FontFamily(fontFamily);
+                                        // Asegúrate de que mdl.condiciones?.deposito tenga un valor antes de intentar formatearlo
+                                        if (mdl.condiciones?.anticipo > 0)
+                                        {
+                                            txt2.Span(mdl.condiciones?.anticipo.ToString("N")).FontSize(10).FontFamily(fontFamily);
+                                        }
+                                        else
+                                        {
+                                            // Si mdl.condiciones?.deposito es nulo, puedes manejarlo de acuerdo a tus necesidades
+                                            txt2.Span("0").FontSize(10).FontFamily(fontFamily);
+                                        }
                                     });
                                 });
 
@@ -619,11 +663,21 @@ namespace HD_Reporteria.Solicitud_Credito
                                     });
                                 });
 
+
                                 row1.ConstantItem(065).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
                                 {
                                     txt1.Item().AlignCenter().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.condiciones?.gastos.ToString()).FontSize(10).FontFamily(fontFamily);
+                                        // Asegúrate de que mdl.condiciones?.deposito tenga un valor antes de intentar formatearlo
+                                        if (mdl.condiciones?.gastos > 0)
+                                        {
+                                            txt2.Span(mdl.condiciones?.gastos.ToString("N")).FontSize(10).FontFamily(fontFamily);
+                                        }
+                                        else
+                                        {
+                                            // Si mdl.condiciones?.deposito es nulo, puedes manejarlo de acuerdo a tus necesidades
+                                            txt2.Span("0").FontSize(10).FontFamily(fontFamily);
+                                        }
                                     });
                                 });
 
@@ -635,11 +689,21 @@ namespace HD_Reporteria.Solicitud_Credito
                                     });
                                 });
 
+
                                 row1.ConstantItem(065).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
                                 {
                                     txt1.Item().AlignCenter().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.condiciones?.enganche.ToString()).FontSize(10).FontFamily(fontFamily);
+                                        // Asegúrate de que mdl.condiciones?.deposito tenga un valor antes de intentar formatearlo
+                                        if (mdl.condiciones?.enganche > 0)
+                                        {
+                                            txt2.Span(mdl.condiciones?.enganche.ToString("N")).FontSize(10).FontFamily(fontFamily);
+                                        }
+                                        else
+                                        {
+                                            // Si mdl.condiciones?.deposito es nulo, puedes manejarlo de acuerdo a tus necesidades
+                                            txt2.Span("0").FontSize(10).FontFamily(fontFamily);
+                                        }
                                     });
                                 });
 
@@ -693,8 +757,16 @@ namespace HD_Reporteria.Solicitud_Credito
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignCenter()
                                    .Text(item.vencimiento).FontSize(8).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
-                                   .Text(item.importefinanciar).FontSize(8).FontFamily(fontFamily);
+                                    if (item.importefinanciar > 0)
+                                    {
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                        .Text(item.importefinanciar.ToString("N")).FontSize(8).FontFamily(fontFamily);
+                                    }
+                                    else
+                                    {
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                        .Text(item.importefinanciar.ToString()).FontSize(8).FontFamily(fontFamily);
+                                    }
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
                                    .Text(item.dias).FontSize(8).FontFamily(fontFamily);
@@ -702,11 +774,27 @@ namespace HD_Reporteria.Solicitud_Credito
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
                                    .Text(item.tasa).FontSize(8).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
-                                   .Text(item.interes).FontSize(8).FontFamily(fontFamily);
+                                    if (item.interes > 0)
+                                    {
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                        .Text(item.interes.ToString("N")).FontSize(8).FontFamily(fontFamily);
+                                    }
+                                    else
+                                    {
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                        .Text(item.interes.ToString()).FontSize(8).FontFamily(fontFamily);
+                                    }
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
-                                   .Text(item.totalpagar).FontSize(8).FontFamily(fontFamily);
+                                    if (item.totalpagar > 0)
+                                    {
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                        .Text(item.totalpagar.ToString("N")).FontSize(8).FontFamily(fontFamily);
+                                    }
+                                    else
+                                    {
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                        .Text(item.totalpagar.ToString()).FontSize(8).FontFamily(fontFamily);
+                                    }
                                 }
                             });
 
