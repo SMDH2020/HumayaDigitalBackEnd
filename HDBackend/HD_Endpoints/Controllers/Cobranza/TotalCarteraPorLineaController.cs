@@ -39,11 +39,11 @@ namespace HD.Endpoints.Controllers.Cobranza
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ReporteLineaPDF()
+        public async Task<ActionResult> ReporteLineaPDF(int idsucursal)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             //ADPedido_Impresion_View datos = new ADPedido_Impresion_View(CadenaConexion);
-            //var result = await datos.Get(folio);
+            //var result = await datos.Get(idsucursal);
 
 
             try
