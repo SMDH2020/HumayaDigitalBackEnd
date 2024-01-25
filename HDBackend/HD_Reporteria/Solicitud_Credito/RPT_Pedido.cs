@@ -899,7 +899,7 @@ namespace HD_Reporteria.Solicitud_Credito
                     });
                 }).GeneratePdf();
                 RPT_Result result = new RPT_Result();
-                result.extension = "PDF";
+                result.extension = "pdf";
                 result.nombredocumento = "Pedido maquinaria";
                 result.documento = Convert.ToBase64String(doc);
                 return result;
