@@ -39,7 +39,7 @@ namespace HD.Endpoints.Controllers.Cobranza
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> GenerarExcel()
+        public async Task<ActionResult> GenerarExcel(int idsucursal, string linea)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             //ADCob_TotalCarteraPorLinea datos = new ADCob_TotalCarteraPorLinea(CadenaConexion);
@@ -51,7 +51,7 @@ namespace HD.Endpoints.Controllers.Cobranza
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> GenerarExcelCliente()
+        public async Task<ActionResult> GenerarExcelCliente(int cliente)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             //ADCob_TotalCarteraPorLinea datos = new ADCob_TotalCarteraPorLinea(CadenaConexion);
@@ -63,7 +63,7 @@ namespace HD.Endpoints.Controllers.Cobranza
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ReporteDetallePDF()
+        public async Task<ActionResult> ReporteDetallePDF(int idsucursal, string linea)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             //ADPedido_Impresion_View datos = new ADPedido_Impresion_View(CadenaConexion);
@@ -86,7 +86,7 @@ namespace HD.Endpoints.Controllers.Cobranza
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ReporteDetalleClientePDF()
+        public async Task<ActionResult> ReporteDetalleClientePDF(int cliente)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             //ADPedido_Impresion_View datos = new ADPedido_Impresion_View(CadenaConexion);
