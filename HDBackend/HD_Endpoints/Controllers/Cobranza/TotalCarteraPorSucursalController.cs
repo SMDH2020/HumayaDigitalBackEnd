@@ -2,6 +2,8 @@
 using HD.Security;
 using HD_Cobranza.Capturas;
 using HD_Cobranza.Reportes;
+using HD_Reporteria.Cobranza;
+using HD_Reporteria;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HD.Endpoints.Controllers.Cobranza
@@ -34,6 +36,29 @@ namespace HD.Endpoints.Controllers.Cobranza
             var result = await datos.Listado();
             var docresult = await XLSCob_TotalCartera_Sucursal.CrearResumenPorSucursal(result);
             return Ok(docresult);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ReporteSucursalPDF()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            //ADPedido_Impresion_View datos = new ADPedido_Impresion_View(CadenaConexion);
+            //var result = await datos.Get(folio);
+
+
+            try
+            {
+                RPT_Result documento = RPT_TotalCartera_PorSucursal.Generar();
+
+                return Ok(documento);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error de servidor");
+
+            }
 
         }
     }
