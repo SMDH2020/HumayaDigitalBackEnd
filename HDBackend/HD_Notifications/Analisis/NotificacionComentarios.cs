@@ -31,8 +31,8 @@ namespace HD.Notifications.Analisis
                 client.Credentials = new System.Net.NetworkCredential(_correo, password);
                 objeto_mail.From = new MailAddress(_correo);
                 objeto_mail.To.Add(new MailAddress("Guadalupeolivas@humaya.com.mx"));
-                objeto_mail.To.Add(new MailAddress("davidtamayos@humaya.com.mx"));
-                objeto_mail.Subject = datos_correo.proceso;
+                //objeto_mail.To.Add(new MailAddress("davidtamayos@humaya.com.mx"));
+                objeto_mail.Subject = datos_correo.asunto + datos_correo.proceso;
                 objeto_mail.IsBodyHtml = true;
                 objeto_mail.Body = body(datos_correo);
                 client.EnableSsl = false;
@@ -63,17 +63,16 @@ namespace HD.Notifications.Analisis
                "<TITLE>SOLICITUD DE CREDITO</TITLE>\n" +
                "</HEAD>\n" +
                "<BODY style=\"text-align:center;\"><P>\n" +
-                "<div style=\"position:absolute;top:0px;left:60px\">\n" +
-                    "<img width='150' src='data:image/png;base64," + logo64 + "'/>\n" +
+                "<div style=\"\">\n" +
+                    "<img height='100' src='data:image/png;base64," + logo64 + "'/>\n" +
                 "</div>\n" +
-                "<div style=\"background-color: #477c2c; height: 57px; margin - top:51px; ; text - align:center; display: flex; align - items:center; justify - content:center; margin - bottom:60px\">\n" +
-                "<h1  style =\"font-size:20px;margin-left:40pxpx;color:#fff\"> SOLICITUD DE CREDITO </h1>\n" +
+                "<h1  style =\"\"> SOLICITUD DE CREDITO </h1>\n" +
                 "</div>\n" +
-               "<h1 style=\"font-size:16;\"><Font Color='#235B34'>" + datos_Correo.proceso + "</Font></h1></P>\n" +
-               "<h1 style=\"font-size:16;\"><Font Color='#235B34'>" + datos_Correo.estatus + "</Font></h1></P>\n" +
+               "<h1 style=\"font-size:16; text-transform: uppercase\"><Font Color='#235B34'>" + datos_Correo.proceso + "</Font></h1></P>\n" +
+               "<h1 style=\"font-size:16; text-transform: uppercase\"><Font Color='#235B34'>" + datos_Correo.estatus + "</Font></h1></P>\n" +
               "<table style=\"border: 1px solid green;border-radius:5px; padding: 10px; spacing:0; display: flex; align - items:center; justify - content:center; margin - left:80px; margin - right:80px; '\">\n" +
               "<tr>\n"+
-                "<td>" + datos_Correo.comentarios +"</td>\n" +
+                "<td>" + datos_Correo.comentarios +"222</td>\n" +
             " </tr>\n" +
             "</table>\n" +
             "</BODY>\n" +
