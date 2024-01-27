@@ -1,11 +1,13 @@
 ﻿using HD.Security;
 using HD_Cobranza.Capturas;
 using HD_Cobranza.Reportes;
+using HD_Reporteria.Cobranza;
+using HD_Reporteria;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HD.Endpoints.Controllers.Cobranza
 {
-    public class TotalCarteraPorLineaController :MyBase
+    public class TotalCarteraPorLineaController : MyBase
     {
         private readonly IConfiguration Configuracion;
         private readonly ISesion Sesion;
@@ -33,6 +35,28 @@ namespace HD.Endpoints.Controllers.Cobranza
             var result = await datos.Listado(idsucursal);
             var docResult = await XLSCob_TotalCartera_Linea.CrearExcel(result);
             return Ok(docResult);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ReporteLineaPDF(int idsucursal)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            //ADPedido_Impresion_View datos = new ADPedido_Impresion_View(CadenaConexion);
+            //var result = await datos.Get(idsucursal);
+
+
+            try
+            {
+                RPT_Result documento = RPT_TotalCartera_PorLinea.Generar();
+
+                return Ok(documento);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error de servidor");
+
+            }
 
         }
     }
