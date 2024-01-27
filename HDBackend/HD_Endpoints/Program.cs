@@ -1,6 +1,8 @@
 using HD.Endpoints.Middleware;
 using HD.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using QuestPDF.Infrastructure;
 using System.Text;
@@ -19,7 +21,12 @@ builder.Services.AddSwaggerGen();
 
 builder.Services
     .AddHttpContextAccessor()
-    .AddAuthorization()
+    .AddAuthorization(options =>
+    {
+        options.FallbackPolicy = new AuthorizationPolicyBuilder()
+            .RequireAuthenticatedUser()
+            .Build();
+    })
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
      .AddJwtBearer(options =>
      {
@@ -61,8 +68,7 @@ app.UseAuthorization();
 app.UseMiddleware<ManejadorMiddlewares>();
 app.UseCors("corsApp");
 
-app.UseDefaultFiles();
-app.UseStaticFiles();
+;
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
