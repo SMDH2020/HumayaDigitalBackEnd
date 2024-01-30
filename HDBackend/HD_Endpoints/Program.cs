@@ -21,12 +21,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services
     .AddHttpContextAccessor()
-    .AddAuthorization(options =>
-    {
-        options.FallbackPolicy = new AuthorizationPolicyBuilder()
-            .RequireAuthenticatedUser()
-            .Build();
-    })
+    .AddAuthorization()
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
      .AddJwtBearer(options =>
      {
@@ -55,7 +50,7 @@ builder.Services.AddScoped<ISesion, Sesion>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
+if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();

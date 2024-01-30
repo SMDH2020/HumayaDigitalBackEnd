@@ -57,7 +57,7 @@ namespace HD.Notifications.Analisis
                "<TITLE>SOLICITUD DE CREDITO</TITLE>\n" +
                "</HEAD>\n" +
                "<BODY style=\"text-align:center;\"><P>\n" +
-                "<div style=\"position:absolute;top:0px;left:60px\">\n" +
+                "<div style=\"\">\n" +
                     "<img width='150' src='data:image/png;base64," + logo64 + "'/>\n" +
                 "</div>\n" +
                 "<div style=\"background-color: #477c2c; height: 57px; margin - top:51px; ; text - align:center; display: flex; align - items:center; justify - content:center; margin - bottom:60px\">\n" +
