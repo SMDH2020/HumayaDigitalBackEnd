@@ -42,13 +42,13 @@ namespace HD.Endpoints.Controllers.Cobranza
         public async Task<ActionResult> ReporteLineaPDF(int idsucursal)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-            //ADPedido_Impresion_View datos = new ADPedido_Impresion_View(CadenaConexion);
-            //var result = await datos.Get(idsucursal);
+            ADCob_TotalCarteraPorLinea datos = new ADCob_TotalCarteraPorLinea(CadenaConexion);
+            var result = await datos.Listado(idsucursal);
 
 
             try
             {
-                RPT_Result documento = RPT_TotalCartera_PorLinea.Generar();
+                RPT_Result documento = RPT_TotalCartera_PorLinea.Generar(result);
 
                 return Ok(documento);
             }
