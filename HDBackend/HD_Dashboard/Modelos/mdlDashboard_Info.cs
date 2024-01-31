@@ -4,5 +4,6 @@
     {
         public string? dashboard { get; set; } = "";
         public string? tagline { get; set; } = "";
+        public string? mes_revisado { get; set; } = "";
     }
 }
