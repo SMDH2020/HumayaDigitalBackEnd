@@ -6,7 +6,7 @@ namespace HD_Reporteria.Cobranza
 {
     public class RPT_TotalCartera_PorLinea
     {
-        public static RPT_Result Generar(IEnumerable <mdlCob_TotalCarteraPorLinea> resumen)
+        public static RPT_Result Generar(IEnumerable <mdlCob_TotalCarteraPorLinea> resumen,string titulo)
         {
             try
             {
@@ -36,7 +36,7 @@ namespace HD_Reporteria.Cobranza
 
                                 row.ConstantColumn(693).PaddingTop(35).Height(50).Background("#477c2c").Row(row2 =>
                                 {
-                                    row2.RelativeItem().Padding(10).PaddingLeft(30).Text("RESUMEN DE CARTERA POR LINEA").FontColor("#fff").FontSize(20).Bold().FontFamily(fontFamily);
+                                    row2.RelativeItem().Padding(10).PaddingLeft(30).Text(titulo.ToUpper()).FontColor("#fff").FontSize(16).Bold().FontFamily(fontFamily);
                                 });
                             });
 
