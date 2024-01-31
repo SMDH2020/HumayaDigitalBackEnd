@@ -30,8 +30,11 @@ namespace HD.Notifications.Analisis
                 client.UseDefaultCredentials = false;
                 client.Credentials = new System.Net.NetworkCredential(_correo, password);
                 objeto_mail.From = new MailAddress(_correo);
-                objeto_mail.To.Add(new MailAddress("Guadalupeolivas@humaya.com.mx"));
-                //objeto_mail.To.Add(new MailAddress("davidtamayos@humaya.com.mx"));
+
+                objeto_mail.To.Add(new MailAddress(datos_correo.correo_responsable_credito));
+                objeto_mail.To.Add(new MailAddress(datos_correo.correo_gerente_sucursal));
+                objeto_mail.To.Add(new MailAddress(datos_correo.correo_vendedor));
+
                 objeto_mail.Subject = datos_correo.asunto + datos_correo.proceso;
                 objeto_mail.IsBodyHtml = true;
                 objeto_mail.Body = body(datos_correo);

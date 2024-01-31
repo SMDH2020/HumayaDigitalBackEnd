@@ -24,8 +24,11 @@ namespace HD.Notifications.Analisis
                 client.UseDefaultCredentials = false;
                 client.Credentials = new System.Net.NetworkCredential(_correo, password);
                 objeto_mail.From = new MailAddress(_correo);
-                objeto_mail.To.Add(new MailAddress("Guadalupeolivas@humaya.com.mx"));
+                objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_responsable_credito));
+                objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_gerente_sucursal));
+                objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_vendedor));
                 objeto_mail.To.Add(new MailAddress("desarrolladorti@humaya.com.mx"));
+
                 objeto_mail.Subject = "Nueva solicitud de credito";
                 objeto_mail.IsBodyHtml = true;
                 objeto_mail.Body = body(datos_correo);
@@ -57,7 +60,7 @@ namespace HD.Notifications.Analisis
                "<TITLE>SOLICITUD DE CREDITO</TITLE>\n" +
                "</HEAD>\n" +
                "<BODY style=\"text-align:center;\"><P>\n" +
-                "<div style=\"position:absolute;top:0px;left:60px\">\n" +
+                "<div style=\"\">\n" +
                     "<img width='150' src='data:image/png;base64," + logo64 + "'/>\n" +
                 "</div>\n" +
                 "<div style=\"background-color: #477c2c; height: 57px; margin - top:51px; ; text - align:center; display: flex; align - items:center; justify - content:center; margin - bottom:60px\">\n" +
