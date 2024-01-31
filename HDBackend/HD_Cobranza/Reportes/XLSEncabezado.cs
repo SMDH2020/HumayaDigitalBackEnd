@@ -22,7 +22,7 @@ namespace HD_Cobranza.Reportes
                 sheet.Row(3).Height = 4;
 
                 rango = sheet.Range(2, 1, 2, @Columnas);
-                rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#429E2F");
+                rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#275027");
 
                 rango = sheet.Range(3, 1, 3, @Columnas);
                 rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#E9AE06");
