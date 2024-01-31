@@ -21,12 +21,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services
     .AddHttpContextAccessor()
-    .AddAuthorization(options =>
-    {
-        options.FallbackPolicy = new AuthorizationPolicyBuilder()
-            .RequireAuthenticatedUser()
-            .Build();
-    })
+    .AddAuthorization()
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
      .AddJwtBearer(options =>
      {
