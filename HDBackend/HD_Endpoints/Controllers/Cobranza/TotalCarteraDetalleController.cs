@@ -89,13 +89,13 @@ namespace HD.Endpoints.Controllers.Cobranza
         public async Task<ActionResult> ReporteDetalleClientePDF(int cliente)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-            //ADPedido_Impresion_View datos = new ADPedido_Impresion_View(CadenaConexion);
-            //var result = await datos.Get(folio);
+            ADCob_TotalCarteraDetalle datos = new ADCob_TotalCarteraDetalle(CadenaConexion);
+            var result = await datos.ListadoPorCliente(cliente);
 
 
             try
             {
-                RPT_Result documento = RPT_TotalCartera_Detalle_Cliente.Generar();
+                RPT_Result documento = RPT_TotalCartera_Detalle_Cliente.Generar(result);
 
                 return Ok(documento);
             }

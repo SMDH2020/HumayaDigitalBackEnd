@@ -54,62 +54,62 @@ namespace HD_Reporteria.Cobranza
                             {
                                 tabla.ColumnsDefinition(Columns =>
                                 {
-                                    Columns.RelativeColumn(1);
+                                    Columns.RelativeColumn(0.5f);
                                     Columns.RelativeColumn(1.5f);
-                                    Columns.RelativeColumn(1);
-                                    Columns.RelativeColumn(1);
-                                    Columns.RelativeColumn(1);
-                                    Columns.RelativeColumn(1);
-                                    Columns.RelativeColumn(0.4f);
-                                    Columns.RelativeColumn(1);
-                                    Columns.RelativeColumn(0.4f);
-                                    Columns.RelativeColumn(1);
-                                    Columns.RelativeColumn(0.4f);
-                                    Columns.RelativeColumn(1);
-                                    Columns.RelativeColumn(0.4f);
+                                    Columns.RelativeColumn(0.8f);
+                                    Columns.RelativeColumn(0.8f);
+                                    Columns.RelativeColumn(0.8f);
+                                    Columns.RelativeColumn(0.8f);
+                                    Columns.RelativeColumn(0.3f);
+                                    Columns.RelativeColumn(0.8f);
+                                    Columns.RelativeColumn(0.3f);
+                                    Columns.RelativeColumn(0.8f);
+                                    Columns.RelativeColumn(0.3f);
+                                    Columns.RelativeColumn(0.8f);
+                                    Columns.RelativeColumn(0.3f);
 
                                 });
 
                                 tabla.Header(header =>
                                 {
-                                    header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("IDCLIENTE").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("RAZON SOCIAL").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("TOTAL CARTERA").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().Background("#275027").AlignRight().AlignMiddle()
-                                    .Padding(1).Text("SALDO A FAVOR").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("TOTAL").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("JURIDICO").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("%").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("CARTERA ACTIVA").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("%").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("POR VENCER").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("%").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("VENCIDA").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("%").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    .Text("IDCLIENTE").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                     .Text("RAZON SOCIAL").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    .Text("TOTAL CARTERA").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    .Text("SALDO A FAVOR").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    .Text("TOTAL").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                   .Text("JURIDICO").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    .Text("%").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    .Text("CARTERA ACTIVA").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    .Text("%").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    .Text("POR VENCER").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    .Text("%").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    .Text("VENCIDA").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                   .Text("%").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
                                 });
 
                                 foreach (var mdl in resumen)
                                 {
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").PaddingLeft(20).AlignLeft().Height(20).AlignMiddle()
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignLeft().Height(20).AlignMiddle().PaddingLeft(3)
                                    .Text(mdl.idcliente).FontSize(8).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").PaddingLeft(20).AlignLeft().Height(20).AlignMiddle()
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignLeft().Height(30).AlignMiddle()
                                    .Text(mdl.razonsocial).FontSize(8).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).PaddingRight(10).AlignMiddle()
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
                                    .Text((mdl.totalcartera + mdl.juridico).ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
@@ -134,13 +134,13 @@ namespace HD_Reporteria.Cobranza
                                    .Text(mdl.porvencer.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                   .Text(((mdl.porvencer / (mdl.totalcartera + mdl.juridico)) * 100).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    .Text(((mdl.porvencer / (mdl.totalcartera + mdl.juridico)) * 100).ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                   .Text(mdl.vencido.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    .Text(mdl.vencido.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle().PaddingRight(3)
-                                   .Text(((mdl.vencido / (mdl.totalcartera + mdl.juridico)) * 100).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    .Text(((mdl.vencido / (mdl.totalcartera + mdl.juridico)) * 100).ToString("N2")).FontSize(8).FontFamily(fontFamily);
                                 }
                             });
                         });
@@ -189,7 +189,7 @@ namespace HD_Reporteria.Cobranza
                                 tabla.ColumnsDefinition(Columns =>
                                 {
                                     Columns.RelativeColumn(1);
-                                    Columns.RelativeColumn(1.5f);
+                                    Columns.RelativeColumn(2);
                                     Columns.RelativeColumn(1);
                                     Columns.RelativeColumn(1);
                                     Columns.RelativeColumn(1);
