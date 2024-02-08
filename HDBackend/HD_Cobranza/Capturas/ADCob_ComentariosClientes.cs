@@ -11,7 +11,7 @@ namespace HD_Cobranza.Capturas
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlCob_ComentariosCliente>> Guardar(mdlCob_ComentariosCliente obj)
+        public async Task<IEnumerable<mdl_Comentarios_View>> Guardar(mdlCob_ComentariosCliente obj)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace HD_Cobranza.Capturas
                     @usuario = obj.usuario,
                 };
 
-                var result = await factory.SQL.QueryAsync<mdlCob_ComentariosCliente>("Credito.SP_Comentarios_Cliente_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryAsync<mdl_Comentarios_View>("Credito.SP_Comentarios_Cliente_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
@@ -39,7 +39,7 @@ namespace HD_Cobranza.Capturas
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
-        public async Task<IEnumerable<mdlCob_ComentariosCliente>> Listado(int idcliente)
+        public async Task<IEnumerable<mdl_Comentarios_View>> Listado(int idcliente)
         {
             try
             {
@@ -48,7 +48,7 @@ namespace HD_Cobranza.Capturas
                 {
                     idcliente
                 };
-                var result = await factory.SQL.QueryAsync<mdlCob_ComentariosCliente>("Credito.sp_Comentarios_Cliente_Obtener", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryAsync<mdl_Comentarios_View>("Credito.sp_Comentarios_Cliente_Obtener", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
