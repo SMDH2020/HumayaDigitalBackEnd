@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HD_Clientes\HD_Clientes.csproj" />
+    <ProjectReference Include="..\HD_Cobranza\HD_Cobranza.csproj" />
   </ItemGroup>
 
 </Project>

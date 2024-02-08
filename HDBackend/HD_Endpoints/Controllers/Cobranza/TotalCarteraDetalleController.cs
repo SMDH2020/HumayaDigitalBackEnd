@@ -42,8 +42,8 @@ namespace HD.Endpoints.Controllers.Cobranza
         public async Task<ActionResult> GenerarExcel(int idsucursal, string linea)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-            //ADCob_TotalCarteraPorLinea datos = new ADCob_TotalCarteraPorLinea(CadenaConexion);
-            //var result = await datos.Listado(idsucursal);
+            ADCob_TotalCarteraPorLinea datos = new ADCob_TotalCarteraPorLinea(CadenaConexion);
+            var result = await datos.Listado(idsucursal);
             var docResult = await XLSCob_TotalCartera_Detalle.CrearExcel();
             return Ok(docResult);
 
@@ -66,13 +66,13 @@ namespace HD.Endpoints.Controllers.Cobranza
         public async Task<ActionResult> ReporteDetallePDF(int idsucursal, string linea)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-            //ADPedido_Impresion_View datos = new ADPedido_Impresion_View(CadenaConexion);
-            //var result = await datos.Get(folio);
+            ADCob_TotalCarteraDetalle datos = new ADCob_TotalCarteraDetalle(CadenaConexion);
+            var result = await datos.Listado(idsucursal, linea, Sesion.usuario());
 
 
             try
             {
-                RPT_Result documento = RPT_TotalCartera_Detalle.Generar();
+                RPT_Result documento = RPT_TotalCartera_Detalle.Generar(result);
 
                 return Ok(documento);
             }
@@ -89,13 +89,13 @@ namespace HD.Endpoints.Controllers.Cobranza
         public async Task<ActionResult> ReporteDetalleClientePDF(int cliente)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-            //ADPedido_Impresion_View datos = new ADPedido_Impresion_View(CadenaConexion);
-            //var result = await datos.Get(folio);
+            ADCob_TotalCarteraDetalle datos = new ADCob_TotalCarteraDetalle(CadenaConexion);
+            var result = await datos.ListadoPorCliente(cliente);
 
 
             try
             {
-                RPT_Result documento = RPT_TotalCartera_Detalle_Cliente.Generar();
+                RPT_Result documento = RPT_TotalCartera_Detalle_Cliente.Generar(result);
 
                 return Ok(documento);
             }
