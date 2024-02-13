@@ -1,7 +1,8 @@
 ﻿using HD.Security;
-using HD_Cobranza.Capturas;
-using HD_Reporteria.Cobranza;
+using HD_Cobranza.Capturas.ConvenioPago;
+using HD_Cobranza.Modelos.ConvenioPago;
 using HD_Reporteria;
+using HD_Reporteria.Cobranza;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HD.Endpoints.Controllers.Cobranza
@@ -16,17 +17,25 @@ namespace HD.Endpoints.Controllers.Cobranza
             Sesion = sesion;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ReporteConvenioPDF(int idcliente)
+        public async Task<ActionResult> Guardar(mdlConvenio_Pago mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-            //ADCob_TotalCarteraPorSucursal datos = new ADCob_TotalCarteraPorSucursal(CadenaConexion);
-            //var result = await datos.Listado();
+            ADConvenio_Pago datos = new ADConvenio_Pago(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            await datos.Guardar(mdl);
+            return Ok(new { mensaje = "Convenio registrado con Exito" });
+        }
 
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ReporteConvenioPDF(mdlConvenio_Pago mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             try
             {
-                RPT_Result documento = RPT_ConvenioPago.Generar();
+                RPT_Result documento = RPT_ConvenioPago.Generar(mdl);
 
                 return Ok(documento);
             }
