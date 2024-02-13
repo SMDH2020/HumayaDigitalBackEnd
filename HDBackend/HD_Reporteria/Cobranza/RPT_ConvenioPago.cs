@@ -1,4 +1,5 @@
 ﻿using HD_Cobranza.Modelos;
+using HD_Cobranza.Modelos.ConvenioPago;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 
@@ -6,7 +7,7 @@ namespace HD_Reporteria.Cobranza
 {
     public class RPT_ConvenioPago
     {
-        public static RPT_Result Generar()
+        public static RPT_Result Generar(mdlConvenio_Pago mdl)
         {
             try
             {
@@ -32,7 +33,7 @@ namespace HD_Reporteria.Cobranza
 
                                 row.ConstantColumn(450).PaddingTop(35).Height(50).Background("#477c2c").Row(row2 =>
                                 {
-                                    row2.RelativeItem().Padding(10).PaddingLeft(30).Text("PEDIDO DE MAQUINARIA").FontColor("#fff").FontSize(20).Bold().FontFamily(fontFamily);
+                                    row2.RelativeItem().Padding(10).PaddingLeft(30).Text("Convenio de pago").FontColor("#fff").FontSize(20).Bold().FontFamily(fontFamily);
                                 });
                             });
 
@@ -70,7 +71,7 @@ namespace HD_Reporteria.Cobranza
                                 {
                                     txt1.Item().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span("xxxxxxxx").FontSize(10).FontFamily("arial").Bold();
+                                        txt2.Span(mdl.razon_social).FontSize(10).FontFamily("arial").Bold();
                                     });
                                 });
                             });
@@ -78,7 +79,7 @@ namespace HD_Reporteria.Cobranza
                             //col1.Item().LineHorizontal(0.5f);
 
 
-                            col1.Item().PaddingTop(20).PaddingBottom(20).Text("Me comprometo a pagar la cantidad de $1000 conveniado antes del 10 del mes de xxx del año xxxx Humaya Jhon Deere, lo que corresponda a las siguientes facturas.").FontSize(10).FontFamily("arial");
+                            col1.Item().PaddingTop(20).PaddingBottom(20).Text($"Me comprometo a pagar la cantidad de ${mdl.monto.ToString("N2")} conveniado antes del {mdl.fecha_convenio.ToString("dd")} del mes de {mdl.fecha_convenio.ToString("MMMM")} del año {mdl.fecha_convenio.ToString("yyyy")} Humaya Jhon Deere, lo que corresponda a las siguientes facturas.").FontSize(10).FontFamily("arial");
 
 
                             col1.Item().Text("Detalle del convenio:").Bold();
@@ -173,13 +174,13 @@ namespace HD_Reporteria.Cobranza
                                 });
 
 
-                                row1.ConstantItem(200).AlignCenter().Column(txt1 =>
-                                {
-                                    txt1.Item().Height(15).Text(txt2 =>
-                                    {
-                                        txt2.Span("Vendedor").FontSize(08).FontFamily(fontFamily);
-                                    });
-                                });
+                                //row1.ConstantItem(200).AlignCenter().Column(txt1 =>
+                                //{
+                                //    txt1.Item().Height(15).Text(txt2 =>
+                                //    {
+                                //        txt2.Span("Responsa").FontSize(08).FontFamily(fontFamily);
+                                //    });
+                                //});
                             });
 
                             col1.Item().PaddingTop(15).AlignCenter().Row(row1 =>
@@ -188,7 +189,7 @@ namespace HD_Reporteria.Cobranza
                                 {
                                     txt1.Item().Height(15).AlignCenter().Text(txt2 =>
                                     {
-                                        txt2.Span("Celina Godoy Valenzuela").FontSize(10).FontFamily(fontFamily);
+                                        txt2.Span("SILVIA VAZQUEZ").FontSize(10).FontFamily(fontFamily);
                                         //txt2.Span("NAVOLATO").FontSize(10);
                                     });
                                 });
@@ -198,7 +199,7 @@ namespace HD_Reporteria.Cobranza
                                 {
                                     txt1.Item().Height(15).AlignCenter().Text(txt2 =>
                                     {
-                                        txt2.Span("Asael Jimenez Terrazas").FontSize(10).FontFamily(fontFamily);
+                                        txt2.Span(mdl.razon_social).FontSize(10).FontFamily(fontFamily);
                                         //txt2.Span("NAVOLATO").FontSize(10);
                                     });
                                 });
@@ -211,7 +212,7 @@ namespace HD_Reporteria.Cobranza
                                 {
                                     txt1.Item().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span("Nombre y Firma").FontSize(08).FontFamily(fontFamily);
+                                        txt2.Span("Departamento de cobranza").FontSize(08).FontFamily(fontFamily);
                                         //txt2.Span("NAVOLATO").FontSize(10);
                                     });
                                 });
