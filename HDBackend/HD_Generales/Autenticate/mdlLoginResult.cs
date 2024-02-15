@@ -7,5 +7,6 @@
         public string departamento { get; set; } = "";
         public string puesto { get; set; } = "";
         public string email { get; set; } = "";
+        public int adr { get; set; }
     }
 }

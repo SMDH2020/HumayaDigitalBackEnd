@@ -27,13 +27,22 @@ namespace HD.Endpoints.Controllers.Credito
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> Listado(int idcliente)
+        public async Task<ActionResult> Listado(int idcliente,string financiera)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_ClientesDocumentacion_Listado datos = new AD_ClientesDocumentacion_Listado(CadenaConexion);
-            var result = await datos.Listado(idcliente);
+            var result = await datos.Listado(idcliente,financiera);
             return Ok(result);
 
+        }
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ListadoPorLineaCredito(int idcliente,string linea)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_ClientesDocumentacion_Listado datos = new AD_ClientesDocumentacion_Listado(CadenaConexion);
+            var result = await datos.ListadoPorLinea(idcliente,linea);
+            return Ok(result);
         }
 
         [HttpGet]

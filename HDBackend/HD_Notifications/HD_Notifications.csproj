@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HD_AccesoDatos\HD_AccesoDatos.csproj" />
+    <ProjectReference Include="..\HD_Clientes\HD_Clientes.csproj" />
   </ItemGroup>
 
 </Project>

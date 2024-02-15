@@ -1,5 +1,4 @@
 ﻿using HD.Clientes.Consultas.ClientesEQUIP;
-using HD.Clientes.Consultas.GiroEmpresarial;
 using HD.Clientes.Modelos;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
@@ -59,5 +58,18 @@ namespace HD.Endpoints.Controllers.Credito
             return Ok(result);
 
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> Sucursales(string idcliente)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Clientes_Sucursales_Equip datos = new AD_Clientes_Sucursales_Equip(CadenaConexion);
+            var result = await datos.BuscarID(idcliente);
+            return Ok(result);
+
+        }
+
+
     }
 }

@@ -1,6 +1,10 @@
 ﻿using Dapper;
+using ExcelDataReader;
 using HD.AccesoDatos;
 using HD_Dashboard.Modelos;
+using System.Data;
+using System.Data.SqlClient;
+using System.Runtime.CompilerServices;
 
 namespace HD_Dashboard.Consultas.Vendedor
 {
@@ -20,13 +24,31 @@ namespace HD_Dashboard.Consultas.Vendedor
                 //{
                 //    idcliente
                 //};
-                var result = await factory.SQL.QueryMultipleAsync("dashboard.sp_Dashboard_Vendedor", commandType: System.Data.CommandType.StoredProcedure);
+                bool isDataInDB = true;
+                mdlDashboard_Info? result_info;
+                mdlDashboard_Vendedor_Byte? result_vendedor1;
+                mdlDashboard_Vendedor_Byte? result_vendedor2;
+                mdlDashboard_Vendedor_Byte? result_vendedor3;
                 mdlDashboard_Vendedor_Result dashboard = new mdlDashboard_Vendedor_Result();
 
-                mdlDashboard_Info? result_info = result.Read<mdlDashboard_Info>().FirstOrDefault();
-                mdlDashboard_Vendedor_Byte? result_vendedor1 = result.Read<mdlDashboard_Vendedor_Byte>().FirstOrDefault();
-                mdlDashboard_Vendedor_Byte? result_vendedor2 = result.Read<mdlDashboard_Vendedor_Byte>().FirstOrDefault();
-                mdlDashboard_Vendedor_Byte? result_vendedor3 = result.Read<mdlDashboard_Vendedor_Byte>().FirstOrDefault();
+
+                do
+                {
+                    var result = await factory.SQL.QueryMultipleAsync("dashboard.sp_Dashboard_Vendedor", commandType: CommandType.StoredProcedure);
+                    result_info = result.Read<mdlDashboard_Info>().FirstOrDefault();
+                    result_vendedor1 = result.Read<mdlDashboard_Vendedor_Byte>().FirstOrDefault();
+                    result_vendedor2 = result.Read<mdlDashboard_Vendedor_Byte>().FirstOrDefault();
+                    result_vendedor3 = result.Read<mdlDashboard_Vendedor_Byte>().FirstOrDefault();
+                    if (result_vendedor1 == null || result_vendedor2 == null || result_vendedor3 == null)
+                    {
+                        isDataInDB = VendedorDelMes.ObtenerVendedorDelMesExcel(factory);
+                    }
+                    else
+                    {
+                        isDataInDB = true;
+                    }
+
+                } while (!isDataInDB);
 
                 //Vendedor 1
                 mdlDashboard_Vendedor_Base64 vendedor1 = new mdlDashboard_Vendedor_Base64();
@@ -41,7 +63,7 @@ namespace HD_Dashboard.Consultas.Vendedor
                 vendedor2.nombrecompleto = result_vendedor2.nombrecompleto;
                 vendedor2.sucursal = result_vendedor2.sucursal;
                 vendedor2.foto = Convert.ToBase64String(result_vendedor2.foto);
-                
+
                 //v
                 mdlDashboard_Vendedor_Base64 vendedor3 = new mdlDashboard_Vendedor_Base64();
                 vendedor3.idempleado = result_vendedor3.idempleado;
@@ -54,7 +76,7 @@ namespace HD_Dashboard.Consultas.Vendedor
                 dashboard.vendedor1 = vendedor1;
                 dashboard.vendedor2 = vendedor2;
                 dashboard.vendedor3 = vendedor3;
-                factory.SQL.Close();
+                factory.Close();
                 return dashboard;
             }
             catch (System.Exception ex)
@@ -62,5 +84,9 @@ namespace HD_Dashboard.Consultas.Vendedor
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+
+
+      
     }
 }
