@@ -25,6 +25,7 @@ namespace HD_Cobranza.Capturas.ConvenioPago
                     @fecha_convenio = mdl.fecha_convenio,
                     @recordatorio = mdl.recordatorio,
                     @fecha_recordatorio = mdl.fecha_recordatorio,
+                    @mediocontacto = mdl.mediocontacto,
                     @usuario = mdl.usuario,
                 };
 

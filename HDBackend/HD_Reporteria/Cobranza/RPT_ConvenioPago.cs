@@ -1,4 +1,5 @@
-﻿using HD_Cobranza.Modelos;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using HD_Cobranza.Modelos;
 using HD_Cobranza.Modelos.ConvenioPago;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
@@ -12,6 +13,11 @@ namespace HD_Reporteria.Cobranza
             try
             {
                 string fontFamily = "Calibri";
+                var rutaImagenQR = mdl.ADR == 2
+                ? Path.Combine("C:\\Nube\\HumayaDigital\\HumayaDigitalBackEnd\\HDBackend\\HD_Reporteria\\Imagenes\\QRNayarit.png")
+                : Path.Combine("C:\\Nube\\HumayaDigital\\HumayaDigitalBackEnd\\HDBackend\\HD_Reporteria\\Imagenes\\QRSinaloa.png");
+
+                var telefono = mdl.ADR == 2 ? "Tel. (311) 341 4978" : "Tel. (667) 758 8200";
                 byte[] doc = Document.Create(document =>
                 {
                     document.Page(page =>
@@ -33,8 +39,9 @@ namespace HD_Reporteria.Cobranza
 
                                 row.ConstantColumn(450).PaddingTop(35).Height(50).Background("#477c2c").Row(row2 =>
                                 {
-                                    row2.RelativeItem().Padding(10).PaddingLeft(30).Text("Convenio de pago").FontColor("#fff").FontSize(20).Bold().FontFamily(fontFamily);
+                                    row2.RelativeItem().Padding(10).PaddingLeft(30).Text("CONVENIO DE PAGO").FontColor("#fff").FontSize(20).Bold().FontFamily(fontFamily);
                                 });
+
                             });
 
 
@@ -78,47 +85,62 @@ namespace HD_Reporteria.Cobranza
 
                             //col1.Item().LineHorizontal(0.5f);
 
-
-                            col1.Item().PaddingTop(20).PaddingBottom(20).Text($"Me comprometo a pagar la cantidad de ${mdl.monto.ToString("N2")} conveniado antes del {mdl.fecha_convenio.ToString("dd")} del mes de {mdl.fecha_convenio.ToString("MMMM")} del año {mdl.fecha_convenio.ToString("yyyy")} Humaya Jhon Deere, lo que corresponda a las siguientes facturas.").FontSize(10).FontFamily("arial");
-
+                            col1.Item().PaddingTop(20).PaddingBottom(20).Text(txt =>
+                            {
+                                txt.Span("Me comprometo a pagar la cantidad de $").FontSize(10).FontFamily("arial");
+                                txt.Span(mdl.monto.ToString("N2")).FontSize(10).Bold().FontFamily("arial");
+                                txt.Span(" conveniado antes del ").FontSize(10).FontFamily("arial");
+                                txt.Span(mdl.fecha_convenio.ToString("dd")).FontSize(10).Bold().FontFamily("arial");
+                                txt.Span(" del mes de ").FontSize(10).FontFamily("arial");
+                                txt.Span(mdl.fecha_convenio.ToString("MMMM")).FontSize(10).Bold().FontFamily("arial");
+                                txt.Span(" del año ").FontSize(10).FontFamily("arial");
+                                txt.Span(mdl.fecha_convenio.ToString("yyyy")).FontSize(10).Bold().FontFamily("arial");
+                                txt.Span(" a ").FontSize(10).FontFamily("arial");
+                                txt.Span("Humaya John Deere").FontSize(10).Bold().FontFamily("arial");
+                                txt.Span(", lo que corresponda a las siguientes facturas.").FontSize(10).FontFamily("arial");
+                            });
 
                             col1.Item().Text("Detalle del convenio:").Bold();
                             col1.Item().PaddingVertical(10).Table(tabla =>
                             {
                                 tabla.ColumnsDefinition(Columns =>
                                 {
-                                    Columns.RelativeColumn(0.7f);
                                     Columns.RelativeColumn(0.8f);
-                                    Columns.RelativeColumn(1);
-                                    Columns.RelativeColumn(0.8f);
+                                    Columns.RelativeColumn(0.9f);
+                                    Columns.RelativeColumn(1.2f);
+                                    Columns.RelativeColumn(0.9f);
                                     Columns.RelativeColumn(1.5f);
                                     Columns.RelativeColumn(1);
+                                    Columns.RelativeColumn(0.9f);
                                     Columns.RelativeColumn(1);
-                                    Columns.RelativeColumn(0.8f);
                                     Columns.RelativeColumn(1);
+                                    Columns.RelativeColumn(1.2f);
+
 
                                 });
 
                                 tabla.Header(header =>
                                 {
-                                    header.Cell().Background("#ccc").AlignCenter()
-                                    .Padding(1).Text("FOLIO FACTURA").FontSize(08).Bold().FontFamily(fontFamily);
-                                    header.Cell().Background("#ccc").AlignCenter()
-                                    .Padding(1).Text("FECHA").FontSize(08).Bold().FontFamily(fontFamily);
-                                    header.Cell().Background("#ccc").AlignCenter()
-                                    .Padding(1).Text("FECHA DE VENCIMIENTO").FontSize(08).Bold().FontFamily(fontFamily);
-                                    header.Cell().Background("#ccc").AlignCenter()
-                                    .Padding(1).Text("DIAS VENCIDOS").FontSize(08).Bold().FontFamily(fontFamily);
-                                    header.Cell().Background("#ccc").AlignCenter()
-                                    .Padding(1).Text("DESCRIPCION").FontSize(08).Bold().FontFamily(fontFamily);
-                                    header.Cell().Background("#ccc").AlignCenter()
-                                    .Padding(1).Text("MONTO FACTURA").FontSize(08).Bold().FontFamily(fontFamily);
-                                    header.Cell().Background("#ccc").AlignCenter()
-                                    .Padding(1).Text("SALDO VENCIDO").FontSize(08).Bold().FontFamily(fontFamily);
-                                    header.Cell().Background("#ccc").AlignCenter()
-                                    .Padding(1).Text("INTERES MORATORIO").FontSize(08).Bold().FontFamily(fontFamily);
-                                    header.Cell().Background("#ccc").AlignCenter()
-                                    .Padding(1).Text("SALDO CONVENIADO").FontSize(08).Bold().FontFamily(fontFamily);
+                                    header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                    .Padding(1).Text("SERIE").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                    .Padding(1).Text("FECHA").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                    .Padding(1).Text("FECHA DE VENCIMIENTO").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                    .Padding(1).Text("DIAS VENCIDOS").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                    .Padding(1).Text("DESCRIPCION").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                    .Padding(1).Text("MONTO FACTURA").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                    .Padding(1).Text("ABONO").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                    .Padding(1).Text("SALDO VENCIDO").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                    .Padding(1).Text("INTERES MORATORIO").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                    .Padding(1).Text("SALDO CONVENIADO").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
                                 });
 
                                 foreach (var item in Enumerable.Range(1, 3))
@@ -131,34 +153,39 @@ namespace HD_Reporteria.Cobranza
                                     var formattedDescuento = $"{descuento:N0}";
                                     var formattedTotal = $"{total:N0}";
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignCenter()
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
                                     .Text($"{cantidad}").FontSize(8).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignCenter()
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
                                    .Text("").FontSize(8).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1)
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1)
                                    .Text("").FontSize(8).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1)
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1)
                                    .Text("").FontSize(8).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
                                    .Text("").FontSize(8).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
                                    .Text($"{formattedTotal}").FontSize(8).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
                                    .Text("").FontSize(8).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1)
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1)
                                     .Text("").FontSize(8).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1)
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1)
+                                    .Text("").FontSize(8).FontFamily(fontFamily);
+
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1)
                                     .Text("").FontSize(8).FontFamily(fontFamily);
                                 }
                             });
+
+                            col1.Item().PaddingTop(20).Text("En caso de incumplimiento de este convenio, la cuenta continuará generando intereses moratorios incrementando la cantidad del adeudo y afectando su historial crediticio").FontSize(10).FontFamily("arial");
 
                             col1.Item().PaddingTop(20).Text("Es importante cumplir con nuestros compromisos para mantener una relación de confianza, por lo cual, lo invitamos a realizar el pago conveniado en la fecha acordada. ").FontSize(10).Bold().FontFamily("arial");
 
@@ -227,13 +254,45 @@ namespace HD_Reporteria.Cobranza
                                 });
                             });
 
-                            col1.Item().PaddingTop(20).Text("Le recordamos que puede acudir a nuestra sucursal Humaya Jhon Deere o bien a su banco con su REFERENCIA UNICA DE CLIENTE XXXXX a realizar su deposito o transferencia para ponerse al corriente").FontSize(10).FontFamily("arial");
+                            col1.Item().PaddingTop(30).Text(txt =>
+                            {
+                                txt.Span("Le recordamos que puede acudir a nuestra sucursal ").FontSize(10).FontFamily("arial");
+                                txt.Span("Humaya John Deere").FontSize(10).Bold().FontFamily("arial");
+                                txt.Span(" o bien a su banco con su ").FontSize(10).FontFamily("arial");
+                                txt.Span("REFERENCIA UNICA DE CLIENTE XXXXXXX").FontSize(10).Bold().FontFamily("arial");
+                                txt.Span(" a realizar su depósito o transferencia para ponerse al corriente").FontSize(10).FontFamily("arial");
+                            });
                         });
 
-                        page.Footer().Height(60).PaddingLeft(30).PaddingRight(30).Column(col1 =>
+                        page.Footer().Height(100).PaddingLeft(30).PaddingRight(30).PaddingBottom(20).Row(row =>
+        {
+            row.ConstantColumn(0).Row(row1 =>
+            {
+                //var rutaImagen = Path.Combine("C:\\Nube\\HumayaDigital\\HumayaDigitalBackEnd\\HDBackend\\HD_Reporteria\\Imagenes\\QRSinaloa.png");
+                byte[] imageData = System.IO.File.ReadAllBytes(rutaImagenQR);
+                row.ConstantItem(80).BorderRight(1).Image(imageData);
+
+                row.ConstantColumn(180).Row(row2 =>
+                {
+                    row2.RelativeItem().PaddingLeft(10).Column(col1 =>
+                    {
+                        col1.Item().Row(row3 =>
                         {
-
+                            var rutaImagen = Path.Combine("C:\\Nube\\HumayaDigital\\HumayaDigitalBackEnd\\HDBackend\\HD_Reporteria\\Imagenes\\whatsapp.png");
+                            byte[] imageData = System.IO.File.ReadAllBytes(rutaImagen);
+                            row3.ConstantItem(15).PaddingTop(5).Image(imageData);
+                            row3.RelativeItem().PaddingLeft(5).PaddingTop(5).Text(telefono).FontSize(10).FontFamily("arial");
                         });
+                        col1.Item().PaddingTop(10).Text(txt => {
+                            txt.Span("Tel. (667) 758 8200 ").FontSize(10).FontFamily("arial");
+                            txt.Span("Ext. 8511").Bold().FontSize(10).FontFamily("arial");
+                        });
+                        col1.Item().PaddingTop(10).Text("www.humaya.com.mx").FontSize(10).FontFamily("arial");
+                    });
+                });
+            });
+
+        });
 
                     });
                 }).GeneratePdf();
