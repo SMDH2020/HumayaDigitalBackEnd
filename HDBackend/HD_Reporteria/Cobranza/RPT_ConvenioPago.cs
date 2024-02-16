@@ -149,41 +149,48 @@ namespace HD_Reporteria.Cobranza
                                     .Padding(1).Text("SALDO TOTAL").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
                                 });
 
-                                //foreach (var item in lst)
-                                //{
+                                foreach (var item in lst)
+                                {
 
-                                //    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
-                                //    .Text($"{item.documento}").FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
+                                    .Text($"{item.documento}").FontSize(8).FontFamily(fontFamily);
 
-                                //    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
-                                //   .Text(item.fecha).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
+                                   .Text(item.fecha).FontSize(8).FontFamily(fontFamily);
 
-                                //    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
-                                //   .Text(item.vencimiento).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
+                                   .Text(item.vencimiento).FontSize(8).FontFamily(fontFamily);
 
-                                //    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
-                                //   .Text(item.diasvencido).FontSize(8).FontFamily(fontFamily);
+                                    if(item.diasvencido < 0) {
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
+                                       .Text("").FontSize(8).FontFamily(fontFamily);
+                                    }
+                                    else {
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
+                                        .Text(item.diasvencido).FontSize(8).FontFamily(fontFamily);
+                                    }
+                                   
 
-                                //    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1)
-                                //   .Text(item.descripcion).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1)
+                                   .Text(item.descripcion).FontSize(8).FontFamily(fontFamily);
 
-                                //    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
-                                //   .Text($"{item.importefactura.ToString("N2")}").FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
+                                   .Text($"{item.importefactura.ToString("N2")}").FontSize(8).FontFamily(fontFamily);
 
-                                //    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
-                                //   .Text(item.importepagado.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
+                                   .Text(item.importepagado.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
-                                //    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
-                                //    .Text(item.saldo.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
+                                    .Text(item.saldo.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
-                                //    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
-                                //    .Text(item.intereses.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
+                                    .Text(item.intereses.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
-                                //    double importetotal = item.saldo + item.intereses;
+                                    double importetotal = item.saldo + item.intereses;
 
-                                //    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
-                                //    .Text(importetotal.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                //}
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
+                                    .Text(importetotal.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                }
                             });
 
                             col1.Item().PaddingTop(20).Text("En caso de incumplimiento de este convenio, la cuenta continuará generando intereses moratorios incrementando la cantidad del adeudo y afectando su historial crediticio").FontSize(10).FontFamily("arial");
