@@ -12,7 +12,7 @@ namespace HD_Cobranza.Capturas.ConvenioPago
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<string> Guardar(mdlConvenio_Pago mdl)
+        public async Task<IEnumerable<mdlVencidosOperacion>> Guardar(mdlConvenio_Pago mdl)
         {
             try
             {
@@ -22,6 +22,7 @@ namespace HD_Cobranza.Capturas.ConvenioPago
                     @folio = mdl.folio,
                     @idcliente = mdl.idcliente,
                     @monto = mdl.monto,
+                    @tipo_credito= mdl.tipo_credito,
                     @fecha_convenio = mdl.fecha_convenio,
                     @recordatorio = mdl.recordatorio,
                     @fecha_recordatorio = mdl.fecha_recordatorio,
@@ -29,9 +30,9 @@ namespace HD_Cobranza.Capturas.ConvenioPago
                     @usuario = mdl.usuario,
                 };
 
-                var result = await factory.SQL.QueryAsync("Credito.sp_Convenio_pago_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryAsync<mdlVencidosOperacion>("Credito.sp_Convenio_pago_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
-                return "Convenio registrado con Exito";
+                return result;
             }
             catch (System.Exception ex)
             {
