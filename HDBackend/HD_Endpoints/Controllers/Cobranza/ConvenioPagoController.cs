@@ -24,8 +24,17 @@ namespace HD.Endpoints.Controllers.Cobranza
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             ADConvenio_Pago datos = new ADConvenio_Pago(CadenaConexion);
             mdl.usuario = Sesion.usuario();
-            await datos.Guardar(mdl);
-            return Ok(new { mensaje = "Convenio registrado con Exito" });
+            var result=await datos.Guardar(mdl);
+            try
+            {
+                RPT_Result documento = RPT_ConvenioPago.Generar(mdl, result);
+                return Ok(documento);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error de servidor");
+
+            }
         }
 
         [HttpPost]
@@ -35,7 +44,7 @@ namespace HD.Endpoints.Controllers.Cobranza
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             try
             {
-                RPT_Result documento = RPT_ConvenioPago.Generar(mdl);
+                RPT_Result documento = RPT_ConvenioPago.Generar(mdl,null);
 
                 return Ok(documento);
             }
