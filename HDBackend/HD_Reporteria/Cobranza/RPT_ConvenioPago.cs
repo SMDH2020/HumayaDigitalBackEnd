@@ -8,7 +8,7 @@ namespace HD_Reporteria.Cobranza
 {
     public class RPT_ConvenioPago
     {
-        public static RPT_Result Generar(mdlConvenio_Pago mdl)
+        public static RPT_Result Generar(mdlConvenio_Pago mdl,IEnumerable<mdlVencidosOperacion> lst)
         {
             try
             {
@@ -18,6 +18,8 @@ namespace HD_Reporteria.Cobranza
                 : Path.Combine("C:\\Nube\\HumayaDigital\\HumayaDigitalBackEnd\\HDBackend\\HD_Reporteria\\Imagenes\\QRSinaloa.png");
 
                 var telefono = mdl.ADR == 2 ? "Tel. (311) 341 4978" : "Tel. (667) 758 8200";
+
+                var  extension = mdl.ADR == 2 ? "Ext. 8511" : "Ext. 8111";
                 byte[] doc = Document.Create(document =>
                 {
                     document.Page(page =>
@@ -140,48 +142,43 @@ namespace HD_Reporteria.Cobranza
                                     header.Cell().Background("#275027").AlignCenter().AlignMiddle()
                                     .Padding(1).Text("INTERES MORATORIO").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("SALDO CONVENIADO").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    .Padding(1).Text("SALDO TOTAL").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
                                 });
 
-                                foreach (var item in Enumerable.Range(1, 3))
+                                foreach (var item in lst)
                                 {
-                                    var cantidad = Placeholders.Random.Next(1, 10);
-                                    var precio = Placeholders.Random.Next(500, 50000);
-                                    var descuento = Placeholders.Random.Next(50, 500);
-                                    var total = (precio - descuento) * cantidad;
-                                    var formattedPrecio = $"{precio:N0}";
-                                    var formattedDescuento = $"{descuento:N0}";
-                                    var formattedTotal = $"{total:N0}";
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
-                                    .Text($"{cantidad}").FontSize(8).FontFamily(fontFamily);
+                                    .Text($"{item.documento}").FontSize(8).FontFamily(fontFamily);
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
-                                   .Text("").FontSize(8).FontFamily(fontFamily);
+                                   .Text(item.fecha).FontSize(8).FontFamily(fontFamily);
+
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
+                                   .Text(item.vencimiento).FontSize(8).FontFamily(fontFamily);
+
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
+                                   .Text(item.diasvencido).FontSize(8).FontFamily(fontFamily);
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1)
-                                   .Text("").FontSize(8).FontFamily(fontFamily);
-
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1)
-                                   .Text("").FontSize(8).FontFamily(fontFamily);
+                                   .Text(item.descripcion).FontSize(8).FontFamily(fontFamily);
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
-                                   .Text("").FontSize(8).FontFamily(fontFamily);
+                                   .Text($"{item.importefactura.ToString("N2")}").FontSize(8).FontFamily(fontFamily);
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
-                                   .Text($"{formattedTotal}").FontSize(8).FontFamily(fontFamily);
+                                   .Text(item.importepagado.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
-                                   .Text("").FontSize(8).FontFamily(fontFamily);
+                                    .Text(item.saldo.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1)
-                                    .Text("").FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
+                                    .Text(item.intereses.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1)
-                                    .Text("").FontSize(8).FontFamily(fontFamily);
+                                    double importetotal = item.saldo + item.intereses;
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1)
-                                    .Text("").FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
+                                    .Text(importetotal.ToString("N2")).FontSize(8).FontFamily(fontFamily);
                                 }
                             });
 
@@ -195,7 +192,7 @@ namespace HD_Reporteria.Cobranza
                                 {
                                     txt1.Item().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span("Cliente").FontSize(08).FontFamily(fontFamily);
+                                        txt2.Span("").FontSize(08).FontFamily(fontFamily);
                                         //txt2.Span("NAVOLATO").FontSize(10);
                                     });
                                 });
@@ -249,7 +246,7 @@ namespace HD_Reporteria.Cobranza
                                 {
                                     txt1.Item().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span("Nombre y Firma").FontSize(08).FontFamily(fontFamily);
+                                        txt2.Span("Nombre y Firma del Cliente").FontSize(08).FontFamily(fontFamily);
                                     });
                                 });
                             });
@@ -259,7 +256,7 @@ namespace HD_Reporteria.Cobranza
                                 txt.Span("Le recordamos que puede acudir a nuestra sucursal ").FontSize(10).FontFamily("arial");
                                 txt.Span("Humaya John Deere").FontSize(10).Bold().FontFamily("arial");
                                 txt.Span(" o bien a su banco con su ").FontSize(10).FontFamily("arial");
-                                txt.Span("REFERENCIA UNICA DE CLIENTE XXXXXXX").FontSize(10).Bold().FontFamily("arial");
+                                txt.Span($"REFERENCIA UNICA DE CLIENTE {mdl.referencia}").FontSize(10).Bold().FontFamily("arial");
                                 txt.Span(" a realizar su depósito o transferencia para ponerse al corriente").FontSize(10).FontFamily("arial");
                             });
                         });
@@ -285,7 +282,7 @@ namespace HD_Reporteria.Cobranza
                         });
                         col1.Item().PaddingTop(10).Text(txt => {
                             txt.Span("Tel. (667) 758 8200 ").FontSize(10).FontFamily("arial");
-                            txt.Span("Ext. 8511").Bold().FontSize(10).FontFamily("arial");
+                            txt.Span(extension).Bold().FontSize(10).FontFamily("arial");
                         });
                         col1.Item().PaddingTop(10).Text("www.humaya.com.mx").FontSize(10).FontFamily("arial");
                     });
