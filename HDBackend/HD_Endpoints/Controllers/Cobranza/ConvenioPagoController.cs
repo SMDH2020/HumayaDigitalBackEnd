@@ -39,11 +39,14 @@ namespace HD.Endpoints.Controllers.Cobranza
 
         [HttpPost]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ReporteConvenioPDF(mdlConvenio_Pago mdl)
+        public async Task<ActionResult> ReporteConvenioPDF(mdlConvenio_Pago mdl )
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            //var result = await ReporteConvenioPDF(mdl);
+            //var result = 
             try
             {
+                //IEnumerable<mdlVencidosOperacion> lstVencidos;
                 RPT_Result documento = RPT_ConvenioPago.Generar(mdl,null);
 
                 return Ok(documento);
