@@ -90,19 +90,25 @@ namespace HD_Reporteria.Cobranza
                             col1.Item().PaddingTop(20).PaddingBottom(20).Text(txt =>
                             {
                                 txt.Span("Me comprometo a pagar la cantidad de $").FontSize(10).FontFamily("arial");
-                                txt.Span(mdl.monto.ToString("N2")).FontSize(10).Bold().FontFamily("arial");
+                                if (mdl.mediocontacto == "DO") { txt.Span(mdl.monto.ToString("__________")).FontSize(10).Bold().FontFamily("arial"); }
+                                else { txt.Span(mdl.monto.ToString("N2")).FontSize(10).Bold().FontFamily("arial"); }
                                 txt.Span(" conveniado antes del ").FontSize(10).FontFamily("arial");
-                                txt.Span(mdl.fecha_convenio.ToString("dd")).FontSize(10).Bold().FontFamily("arial");
+                                if (mdl.mediocontacto == "DO") { txt.Span(mdl.monto.ToString("_____")).FontSize(10).Bold().FontFamily("arial"); }
+                                else { txt.Span(mdl.fecha_convenio.ToString("dd")).FontSize(10).Bold().FontFamily("arial"); }
                                 txt.Span(" del mes de ").FontSize(10).FontFamily("arial");
-                                txt.Span(mdl.fecha_convenio.ToString("MMMM")).FontSize(10).Bold().FontFamily("arial");
+                                if (mdl.mediocontacto == "DO") { txt.Span(mdl.monto.ToString("____________")).FontSize(10).Bold().FontFamily("arial"); }
+                                else { txt.Span(mdl.fecha_convenio.ToString("MMMM")).FontSize(10).Bold().FontFamily("arial"); }
                                 txt.Span(" del año ").FontSize(10).FontFamily("arial");
-                                txt.Span(mdl.fecha_convenio.ToString("yyyy")).FontSize(10).Bold().FontFamily("arial");
+                                if (mdl.mediocontacto == "DO") { txt.Span(mdl.monto.ToString("_______")).FontSize(10).Bold().FontFamily("arial"); }
+                                else { txt.Span(mdl.fecha_convenio.ToString("yyyy")).FontSize(10).Bold().FontFamily("arial"); }
                                 txt.Span(" a ").FontSize(10).FontFamily("arial");
                                 txt.Span("Humaya John Deere").FontSize(10).Bold().FontFamily("arial");
                                 txt.Span(", lo que corresponda a las siguientes facturas.").FontSize(10).FontFamily("arial");
                             });
 
                             col1.Item().Text("Detalle del convenio:").Bold();
+
+                            double sumaImporteTotal = 0;
                             col1.Item().PaddingVertical(10).Table(tabla =>
                             {
                                 tabla.ColumnsDefinition(Columns =>
@@ -157,8 +163,15 @@ namespace HD_Reporteria.Cobranza
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
                                    .Text(item.vencimiento).FontSize(8).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
-                                   .Text(item.diasvencido).FontSize(8).FontFamily(fontFamily);
+                                    if(item.diasvencido < 0) {
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
+                                       .Text("").FontSize(8).FontFamily(fontFamily);
+                                    }
+                                    else {
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
+                                        .Text(item.diasvencido).FontSize(8).FontFamily(fontFamily);
+                                    }
+                                   
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1)
                                    .Text(item.descripcion).FontSize(8).FontFamily(fontFamily);
@@ -179,7 +192,22 @@ namespace HD_Reporteria.Cobranza
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
                                     .Text(importetotal.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+
+                                    sumaImporteTotal += importetotal;
                                 }
+                                tabla.Footer(footer =>
+                                {
+                                    footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
+                                    footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
+                                    footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
+                                    footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
+                                    footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
+                                    footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
+                                    footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
+                                    footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
+                                    footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text("TOTAL").FontSize(8).FontFamily("arial").Bold();
+                                    footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaImporteTotal.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
+                                });
                             });
 
                             col1.Item().PaddingTop(20).Text("En caso de incumplimiento de este convenio, la cuenta continuará generando intereses moratorios incrementando la cantidad del adeudo y afectando su historial crediticio").FontSize(10).FontFamily("arial");
