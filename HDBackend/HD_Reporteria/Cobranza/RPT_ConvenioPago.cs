@@ -205,8 +205,8 @@ namespace HD_Reporteria.Cobranza
                                     footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
                                     footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
                                     footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
-                                    footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text("TOTAL").FontSize(8).FontFamily("arial");
-                                    footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaImporteTotal.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text("TOTAL").FontSize(8).FontFamily("arial").Bold();
+                                    footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaImporteTotal.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
                                 });
                             });
 

@@ -54,15 +54,17 @@ namespace HD.Endpoints.Controllers.Cobranza
                 }
                 else
                 {
-                    result = (IEnumerable<mdlVencidosOperacion>)await datos.ObtenerRevolvente(mdl.idcliente);
+                    result = (await datos.ObtenerRevolvente(mdl.idcliente)).OfType<mdlVencidosOperacion>();
                 };
+
+                
                 RPT_Result documento = RPT_ConvenioPago.Generar(mdl,result);
 
                 return Ok(documento);
             }
             catch (Exception ex)
             {
-                return BadRequest("Error de servidor");
+                return BadRequest($"Error de servidor: {ex.Message}");
 
             }
 
