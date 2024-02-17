@@ -44,7 +44,15 @@ namespace HD.Endpoints.Controllers.Cobranza
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             try
             {
-                RPT_Result documento = RPT_ConvenioPago.Generar(mdl,null);
+               
+                ADVencimientosSaldos datos = new ADVencimientosSaldos(CadenaConexion);
+                IEnumerable<mdlVencidosOperacion> result;
+                if (mdl.tipo_credito == "O")
+                    result = await datos.ObtenerRevolventeob(mdl.idcliente);
+                else
+                    result = await datos.ObtenerOperacion(mdl.idcliente);
+
+                RPT_Result documento = RPT_ConvenioPago.GenerarPDF(mdl,result);
 
                 return Ok(documento);
             }
