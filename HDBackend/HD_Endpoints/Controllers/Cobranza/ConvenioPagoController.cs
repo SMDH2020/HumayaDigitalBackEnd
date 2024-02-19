@@ -49,9 +49,9 @@ namespace HD.Endpoints.Controllers.Cobranza
                 ADVencimientosSaldos datos = new ADVencimientosSaldos(CadenaConexion);
                 IEnumerable<mdlVencidosOperacion> result;
                 if (mdl.tipo_credito == "O")
-                    result = await datos.ObtenerRevolventeob(mdl.idcliente);
-                else
                     result = await datos.ObtenerOperacion(mdl.idcliente);
+                else
+                    result = await datos.ObtenerRevolventeob(mdl.idcliente);
 
                 RPT_Result documento = RPT_ConvenioPago.GenerarPDF(mdl,result);
 
