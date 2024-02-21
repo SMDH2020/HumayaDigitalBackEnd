@@ -1,4 +1,5 @@
-﻿using HD.Security;
+﻿using HD.Clientes.Consultas.InteresMensual;
+using HD.Security;
 using HD_Finanzas.AccesoDatos.Tasa_de_intereses;
 using HD_Finanzas.Modelos.Tasa_de_intereses;
 using Microsoft.AspNetCore.Mvc;
@@ -66,6 +67,19 @@ namespace HD.Endpoints.Controllers.Finanzas
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             FAD_TipoTasas_Listado datos = new FAD_TipoTasas_Listado(CadenaConexion);
             var result = await datos.Listado(anio,mes);
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerDocumento(int idtipo_tasa)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            FAD_TipoTasas_ObtenerDocumento datos = new FAD_TipoTasas_ObtenerDocumento(CadenaConexion);
+            var result = await datos.Obtener(idtipo_tasa);
+            if (result is null)
+                return BadRequest(new { mensaje = "Documento no encontrado. Favor de comunicarse con el administrador del sistema" });
             return Ok(result);
 
         }
