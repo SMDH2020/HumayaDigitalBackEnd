@@ -59,5 +59,16 @@ namespace HD.Endpoints.Controllers.Finanzas
 
         }
 
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> Listado(int anio, int mes)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            FAD_TipoTasas_Listado datos = new FAD_TipoTasas_Listado(CadenaConexion);
+            var result = await datos.Listado(anio,mes);
+            return Ok(result);
+
+        }
+
     }
 }
