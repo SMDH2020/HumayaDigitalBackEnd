@@ -37,7 +37,7 @@ namespace HD.Endpoints.Controllers.Credito
 
             try
             {
-                RPT_Result documento = RPT_Pedido.Generar(result);
+                RPT_Result documento = result.condiciones.mhusajdf=="JDT" ? RPT_Pedido.Generar(result) : RPT_Pedido_JDF.Generar(result) ;
 
                 return Ok(documento);
             }

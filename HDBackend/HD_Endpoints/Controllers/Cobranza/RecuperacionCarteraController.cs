@@ -29,6 +29,19 @@ namespace HD.Endpoints.Controllers.Cobranza
         }
         [HttpPost]
         [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> Obtener_Resumen(RC_mdl_view obj)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADcob_RecuperacionCartera datos = new ADcob_RecuperacionCartera(CadenaConexion);
+            DateTime _Fechainicio = DateTime.Parse(obj.inicio);
+            DateTime _Fechafin = DateTime.Parse(obj.fin);
+            var result = await datos.Obtener(_Fechainicio,_Fechafin);
+            return Ok(result);
+
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> ObtenerDetalle(RC_mdl_view obj)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
