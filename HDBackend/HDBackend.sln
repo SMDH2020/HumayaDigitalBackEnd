@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HD_Cobranza", "HD_Cobranza\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HD_Reporteria", "HD_Reporteria\HD_Reporteria.csproj", "{535304FF-AB7A-42A7-9761-25C54F403B71}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HD_Finanzas", "HD_Finanzas\HD_Finanzas.csproj", "{2F9167DC-049D-4646-99AD-1677D6BC3DE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HD_Finanzas", "HD_Finanzas\HD_Finanzas.csproj", "{2F9167DC-049D-4646-99AD-1677D6BC3DE0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
