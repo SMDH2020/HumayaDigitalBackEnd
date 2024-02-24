@@ -1,23 +1,17 @@
-﻿using Dapper;
-using ExcelDataReader;
-using HD.AccesoDatos;
+﻿using ExcelDataReader;
+using System.Collections.Generic;
+using System;
 using System.Data;
-using System.Data.SqlClient;
+using System.IO;
+using System.Linq;
 
-namespace HD_Dashboard.Modelos
+namespace DesktopServices.VendedorMes
 {
-    internal class VendedorDelMes
+    public class LeerFacturacionMensual
     {
-        public string nombre { get; set; }
-        public double utilidad { get; set; }
-
-        public int mes { get; set; }
-        public int año { get; set; }
-
-        public static List<VendedorDelMes> ObtenerVendedorDelMesExcel()
-        {
-            var filePath = "C:\\SMDH\\HumayaDigital\\CONTROL DE FACTURACION.xls";
-            using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
+        public static List<mdlVendedorMes> ObtenerVendedorDelMesExcel(string path)
+        {    
+            using (var stream = File.Open(path, FileMode.Open, FileAccess.Read))
             {
                 // Crear un lector de Excel con la fábrica
                 using (var reader = ExcelReaderFactory.CreateReader(stream))
@@ -67,7 +61,7 @@ namespace HD_Dashboard.Modelos
                     var query = from row in table.AsEnumerable()
                                 where row.Field<DateTime>("FECHA") <= endDate && row.Field<DateTime>("FECHA") >= startDate
                                 group row by row.Field<string>("VENDEDOR") into g
-                                select new VendedorDelMes
+                                select new mdlVendedorMes
                                 {
                                     nombre = g.Key,
                                     utilidad = g.Sum(r => r.Field<double>("UTILIDAD FINAL")),
@@ -78,50 +72,10 @@ namespace HD_Dashboard.Modelos
 
 
                     query = query.OrderByDescending(p => p.utilidad).ToList();
-                    return (List<VendedorDelMes>)query;
+                    return (List<mdlVendedorMes>)query;
                 }
 
 
-            }
-        }
-
-        public static bool ObtenerVendedorDelMesExcel(FactoryConection factory)
-        {
-
-            try
-            {
-                int posisicion = 1;
-                foreach (var item in VendedorDelMes.ObtenerVendedorDelMesExcel())
-                {
-                    Console.WriteLine(factory.Mensaje);
-                    //Console.WriteLine("Nombre: {0}, Ventas: {1}", item.Nombre, item.Precio);
-                    var ultimoEspacio = item.nombre.LastIndexOf(" ");
-                    var nombre = item.nombre.Substring(0, ultimoEspacio);
-                    var apellido = item.nombre.Substring(ultimoEspacio + 1);
-
-                    var id = factory.SQL.QueryFirstOrDefault<int>("dashboard.sp_Obtener_ID_Vendedor_Por_Nombre", new { nombre = nombre, apellidopaterno = apellido },
-                        commandType: CommandType.StoredProcedure);
-
-                    _ = factory.SQL.Query("dashboard.sp_vendedor_Mes_Guardar", new
-                    {
-                        idvendedormes = -1,
-                        ejercicio = item.año,
-                        periodo = item.mes,
-                        posicion = posisicion++,
-                        idempleado = id,
-                        estatus = 1,
-                        usuario = 0
-                    }, commandType: CommandType.StoredProcedure);
-
-
-                }
-                //Console.ReadLine();
-                return true;
-            }
-            catch (SqlException ex)
-            {
-                // factory.transaccion.Rollback();
-                throw ex;
             }
         }
     }
