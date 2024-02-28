@@ -40,15 +40,5 @@ namespace HD.Endpoints.Controllers.Authenticate
 
         }
 
-        [HttpGet]
-        [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> Buscar(int idusuario)
-        {
-            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-            AD_Usuarios_Search datos = new AD_Usuarios_Search(CadenaConexion);
-            var result = await datos.Listado(idusuario);
-            return Ok(result);
-
-        }
     }
 }

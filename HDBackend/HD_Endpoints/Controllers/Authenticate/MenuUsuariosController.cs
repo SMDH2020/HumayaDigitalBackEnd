@@ -35,28 +35,7 @@ namespace HD.Endpoints.Controllers.Authenticate
             return Ok(result);
 
         }
-
-        [HttpGet]
-        [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ListadoUsuario(int idusuario)
-        {
-            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-            AD_UsuarioMenu_Listado datos = new AD_UsuarioMenu_Listado(CadenaConexion);
-            var result = await datos.ListadoUsuario(idusuario);
-            return Ok(result);
-
-        }
-
-        [HttpGet]
-        [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ListadoMenu(int idmodulo)
-        {
-            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-            AD_RelMenuModulo_Listado datos = new AD_RelMenuModulo_Listado(CadenaConexion);
-            var result = await datos.ListadoMenu(idmodulo);
-            return Ok(result);
-
-        }
+        
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
