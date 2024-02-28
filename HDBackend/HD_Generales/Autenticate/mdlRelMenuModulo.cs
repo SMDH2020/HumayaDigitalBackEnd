@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 namespace HD.Generales.Autenticate
 {
-    public class mdlUsuarioMenu
+    public class mdlRelMenuModulo
     {
-        public int idrel { get; set; }
-        public int idusuario { get; set; }
         public int idmenu { get; set; }
         public int idmodulo { get; set; }
+        public string descripcion { get; set; } = "";
+        public string nomenclatura { get; set; } = "";
         public bool estatus { get; set; } = true;
         public string? usuario { get; set; } = "";
-
     }
 }
