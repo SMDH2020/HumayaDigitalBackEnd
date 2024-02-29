@@ -50,7 +50,7 @@ namespace HD.Notifications.Analisis
             }
 
         }
-        public static Task<bool> Enviar(mdlAnalisis_Email datos_correo)
+        public static Task<bool> EnviarAutorizarFacturacion(mdlAnalisisAutorizacionFacturacion_Email datos_correo)
         {
 
             try
@@ -66,7 +66,7 @@ namespace HD.Notifications.Analisis
                 client.UseDefaultCredentials = false;
                 client.Credentials = new System.Net.NetworkCredential(_correo, password);
                 objeto_mail.From = new MailAddress(_correo);
-
+                objeto_mail.To.Add(new MailAddress(datos_correo.correo_cajera));
                 objeto_mail.To.Add(new MailAddress(datos_correo.correo_responsable_credito));
                 objeto_mail.To.Add(new MailAddress(datos_correo.correo_gerente_sucursal));
                 objeto_mail.To.Add(new MailAddress(datos_correo.correo_vendedor));
@@ -120,6 +120,38 @@ namespace HD.Notifications.Analisis
             return sHtml;
 
         }
+        static string body(mdlAnalisisAutorizacionFacturacion_Email datos_Correo)
 
+        {
+
+            byte[] logo = File.ReadAllBytes("C:\\SMDH\\logo-reports.jpg");
+
+            string logo64 = Convert.ToBase64String(logo);
+
+            String sHtml;
+
+            sHtml = "<HTML>\n" +
+               "<HEAD>\n" +
+               "<TITLE>SOLICITUD DE CREDITO</TITLE>\n" +
+               "</HEAD>\n" +
+               "<BODY style=\"text-align:center;\"><P>\n" +
+                "<div style=\"\">\n" +
+                    "<img height='100' src='data:image/png;base64," + logo64 + "'/>\n" +
+                "</div>\n" +
+                "<h1  style =\"\"> SOLICITUD DE CREDITO </h1>\n" +
+                "</div>\n" +
+               "<h1 style=\"font-size:16; text-transform: uppercase\"><Font Color='#235B34'>" + datos_Correo.proceso + "</Font></h1></P>\n" +
+               "<h1 style=\"font-size:16; text-transform: uppercase\"><Font Color='#235B34'>" + datos_Correo.estatus + "</Font></h1></P>\n" +
+              "<table style=\"border: 1px solid green;border-radius:5px; padding: 10px; spacing:0; display: flex; align - items:center; justify - content:center; margin - left:80px; margin - right:80px; '\">\n" +
+              "<tr>\n" +
+                "<td>" + datos_Correo.comentarios + "222</td>\n" +
+            " </tr>\n" +
+            "</table>\n" +
+            "</BODY>\n" +
+            "</HTML>";
+
+            return sHtml;
+
+        }
     }
 }

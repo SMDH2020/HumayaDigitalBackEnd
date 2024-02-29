@@ -28,7 +28,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             }
             ADAnalisisNotificacion notificacion = new ADAnalisisNotificacion(CadenaConexion);
             var body = await notificacion.GetBodyAutorizacionFacturacion(mdl);
-            await NotificacionComentarios.Enviar(body);
+            await NotificacionComentarios.EnviarAutorizarFacturacion(body);
             return Ok(result);
         }
     }
