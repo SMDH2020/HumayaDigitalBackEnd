@@ -50,6 +50,42 @@ namespace HD.Notifications.Analisis
             }
 
         }
+        public static Task<bool> Enviar(mdlAnalisis_Email datos_correo)
+        {
+
+            try
+            {
+                string password = "!HD_Hum4y4D1g1t4l*T1?";
+                string _correo = "HumayaDigital@humaya.com.mx";
+                MailMessage objeto_mail = new MailMessage();
+                SmtpClient client = new SmtpClient();
+                client.Port = 587;
+                client.Host = "correo.humaya.com.mx";
+                client.Timeout = 20000;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+                client.Credentials = new System.Net.NetworkCredential(_correo, password);
+                objeto_mail.From = new MailAddress(_correo);
+
+                objeto_mail.To.Add(new MailAddress(datos_correo.correo_responsable_credito));
+                objeto_mail.To.Add(new MailAddress(datos_correo.correo_gerente_sucursal));
+                objeto_mail.To.Add(new MailAddress(datos_correo.correo_vendedor));
+
+                objeto_mail.Subject = datos_correo.asunto + datos_correo.proceso;
+                objeto_mail.IsBodyHtml = true;
+                objeto_mail.Body = body(datos_correo);
+                client.EnableSsl = false;
+                client.Send(objeto_mail);
+                return Task.FromResult(true);
+            }
+
+            catch (Exception ex)
+            {
+                _Mensaje = ex.Message;
+                return Task.FromResult(false);
+            }
+
+        }
 
         static string body(mdlAnalisis_Email datos_Correo)
 
