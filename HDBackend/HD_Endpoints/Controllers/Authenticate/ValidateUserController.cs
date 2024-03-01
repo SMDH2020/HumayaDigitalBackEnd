@@ -27,7 +27,7 @@ namespace HD.Endpoints.Controllers.Authenticate
                     return BadRequest("No cuenta con permisos para acceder a la aplicación, favor de comunicarse con el administrador del sistema");
                 }
 
-                return Ok(new { usuario = result.usuario, modulos = result.modulos, menus = result.menus });
+                return Ok(new { usuario = result.usuario, modulos = result.modulos, menus = result.menus, presas=result.presas});
             }
         }
     }
