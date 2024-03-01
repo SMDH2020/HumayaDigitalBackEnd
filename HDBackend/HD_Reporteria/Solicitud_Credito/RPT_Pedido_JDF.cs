@@ -1,9 +1,10 @@
 ﻿using HD.Clientes.Modelos.Pedido_Impresion;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
+
 namespace HD_Reporteria.Solicitud_Credito
 {
-    public class RPT_Pedido
+    public class RPT_Pedido_JDF
     {
         public static RPT_Result Generar(mdl_pedido_impresion mdl)
         {
@@ -250,7 +251,8 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.solicitante?.solicitante).FontSize(8).FontFamily(fontFamily);
+                                        txt2.Span("JOHN DEERE FINANCIAL").FontSize(8).FontFamily(fontFamily);
+                                        //txt2.Span(mdl.solicitante?.solicitante).FontSize(8).FontFamily(fontFamily);
                                     });
                                 });
 
@@ -271,7 +273,8 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.solicitante?.rfc).FontSize(8).FontFamily(fontFamily);
+                                        txt2.Span("JDC960417VA1").FontSize(8).FontFamily(fontFamily);
+                                        //txt2.Span(mdl.solicitante?.rfc).FontSize(8).FontFamily(fontFamily);
                                     });
                                 });
 
@@ -550,7 +553,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                     txt1.Item().AlignCenter().Height(15).Text(txt2 =>
                                     {
                                         // Asegúrate de que mdl.condiciones?.deposito tenga un valor antes de intentar formatearlo
-                                        if (mdl.condiciones?.deposito>0)
+                                        if (mdl.condiciones?.deposito > 0)
                                         {
                                             txt2.Span(mdl.condiciones?.deposito.ToString("N")).FontSize(10).FontFamily(fontFamily);
                                         }

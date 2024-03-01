@@ -24,6 +24,7 @@ namespace HD.Clientes.Modelos
         public double importe { get; set; }
 
         public string? estatus { get; set; }
+        public string? solicitud { get; set; }
 
         public string? usuario { get; set; } = "";
     }

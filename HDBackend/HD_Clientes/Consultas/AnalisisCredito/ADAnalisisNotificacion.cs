@@ -40,5 +40,28 @@ namespace HD.Clientes.Consultas.AnalisisCredito
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+        public async Task<mdlAnalisisAutorizacionFacturacion_Email> GetBodyAutorizacionFacturacion(mdlSCAnalisis_Comentarios comentario)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    folio = comentario.folio,
+                    idproceso = comentario.idproceso,
+                    estatus = comentario.estatus,
+                };
+                mdlAnalisisAutorizacionFacturacion_Email result = await factory.SQL.QueryFirstOrDefaultAsync<mdlAnalisisAutorizacionFacturacion_Email>("Credito.sp_Analisis_Notificacion_Autorizacion_Facturacion", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                if (result != null)
+                    result.comentarios = comentario.comentarios;
+                else result = new mdlAnalisisAutorizacionFacturacion_Email();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }
