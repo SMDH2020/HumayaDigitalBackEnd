@@ -2,6 +2,7 @@
 {
     public class mdlVencidosRevolvente
     {
+        public int id { get; set; }
         public int idcliente { get; set; }
         public int idadr { get; set; }
         public int idsucursal { get; set; }
