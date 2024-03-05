@@ -9,23 +9,23 @@ using System.Threading.Tasks;
 
 namespace HD.Generales.Consultas
 {
-    public class AD_UsuarioMenu_Listado
+    public class AD_RelMenuModulo_Listado
     {
         private string CadenaConexion;
-        public AD_UsuarioMenu_Listado(string _cadenaconexion)
+        public AD_RelMenuModulo_Listado(string _cadenaconexion)
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlUsuarioMenu>> ListadoUsuario(int idusuario)
+        public async Task<IEnumerable<mdlRelMenuModulo>> ListadoMenu(int idmodulo)
         {
             try
             {
                 var parametros = new
                 {
-                    idusuario
+                    idmodulo
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdlUsuarioMenu> result = await factory.SQL.QueryAsync<mdlUsuarioMenu>("humayadigital_usuarios.dbo.sp_Usuarios_Menu_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdlRelMenuModulo> result = await factory.SQL.QueryAsync<mdlRelMenuModulo>("humayadigital_usuarios.dbo.sp_Usuarios_Rel_Menu_Modulo_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
@@ -36,3 +36,4 @@ namespace HD.Generales.Consultas
         }
     }
 }
+

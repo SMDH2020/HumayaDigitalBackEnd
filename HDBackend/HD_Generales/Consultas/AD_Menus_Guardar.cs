@@ -9,23 +9,29 @@ using System.Threading.Tasks;
 
 namespace HD.Generales.Consultas
 {
-    public class AD_UsuarioMenu_Listado
+    public class AD_Menus_Guardar
     {
         private string CadenaConexion;
-        public AD_UsuarioMenu_Listado(string _cadenaconexion)
+        public AD_Menus_Guardar(string _cadenaconexion)
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlUsuarioMenu>> ListadoUsuario(int idusuario)
+        public async Task<IEnumerable<mdlMenu>> Guardar(mdlMenu mdl)
         {
             try
             {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
                 var parametros = new
                 {
-                    idusuario
+                    @idmenu = mdl.idmenu,
+                    @idmodulo = mdl.idmodulo,
+                    @descripcion = mdl.descripcion,
+                    @nomenclatura = mdl.nomenclatura,
+                    @estatus = mdl.estatus,
+                    @usuario = mdl.usuario
                 };
-                FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdlUsuarioMenu> result = await factory.SQL.QueryAsync<mdlUsuarioMenu>("humayadigital_usuarios.dbo.sp_Usuarios_Menu_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
+
+                var result = await factory.SQL.QueryAsync<mdlMenu>("humayadigital_usuarios.dbo.sp_Menus_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
