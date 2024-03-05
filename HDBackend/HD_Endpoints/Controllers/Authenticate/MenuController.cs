@@ -47,6 +47,16 @@ namespace HD.Endpoints.Controllers.Authenticate
 
         }
 
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> DropDownList()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Modulos_Dropdownlist datos = new AD_Modulos_Dropdownlist(CadenaConexion);
+            var result = await datos.DropDownList();
+            return Ok(result);
+
+        }
 
     }
 }
