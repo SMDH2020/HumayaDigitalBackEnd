@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HD_Finanzas", "HD_Finanzas\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopServices", "DesktopServices\DesktopServices.csproj", "{BAF9FBCE-D8BE-4D47-BDCC-69A5C4800508}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ventas", "Ventas\Ventas.csproj", "{A154EE98-2A9B-4308-9394-E39CC3CB701A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{BAF9FBCE-D8BE-4D47-BDCC-69A5C4800508}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAF9FBCE-D8BE-4D47-BDCC-69A5C4800508}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAF9FBCE-D8BE-4D47-BDCC-69A5C4800508}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A154EE98-2A9B-4308-9394-E39CC3CB701A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A154EE98-2A9B-4308-9394-E39CC3CB701A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A154EE98-2A9B-4308-9394-E39CC3CB701A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A154EE98-2A9B-4308-9394-E39CC3CB701A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

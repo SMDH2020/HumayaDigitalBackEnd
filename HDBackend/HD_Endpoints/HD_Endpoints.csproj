@@ -24,6 +24,7 @@
     <ProjectReference Include="..\HD_Generales\HD_Generales.csproj" />
     <ProjectReference Include="..\HD_Notifications\HD_Notifications.csproj" />
     <ProjectReference Include="..\HD_Reporteria\HD_Reporteria.csproj" />
+    <ProjectReference Include="..\Ventas\Ventas.csproj" />
   </ItemGroup>
 
   <ItemGroup>
