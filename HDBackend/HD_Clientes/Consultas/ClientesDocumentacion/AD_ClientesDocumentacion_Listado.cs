@@ -11,13 +11,14 @@ namespace HD.Clientes.Consultas.ClientesDocumentacion
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlClientesDocumento_Listado>> Listado(int idcliente)
+        public async Task<IEnumerable<mdlClientesDocumento_Listado>> Listado(int idcliente,string financiera)
         {
             try
             {
                 var parametros = new
                 {
-                    idcliente
+                    idcliente,
+                    financiera
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdlClientesDocumento_Listado> result = await factory.SQL.QueryAsync<mdlClientesDocumento_Listado>("Credito.sp_Clientes_Documentacion_BuscarPorCliente", parametros, commandType: System.Data.CommandType.StoredProcedure);

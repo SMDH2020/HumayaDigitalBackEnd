@@ -19,12 +19,24 @@ namespace HD.Clientes.Consultas.SolicitudCreditoEstadoResultados
                 var parametros = new
                 {
                     folio = mdl.folio,
-                    registro = mdl.registro,
-                    concepto = mdl.concepto,
-                    tipo = mdl.tipo,
-                    importe = mdl.importe,
-                    estatus = mdl.estatus,
-                    usuario = mdl.usuario
+                    in_agricolas = mdl.in_agricolas,
+                    in_ganado = mdl.in_ganado,
+                    in_leche = mdl.in_leche,
+                    in_maquilas = mdl.in_maquilas,
+                    in_procampo = mdl.in_procampo,
+                    in_rentas = mdl.in_rentas,
+                    in_sueldos = mdl.in_sueldos,
+                    in_otros = mdl.in_otros,
+                    eg_agricolas = mdl.eg_agricolas,
+                    eg_ganaderos = mdl.eg_ganaderos,
+                    eg_maquilas = mdl.eg_maquilas,
+                    eg_terrenos = mdl.eg_terrenos,
+                    eg_refaccionarios = mdl.eg_refaccionarios,
+                    eg_intereses = mdl.eg_intereses,
+                    eg_impuestos = mdl.eg_impuestos,
+                    eg_familiares = mdl.eg_familiares,
+                    eg_otros = mdl.eg_otros,
+                    usuario = mdl.usuario,
                 };
                 await factory.SQL.QueryAsync("Credito.sp_solicitud_credito_estado_resultados_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();

@@ -22,9 +22,13 @@ namespace HD_Dashboard.Consultas
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var result = await factory.SQL.QueryMultipleAsync("Dashboard.sp_Clientes_general", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 mdlDashboard_Clientes ctl = new mdlDashboard_Clientes();
+
                 ctl.info = result.Read<mdlDashClientes_info>().FirstOrDefault();
                 ctl.documentos = result.Read<mdlDashClientes_Documentos>().ToList();
                 ctl.linea = result.Read<mdlDashClientes_Linea>().ToList();
+                ctl.equipofacturado = result.Read<mdlEquipoFacturado>().ToList();
+                ctl.cultivos = result.Read<mdlDashCultivos>().ToList();
+
                 ctl.totalcredito = new mdlDashClientes_LineaTotales()
                 {
                     porvencer= ctl.linea.Sum(item => item.porvencer),
@@ -32,10 +36,10 @@ namespace HD_Dashboard.Consultas
                     total= ctl.linea.Sum(item => item.importe)
             };
 
-                ctl.inventario = result.Read<mdlDashClientes_Inventario>().ToList();
 
-                ctl.info.saldo= ctl.info.limitecredito - ctl.linea.Where(item => !item.linea.Equals("Ventas"))
+                ctl.info.saldo= ctl.info.limitecredito - ctl.linea.Where(item => !item.linea.Equals("MAQ. NUEVA"))
                             .Sum(item => item.importe);
+
 
                 factory.SQL.Close();
                 return ctl;

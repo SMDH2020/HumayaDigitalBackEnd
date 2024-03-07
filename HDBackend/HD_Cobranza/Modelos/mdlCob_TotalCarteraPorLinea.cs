@@ -12,8 +12,10 @@
         public double de1a15 { get; set; }
         public double vencido { get; set; }
         public double porvencer { get; set; }
+        public double activo { get; set; }
         public double totalcartera { get; set; }
         public double saldoafavor { get; set; }
         public double total { get; set; }
+        public double juridico { get; set; }
     }
 }

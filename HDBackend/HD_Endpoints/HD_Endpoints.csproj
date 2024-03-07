@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>$(MSBuildProjectName.Replace("_", "."))</RootNamespace>
+    <UserSecretsId>21236b0a-37f5-46b4-a274-57b1560c177d</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,8 +20,15 @@
     <ProjectReference Include="..\HD_Clientes\HD_Clientes.csproj" />
     <ProjectReference Include="..\HD_Cobranza\HD_Cobranza.csproj" />
     <ProjectReference Include="..\HD_Dashboard\HD_Dashboard.csproj" />
+    <ProjectReference Include="..\HD_Finanzas\HD_Finanzas.csproj" />
     <ProjectReference Include="..\HD_Generales\HD_Generales.csproj" />
     <ProjectReference Include="..\HD_Notifications\HD_Notifications.csproj" />
+    <ProjectReference Include="..\HD_Reporteria\HD_Reporteria.csproj" />
+    <ProjectReference Include="..\Ventas\Ventas.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\Cobranza\RecuperacionCartera\" />
   </ItemGroup>
 
 </Project>

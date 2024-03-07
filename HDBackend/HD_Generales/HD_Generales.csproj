@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HD_AccesoDatos\HD_AccesoDatos.csproj" />
     <ProjectReference Include="..\HD_Security\HD_Security.csproj" />
   </ItemGroup>
 

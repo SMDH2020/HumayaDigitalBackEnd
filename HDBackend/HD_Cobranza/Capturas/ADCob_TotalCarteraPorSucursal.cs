@@ -20,7 +20,7 @@ namespace HD_Cobranza.Capturas
                 {
                     
                 };
-                var result = await factory.SQL.QueryAsync<mdlCob_TotalCarteraPorSucursal>("EQUIP.Credito.sp_obtener_resumen_cartera", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryAsync<mdlCob_TotalCarteraPorSucursal>("Credito.sp_obtener_resumen_cartera_por_Sucursal", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
 
                 List<mdlCob_TotalCarteraPorSucursal> listado = result.ToList();
@@ -34,10 +34,12 @@ namespace HD_Cobranza.Capturas
                     mas15= result.Sum(x=> x.mas15),
                     de1a15= result.Sum(x=> x.de1a15),
                     vencido= result.Sum(x=> x.vencido),
+                    activo= result.Sum(x=> x.activo),
                     porvencer= result.Sum(x=> x.porvencer),
                     totalcartera= result.Sum(x=> x.totalcartera),
                     saldoafavor= result.Sum(x=> x.saldoafavor),
                     total= result.Sum(x=> x.total),
+                    juridico= result.Sum(x=> x.juridico),
                 });
 
                 return listado;

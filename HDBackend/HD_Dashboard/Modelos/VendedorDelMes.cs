@@ -1,14 +1,8 @@
 ﻿using Dapper;
 using ExcelDataReader;
 using HD.AccesoDatos;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Data.SqlTypes;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HD_Dashboard.Modelos
 {
@@ -22,7 +16,7 @@ namespace HD_Dashboard.Modelos
 
         public static List<VendedorDelMes> ObtenerVendedorDelMesExcel()
         {
-            var filePath = "C:\\SDMH\\HumayaDigital\\CONTROL DE FACTURACION.xls";
+            var filePath = "C:\\SMDH\\HumayaDigital\\CONTROL DE FACTURACION.xls";
             using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
             {
                 // Crear un lector de Excel con la fábrica
@@ -60,7 +54,7 @@ namespace HD_Dashboard.Modelos
                     var table = result.Tables[0];
 
                     //fecha del mes anterior
-                    var date = DateTime.Now.AddMonths(-2);
+                    var date = DateTime.Now.AddMonths(-1);
 
                     //fecha de inicio y fecha de fin del mes anterior
                     var startDate = new DateTime(date.Year, date.Month, 1);
@@ -84,15 +78,6 @@ namespace HD_Dashboard.Modelos
 
 
                     query = query.OrderByDescending(p => p.utilidad).ToList();
-
-                    // Mostrar el resultado de la consulta
-                    /*
-                    foreach (var item in query)
-                    {
-                        Console.WriteLine("Nombre: {0}, Ventas: {1}", item.Nombre, item.Precio);
-                    }
-                    Console.ReadLine();
-                    */
                     return (List<VendedorDelMes>)query;
                 }
 

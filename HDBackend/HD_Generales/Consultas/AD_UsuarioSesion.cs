@@ -26,6 +26,7 @@ namespace HD.Generales.Consultas
                 mdlLoginResult? usuario = result.Read<mdlLoginResult>().FirstOrDefault();
                 IEnumerable<mdlModulo> modulos = result.Read<mdlModulo>().ToList();
                 IEnumerable<mdlMenu> menus = result.Read<mdlMenu>().ToList();
+                IEnumerable<mdlPresas_Niveles> presas = result.Read<mdlPresas_Niveles>().ToList();
                 factory.SQL.Close();
 
                 if(usuario == null) { usuario = new mdlLoginResult(); }
@@ -34,7 +35,38 @@ namespace HD.Generales.Consultas
                 {
                     usuario = usuario,
                     menus = menus,
-                    modulos = modulos
+                    modulos = modulos,
+                    presas = presas
+                };
+
+            }
+            catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+        public async Task<mdlDatosSesion_Movil> UsuarioSesionMovil(mdlCodigoSeguridad login)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+
+                var parametros = new
+                {
+                    usuario = login.usuario,
+                    codigoautenticacion = login.codigoseguridad
+                };
+                var result = await factory.SQL.QueryMultipleAsync("sp_Usuario_Sesion_Movil", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlLoginResult? usuario = result.Read<mdlLoginResult>().FirstOrDefault();
+                IEnumerable<mdlPresas_Niveles> presas = result.Read<mdlPresas_Niveles>().ToList();
+                factory.SQL.Close();
+
+                if (usuario == null) { usuario = new mdlLoginResult(); }
+
+                return new mdlDatosSesion_Movil()
+                {
+                    usuario = usuario,
+                    presas = presas
                 };
 
             }
