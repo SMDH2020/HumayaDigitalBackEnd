@@ -33,7 +33,10 @@ namespace HD.Endpoints.Controllers.Credito
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             ADPedido_Impresion_View datos = new ADPedido_Impresion_View(CadenaConexion);
             var result = await datos.Get(folio);
-
+            if(result.condiciones is null || result.condiciones is null || result.financiamiento.Count ==0 || result.unidades.Count == 0)
+            {
+                return BadRequest(new { mensaje = "Para poder imprimir el Pedido es necesario completar toda la información solicitada" });
+            }
 
             try
             {
