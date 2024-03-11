@@ -44,25 +44,23 @@ namespace HD_Cobranza.Reportes
                     renglon++;
 
                     foreach (mdlCob_TotalCartera_Detalle activos in list)
-                    {
+                    { 
+                        
+                        double totalcartera = activos.totalcartera + activos.juridico;
+
                         sheet.Cell(renglon, 1).Value = activos.idcliente;
                         sheet.Cell(renglon, 2).Value = activos.razonsocial;
                         sheet.Cell(renglon, 3).Value = activos.totalcartera + activos.juridico;
                         sheet.Cell(renglon, 4).Value = activos.saldoafavor;
                         sheet.Cell(renglon, 5).Value = activos.total + activos.juridico;
                         sheet.Cell(renglon, 6).Value = activos.juridico;
-                        sheet.Cell(renglon, 7).Value = activos.juridico / (activos.totalcartera + activos.juridico);
+                        sheet.Cell(renglon, 7).Value =  activos.juridico ==0 || (activos.totalcartera + activos.juridico)==0 ? 0: activos.juridico/totalcartera ;
                         sheet.Cell(renglon, 8).Value = activos.activo;
-                        sheet.Cell(renglon, 9).Value = activos.activo / (activos.totalcartera + activos.juridico);
+                        sheet.Cell(renglon, 9).Value = activos.activo ==0 || (activos.totalcartera + activos.juridico)==0 ? 0: activos.activo/totalcartera;
                         sheet.Cell(renglon, 10).Value = activos.porvencer;
-                        sheet.Cell(renglon, 11).Value = activos.porvencer / (activos.totalcartera + activos.juridico);
+                        sheet.Cell(renglon, 11).Value = activos.porvencer == 0 || (activos.totalcartera + activos.juridico) == 0 ? 0 : activos.porvencer / totalcartera;
                         sheet.Cell(renglon, 12).Value = activos.vencido;
-                        sheet.Cell(renglon, 13).Value = activos.vencido / (activos.totalcartera + activos.juridico);
-                        sheet.Cell(renglon, 14).Value = activos.de1a15;
-                        sheet.Cell(renglon, 15).Value = activos.mas15;
-                        sheet.Cell(renglon, 16).Value = activos.mas30;
-                        sheet.Cell(renglon, 17).Value = activos.mas60;
-                        sheet.Cell(renglon, 18).Value = activos.mas90;
+                        sheet.Cell(renglon, 13).Value = activos.vencido == 0 || (activos.totalcartera + activos.juridico) == 0 ? 0 : activos.vencido/totalcartera;
                         renglon++;
                     }
 
