@@ -45,6 +45,7 @@ namespace HD.Endpoints.Controllers.Cobranza
             ADCob_TotalCarteraDetalle datos = new ADCob_TotalCarteraDetalle(CadenaConexion);
             var result = await datos.Listado(idsucursal, linea, Sesion.usuario());
             var docResult = await XLSCob_TotalCartera_Detalle.CrearExcel(result, linea);
+
             return Ok(docResult);
 
         }

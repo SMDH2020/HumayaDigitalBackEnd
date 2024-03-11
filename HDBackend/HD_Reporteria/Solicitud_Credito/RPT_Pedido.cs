@@ -60,7 +60,8 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().AlignCenter().AlignBottom().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span("14-11-2023").FontSize(08).FontFamily(fontFamily);
+                                        string formattedDate = DateTime.Now.ToString("dd/MM/yyyy");
+                                        txt2.Span(formattedDate).FontSize(08).FontFamily(fontFamily);
                                     });
                                 });
                             });
