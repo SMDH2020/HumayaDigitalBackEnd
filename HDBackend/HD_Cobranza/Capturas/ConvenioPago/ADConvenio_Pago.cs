@@ -12,7 +12,7 @@ namespace HD_Cobranza.Capturas.ConvenioPago
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlVencidosOperacion>> Guardar(mdlConvenio_Pago mdl)
+        public async Task<IEnumerable<mdlFacturasSeleccionadas>> Guardar(mdlConvenio_Pago mdl)
         {
             try
             {
@@ -28,9 +28,10 @@ namespace HD_Cobranza.Capturas.ConvenioPago
                     @fecha_recordatorio = mdl.fecha_recordatorio,
                     @mediocontacto = mdl.mediocontacto,
                     @usuario = mdl.usuario,
+                    @detalle = mdl.detalle,
                 };
 
-                var result = await factory.SQL.QueryAsync<mdlVencidosOperacion>("Credito.sp_Convenio_pago_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryAsync<mdlFacturasSeleccionadas>("Credito.sp_Convenio_pago_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

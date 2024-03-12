@@ -45,7 +45,7 @@ namespace HD_Cobranza.Reportes
                     rango.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
                     renglon++;
 
-                    var linea = lista.GroupBy(item => item.sucursal).ToList();
+                    var linea = list.GroupBy(item => item.sucursal).ToList();
 
                     foreach (var mdl in linea)
                     {
@@ -58,7 +58,7 @@ namespace HD_Cobranza.Reportes
                         rango.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
                         rango.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
                         renglon++;
-                        foreach (mdlCob_TotalCartera_Detalle activos in lista.Where(item => item.sucursal == mdl.Key))
+                        foreach (mdlCob_TotalCartera_Detalle activos in list.Where(item => item.sucursal == mdl.Key))
                         {
                            double totalcartera = activos.totalcartera + activos.juridico;
                             sheet.Cell(renglon, 1).Value = activos.idcliente;
