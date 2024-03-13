@@ -13,6 +13,7 @@
         public bool recordatorio { get; set; }
         public DateTime? fecha_recordatorio { get; set; }
         public string? mediocontacto { get; set; }
+        public string? nombre_usuario { get; set; }
         public string? detalle { get; set; } = "";
         public string? usuario { get; set; }
     }

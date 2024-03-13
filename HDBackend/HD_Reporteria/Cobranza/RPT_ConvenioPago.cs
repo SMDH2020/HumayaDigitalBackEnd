@@ -103,7 +103,7 @@ namespace HD_Reporteria.Cobranza
                                 if (mdl.mediocontacto == "DO") { txt.Span(mdl.monto.ToString("_______")).FontSize(10).Bold().FontFamily("arial"); }
                                 else { txt.Span(mdl.fecha_convenio.ToString("yyyy")).FontSize(10).Bold().FontFamily("arial"); }
                                 txt.Span(" a ").FontSize(10).FontFamily("arial");
-                                txt.Span("Humaya John Deere").FontSize(10).Bold().FontFamily("arial");
+                                txt.Span("Maquinaria del Humaya John Deere").FontSize(10).Bold().FontFamily("arial");
                                 txt.Span(", lo que corresponda a las siguientes facturas.").FontSize(10).FontFamily("arial");
                             });
 
@@ -249,7 +249,7 @@ namespace HD_Reporteria.Cobranza
                                 {
                                     txt1.Item().Height(15).AlignCenter().Text(txt2 =>
                                     {
-                                        txt2.Span("SILVIA VAZQUEZ").FontSize(10).FontFamily(fontFamily);
+                                        txt2.Span(mdl.nombre_usuario).FontSize(10).FontFamily(fontFamily);
                                         //txt2.Span("NAVOLATO").FontSize(10);
                                     });
                                 });
@@ -290,7 +290,7 @@ namespace HD_Reporteria.Cobranza
                             col1.Item().PaddingTop(30).Text(txt =>
                             {
                                 txt.Span("Le recordamos que puede acudir a nuestra sucursal ").FontSize(10).FontFamily("arial");
-                                txt.Span("Humaya John Deere").FontSize(10).Bold().FontFamily("arial");
+                                txt.Span("Maquinaria del Humaya John Deere").FontSize(10).Bold().FontFamily("arial");
                                 txt.Span(" o bien a su banco con su ").FontSize(10).FontFamily("arial");
                                 txt.Span($"REFERENCIA UNICA DE CLIENTE {mdl.referencia}").FontSize(10).Bold().FontFamily("arial");
                                 txt.Span(" a realizar su depósito o transferencia para ponerse al corriente").FontSize(10).FontFamily("arial");
@@ -437,7 +437,7 @@ namespace HD_Reporteria.Cobranza
                                 txt.Span(" del año ").FontSize(10).FontFamily("arial");
                                 txt.Span(mdl.cliente.fecha_convenio.ToString("yyyy")).FontSize(10).Bold().FontFamily("arial"); 
                                 txt.Span(" a ").FontSize(10).FontFamily("arial");
-                                txt.Span("Humaya John Deere").FontSize(10).Bold().FontFamily("arial");
+                                txt.Span("Maquinaria del Humaya John Deere").FontSize(10).Bold().FontFamily("arial");
                                 txt.Span(", lo que corresponda a las siguientes facturas.").FontSize(10).FontFamily("arial");
                             });
 
@@ -587,7 +587,7 @@ namespace HD_Reporteria.Cobranza
                                 {
                                     txt1.Item().Height(15).AlignCenter().Text(txt2 =>
                                     {
-                                        txt2.Span("SILVIA VAZQUEZ").FontSize(10).FontFamily(fontFamily);
+                                        txt2.Span(mdl.cliente.nombre_usuario).FontSize(10).FontFamily(fontFamily);
                                         //txt2.Span("NAVOLATO").FontSize(10);
                                     });
                                 });
@@ -628,7 +628,7 @@ namespace HD_Reporteria.Cobranza
                             col1.Item().PaddingTop(30).Text(txt =>
                             {
                                 txt.Span("Le recordamos que puede acudir a nuestra sucursal ").FontSize(10).FontFamily("arial");
-                                txt.Span("Humaya John Deere").FontSize(10).Bold().FontFamily("arial");
+                                txt.Span("Maquinaria del Humaya John Deere").FontSize(10).Bold().FontFamily("arial");
                                 txt.Span(" o bien a su banco con su ").FontSize(10).FontFamily("arial");
                                 txt.Span($"REFERENCIA UNICA DE CLIENTE {mdl.cliente.referencia}").FontSize(10).Bold().FontFamily("arial");
                                 txt.Span(" a realizar su depósito o transferencia para ponerse al corriente").FontSize(10).FontFamily("arial");
