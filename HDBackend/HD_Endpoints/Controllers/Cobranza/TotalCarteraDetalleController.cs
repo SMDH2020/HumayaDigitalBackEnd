@@ -44,7 +44,8 @@ namespace HD.Endpoints.Controllers.Cobranza
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             ADCob_TotalCarteraDetalle datos = new ADCob_TotalCarteraDetalle(CadenaConexion);
             var result = await datos.Listado(idsucursal, linea, Sesion.usuario());
-            var docResult = await XLSCob_TotalCartera_Detalle.CrearExcel(result);
+            var docResult = await XLSCob_TotalCartera_Detalle.CrearExcel(result, linea);
+
             return Ok(docResult);
 
         }
@@ -54,9 +55,9 @@ namespace HD.Endpoints.Controllers.Cobranza
         public async Task<ActionResult> GenerarExcelCliente(int cliente)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-            //ADCob_TotalCarteraPorLinea datos = new ADCob_TotalCarteraPorLinea(CadenaConexion);
-            //var result = await datos.Listado(idsucursal);
-            var docResult = await XLSCob_TotalCartera_Detalle_Cliente.CrearExcel();
+            ADCob_TotalCarteraDetalle datos = new ADCob_TotalCarteraDetalle(CadenaConexion);
+            var result = await datos.ListadoPorCliente(cliente);
+            var docResult = await XLSCob_TotalCartera_Detalle_Cliente.CrearExcel(result);
             return Ok(docResult);
 
         }
