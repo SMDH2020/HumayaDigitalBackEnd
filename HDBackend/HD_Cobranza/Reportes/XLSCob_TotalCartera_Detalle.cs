@@ -78,7 +78,9 @@ namespace HD_Cobranza.Reportes
                         }
 
                     }
-                     sheet.Cell(renglon, 2).Value = "TOTALES";
+                    renglon = renglon-1;
+                    sheet.Cell(renglon, 1).Value = "";
+                    sheet.Cell(renglon, 2).Value = "TOTALES";
                     sheet.Cell(renglon, 3).FormulaA1 = $"SUBTOTAL(9,C5:C{renglon - 1})";
                     sheet.Cell(renglon, 4).FormulaA1 = $"SUBTOTAL(9,D5:D{renglon - 1})";
                     sheet.Cell(renglon, 5).FormulaA1 = $"SUBTOTAL(9,E5:E{renglon - 1})";
@@ -91,7 +93,7 @@ namespace HD_Cobranza.Reportes
                     sheet.Cell(renglon, 12).FormulaA1 = $"SUBTOTAL(9,L5:L{renglon - 1})";
                     sheet.Cell(renglon, 13).FormulaA1 = $"=C{renglon}/L{renglon}/100";
 
-                    rango = sheet.Range(renglon - 1, 1, renglon - 1, 18);
+                    rango = sheet.Range(renglon, 1, renglon , 18);
                     rango.Style.Font.Bold = true;
                     rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#e5e6e6");
 
@@ -99,14 +101,14 @@ namespace HD_Cobranza.Reportes
                     sheet.Column(3).Style.NumberFormat.Format = "#,##0.00";
                     sheet.Column(4).Style.NumberFormat.Format = "#,##0.00";
                     sheet.Column(5).Style.NumberFormat.Format = "#,##0.00";
-                    sheet.Column(6).Style.NumberFormat.Format = "0.0 %";
-                    sheet.Column(7).Style.NumberFormat.Format = "#,##0.00";
-                    sheet.Column(8).Style.NumberFormat.Format = "0.0 %";
-                    sheet.Column(9).Style.NumberFormat.Format = "#,##0.00";
-                    sheet.Column(10).Style.NumberFormat.Format = "0.0 %";
-                    sheet.Column(11).Style.NumberFormat.Format = "#,##0.00";
-                    sheet.Column(12).Style.NumberFormat.Format = "0.0 %";
-                    sheet.Column(13).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(6).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(7).Style.NumberFormat.Format = "0.0 %";
+                    sheet.Column(8).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(9).Style.NumberFormat.Format = "0.0 %";
+                    sheet.Column(10).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(11).Style.NumberFormat.Format = "0.0 %";
+                    sheet.Column(12).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(13).Style.NumberFormat.Format = "0.0 %";
 
                     sheet.Columns().AdjustToContents();
                     workbook.SaveAs(ruta);
