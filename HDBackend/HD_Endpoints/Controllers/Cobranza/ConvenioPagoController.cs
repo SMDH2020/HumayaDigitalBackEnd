@@ -35,8 +35,8 @@ namespace HD.Endpoints.Controllers.Cobranza
             {
 
 
-                IEnumerable<mdlFacturasSeleccionadas> factura = JsonConvert.DeserializeObject<IEnumerable<mdlFacturasSeleccionadas>>(mdl.detalle);
-                RPT_Result documento = RPT_ConvenioPago.Generar(mdl, factura);
+                //IEnumerable<mdlFacturasSeleccionadas> factura = JsonConvert.DeserializeObject<IEnumerable<mdlFacturasSeleccionadas>>(mdl.detalle);
+                RPT_Result documento = RPT_ConvenioPago.Generar(mdl, result);
 
                 return Ok(documento);
             }
