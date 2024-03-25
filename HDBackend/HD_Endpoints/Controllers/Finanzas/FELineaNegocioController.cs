@@ -1,6 +1,9 @@
 ﻿using HD.Security;
 using HD_Finanzas.AccesoDatos;
+using HD_Finanzas.Modelos.Estado_Resultados;
 using HD_Finanzas.Modelos.Linea_Negocio;
+using HD_Reporteria.Finanzas;
+using HD_Reporteria;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HD.Endpoints.Controllers.Finanzas
@@ -23,6 +26,25 @@ namespace HD.Endpoints.Controllers.Finanzas
             FAD_LineaNegocio datos = new FAD_LineaNegocio(CadenaConexion);
             var result = await datos.GetEsquemaByLineadeNegocio(vm);
             return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ReportePDF(Fmdl_Linea_Negocio_Ventas_PDF vm)
+        {
+
+            try
+            {
+                RPT_Result documento = RPT_Finanzas_Linea_Negocio_Ventas.Generar(vm);
+
+                return Ok(documento);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error de servidor");
+
+            }
+
         }
     }
 
