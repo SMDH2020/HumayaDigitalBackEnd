@@ -83,6 +83,15 @@ namespace HD_Reporteria.Finanzas.Excel
                     decimal totalOldPorc = 0;
                     decimal totalOldDif = 0;
 
+
+                    decimal totalRealGeneral = 0;
+                    decimal totalProyeccionGeneral = 0;
+                    decimal totalPorcentajeGeneral = 0;
+                    decimal totalDifGeneral = 0;
+                    decimal totalOldTotalGeneral = 0;
+                    decimal totalOldPorcGeneral = 0;
+                    decimal totalOldDifGeneral = 0;
+
                     foreach (var mdl in lista.data)
                     {
                         if (tipoActual != mdl.tipo)
@@ -101,7 +110,7 @@ namespace HD_Reporteria.Finanzas.Excel
                                 var rangoTotal = sheet.Range(renglon, 1, renglon, 8);
                                 //rangoTitulo.Merge();
                                 rangoTotal.Style.Font.Bold = true;
-                                rangoTotal.Style.Fill.BackgroundColor = XLColor.FromHtml("#90ee90");
+                                rangoTotal.Style.Fill.BackgroundColor = XLColor.FromHtml("#cccccc");
                                 renglon++;
                             }
                             string tipoGasto = mdl.tipo == "V" ? "GASTOS VARIABLES" : "GASTOS FIJOS";
@@ -110,6 +119,7 @@ namespace HD_Reporteria.Finanzas.Excel
                             var rangoTitulo = sheet.Range(renglon, 1, renglon, 8);
                             //rangoTitulo.Merge();
                             rangoTitulo.Style.Font.Bold = true;
+                            rangoTitulo.Style.Font.FontSize = 12;
                             rangoTitulo.Style.Fill.BackgroundColor = XLColor.FromHtml("#cccccc"); 
                             tipoActual = mdl.tipo;
                             renglon++;
@@ -141,13 +151,13 @@ namespace HD_Reporteria.Finanzas.Excel
                         totalOldPorc += (decimal)mdl.oldporc;
                         totalOldDif += (decimal)mdl.olddif;
 
-                        //totalRealGeneral += (decimal)mdl.total;
-                        //totalProyeccionGeneral += (decimal)mdl.proyeccion;
-                        //totalPorcentajeGeneral += (decimal)mdl.porc;
-                        //totalDifGeneral += (decimal)mdl.dif;
-                        //totalOldTotalGeneral += (decimal)mdl.oldtotal;
-                        //totalOldPorcGeneral += (decimal)mdl.oldporc;
-                        //totalOldDifGeneral += (decimal)mdl.olddif;
+                        totalRealGeneral += (decimal)mdl.total;
+                        totalProyeccionGeneral += (decimal)mdl.proyeccion;
+                        totalPorcentajeGeneral += (decimal)mdl.porc;
+                        totalDifGeneral += (decimal)mdl.dif;
+                        totalOldTotalGeneral += (decimal)mdl.oldtotal;
+                        totalOldPorcGeneral += (decimal)mdl.oldporc;
+                        totalOldDifGeneral += (decimal)mdl.olddif;
                     }
                     sheet.Cell(renglon, 1).Value = "TOTAL GASTOS FIJOS";
                     sheet.Cell(renglon, 2).Value = totalReal;
@@ -161,17 +171,23 @@ namespace HD_Reporteria.Finanzas.Excel
                     var rangoTotal2 = sheet.Range(renglon, 1, renglon, 8);
                     //rangoTitulo.Merge();
                     rangoTotal2.Style.Font.Bold = true;
-                    rangoTotal2.Style.Fill.BackgroundColor = XLColor.FromHtml("#90ee90");
+                    rangoTotal2.Style.Fill.BackgroundColor = XLColor.FromHtml("#cccccc");
                     renglon++;
 
-                    sheet.Cell(renglon, 1).Value = "TOTALES";
-                    sheet.Cell(renglon, 2).FormulaA1 = $"SUBTOTAL(9,B7:B{renglon - 1})";
-                    sheet.Cell(renglon, 3).FormulaA1 = $"SUBTOTAL(9,C7:C{renglon - 1})";
-                    sheet.Cell(renglon, 4).FormulaA1 = $"SUBTOTAL(9,D7:D{renglon - 1})";
-                    sheet.Cell(renglon, 5).FormulaA1 = $"SUBTOTAL(9,E7:E{renglon - 1})";
-                    sheet.Cell(renglon, 6).FormulaA1 = $"SUBTOTAL(9,F7:F{renglon - 1})";
-                    sheet.Cell(renglon, 7).FormulaA1 = $"SUBTOTAL(9,G7:G{renglon - 1})";
-                    sheet.Cell(renglon, 8).FormulaA1 = $"SUBTOTAL(9,H7:H{renglon - 1})";
+                    sheet.Cell(renglon, 1).Value = "TOTAL GENERAL";
+                    sheet.Cell(renglon, 2).Value = totalRealGeneral;
+                    sheet.Cell(renglon, 3).Value = totalProyeccionGeneral;
+                    sheet.Cell(renglon, 4).Value = totalPorcentajeGeneral / 100;
+                    sheet.Cell(renglon, 5).Value = totalDifGeneral;
+                    sheet.Cell(renglon, 6).Value = totalOldTotalGeneral;
+                    sheet.Cell(renglon, 7).Value = totalOldPorcGeneral / 100;
+                    sheet.Cell(renglon, 8).Value = totalOldDifGeneral;
+
+                    var rangoTotal3 = sheet.Range(renglon, 1, renglon, 8);
+                    rangoTotal3.Style.Font.Bold = true;
+                    rangoTotal3.Style.Fill.BackgroundColor = XLColor.FromHtml("#cccccc");
+                    renglon++;
+                    renglon++;
 
 
                     sheet.Column(2).Style.NumberFormat.Format = "#,##0.00";
@@ -182,9 +198,86 @@ namespace HD_Reporteria.Finanzas.Excel
                     sheet.Column(7).Style.NumberFormat.Format = "0.0 %";
                     sheet.Column(8).Style.NumberFormat.Format = "#,##0.00";
 
-                    rango = sheet.Range(renglon, 1, renglon, 8);
-                    rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#e5e6e6");
-                    rango.Style.Font.Bold = true;
+
+
+                    if (lista.region.Count < 1)
+                    {
+
+                    }
+                    else
+                    {
+                        if (lista.region.Count > 1)
+                        {
+                            sheet.Cell(renglon, 1).Value = "Region: TODO EL GRUPO";
+                        }
+                        else
+                        {
+                            foreach (var reg in lista.region)
+                            {
+                                sheet.Cell(renglon, 1).Value = "Region: " + reg.adr;
+                            }
+
+                        };
+                    };
+                    sheet.Range(renglon, 1, renglon, 2).Style.Font.Bold = true;
+                    rango2 = sheet.Range(renglon, 1, renglon, 27);
+                    rango2.Style.Fill.BackgroundColor = XLColor.FromHtml("#FFFFFF");
+                    renglon++;
+
+                    if (lista.sucursal.Count < 1)
+                    {
+
+                    }
+                    else
+                    {
+                        int count = lista.sucursal.Count;
+                        for (int i = 0; i < count; i++)
+                        {
+                            if (lista.sucursal.Count > 1)
+                            {
+                                string sucursalesConcatenadas = string.Join(", ", lista.sucursal.Select(s => s.sucursal));
+                                sheet.Cell(renglon, 1).Value = "Sucursal: " + sucursalesConcatenadas;
+                            }
+                            else
+                            {
+                                sheet.Cell(renglon, 1).Value = "";
+                            }
+
+                        }
+
+                    };
+                    sheet.Range(renglon, 1, renglon, 2).Style.Font.Bold = true;
+                    rango2 = sheet.Range(renglon, 1, renglon, 27);
+                    rango2.Style.Fill.BackgroundColor = XLColor.FromHtml("#FFFFFF");
+                    renglon++;
+
+                    if (lista.departamento.Count < 1)
+                    {
+
+                    }
+                    else
+                    {
+                        int count = lista.departamento.Count;
+                        for (int i = 0; i < count; i++)
+                        {
+                            if (lista.departamento.Count > 1)
+                            {
+                                string departamentoConcatenadas = string.Join(", ", lista.departamento.Select(d => d.departamento));
+                                sheet.Cell(renglon, 1).Value = "Departamento: " + departamentoConcatenadas;
+                            }
+                            else
+                            {
+                                sheet.Cell(renglon, 1).Value = "";
+                            }
+
+                        }
+
+                    };
+                    sheet.Range(renglon, 1, renglon, 2).Style.Font.Bold = true;
+                    rango2 = sheet.Range(renglon, 1, renglon, 27);
+                    rango2.Style.Fill.BackgroundColor = XLColor.FromHtml("#FFFFFF");
+                    renglon++;
+
 
                     sheet.Columns().AdjustToContents();
                     workbook.SaveAs(ruta);
