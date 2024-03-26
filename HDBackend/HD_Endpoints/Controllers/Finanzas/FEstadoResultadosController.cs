@@ -5,6 +5,7 @@ using HD_Finanzas.Modelos.Gastos_Proyeccion;
 using HD_Reporteria.Finanzas;
 using HD_Reporteria;
 using Microsoft.AspNetCore.Mvc;
+using HD_Reporteria.Finanzas.Excel;
 
 namespace HD.Endpoints.Controllers.Finanzas
 {
@@ -44,6 +45,15 @@ namespace HD.Endpoints.Controllers.Finanzas
                 return BadRequest("Error de servidor");
 
             }
+
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GenerarExcel(Fmdl_EstadoResultados_PDF vm)
+        {
+            var docresult = await XLS_EstadoResultados.EstadoResultados(vm);
+            return Ok(docresult);
 
         }
     }

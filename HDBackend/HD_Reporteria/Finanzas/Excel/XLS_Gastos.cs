@@ -28,6 +28,32 @@ namespace HD_Reporteria.Finanzas.Excel
 
                     int renglon = XLSEncabezado.Encabezado(ref sheet, $"Gastos de Operación por concepto", 8);
 
+
+                    sheet.Cell(renglon, 1).Value = "";
+                    sheet.Range("B4:E4").Merge();
+                    sheet.Range("F4:H4").Merge();
+
+                    sheet.Cell(renglon, 2).Value = lista.periodoactual;
+                    sheet.Cell(renglon, 2).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    sheet.Cell(renglon, 2).Style.Font.Bold = true;
+
+                    var rango2 = sheet.Range(renglon, 1, renglon, 27);
+                    rango2 = sheet.Range(renglon, 1, renglon, 5);
+                    rango2.Style.Font.FontSize = 12;
+                    rango2.Style.Fill.BackgroundColor = XLColor.FromHtml("#ebecee");
+
+                    sheet.Cell(renglon, 6).Value = lista.periodoanterior;
+                    sheet.Cell(renglon, 6).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    sheet.Cell(renglon, 6).Style.Font.Bold = true;
+
+
+                    var rango3 = sheet.Range(renglon, 1, renglon, 27);
+                    rango3.Style.Font.FontSize = 12;
+                    rango3 = sheet.Range(renglon, 6, renglon, 8);
+                    rango3.Style.Fill.BackgroundColor = XLColor.FromHtml("#ebecee");
+
+                    renglon++;
+
                     sheet.Cell(renglon, 1).Value = "CONCEPTO";
                     sheet.Cell(renglon, 2).Value = "REAL";
                     sheet.Cell(renglon, 3).Value = "PROYECCION";
@@ -35,8 +61,7 @@ namespace HD_Reporteria.Finanzas.Excel
                     sheet.Cell(renglon, 5).Value = "DIF";
                     sheet.Cell(renglon, 6).Value = "REAL";
                     sheet.Cell(renglon, 7).Value = "%";
-                    sheet.Cell(renglon, 8).Value = "%";
-                    sheet.Cell(renglon, 9).Value = "DIF";
+                    sheet.Cell(renglon, 8).Value = "DIF";
 
                     var rango = sheet.Range(renglon, 1, renglon, 8);
                     rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
@@ -47,55 +72,117 @@ namespace HD_Reporteria.Finanzas.Excel
                     rango.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
                     renglon++;
 
+                    string tipoActual = "";
+                    int contador = 0;
+
+                    decimal totalReal = 0;
+                    decimal totalProyeccion = 0;
+                    decimal totalPorcentaje = 0;
+                    decimal totalDif = 0;
+                    decimal totalOldTotal = 0;
+                    decimal totalOldPorc = 0;
+                    decimal totalOldDif = 0;
+
                     foreach (var mdl in lista.data)
                     {
+                        if (tipoActual != mdl.tipo)
+                        {
+                            if (tipoActual != "")
+                            {
+                                sheet.Cell(renglon, 1).Value = "TOTAL GASTOS VARIABLES";
+                                sheet.Cell(renglon, 2).Value = totalReal;
+                                sheet.Cell(renglon, 3).Value = totalProyeccion;
+                                sheet.Cell(renglon, 4).Value = totalPorcentaje/ 100;
+                                sheet.Cell(renglon, 5).Value = totalDif;
+                                sheet.Cell(renglon, 6).Value = totalOldTotal;
+                                sheet.Cell(renglon, 7).Value = totalOldPorc / 100;
+                                sheet.Cell(renglon, 8).Value = totalOldDif;
+
+                                var rangoTotal = sheet.Range(renglon, 1, renglon, 8);
+                                //rangoTitulo.Merge();
+                                rangoTotal.Style.Font.Bold = true;
+                                rangoTotal.Style.Fill.BackgroundColor = XLColor.FromHtml("#90ee90");
+                                renglon++;
+                            }
+                            string tipoGasto = mdl.tipo == "V" ? "GASTOS VARIABLES" : "GASTOS FIJOS";
+
+                            sheet.Cell(renglon, 1).Value = tipoGasto;
+                            var rangoTitulo = sheet.Range(renglon, 1, renglon, 8);
+                            //rangoTitulo.Merge();
+                            rangoTitulo.Style.Font.Bold = true;
+                            rangoTitulo.Style.Fill.BackgroundColor = XLColor.FromHtml("#cccccc"); 
+                            tipoActual = mdl.tipo;
+                            renglon++;
+
+                            totalReal = 0;
+                            totalProyeccion = 0;
+                            totalPorcentaje = 0;
+                            totalDif = 0;
+                            totalOldTotal = 0;
+                            totalOldPorc = 0;
+                            totalOldDif = 0;
+                        }
+
                         sheet.Cell(renglon, 1).Value = mdl.concepto;
                         sheet.Cell(renglon, 2).Value = mdl.total;
                         sheet.Cell(renglon, 3).Value = mdl.proyeccion;
-                        sheet.Cell(renglon, 4).Value = mdl.porc;
+                        sheet.Cell(renglon, 4).Value = mdl.porc/100;
                         sheet.Cell(renglon, 5).Value = mdl.dif;
                         sheet.Cell(renglon, 6).Value = mdl.oldtotal;
-                        sheet.Cell(renglon, 7).Value = mdl.oldporc;
+                        sheet.Cell(renglon, 7).Value = mdl.oldporc/100;
                         sheet.Cell(renglon, 8).Value = mdl.olddif;
                         renglon++;
+
+                        totalReal += (decimal)mdl.total;
+                        totalProyeccion += (decimal)mdl.proyeccion;
+                        totalPorcentaje += (decimal)mdl.porc;
+                        totalDif += (decimal)mdl.dif;
+                        totalOldTotal += (decimal)mdl.oldtotal;
+                        totalOldPorc += (decimal)mdl.oldporc;
+                        totalOldDif += (decimal)mdl.olddif;
+
+                        //totalRealGeneral += (decimal)mdl.total;
+                        //totalProyeccionGeneral += (decimal)mdl.proyeccion;
+                        //totalPorcentajeGeneral += (decimal)mdl.porc;
+                        //totalDifGeneral += (decimal)mdl.dif;
+                        //totalOldTotalGeneral += (decimal)mdl.oldtotal;
+                        //totalOldPorcGeneral += (decimal)mdl.oldporc;
+                        //totalOldDifGeneral += (decimal)mdl.olddif;
                     }
+                    sheet.Cell(renglon, 1).Value = "TOTAL GASTOS FIJOS";
+                    sheet.Cell(renglon, 2).Value = totalReal;
+                    sheet.Cell(renglon, 3).Value = totalProyeccion;
+                    sheet.Cell(renglon, 4).Value = totalPorcentaje / 100;
+                    sheet.Cell(renglon, 5).Value = totalDif;
+                    sheet.Cell(renglon, 6).Value = totalOldTotal;
+                    sheet.Cell(renglon, 7).Value = totalOldPorc / 100;
+                    sheet.Cell(renglon, 8).Value = totalOldDif;
 
-                    sheet.Cell(renglon, 2).Value = "TOTALES";
-                    sheet.Cell(renglon, 3).FormulaA1 = $"SUBTOTAL(9,C5:C{renglon - 1})";
-                    sheet.Cell(renglon, 4).FormulaA1 = $"SUBTOTAL(9,D5:D{renglon - 1})";
-                    sheet.Cell(renglon, 5).FormulaA1 = $"SUBTOTAL(9,E5:E{renglon - 1})";
-                    sheet.Cell(renglon, 6).FormulaA1 = $"SUBTOTAL(9,F5:F{renglon - 1})";
-                    sheet.Cell(renglon, 7).FormulaA1 = $"=C{renglon}/F{renglon}/100";
-                    sheet.Cell(renglon, 8).FormulaA1 = $"SUBTOTAL(9,H5:H{renglon - 1})";
-                    sheet.Cell(renglon, 9).FormulaA1 = $"=C{renglon}/H{renglon}/100";
-                    sheet.Cell(renglon, 10).FormulaA1 = $"SUBTOTAL(9,J5:J{renglon - 1})";
-                    sheet.Cell(renglon, 11).FormulaA1 = $"=C{renglon}/J{renglon}/100";
-                    sheet.Cell(renglon, 12).FormulaA1 = $"SUBTOTAL(9,L5:L{renglon - 1})";
-                    sheet.Cell(renglon, 13).FormulaA1 = $"=C{renglon}/L{renglon}/100";
-                    sheet.Cell(renglon, 14).FormulaA1 = $"SUBTOTAL(9,N5:N{renglon - 1})";
-                    sheet.Cell(renglon, 15).FormulaA1 = $"SUBTOTAL(9,O5:O{renglon - 1})";
-                    sheet.Cell(renglon, 16).FormulaA1 = $"SUBTOTAL(9,P5:P{renglon - 1})";
-                    sheet.Cell(renglon, 17).FormulaA1 = $"SUBTOTAL(9,Q5:Q{renglon - 1})";
-                    sheet.Cell(renglon, 18).FormulaA1 = $"SUBTOTAL(9,R5:R{renglon - 1})";
+                    var rangoTotal2 = sheet.Range(renglon, 1, renglon, 8);
+                    //rangoTitulo.Merge();
+                    rangoTotal2.Style.Font.Bold = true;
+                    rangoTotal2.Style.Fill.BackgroundColor = XLColor.FromHtml("#90ee90");
+                    renglon++;
 
+                    sheet.Cell(renglon, 1).Value = "TOTALES";
+                    sheet.Cell(renglon, 2).FormulaA1 = $"SUBTOTAL(9,B7:B{renglon - 1})";
+                    sheet.Cell(renglon, 3).FormulaA1 = $"SUBTOTAL(9,C7:C{renglon - 1})";
+                    sheet.Cell(renglon, 4).FormulaA1 = $"SUBTOTAL(9,D7:D{renglon - 1})";
+                    sheet.Cell(renglon, 5).FormulaA1 = $"SUBTOTAL(9,E7:E{renglon - 1})";
+                    sheet.Cell(renglon, 6).FormulaA1 = $"SUBTOTAL(9,F7:F{renglon - 1})";
+                    sheet.Cell(renglon, 7).FormulaA1 = $"SUBTOTAL(9,G7:G{renglon - 1})";
+                    sheet.Cell(renglon, 8).FormulaA1 = $"SUBTOTAL(9,H7:H{renglon - 1})";
+
+
+                    sheet.Column(2).Style.NumberFormat.Format = "#,##0.00";
                     sheet.Column(3).Style.NumberFormat.Format = "#,##0.00";
-                    sheet.Column(4).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(4).Style.NumberFormat.Format = "0.0 %";
                     sheet.Column(5).Style.NumberFormat.Format = "#,##0.00";
                     sheet.Column(6).Style.NumberFormat.Format = "#,##0.00";
                     sheet.Column(7).Style.NumberFormat.Format = "0.0 %";
                     sheet.Column(8).Style.NumberFormat.Format = "#,##0.00";
-                    sheet.Column(9).Style.NumberFormat.Format = "0.0 %";
-                    sheet.Column(10).Style.NumberFormat.Format = "#,##0.00";
-                    sheet.Column(11).Style.NumberFormat.Format = "0.0 %";
-                    sheet.Column(12).Style.NumberFormat.Format = "#,##0.00";
-                    sheet.Column(13).Style.NumberFormat.Format = "0.0 %";
-                    sheet.Column(14).Style.NumberFormat.Format = "#,##0.00";
-                    sheet.Column(15).Style.NumberFormat.Format = "#,##0.00";
-                    sheet.Column(16).Style.NumberFormat.Format = "#,##0.00";
-                    sheet.Column(17).Style.NumberFormat.Format = "#,##0.00";
-                    sheet.Column(18).Style.NumberFormat.Format = "#,##0.00";
 
-                    rango = sheet.Range(renglon, 1, renglon, 18);
+                    rango = sheet.Range(renglon, 1, renglon, 8);
                     rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#e5e6e6");
                     rango.Style.Font.Bold = true;
 
