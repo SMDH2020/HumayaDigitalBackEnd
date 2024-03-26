@@ -167,7 +167,7 @@ namespace HD_Reporteria.Finanzas.Excel
                             }
                             else
                             {
-                                sheet.Cell(renglon, 1).Value = "Sucursal: ";
+                                sheet.Cell(renglon, 1).Value = "Sucursal: " + lista.sucursal[i].sucursal;
                             }
 
                         }

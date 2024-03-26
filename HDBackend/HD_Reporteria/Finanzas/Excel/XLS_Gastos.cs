@@ -104,7 +104,7 @@ namespace HD_Reporteria.Finanzas.Excel
                                 sheet.Cell(renglon, 4).Value = totalDif/totalProyeccion;
                                 sheet.Cell(renglon, 5).Value = totalDif;
                                 sheet.Cell(renglon, 6).Value = totalOldTotal;
-                                sheet.Cell(renglon, 7).Value = totalOldPorc / 100;
+                                sheet.Cell(renglon, 7).Value = totalOldDif / totalOldTotal;
                                 sheet.Cell(renglon, 8).Value = totalOldDif;
 
                                 var rangoTotal = sheet.Range(renglon, 1, renglon, 8);
@@ -165,7 +165,7 @@ namespace HD_Reporteria.Finanzas.Excel
                     sheet.Cell(renglon, 4).Value = totalDif / totalProyeccion;
                     sheet.Cell(renglon, 5).Value = totalDif;
                     sheet.Cell(renglon, 6).Value = totalOldTotal;
-                    sheet.Cell(renglon, 7).Value = totalOldPorc / 100;
+                    sheet.Cell(renglon, 7).Value = totalOldDif/totalOldTotal;
                     sheet.Cell(renglon, 8).Value = totalOldDif;
 
                     var rangoTotal2 = sheet.Range(renglon, 1, renglon, 8);
@@ -180,7 +180,7 @@ namespace HD_Reporteria.Finanzas.Excel
                     sheet.Cell(renglon, 4).Value = totalDifGeneral/totalProyeccionGeneral;
                     sheet.Cell(renglon, 5).Value = totalDifGeneral;
                     sheet.Cell(renglon, 6).Value = totalOldTotalGeneral;
-                    sheet.Cell(renglon, 7).Value = totalOldPorcGeneral / 100;
+                    sheet.Cell(renglon, 7).Value = totalOldDifGeneral/totalOldTotalGeneral;
                     sheet.Cell(renglon, 8).Value = totalOldDifGeneral;
 
                     var rangoTotal3 = sheet.Range(renglon, 1, renglon, 8);
@@ -240,7 +240,7 @@ namespace HD_Reporteria.Finanzas.Excel
                             }
                             else
                             {
-                                sheet.Cell(renglon, 1).Value = "";
+                                sheet.Cell(renglon, 1).Value = "Sucursal: " + lista.sucursal[i].sucursal;
                             }
 
                         }
@@ -267,7 +267,7 @@ namespace HD_Reporteria.Finanzas.Excel
                             }
                             else
                             {
-                                sheet.Cell(renglon, 1).Value = "";
+                                sheet.Cell(renglon, 1).Value = "Departamento: " + lista.departamento[i].departamento;
                             }
 
                         }

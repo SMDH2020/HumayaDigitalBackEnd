@@ -219,7 +219,7 @@ namespace HD_Reporteria.Finanzas
                                     for (int i = 0; i < mdl.data.Count; i++)
                                     {
                                         var ln = mdl.data[i];
-                                        var isLastRow = (i == mdl.data.Count - 1); // Check if it's the last row
+                                        //var isLastRow = (i == mdl.data.Count - 1); // Check if it's the last row
 
                                         tabla.Cell().BorderBottom(1).BorderColor("#afb69d").PaddingLeft(15).Height(20).AlignMiddle()
                                             .Text(ln.concepto).FontSize(8).FontFamily(fontFamily);
@@ -253,43 +253,6 @@ namespace HD_Reporteria.Finanzas
 
                                         tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
                                             .Text(ln.lastdiffpor.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-
-                                        if (isLastRow) // Apply bold to the last row
-                                        {
-                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").PaddingLeft(15).Height(20).AlignMiddle()
-                                            .Text(ln.concepto).FontSize(8).FontFamily(fontFamily).Bold();
-
-                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").PaddingLeft(20).AlignLeft().Height(20).AlignMiddle()
-                                                .Text(ln.importe.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-
-                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).PaddingRight(10).AlignMiddle()
-                                                .Text((ln.por).ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
-
-                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                                .Text(ln.proyimporte.ToString("N2")).FontSize(8).FontColor("#ff2037").FontFamily(fontFamily);
-
-                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                                .Text((ln.proypor).ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
-
-                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                                .Text(ln.diffimporte.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
-
-                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                                .Text((ln.diffpor).ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
-
-                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                                .Text(ln.lastimporte.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
-
-                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                                .Text(ln.lastpor.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
-
-                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                                .Text(ln.lastdiffimporte.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
-
-                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                                .Text(ln.lastdiffpor.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
-
-                                        }
                                     }
 
                                 }

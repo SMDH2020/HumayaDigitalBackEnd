@@ -237,7 +237,6 @@ namespace HD_Reporteria.Finanzas.Excel
                     rango2 = sheet.Range(renglon, 1, renglon, 27);
                     rango2.Style.Fill.BackgroundColor = XLColor.FromHtml("#FFFFFF");
                     renglon++;
-
                     if (lista.sucursal.Count < 1)
                     {
 
@@ -247,14 +246,16 @@ namespace HD_Reporteria.Finanzas.Excel
                         int count = lista.sucursal.Count;
                         for (int i = 0; i < count; i++)
                         {
-                            if (i < count - 1)
+                            if (lista.sucursal.Count > 1)
                             {
-                                sheet.Cell(renglon, 1).Value = "Sucursal: " + lista.sucursal[i].sucursal + ", ";
+                                string sucursalesConcatenadas = string.Join(", ", lista.sucursal.Select(s => s.sucursal));
+                                sheet.Cell(renglon, 1).Value = "Sucursal: " + sucursalesConcatenadas;
                             }
                             else
                             {
                                 sheet.Cell(renglon, 1).Value = "Sucursal: " + lista.sucursal[i].sucursal;
                             }
+
                         }
 
                     };

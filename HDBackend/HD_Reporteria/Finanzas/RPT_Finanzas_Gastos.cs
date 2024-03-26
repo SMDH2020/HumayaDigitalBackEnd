@@ -254,7 +254,7 @@ namespace HD_Reporteria.Finanzas
                                                 .Text(totalProyeccion.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
 
                                             tabla.Cell().BorderTop(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                                .Text(totalPorcentaje.ToString("N2")).FontSize(8).FontColor("#ff2037").FontFamily(fontFamily).Bold();
+                                                .Text((totalDif*100/totalProyeccion).ToString("N2")).FontSize(8).FontColor("#ff2037").FontFamily(fontFamily).Bold();
 
                                             tabla.Cell().BorderTop(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
                                                 .Text(totalDif.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
@@ -263,7 +263,7 @@ namespace HD_Reporteria.Finanzas
                                                 .Text(totalOldTotal.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
 
                                             tabla.Cell().BorderTop(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                                .Text(totalOldPorc.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
+                                                .Text((totalOldDif*100/totalOldTotal).ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
 
                                             tabla.Cell().BorderTop(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
                                                 .Text(totalOldDif.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
@@ -339,7 +339,7 @@ namespace HD_Reporteria.Finanzas
                                     .Text(totalProyeccion.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
 
                                 tabla.Cell().BorderTop(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                    .Text(totalPorcentaje.ToString("N2")).FontSize(8).FontColor("#ff2037").FontFamily(fontFamily).Bold();
+                                    .Text((totalDif * 100 / totalProyeccion).ToString("N2")).FontSize(8).FontColor("#ff2037").FontFamily(fontFamily).Bold();
 
                                 tabla.Cell().BorderTop(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
                                     .Text(totalDif.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
@@ -348,7 +348,7 @@ namespace HD_Reporteria.Finanzas
                                     .Text(totalOldTotal.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
 
                                 tabla.Cell().BorderTop(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                    .Text(totalOldPorc.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
+                                    .Text((totalOldDif * 100 / totalOldTotal).ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
 
                                 tabla.Cell().BorderTop(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
                                     .Text(totalOldDif.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
@@ -364,7 +364,7 @@ namespace HD_Reporteria.Finanzas
                                     .Text(totalProyeccionGeneral.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                 tabla.Cell().BorderTop(1).BorderColor("#afb69d").Background("#cccccc").AlignRight().Height(20).AlignMiddle()
-                                    .Text(totalPorcentajeGeneral.ToString("N2")).FontSize(8).FontColor("#ff2037").FontFamily(fontFamily);
+                                    .Text((totalDifGeneral*100/totalProyeccionGeneral).ToString("N2")).FontSize(8).FontColor("#ff2037").FontFamily(fontFamily);
 
                                 tabla.Cell().BorderTop(1).BorderColor("#afb69d").Background("#cccccc").AlignRight().Height(20).AlignMiddle()
                                     .Text(totalDifGeneral.ToString("N2")).FontSize(8).FontFamily(fontFamily);
@@ -373,7 +373,7 @@ namespace HD_Reporteria.Finanzas
                                     .Text(totalOldTotalGeneral.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                 tabla.Cell().BorderTop(1).BorderColor("#afb69d").Background("#cccccc").AlignRight().Height(20).AlignMiddle()
-                                    .Text(totalOldPorcGeneral.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    .Text((totalOldDifGeneral*100/totalOldTotalGeneral).ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                 tabla.Cell().BorderTop(1).BorderColor("#afb69d").Background("#cccccc").AlignRight().Height(20).AlignMiddle()
                                     .Text(totalOldDifGeneral.ToString("N2")).FontSize(8).FontFamily(fontFamily);
