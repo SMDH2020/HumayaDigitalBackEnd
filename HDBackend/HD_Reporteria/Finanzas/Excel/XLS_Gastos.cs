@@ -101,7 +101,7 @@ namespace HD_Reporteria.Finanzas.Excel
                                 sheet.Cell(renglon, 1).Value = "TOTAL GASTOS VARIABLES";
                                 sheet.Cell(renglon, 2).Value = totalReal;
                                 sheet.Cell(renglon, 3).Value = totalProyeccion;
-                                sheet.Cell(renglon, 4).Value = totalPorcentaje/ 100;
+                                sheet.Cell(renglon, 4).Value = totalDif/totalProyeccion;
                                 sheet.Cell(renglon, 5).Value = totalDif;
                                 sheet.Cell(renglon, 6).Value = totalOldTotal;
                                 sheet.Cell(renglon, 7).Value = totalOldPorc / 100;
@@ -162,7 +162,7 @@ namespace HD_Reporteria.Finanzas.Excel
                     sheet.Cell(renglon, 1).Value = "TOTAL GASTOS FIJOS";
                     sheet.Cell(renglon, 2).Value = totalReal;
                     sheet.Cell(renglon, 3).Value = totalProyeccion;
-                    sheet.Cell(renglon, 4).Value = totalPorcentaje / 100;
+                    sheet.Cell(renglon, 4).Value = totalDif / totalProyeccion;
                     sheet.Cell(renglon, 5).Value = totalDif;
                     sheet.Cell(renglon, 6).Value = totalOldTotal;
                     sheet.Cell(renglon, 7).Value = totalOldPorc / 100;
@@ -177,7 +177,7 @@ namespace HD_Reporteria.Finanzas.Excel
                     sheet.Cell(renglon, 1).Value = "TOTAL GENERAL";
                     sheet.Cell(renglon, 2).Value = totalRealGeneral;
                     sheet.Cell(renglon, 3).Value = totalProyeccionGeneral;
-                    sheet.Cell(renglon, 4).Value = totalPorcentajeGeneral / 100;
+                    sheet.Cell(renglon, 4).Value = totalDifGeneral/totalProyeccionGeneral;
                     sheet.Cell(renglon, 5).Value = totalDifGeneral;
                     sheet.Cell(renglon, 6).Value = totalOldTotalGeneral;
                     sheet.Cell(renglon, 7).Value = totalOldPorcGeneral / 100;
