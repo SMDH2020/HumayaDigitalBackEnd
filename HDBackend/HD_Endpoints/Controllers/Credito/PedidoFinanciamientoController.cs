@@ -1,12 +1,11 @@
 ﻿using HD.Clientes.Consultas.PedidoFinanciamiento;
-using HD.Clientes.Consultas.PedidoUnidades;
 using HD.Clientes.Modelos;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HD.Endpoints.Controllers.Credito
 {
-    public class PedidoFinanciamientoController:MyBase
+    public class PedidoFinanciamientoController : MyBase
     {
         private readonly IConfiguration Configuracion;
         private readonly ISesion Sesion;
