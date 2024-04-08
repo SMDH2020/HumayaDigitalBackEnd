@@ -1,6 +1,6 @@
 ﻿namespace HD_Ventas.Modelos
 {
-    public class mdlCarga_Scorecard_Vendedor
+    public class mdlCarga_Scorecard_Sucursal
     {
         public int idlinea { get; set; }
         public string? linea { get; set; }
@@ -16,6 +16,5 @@
         public int octubre { get; set; }
         public int noviembre { get; set; }
         public int diciembre { get; set; }
-        public int objetivo_habilitado { get; set; }
     }
 }
