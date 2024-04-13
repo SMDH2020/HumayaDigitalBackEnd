@@ -10,7 +10,7 @@ namespace HD.Notifications.Autentication
             {
                 List<string> para = new List<string>() { _para };
                 string bodyhtml = body(_codigo);
-                await NEEnviar.Click("Codigo de Autenticación", "humayadigital@humaya.com.mx", "Xs63hi3@5", bodyhtml, para.ToArray());
+                await NEEnviar.Click("Codigo de Autenticación", "humayadigital@humaya.com.mx", "!HD_Hum4y4D1g1t4l*T1?", bodyhtml, para.ToArray());
                 return "Correo enviado con exito";
             }
             catch (Exception ex)

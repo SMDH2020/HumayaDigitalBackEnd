@@ -1,6 +1,8 @@
-﻿using HD.Clientes.Consultas.SolicitudCreditoDocumento;
+﻿using HD.Clientes.Consultas.PedidoImpresion;
+using HD.Clientes.Consultas.SolicitudCreditoDocumento;
 using HD.Clientes.Modelos;
 using HD.Security;
+using HD_Reporteria.Solicitud_Credito;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HD.Endpoints.Controllers.Credito
@@ -47,5 +49,38 @@ namespace HD.Endpoints.Controllers.Credito
             return Ok(result);
 
         }
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerDocumentoPedido(string folio, int iddocumento)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADSolicitudCredito_Documentacion_ObtenerDocumento datos = new ADSolicitudCredito_Documentacion_ObtenerDocumento(CadenaConexion);
+            var result = await datos.Obtener(folio, iddocumento);
+            if (result is null)
+            {
+                ADPedido_Impresion_View pdf = new ADPedido_Impresion_View(CadenaConexion);
+                var resultpdf = await pdf.Get(folio);
+                if (resultpdf.condiciones is null || resultpdf.condiciones is null || resultpdf.financiamiento.Count == 0 || resultpdf.unidades.Count == 0)
+                {
+                    return BadRequest(new { mensaje = "Para poder imprimir el Pedido es necesario completar toda la información solicitada" });
+                }
+
+                try
+                {
+                    var documento = resultpdf.condiciones.mhusajdf == "JDT" ? RPT_Pedido.Generar(resultpdf) : RPT_Pedido_JDF.Generar(resultpdf);
+                    documento.documento = "data:application/pdf;base64," + documento.documento;
+                    return Ok(documento);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest("Error de servidor");
+
+                }
+            }
+            return Ok(result);
+
+
+        }
+
     }
 }
