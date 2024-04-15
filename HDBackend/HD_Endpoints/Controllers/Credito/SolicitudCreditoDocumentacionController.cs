@@ -55,7 +55,7 @@ namespace HD.Endpoints.Controllers.Credito
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             ADSolicitudCredito_Documentacion_ObtenerDocumento datos = new ADSolicitudCredito_Documentacion_ObtenerDocumento(CadenaConexion);
-            var result = await datos.Obtener(folio, iddocumento);
+            var result = await datos.ObtenerPEdido(folio, iddocumento);
             if (result is null)
             {
                 ADPedido_Impresion_View pdf = new ADPedido_Impresion_View(CadenaConexion);
