@@ -122,8 +122,16 @@ namespace HD_Reporteria.Cobranza
                                     Columns.RelativeColumn(1);
                                     Columns.RelativeColumn(0.9f);
                                     Columns.RelativeColumn(1);
+                                    if (mdl.tipo_credito == "O")
+                                    {
+                                        Columns.RelativeColumn(1);
+                                        Columns.RelativeColumn(1);
+                                    }
+                                    else
+                                    {
+                                        Columns.RelativeColumn(1);
+                                    }
                                     Columns.RelativeColumn(1);
-                                    Columns.RelativeColumn(1.2f);
 
 
                                 });
@@ -146,8 +154,18 @@ namespace HD_Reporteria.Cobranza
                                     .Padding(1).Text("ABONO").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     header.Cell().Background("#275027").AlignCenter().AlignMiddle()
                                     .Padding(1).Text("SALDO VENCIDO").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("INTERES MORATORIO").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    if (mdl.tipo_credito == "O")
+                                    {
+                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                        .Padding(1).Text("MORATORIO").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                        .Padding(1).Text("PACTADO").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    }
+                                    else
+                                    {
+                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                        .Padding(1).Text("MORATORIO").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    }
                                     header.Cell().Background("#275027").AlignCenter().AlignMiddle()
                                     .Padding(1).Text("SALDO TOTAL").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
                                 });
@@ -187,9 +205,18 @@ namespace HD_Reporteria.Cobranza
                                     .Text(item.saldo.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                    
-
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
-                                    .Text(item.intereses.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    if(mdl.tipo_credito == "O")
+                                    {
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
+                                        .Text(item.intereses.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
+                                        .Text(item.interespactado.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    }
+                                    else
+                                    {
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
+                                        .Text(item.intereses.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    }
 
                                     double importetotal = item.saldo + item.intereses;
 
@@ -213,7 +240,15 @@ namespace HD_Reporteria.Cobranza
                                     footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaImporteFacturaTotal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
                                     footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaImportePagadoTotal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
                                     footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumasaldoTotal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
-                                    footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaInteresesTotal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
+                                    if (mdl.tipo_credito == "O")
+                                    {
+                                        footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaInteresesTotal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
+                                        footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaInteresesTotal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
+                                    }
+                                    else
+                                    {
+                                        footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaInteresesTotal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
+                                    }                         
                                     footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaImporteTotal.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
                                 });
                             });
@@ -259,8 +294,16 @@ namespace HD_Reporteria.Cobranza
                                 {
                                     txt1.Item().Height(15).AlignCenter().Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.razon_social).FontSize(10).FontFamily(fontFamily);
-                                        //txt2.Span("NAVOLATO").FontSize(10);
+                                        string firma = mdl.firma;
+                                        if (firma.Length > 36)
+                                        {
+                                            firma = firma.Substring(0, 33) + "...";
+                                            txt2.Span(firma).FontSize(10).FontFamily(fontFamily);
+                                        }
+                                        else
+                                        {
+                                            txt2.Span(mdl.firma).FontSize(10).FontFamily(fontFamily);
+                                        }
                                     });
                                 });
 
@@ -597,8 +640,17 @@ namespace HD_Reporteria.Cobranza
                                 {
                                     txt1.Item().Height(15).AlignCenter().Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.cliente.razon_social).FontSize(10).FontFamily(fontFamily);
-                                        //txt2.Span("NAVOLATO").FontSize(10);
+                                        string firma = mdl.cliente.firma;
+                                        if (firma.Length > 36)
+                                        {
+                                            firma = firma.Substring(0, 33) + "...";
+                                            txt2.Span(firma).FontSize(10).FontFamily(fontFamily);
+                                        }
+                                        else
+                                        {
+                                            txt2.Span(mdl.cliente.firma).FontSize(10).FontFamily(fontFamily);
+                                        }
+                                        
                                     });
                                 });
 

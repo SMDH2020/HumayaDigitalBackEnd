@@ -2,6 +2,7 @@
 using HD.Clientes.Consultas.PedidoImpresion;
 using HD.Clientes.Consultas.PedidoUnidades;
 using HD.Clientes.Modelos;
+using HD.Generales.Consultas;
 using HD.Security;
 using HD_Cobranza.Capturas.ConvenioPago;
 using HD_Cobranza.Modelos.ConvenioPago;
@@ -134,6 +135,17 @@ namespace HD.Endpoints.Controllers.Cobranza
             {
                 return BadRequest(new { mensaje = "Documento aun no cargado. Favor de cargarlo primero" });
             }
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> DropDownList()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADResponsables_Cobranza_Dropdownlist datos = new ADResponsables_Cobranza_Dropdownlist(CadenaConexion);
+            var result = await datos.DropDownList();
             return Ok(result);
 
         }
