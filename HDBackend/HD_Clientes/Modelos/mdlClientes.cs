@@ -52,5 +52,6 @@ namespace HD.Clientes.Modelos
 
         public string? usuario { get; set; } = "";
         public string? referencia { get; set; } = "";
+        public string? idvendedor { get; set; } = "";
     }
 }
