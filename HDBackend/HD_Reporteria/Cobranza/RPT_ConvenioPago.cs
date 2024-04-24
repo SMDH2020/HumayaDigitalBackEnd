@@ -595,7 +595,28 @@ namespace HD_Reporteria.Cobranza
                                     footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaInteresesTotal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
                                     footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaImporteTotal.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
                                 });
+                                //tabla.Footer(footer =>
+                                //{
+                                //    double sumaInteresesTotal = mdl.facturas.Sum(item => item.intereses);
+                                //    double sumaInteresesTotalDescuento = mdl.facturas.Sum(item => item.intereses * mdl.cliente.descuento / 100);
+                                //    double sumasaldoTotal = mdl.facturas.Sum(item => item.saldo);
+                                //    double sumaImportePagadoTotal = mdl.facturas.Sum(item => item.importepagado);
+                                //    double sumaImporteFacturaTotal = mdl.facturas.Sum(item => item.importefactura);
 
+                                //    // Calcula sumaImporteTotal
+                                //    double sumaImporteTotal = sumasaldoTotal + sumaInteresesTotal - sumaInteresesTotalDescuento;
+
+                                //    footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
+                                //    footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
+                                //    footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
+                                //    footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
+                                //    footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignLeft().Text("DESCUENTO").FontSize(8).FontFamily("arial").Bold();
+                                //    footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text("").FontSize(8).FontFamily("arial").Bold();
+                                //    footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text("").FontSize(8).FontFamily("arial").Bold();
+                                //    footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text("").FontSize(6).FontFamily("arial").Bold();
+                                //    footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaInteresesTotalDescuento.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
+                                //    footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaImporteTotal.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
+                                //});
 
                             });
 
