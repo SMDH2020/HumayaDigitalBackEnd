@@ -8,6 +8,9 @@ namespace HD_Cobranza.Modelos.ConvenioPago
 {
     public class mdlResponsables_Cobranza
     {
+        public int idusuario { get; set; }
         public string? responsable_cobranza { get; set; }
+        public int ADR { get; set; }
+
     }
 }
