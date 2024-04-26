@@ -35,6 +35,8 @@ namespace HD.Clientes.Modelos
         [StringLength(1, MinimumLength = 1, ErrorMessage = "El campo Medio de Contacto debe estar formado por 1 digitos")]
         public string agrupacion { get; set; } = "I";
 
+        public string? agrupaciondesc { get; set; }
+
         [Required(ErrorMessage = "El Regimen Fiscal es un valor requerido")]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "El campo Regimen Fiscal debe estar formado solo por numeros")]
         [StringLength(3, MinimumLength = 3, ErrorMessage = "El campo Regimen Fiscal debe estar formado por 3 digitos")]
@@ -50,5 +52,6 @@ namespace HD.Clientes.Modelos
 
         public string? usuario { get; set; } = "";
         public string? referencia { get; set; } = "";
+        public string? idvendedor { get; set; } = "";
     }
 }

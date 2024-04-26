@@ -17,10 +17,13 @@ namespace HD.Clientes.Modelos
         [StringLength(1, MinimumLength = 1, ErrorMessage = "El campo medio de contacto debe estar formado por 1 digitos")]
         public string? medio_contacto { get; set; } = "";
 
+        public string? idmedio_contacto { get; set; }
+
         [Required(ErrorMessage = "El Tipo de Contacto es un valor requerido")]
         [RegularExpression(@"^[COVE]+$", ErrorMessage = "El campo tipo de contacto debe estar formado  por las siguientes opciones [CO][VE]")]
         [StringLength(2, MinimumLength = 2, ErrorMessage = "El campo tipo de contacto debe estar formado por 2 digitos")]
         public string? tipo_contacto { get; set; }="";
+        public string? idtipo_contacto { get; set; }
 
         [Required(ErrorMessage = "El Valor es un valor requerido")]
         [RegularExpression(@"^[a-zA-Z0-9@-_.]+$", ErrorMessage = "El campo Tipo de Contacto debe estar formado  por las siguientes opciones [CO][VE]")]

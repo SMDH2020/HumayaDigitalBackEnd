@@ -13,6 +13,7 @@ namespace HD.Clientes.Modelos
         public int ejercicio { get; set; }
 
         public int periodo { get; set; }
+        public string? mes { get; set; }
 
         public double interes { get; set; }
 
@@ -24,5 +25,6 @@ namespace HD.Clientes.Modelos
         public bool estatus { get; set; }
 
         public string? usuario { get; set; } = "";
+        public bool tienedocumento { get; set; } = false;
     }
 }
