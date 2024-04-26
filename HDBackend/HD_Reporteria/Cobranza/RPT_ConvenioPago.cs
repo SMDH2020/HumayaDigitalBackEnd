@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Spreadsheet;
+using HD.Clientes.Modelos.Pedido_Impresion;
 using HD_Cobranza.Modelos;
 using HD_Cobranza.Modelos.ConvenioPago;
 using QuestPDF.Fluent;
@@ -8,7 +9,7 @@ namespace HD_Reporteria.Cobranza
 {
     public class RPT_ConvenioPago
     {
-        public static RPT_Result Generar(mdlConvenio_Pago mdl,IEnumerable<mdlVencidosOperacion> lst)
+        public static RPT_Result Generar(mdlConvenio_Pago mdl,IEnumerable<mdlFacturasSeleccionadas> lst)
         {
             try
             {
@@ -102,7 +103,7 @@ namespace HD_Reporteria.Cobranza
                                 if (mdl.mediocontacto == "DO") { txt.Span(mdl.monto.ToString("_______")).FontSize(10).Bold().FontFamily("arial"); }
                                 else { txt.Span(mdl.fecha_convenio.ToString("yyyy")).FontSize(10).Bold().FontFamily("arial"); }
                                 txt.Span(" a ").FontSize(10).FontFamily("arial");
-                                txt.Span("Humaya John Deere").FontSize(10).Bold().FontFamily("arial");
+                                txt.Span("Maquinaria del Humaya John Deere").FontSize(10).Bold().FontFamily("arial");
                                 txt.Span(", lo que corresponda a las siguientes facturas.").FontSize(10).FontFamily("arial");
                             });
 
@@ -248,7 +249,7 @@ namespace HD_Reporteria.Cobranza
                                 {
                                     txt1.Item().Height(15).AlignCenter().Text(txt2 =>
                                     {
-                                        txt2.Span("SILVIA VAZQUEZ").FontSize(10).FontFamily(fontFamily);
+                                        txt2.Span(mdl.nombre_usuario).FontSize(10).FontFamily(fontFamily);
                                         //txt2.Span("NAVOLATO").FontSize(10);
                                     });
                                 });
@@ -289,7 +290,7 @@ namespace HD_Reporteria.Cobranza
                             col1.Item().PaddingTop(30).Text(txt =>
                             {
                                 txt.Span("Le recordamos que puede acudir a nuestra sucursal ").FontSize(10).FontFamily("arial");
-                                txt.Span("Humaya John Deere").FontSize(10).Bold().FontFamily("arial");
+                                txt.Span("Maquinaria del Humaya John Deere").FontSize(10).Bold().FontFamily("arial");
                                 txt.Span(" o bien a su banco con su ").FontSize(10).FontFamily("arial");
                                 txt.Span($"REFERENCIA UNICA DE CLIENTE {mdl.referencia}").FontSize(10).Bold().FontFamily("arial");
                                 txt.Span(" a realizar su depósito o transferencia para ponerse al corriente").FontSize(10).FontFamily("arial");
@@ -346,18 +347,18 @@ namespace HD_Reporteria.Cobranza
 
         }
 
-        public static RPT_Result GenerarPDF(mdlConvenio_Pago mdl, IEnumerable<mdlVencidosOperacion> lst)
+        public static RPT_Result GenerarPDF(mdlConvenio_Pago_Impresion mdl)
         {
             try
             {
                 string fontFamily = "Calibri";
-                var rutaImagenQR = mdl.ADR == 2
+                var rutaImagenQR = mdl.cliente.ADR == 2
                 ? Path.Combine("C:\\Nube\\HumayaDigital\\HumayaDigitalBackEnd\\HDBackend\\HD_Reporteria\\Imagenes\\QRNayarit.png")
                 : Path.Combine("C:\\Nube\\HumayaDigital\\HumayaDigitalBackEnd\\HDBackend\\HD_Reporteria\\Imagenes\\QRSinaloa.png");
 
-                var telefono = mdl.ADR == 2 ? "Tel. (311) 341 4978" : "Tel. (667) 758 8200";
+                var telefono = mdl.cliente.ADR == 2 ? "Tel. (311) 341 4978" : "Tel. (667) 758 8200";
 
-                var extension = mdl.ADR == 2 ? "Ext. 8511" : "Ext. 8111";
+                var extension = mdl.cliente.ADR == 2 ? "Ext. 8511" : "Ext. 8111";
                 byte[] doc = Document.Create(document =>
                 {
                     document.Page(page =>
@@ -418,7 +419,7 @@ namespace HD_Reporteria.Cobranza
                                 {
                                     txt1.Item().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.razon_social).FontSize(10).FontFamily("arial").Bold();
+                                        txt2.Span(mdl.cliente.razon_social).FontSize(10).FontFamily("arial").Bold();
                                     });
                                 });
                             });
@@ -428,15 +429,15 @@ namespace HD_Reporteria.Cobranza
                             col1.Item().PaddingTop(20).PaddingBottom(20).Text(txt =>
                             {
                                 txt.Span("Me comprometo a pagar la cantidad de $").FontSize(10).FontFamily("arial");
-                                txt.Span("_______").FontSize(10).Bold().FontFamily("arial");
+                                txt.Span(mdl.cliente.monto.ToString("N2")).FontSize(10).Bold().FontFamily("arial"); 
                                 txt.Span(" conveniado antes del ").FontSize(10).FontFamily("arial");
-                                txt.Span("__").FontSize(10).Bold().FontFamily("arial");
+                                txt.Span(mdl.cliente.fecha_convenio.ToString("dd")).FontSize(10).Bold().FontFamily("arial"); 
                                 txt.Span(" del mes de ").FontSize(10).FontFamily("arial");
-                                txt.Span("________").FontSize(10).Bold().FontFamily("arial");
+                                txt.Span(mdl.cliente.fecha_convenio.ToString("MMMM")).FontSize(10).Bold().FontFamily("arial"); 
                                 txt.Span(" del año ").FontSize(10).FontFamily("arial");
-                                txt.Span("____").FontSize(10).Bold().FontFamily("arial");
+                                txt.Span(mdl.cliente.fecha_convenio.ToString("yyyy")).FontSize(10).Bold().FontFamily("arial"); 
                                 txt.Span(" a ").FontSize(10).FontFamily("arial");
-                                txt.Span("Humaya John Deere").FontSize(10).Bold().FontFamily("arial");
+                                txt.Span("Maquinaria del Humaya John Deere").FontSize(10).Bold().FontFamily("arial");
                                 txt.Span(", lo que corresponda a las siguientes facturas.").FontSize(10).FontFamily("arial");
                             });
 
@@ -485,7 +486,7 @@ namespace HD_Reporteria.Cobranza
                                     .Padding(1).Text("SALDO TOTAL").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
                                 });
 
-                                foreach (var item in lst)
+                                foreach (var item in mdl.facturas)
                                 {
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
@@ -497,8 +498,17 @@ namespace HD_Reporteria.Cobranza
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
                                    .Text(item.vencimiento).FontSize(8).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
-                                   .Text(item.diasvencido).FontSize(8).FontFamily(fontFamily);
+                                    if (item.diasvencido < 0)
+                                    {
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
+                                       .Text("").FontSize(8).FontFamily(fontFamily);
+                                    }
+                                    else
+                                    {
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
+                                        .Text(item.diasvencido).FontSize(8).FontFamily(fontFamily);
+                                    }
+
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1)
                                    .Text(item.descripcion).FontSize(8).FontFamily(fontFamily);
@@ -512,6 +522,8 @@ namespace HD_Reporteria.Cobranza
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
                                     .Text(item.saldo.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
+
+
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
                                     .Text(item.intereses.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
@@ -524,10 +536,10 @@ namespace HD_Reporteria.Cobranza
                                 }
                                 tabla.Footer(footer =>
                                 {
-                                    double sumaInteresesTotal = lst.Sum(item => item.intereses);
-                                    double sumasaldoTotal = lst.Sum(item => item.saldo);
-                                    double sumaImportePagadoTotal = lst.Sum(item => item.importepagado);
-                                    double sumaImporteFacturaTotal = lst.Sum(item => item.importefactura);
+                                    double sumaInteresesTotal = mdl.facturas.Sum(item => item.intereses);
+                                    double sumasaldoTotal = mdl.facturas.Sum(item => item.saldo);
+                                    double sumaImportePagadoTotal = mdl.facturas.Sum(item => item.importepagado);
+                                    double sumaImporteFacturaTotal = mdl.facturas.Sum(item => item.importefactura);
 
                                     footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
                                     footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
@@ -540,6 +552,8 @@ namespace HD_Reporteria.Cobranza
                                     footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaInteresesTotal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
                                     footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaImporteTotal.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
                                 });
+
+
                             });
 
                             col1.Item().PaddingTop(20).Text("En caso de incumplimiento de este convenio, la cuenta continuará generando intereses moratorios incrementando la cantidad del adeudo y afectando su historial crediticio").FontSize(10).FontFamily("arial");
@@ -573,7 +587,7 @@ namespace HD_Reporteria.Cobranza
                                 {
                                     txt1.Item().Height(15).AlignCenter().Text(txt2 =>
                                     {
-                                        txt2.Span("SILVIA VAZQUEZ").FontSize(10).FontFamily(fontFamily);
+                                        txt2.Span(mdl.cliente.nombre_usuario).FontSize(10).FontFamily(fontFamily);
                                         //txt2.Span("NAVOLATO").FontSize(10);
                                     });
                                 });
@@ -583,7 +597,7 @@ namespace HD_Reporteria.Cobranza
                                 {
                                     txt1.Item().Height(15).AlignCenter().Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.razon_social).FontSize(10).FontFamily(fontFamily);
+                                        txt2.Span(mdl.cliente.razon_social).FontSize(10).FontFamily(fontFamily);
                                         //txt2.Span("NAVOLATO").FontSize(10);
                                     });
                                 });
@@ -614,9 +628,9 @@ namespace HD_Reporteria.Cobranza
                             col1.Item().PaddingTop(30).Text(txt =>
                             {
                                 txt.Span("Le recordamos que puede acudir a nuestra sucursal ").FontSize(10).FontFamily("arial");
-                                txt.Span("Humaya John Deere").FontSize(10).Bold().FontFamily("arial");
+                                txt.Span("Maquinaria del Humaya John Deere").FontSize(10).Bold().FontFamily("arial");
                                 txt.Span(" o bien a su banco con su ").FontSize(10).FontFamily("arial");
-                                txt.Span($"REFERENCIA UNICA DE CLIENTE {mdl.referencia}").FontSize(10).Bold().FontFamily("arial");
+                                txt.Span($"REFERENCIA UNICA DE CLIENTE {mdl.cliente.referencia}").FontSize(10).Bold().FontFamily("arial");
                                 txt.Span(" a realizar su depósito o transferencia para ponerse al corriente").FontSize(10).FontFamily("arial");
                             });
                         });
@@ -640,7 +654,8 @@ namespace HD_Reporteria.Cobranza
                                             row3.ConstantItem(15).PaddingTop(5).Image(imageData);
                                             row3.RelativeItem().PaddingLeft(5).PaddingTop(5).Text(telefono).FontSize(10).FontFamily("arial");
                                         });
-                                        col1.Item().PaddingTop(10).Text(txt => {
+                                        col1.Item().PaddingTop(10).Text(txt =>
+                                        {
                                             txt.Span("Tel. (667) 758 8200 ").FontSize(10).FontFamily("arial");
                                             txt.Span(extension).Bold().FontSize(10).FontFamily("arial");
                                         });
