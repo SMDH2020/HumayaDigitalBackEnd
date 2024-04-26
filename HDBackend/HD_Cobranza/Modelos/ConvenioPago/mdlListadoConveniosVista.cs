@@ -19,6 +19,7 @@ namespace HD_Cobranza.Modelos.ConvenioPago
         public int createuser { get; set; }
 
         public string? NombreCompleto { get; set; }
+        public int ADR { get; set; }
 
     }
 }

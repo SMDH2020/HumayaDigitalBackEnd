@@ -1,5 +1,8 @@
-﻿using HD.Clientes.Consultas.PedidoImpresion;
+﻿using HD.Clientes.Consultas.InteresMensual;
+using HD.Clientes.Consultas.PedidoImpresion;
 using HD.Clientes.Consultas.PedidoUnidades;
+using HD.Clientes.Modelos;
+using HD.Generales.Consultas;
 using HD.Security;
 using HD_Cobranza.Capturas.ConvenioPago;
 using HD_Cobranza.Modelos.ConvenioPago;
@@ -33,8 +36,8 @@ namespace HD.Endpoints.Controllers.Cobranza
             {
 
 
-                IEnumerable<mdlFacturasSeleccionadas> factura = JsonConvert.DeserializeObject<IEnumerable<mdlFacturasSeleccionadas>>(mdl.detalle);
-                RPT_Result documento = RPT_ConvenioPago.Generar(mdl, factura);
+                //IEnumerable<mdlFacturasSeleccionadas> factura = JsonConvert.DeserializeObject<IEnumerable<mdlFacturasSeleccionadas>>(mdl.detalle);
+                RPT_Result documento = RPT_ConvenioPago.Generar(mdl, result);
 
                 return Ok(documento);
             }
@@ -105,6 +108,45 @@ namespace HD.Endpoints.Controllers.Cobranza
                 return BadRequest("Error de servidor");
 
             }
+
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> CargarEvidencia(mdlConvenio_Pago mdl)
+        {
+
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADEvidencia_Convenio_Pago_Guardar datos = new ADEvidencia_Convenio_Pago_Guardar(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.Guardar(mdl);
+            return Ok(new { mensaje = "datos cargados con exito", listado = result });
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerDocumento(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADEvidencia_Convenio_Pago_ObtenerDocumento datos = new ADEvidencia_Convenio_Pago_ObtenerDocumento(CadenaConexion);
+            var result = await datos.Obtener(folio);
+            if (string.IsNullOrEmpty(result.documento))
+            {
+                return BadRequest(new { mensaje = "Documento aun no cargado. Favor de cargarlo primero" });
+            }
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> DropDownList()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADResponsables_Cobranza_Dropdownlist datos = new ADResponsables_Cobranza_Dropdownlist(CadenaConexion);
+            var result = await datos.DropDownList();
+            return Ok(result);
 
         }
     }
