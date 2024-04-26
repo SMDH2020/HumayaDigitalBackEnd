@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HD_Administracion\HD_Administracion.csproj" />
     <ProjectReference Include="..\HD_Clientes\HD_Clientes.csproj" />
     <ProjectReference Include="..\HD_Cobranza\HD_Cobranza.csproj" />
     <ProjectReference Include="..\HD_Dashboard\HD_Dashboard.csproj" />
@@ -24,7 +25,9 @@
     <ProjectReference Include="..\HD_Generales\HD_Generales.csproj" />
     <ProjectReference Include="..\HD_Notifications\HD_Notifications.csproj" />
     <ProjectReference Include="..\HD_Reporteria\HD_Reporteria.csproj" />
+	<ProjectReference Include="..\HD_Ventas\HD_Ventas.csproj" />
     <ProjectReference Include="..\Ventas\Ventas.csproj" />
+
   </ItemGroup>
 
   <ItemGroup>
