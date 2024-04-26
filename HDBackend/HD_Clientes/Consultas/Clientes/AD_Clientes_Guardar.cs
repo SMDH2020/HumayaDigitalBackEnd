@@ -28,6 +28,7 @@ namespace HD.Clientes.Consultas.Clientes
                     tiempo_agricultor = mdl.tiempo_agricultor,
                     agrupacion = mdl.agrupacion,
                     regimen_fiscal = mdl.regimen_fiscal,
+                    idvendedor= mdl.idvendedor, 
                     tipo_venta = mdl.tipo_venta,
                     estatus = mdl.estatus,
                     usuario = mdl.usuario
@@ -58,6 +59,7 @@ namespace HD.Clientes.Consultas.Clientes
                     tiempo_agricultor = mdl.tiempo_agricultor,
                     agrupacion = mdl.agrupacion,
                     regimen_fiscal = mdl.regimen_fiscal,
+                    idvendedor=mdl.idvendedor,
                     tipo_venta = mdl.tipo_venta,
                     estatus = mdl.estatus,
                     usuario = mdl.usuario

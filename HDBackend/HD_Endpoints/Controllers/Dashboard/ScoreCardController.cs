@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Office.CustomUI;
-using HD.Security;
+﻿using HD.Security;
 using HD_Dashboard.Consultas.Vendedor;
 using HD_Dashboard.Modelos;
 using Microsoft.AspNetCore.Mvc;
@@ -28,11 +27,13 @@ namespace HD.Endpoints.Controllers.Dashboard
 
             List<mdlScoreCardResult> Listado = new List<mdlScoreCardResult>();
 
-            foreach (var card in ven) {
+            foreach (var card in ven)
+            {
                 var find = result.Where(element => element.scorecard.hoja.ToUpper().Equals(card.hoja.ToUpper())).FirstOrDefault();
-                if(find != null)
+                if (find != null)
                 {
-                    if(ven.Count() == 1) {
+                    if (ven.Count() == 1)
+                    {
 
                         var acumulado = find;
                         acumulado.scorecard.nombre = "Objetivo Acumulado";
