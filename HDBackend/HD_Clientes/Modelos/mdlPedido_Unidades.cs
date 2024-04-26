@@ -13,6 +13,8 @@ namespace HD.Clientes.Modelos
         [Range(-1,20,ErrorMessage ="El campo registro esta fuera de rango")]
         public int registro { get; set; }
 
+        public int idmodelo { get; set; }
+
         [Required(ErrorMessage = "El campo linea de crédito es un valor requerido")]
         [RegularExpression(@"^[MA|MQ|UM|MW]+$", ErrorMessage = "El campo linea de crédito tiene valores no permitidos")]
         public string? nuevo { get; set; }

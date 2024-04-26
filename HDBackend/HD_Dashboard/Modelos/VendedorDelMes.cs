@@ -52,7 +52,7 @@ namespace HD_Dashboard.Modelos
                     // Convertir el lector en un DataSet
                     var result = reader.AsDataSet(config);
                     var table = result.Tables[0];
-
+                    string colsname = table.Columns[0].ColumnName;
                     //fecha del mes anterior
                     var date = DateTime.Now.AddMonths(-1);
 
