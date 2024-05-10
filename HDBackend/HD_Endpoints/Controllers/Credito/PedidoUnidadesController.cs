@@ -34,7 +34,16 @@ namespace HD.Endpoints.Controllers.Credito
             return Ok(result);
 
         }
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> Delete(string folio,int registro)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_PedidoUnidades_DeleteRow datos = new AD_PedidoUnidades_DeleteRow(CadenaConexion);
+            var result = await datos.Delete(folio,registro,Sesion.usuario());
+            return Ok(result);
 
+        }
         [HttpGet]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> GetByRegistro(string folio, int registro)
