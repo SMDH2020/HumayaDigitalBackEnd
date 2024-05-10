@@ -11,7 +11,7 @@ namespace HD_Buro.Modelos
             public int id { get; set; }
             public long cliente { get; set; }
             public DateTime fecha { get; set; }
-            public string? telefono { get; set; }
+            public long telefono { get; set; }
             public long telefonoCel { get; set; }
             public short sucursal { get; set; }
             public string? nombreSucursal { get; set; }

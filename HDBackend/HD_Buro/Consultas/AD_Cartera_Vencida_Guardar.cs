@@ -64,7 +64,7 @@ namespace HD_Buro.Consultas
                     total = modelo.total,
                     usuario = modelo.usuario
                 };
-                IEnumerable<mdlCartera_Vencida> result = await factory.SQL.QueryAsync<mdlCartera_Vencida>("BuroCredito.dbo.sp_Cartera_Vencida_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+               var result = await factory.SQL.QueryAsync<mdlCartera_Vencida>("BuroCredito.dbo.sp_Cartera_Vencida_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

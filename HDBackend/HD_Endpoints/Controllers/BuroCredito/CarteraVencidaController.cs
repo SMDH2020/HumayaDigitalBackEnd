@@ -4,7 +4,9 @@ using HD.Clientes.Modelos;
 using HD.Security;
 using HD_Buro.Consultas;
 using HD_Buro.Modelos;
+using HD_Cobranza.Reportes;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 
@@ -54,6 +56,7 @@ namespace HD.Endpoints.Controllers.BuroCredito
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Cartera_Vencida_Guardar datos = new AD_Cartera_Vencida_Guardar(CadenaConexion);
+            List<mdlCartera_Vencida> resultados = new List<mdlCartera_Vencida>();
 
             try
             {
@@ -87,6 +90,21 @@ namespace HD.Endpoints.Controllers.BuroCredito
                         // Utilizar la función CorregirFecha para formatear la fecha
                         DateTime fechaCorregida = CorregirFecha(valores[1]);
 
+
+                        // Verificar si telefonoCel contiene algo más que números y asignar "" en su lugar
+                        var telefonoNumerico = Regex.Replace(valores[2], "[^0-9]", "");
+
+                        // Convertir telefonoCelNumerico a un entero de manera segura
+                        long telefono;
+                        if (!string.IsNullOrEmpty(telefonoNumerico))
+                        {
+                            telefono = Convert.ToInt64(telefonoNumerico);
+                        }
+                        else
+                        {
+                            telefono = 0;
+                        }
+
                         // Verificar si telefonoCel contiene algo más que números y asignar "" en su lugar
                         var telefonoCelNumerico = Regex.Replace(valores[3], "[^0-9]", "");
 
@@ -114,6 +132,9 @@ namespace HD.Endpoints.Controllers.BuroCredito
                         {
                             sucursal = 0;
                         }
+
+                        // Verificar si telefonoCel contiene algo más que números y asignar "" en su lugar
+                        var nombreCliente = Regex.Replace(valores[6], "[^0-9a-zA-ZñÑ. ]", "");
 
                         // Verificar si telefonoCel contiene algo más que números y asignar "" en su lugar
                         var valororigenNumerico = Regex.Replace(valores[7], "[^0-9.-]", "");
@@ -446,11 +467,11 @@ namespace HD.Endpoints.Controllers.BuroCredito
                             id = -999,
                             cliente = cliente, // Conversión a int
                             fecha = fechaCorregida,
-                            telefono = valores[2],
+                            telefono = telefono,
                             telefonoCel = telefonoCel, 
                             sucursal = sucursal,
                             nombreSucursal = valores[5],
-                            nombre = valores[6],
+                            nombre = nombreCliente,
                             valororiginal = valororigen,
                             reg = reg,
                             pagado = pagado,
@@ -484,10 +505,13 @@ namespace HD.Endpoints.Controllers.BuroCredito
                             usuario = "9013"
                         };
                         var result = await datos.Guardar(modelo);
+                        resultados.Add(modelo);
                     }
                 }
 
-                return Ok(new { mensaje = "Datos cargados con éxito" });
+                var docresult = await AD_Cartera_Vencida_XLS.CrearResumenPorSucursal(resultados);
+                return Ok(docresult);
+                //return Ok(new { mensaje = "Datos cargados con éxito" });
             }
             catch (Exception ex)
             {

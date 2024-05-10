@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HD_AccesoDatos\HD_AccesoDatos.csproj" />
+    <ProjectReference Include="..\HD_Cobranza\HD_Cobranza.csproj" />
   </ItemGroup>
 
 </Project>
