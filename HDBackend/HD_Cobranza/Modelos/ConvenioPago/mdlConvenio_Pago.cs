@@ -13,8 +13,14 @@
         public bool recordatorio { get; set; }
         public DateTime? fecha_recordatorio { get; set; }
         public string? mediocontacto { get; set; }
+        public string? firma { get; set; }
         public string? nombre_usuario { get; set; }
+        public int idresponsable { get; set; }
+        public double descuento { get; set; }
+        public string? razon_descuento { get; set; }
         public string? detalle { get; set; } = "";
+        public string? documento { get; set; } = "";
+        public string? extension { get; set; } = "";
         public string? usuario { get; set; }
     }
 }
