@@ -32,6 +32,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HD_Administracion", "HD_Administracion\HD_Administracion.csproj", "{97F15366-EFB2-4D70-A6DB-01936DBFE3CF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HD_Buro", "HD_Buro\HD_Buro.csproj", "{99F90A8B-CCB3-43D7-AC03-5B4640032AE4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HD_Helpers", "HD_Helpers\HD_Helpers.csproj", "{94EF6F55-89AB-42CB-AE0E-DDA5BC0104AB}"
+
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,10 +97,17 @@ Global
 		{97F15366-EFB2-4D70-A6DB-01936DBFE3CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97F15366-EFB2-4D70-A6DB-01936DBFE3CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97F15366-EFB2-4D70-A6DB-01936DBFE3CF}.Release|Any CPU.Build.0 = Release|Any CPU
+
 		{99F90A8B-CCB3-43D7-AC03-5B4640032AE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{99F90A8B-CCB3-43D7-AC03-5B4640032AE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99F90A8B-CCB3-43D7-AC03-5B4640032AE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99F90A8B-CCB3-43D7-AC03-5B4640032AE4}.Release|Any CPU.Build.0 = Release|Any CPU
+
+		{94EF6F55-89AB-42CB-AE0E-DDA5BC0104AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94EF6F55-89AB-42CB-AE0E-DDA5BC0104AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94EF6F55-89AB-42CB-AE0E-DDA5BC0104AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94EF6F55-89AB-42CB-AE0E-DDA5BC0104AB}.Release|Any CPU.Build.0 = Release|Any CPU
+
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
