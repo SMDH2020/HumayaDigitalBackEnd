@@ -16,15 +16,15 @@ namespace HD.Endpoints.Controllers.Ventas
         }
 
 
-        [HttpGet]
-        [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> Listado()
-        {
-            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-            AD_DDLVendedor datos = new AD_DDLVendedor(CadenaConexion);
-            var result = await datos.Listado();
-            return Ok(result);
+        //[HttpGet]
+        //[Route("/api/[controller]/[action]")]
+        //public async Task<ActionResult> Listado()
+        //{
+        //    string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+        //    AD_DDLVendedor datos = new AD_DDLVendedor(CadenaConexion);
+        //    var result = await datos.Listado();
+        //    return Ok(result);
 
-        }
+        //}
     }
 }
