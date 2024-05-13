@@ -228,7 +228,7 @@ namespace HD_Reporteria.Solicitud_Credito
 
                                 row1.ConstantItem(365).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
                                 {
-                                    txt1.Item().Height(15).Text(txt2 =>
+                                    txt1.Item().Text(txt2 =>
                                     {
                                         txt2.Span(mdl.solicitante?.condicionescredito).FontSize(8).FontFamily(fontFamily);
                                     });
@@ -408,7 +408,7 @@ namespace HD_Reporteria.Solicitud_Credito
 
                                 row1.ConstantItem(120).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
                                 {
-                                    txt1.Item().AlignCenter().Height(15).Text(txt2 =>
+                                    txt1.Item().Height(15).Text(txt2 =>
                                     {
                                         txt2.Span(mdl.solicitante?.foliosanticipos).FontSize(10).FontFamily(fontFamily);
                                     });
@@ -531,7 +531,7 @@ namespace HD_Reporteria.Solicitud_Credito
                             });
                             //col1.Item().Text("Fecha de pedido:").Bold();
                             col1.Item().Text("Condiciones para operacion de venta").FontSize(10).FontFamily(fontFamily);
-                            col1.Item().Border(1).BorderColor("#afb69d").Padding(05).Text("Acepto que se elabore la factura con los datos anteriormente proporcionados, los cuales manifiesto son correctos y acepto que dicha factura no podrá cancelarse o re-facturarse posteriormente.").FontSize(8).FontFamily(fontFamily);
+                            col1.Item().Border(1).BorderColor("#afb69d").Padding(05).Text(mdl.condiciones?.condiciones).FontSize(8).FontFamily(fontFamily);
 
                             col1.Item().PaddingTop(05).Text("Observaciones").FontSize(10).FontFamily(fontFamily);
                             col1.Item().Border(1).BorderColor("#afb69d").Padding(05).Text(mdl.condiciones?.observaciones).FontSize(8).FontFamily(fontFamily);
