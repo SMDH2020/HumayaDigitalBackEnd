@@ -25,19 +25,19 @@ namespace HD_Cobranza.Modelos.ReporteRecuperacionCartera
                 IEnumerable<mdlReporteRecuperacionCartera_Obtener> result = await factory.SQL.QueryAsync<mdlReporteRecuperacionCartera_Obtener>("EQUIP.Cobranza.sp_Reporte_Recuperacion_Cartera", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 List<mdlReporteRecuperacionCartera_Obtener> listado = result.ToList();
-                if (result.Count() > 0)
-                    listado.Add(new mdlReporteRecuperacionCartera_Obtener()
-                    {
-                        sucursal = result.First().sucursal,
-                        codigocliente = result.Sum(x => x.codigocliente),
-                        razonsocial = result.First().razonsocial,
-                        factura = result.First().factura,
-                        importe = result.Sum(x => x.importe),
-                        pago = result.Sum(x => x.pago),
-                        fecha = result.First().fecha,
-                        fechapago = result.First().fechapago,
-                        dias = result.Sum(x => x.dias),
-                    });
+                //if (result.Count() > 0)
+                //    listado.Add(new mdlReporteRecuperacionCartera_Obtener()
+                //    {
+                //        sucursal = result.First().sucursal,
+                //        codigocliente = result.First().codigocliente,
+                //        razonsocial = result.First().razonsocial,
+                //        factura = result.First().factura,
+                //        importe = result.First().importe,
+                //        pago = result.First().pago,
+                //        fecha = result.First().fecha,
+                //        fechapago = result.First().fechapago,
+                //        dias = result.First().dias
+                //    });
                 return listado;
             }
             catch (System.Exception ex)
