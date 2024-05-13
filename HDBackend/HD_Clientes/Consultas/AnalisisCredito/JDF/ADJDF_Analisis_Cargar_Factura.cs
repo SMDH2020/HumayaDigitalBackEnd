@@ -61,6 +61,28 @@ namespace HD.Clientes.Consultas.AnalisisCredito.JDF
             }
         }
 
+        public async Task<mdlJDFAnalisis_Datos_Facturacion> Guardar_detalle(string folio, string docto, string documento)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    folio,
+                    docto,
+                    documento
+                };
+                var result = await factory.SQL.QueryFirstOrDefaultAsync<mdlJDFAnalisis_Datos_Facturacion>("Credito.sp_Pedido_Detalle_Financiamiento_EQUIP", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                if (result == null) { result = new mdlJDFAnalisis_Datos_Facturacion(); }
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
 
     }
 }

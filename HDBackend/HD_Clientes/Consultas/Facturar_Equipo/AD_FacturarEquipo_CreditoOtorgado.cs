@@ -11,7 +11,7 @@ namespace HD.Clientes.Consultas.Facturar_Equipo
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_Factuar_Equipo_View>> Listado(int usuario)
+        public async Task<IEnumerable<mdlListFacCerrada>> Listado(int usuario)
         {
             try
             {
@@ -20,7 +20,7 @@ namespace HD.Clientes.Consultas.Facturar_Equipo
                     usuario
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_Factuar_Equipo_View> result = await factory.SQL.QueryAsync<mdl_Factuar_Equipo_View>("Credito.sp_Solicitudes_por_Facturar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdlListFacCerrada> result = await factory.SQL.QueryAsync<mdlListFacCerrada>("Credito.sp_Obtener_Pedidos_De_Creditos_Cerrados", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

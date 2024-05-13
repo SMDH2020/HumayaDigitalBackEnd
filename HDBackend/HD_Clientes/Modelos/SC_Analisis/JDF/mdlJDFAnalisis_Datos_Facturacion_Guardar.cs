@@ -13,5 +13,12 @@
         public string? folio_fiscal { get; set; }
         public string? documento { get; set; }
         public string? usuario { get; set; }
+        public IEnumerable<mdlFacturacionFinanciamiento>? documentos { get; set; }   
+    }
+
+    public class mdlFacturacionFinanciamiento
+    {
+        public string? docto { get; set; }
+        public string? documento { get; set; }
     }
 }
