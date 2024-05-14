@@ -1,4 +1,5 @@
-﻿using HD.Clientes.Modelos.Pedido_Impresion;
+﻿using HD.Clientes.Modelos.Pagares;
+using HD.Clientes.Modelos.Pedido_Impresion;
 using HD_Cobranza.Capturas.RecuperacionCartera;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
@@ -80,7 +81,7 @@ namespace HD_Reporteria.Pagares
         }
 
 
-        public static RPT_Result Generar(mdl_pedido_impresion mdl, int adr,string sucursal)
+        public static RPT_Result Generar(mdl_Pagare_Impresion mdl)
         {
             try
             {
@@ -250,9 +251,8 @@ namespace HD_Reporteria.Pagares
                                     txt1.Item().AlignCenter().Height(15).Text(txt2 =>
                                     {
                                         DateTime fechaActual = DateTime.Now;
-                                        string estado = adr == 1 ? "SINALOA" : "NAYARIT";
-                                        string ciudad = sucursal == "SANTIAGO I" ? "SANTIAGO IXCUINTLA" : sucursal;
-                                        txt2.Span(ciudad + ", " + estado + " " + fechaActual.ToString("dd 'DE' MMMM 'DEL' yyyy").ToUpper()).FontSize(10).FontFamily("arial");
+                                        string ciudad = mdl.ubicacion.sucursal == "SANTIAGO I" ? "SANTIAGO IXCUINTLA" : mdl.ubicacion.sucursal;
+                                        txt2.Span(ciudad + ", " + mdl.ubicacion?.estado + " " + fechaActual.ToString("dd 'DE' MMMM 'DEL' yyyy").ToUpper()).FontSize(10).FontFamily("arial");
                                     });
                                 });
                             });

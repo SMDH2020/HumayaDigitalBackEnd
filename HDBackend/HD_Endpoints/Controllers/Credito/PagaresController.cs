@@ -22,7 +22,7 @@ namespace HD.Endpoints.Controllers.Credito
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> PagareDosAmortizacionesSuscripcion(string folio, int adr, string sucursal)
+        public async Task<ActionResult> PagareDosAmortizacionesSuscripcion(string folio)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Pagare_Dos_Amortizaciones_Suscripcion datos = new AD_Pagare_Dos_Amortizaciones_Suscripcion(CadenaConexion);
@@ -30,7 +30,7 @@ namespace HD.Endpoints.Controllers.Credito
 
             try
             {
-                RPT_Result documento =  RPT_Pagare_Dos_Amortizaciones_Suscripcion.Generar(result, adr, sucursal);
+                RPT_Result documento =  RPT_Pagare_Dos_Amortizaciones_Suscripcion.Generar(result);
 
                 return Ok(documento);
             }
@@ -43,7 +43,7 @@ namespace HD.Endpoints.Controllers.Credito
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> PagareDosAmortizacionesVencimiento(string folio, int adr, string sucursal)
+        public async Task<ActionResult> PagareDosAmortizacionesVencimiento(string folio)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Pagare_Dos_Amortizaciones_Suscripcion datos = new AD_Pagare_Dos_Amortizaciones_Suscripcion(CadenaConexion);
@@ -64,7 +64,7 @@ namespace HD.Endpoints.Controllers.Credito
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> PagareSuscripcion(string folio, int adr, string sucursal)
+        public async Task<ActionResult> PagareSuscripcion(string folio)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Pagare_Dos_Amortizaciones_Suscripcion datos = new AD_Pagare_Dos_Amortizaciones_Suscripcion(CadenaConexion);
@@ -85,7 +85,7 @@ namespace HD.Endpoints.Controllers.Credito
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> PagareVencimiento(string folio, int adr, string sucursal)
+        public async Task<ActionResult> PagareVencimiento(string folio)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Pagare_Dos_Amortizaciones_Suscripcion datos = new AD_Pagare_Dos_Amortizaciones_Suscripcion(CadenaConexion);
