@@ -27,6 +27,7 @@ namespace HD.Clientes.Consultas.Facturar_Equipo
                 data.datos_pedido = result.Read<mdl_datos_pedido>().FirstOrDefault();
                 data.comentarios = result.Read<mdl_comentarios>().FirstOrDefault();
                 data.sucursales = result.Read<mdl_sucursales_cliente>().ToList();
+                data.financiamiento = result.Read<mdlPEdidoFinanciamiento>().ToList();
                 factory.SQL.Close();
                 if (data.datos_pedido == null) data.datos_pedido = new mdl_datos_pedido();
                 if (data.comentarios == null) data.comentarios = new mdl_comentarios();
