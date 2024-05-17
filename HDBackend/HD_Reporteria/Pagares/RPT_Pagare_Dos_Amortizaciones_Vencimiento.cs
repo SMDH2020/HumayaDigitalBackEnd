@@ -13,7 +13,7 @@ namespace HD_Reporteria.Pagares
     public class RPT_Pagare_Dos_Amortizaciones_Vencimiento
     {
 
-        public static string ConvertirNumeroALetras(decimal numero)
+        public static string ConvertirNumeroALetras(double numero)
         {
             string[] unidades = { "Cero", "Uno", "Dos", "Tres", "Cuatro", "Cinco", "Seis", "Siete", "Ocho", "Nueve" };
             string[] especiales = { "", "Once", "Doce", "Trece", "Catorce", "Quince", "Dieciseis", "Diecisiete", "Dieciocho", "Diecinueve" };
@@ -85,7 +85,7 @@ namespace HD_Reporteria.Pagares
             try
             {
                 string fontFamily = "Calibri";
-                decimal sumaTotal = (decimal)mdl.financiamiento.Sum(item => item.totalpagar);
+                double sumaTotal = mdl.financiamientocerodias.Sum(item => item.totalpagar);
                 byte[] doc = Document.Create(document =>
                 {
                     document.Page(page =>
@@ -126,7 +126,7 @@ namespace HD_Reporteria.Pagares
                             col1.Item().PaddingTop(20).PaddingBottom(10).Text(txt =>
                             {
                                 txt.Span("Por este PAGARE, por valor recibido, me(nos) obligo(amos) a pagar solidaria, mancomunada e incondicionalmente, a la orden de: MAQUINARIA DEL HUMAYA, S.A. DE C.V., en la dirección de sus oficinas en la ciudad de Navolato, Sinaloa, o en cualquier otra donde se me requiera el pago, según lo elija el tenedor de este pagaré, la cantidad principal de").FontSize(10).FontFamily("arial");
-                                txt.Span(" $ " + sumaTotal.ToString("N2") + " (" + ConvertirNumeroALetras(sumaTotal) + " 00/100 M.N.) ").FontSize(10).Bold().FontFamily("arial");
+                                txt.Span(" $ " + sumaTotal.ToString("N2") + " (" + ConvertirNumeroALetras(sumaTotal) + " pesos " + ((int)((sumaTotal - (int)sumaTotal) * 100)).ToString("00") + "/100 M.N.) ").FontSize(10).Bold().FontFamily("arial");
                                 txt.Span("mediante las amortizaciones pactadas, por los montos y las fechas que a continuación se detallan:").FontSize(10).FontFamily("arial");
                                 //txt.Span("10 ").FontSize(10).Bold().FontFamily("arial"); 
                                 //txt.Span("del mes de ").FontSize(10).FontFamily("arial");
@@ -139,99 +139,67 @@ namespace HD_Reporteria.Pagares
                             });
 
 
-                            col1.Item().PaddingVertical(10).Table(tabla =>
+                            col1.Item().PaddingVertical(10).Row(row1 =>
                             {
-                                tabla.ColumnsDefinition(Columns =>
+                                row1.RelativeItem().PaddingRight(10).Column(col1 =>
                                 {
-                                    Columns.RelativeColumn(1);
-                                    Columns.RelativeColumn(1);
-                                    Columns.RelativeColumn(1);
-                                    Columns.RelativeColumn(1);
-                                    Columns.RelativeColumn(0.7f);
-                                    Columns.RelativeColumn(1);
-                                    Columns.RelativeColumn(1);
-                                    //Columns.RelativeColumn(1);
-                                    //Columns.RelativeColumn(1);
-                                    //Columns.RelativeColumn(1.2f);
+                                    col1.Item().PaddingVertical(10).Table(tabla =>
+                                    {
+                                        tabla.ColumnsDefinition(Columns =>
+                                        {
+                                            Columns.RelativeColumn(1);
+                                            Columns.RelativeColumn(1);
+                                            Columns.RelativeColumn(1);
+                                        });
 
+                                        tabla.Header(header =>
+                                        {
+                                            header.Cell().Background("#264f26").AlignCenter().Padding(1).Text("AMORTIZACION").FontColor("#fff").FontSize(08).Bold().FontFamily(fontFamily);
+                                            header.Cell().Background("#264f26").AlignMiddle().AlignCenter().Padding(1).Text("VENCIMIENTO").FontColor("#fff").FontSize(08).Bold().FontFamily(fontFamily);
+                                            header.Cell().Background("#264f26").AlignRight().AlignMiddle().Padding(1).PaddingRight(5).Text("IMPORTE A FINANCIAR").FontColor("#fff").FontSize(08).Bold().FontFamily(fontFamily);
+                                        });
+
+                                        foreach (var item in mdl.financiamientocerodias.Where((item, index) => index % 2 == 0))
+                                        {
+                                            // Colocar en las últimas tres columnas
+                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignCenter().Text(item.docto).FontSize(8).FontFamily(fontFamily);
+                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignCenter().Text(item.vencimiento).FontSize(8).FontFamily(fontFamily);
+                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).PaddingRight(5).AlignRight().Text(item.importefinanciar.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        }
+                                    });
                                 });
 
-                                tabla.Header(header =>
+                                row1.RelativeItem().PaddingLeft(10).Column(col1 =>
                                 {
-                                    header.Cell().Background("#264f26").AlignCenter()
-                                    .Padding(1).Text("AMORTIZACION").FontColor("#fff").FontSize(08).Bold().FontFamily(fontFamily);
-                                    header.Cell().Background("#264f26").AlignMiddle().AlignCenter()
-                                    .Padding(1).Text("VENCIMIENTO").FontColor("#fff").FontSize(08).Bold().FontFamily(fontFamily);
-                                    header.Cell().Background("#264f26").AlignRight().AlignMiddle()
-                                    .Padding(1).Text("IMPORTE A FINANCIAR").FontColor("#fff").FontSize(08).Bold().FontFamily(fontFamily);
-                                    header.Cell().Background("#264f26").AlignRight()
-                                    .Padding(1).PaddingRight(10).Text("DIAS").FontColor("#fff").FontSize(08).Bold().FontFamily(fontFamily);
-                                    header.Cell().Background("#264f26").AlignRight()
-                                    .Padding(1).PaddingRight(10).Text("TASA %").FontColor("#fff").FontSize(08).Bold().FontFamily(fontFamily);
-                                    header.Cell().Background("#264f26").AlignRight()
-                                    .Padding(1).PaddingRight(10).Text("INTERES").FontColor("#fff").FontSize(08).Bold().FontFamily(fontFamily);
-                                    header.Cell().Background("#264f26").AlignCenter()
-                                    .Padding(1).Text("TOTAL A PAGAR").FontColor("#fff").FontSize(08).Bold().FontFamily(fontFamily);
-                                    //header.Cell().Background("#ccc").AlignCenter()
-                                    //.Padding(1).Text("SALDO VENCIDO").FontSize(08).Bold().FontFamily(fontFamily);
-                                    //header.Cell().Background("#ccc").AlignCenter()
-                                    //.Padding(1).Text("INTERES MORATORIO").FontSize(08).Bold().FontFamily(fontFamily);
-                                    //header.Cell().Background("#ccc").AlignCenter()
-                                    //.Padding(1).Text("SALDO TOTAL").FontSize(08).Bold().FontFamily(fontFamily);
+                                    col1.Item().PaddingVertical(10).Table(tabla =>
+                                    {
+                                        tabla.ColumnsDefinition(Columns =>
+                                        {
+                                            Columns.RelativeColumn(1);
+                                            Columns.RelativeColumn(1);
+                                            Columns.RelativeColumn(1);
+                                        });
+
+                                        tabla.Header(header =>
+                                        {
+                                            header.Cell().Background("#264f26").AlignCenter().Padding(1).Text("AMORTIZACION").FontColor("#fff").FontSize(08).Bold().FontFamily(fontFamily);
+                                            header.Cell().Background("#264f26").AlignMiddle().AlignCenter().Padding(1).Text("VENCIMIENTO").FontColor("#fff").FontSize(08).Bold().FontFamily(fontFamily);
+                                            header.Cell().Background("#264f26").AlignRight().AlignMiddle().Padding(1).PaddingRight(5).Text("IMPORTE A FINANCIAR").FontColor("#fff").FontSize(08).Bold().FontFamily(fontFamily);
+                                        });
+
+                                        foreach (var item in mdl.financiamientocerodias.Where((item, index) => index % 2 != 0))
+                                        {
+                                            // Colocar en las últimas tres columnas
+                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignCenter().Text(item.docto).FontSize(8).FontFamily(fontFamily);
+                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignCenter().Text(item.vencimiento).FontSize(8).FontFamily(fontFamily);
+                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).PaddingRight(5).AlignRight().Text(item.importefinanciar.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        }
+                                    });
                                 });
-
-                                foreach (var item in mdl.financiamiento)
-                                {
-
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignCenter()
-                                   .Text(item.docto).FontSize(8).FontFamily(fontFamily);
-
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignCenter()
-                                   .Text(item.vencimiento).FontSize(8).FontFamily(fontFamily);
-
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
-                                   .Text(item.importefinanciar.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).PaddingRight(15).AlignRight()
-                                   .Text(item.dias).FontSize(8).FontFamily(fontFamily);
-
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).PaddingRight(15).AlignRight()
-                                   .Text(item.tasa).FontSize(8).FontFamily(fontFamily);
-
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).PaddingRight(15).AlignRight()
-                                   .Text(item.interes).FontSize(8).FontFamily(fontFamily);
-
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight().PaddingRight(10)
-                                    .Text(item.totalpagar.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-
-                                    // tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
-                                    //.Text($"{formattedTotal}").FontSize(8).FontFamily(fontFamily);
-
-                                    // tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1)
-                                    // .Text("R582698").FontSize(8).FontFamily(fontFamily);
-
-                                    // tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1)
-                                    // .Text("R582698").FontSize(8).FontFamily(fontFamily);
-                                }
-                                tabla.Footer(footer =>
-                                {
-                                    //footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
-                                    //footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
-                                    //footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
-                                    //footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
-                                    //footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
-                                    //footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
-                                    //footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
-                                    //footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
-                                    //footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("TOTAL").FontSize(8).FontFamily("arial");
-                                    //footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("TOTAL").FontSize(8).FontFamily("arial");
-                                    // Puedes agregar más celdas y contenido según tus necesidades
-                                });
-
                             });
 
 
-                            col1.Item().PaddingTop(10).Text("El importe que ampara este pagaré causará intereses moratorios en forma mensual a partir de la fecha de vencimiento calculados a razón de la tasa fija del 33% (treinta y tres) por ciento anual sobre saldos insolutos.").FontSize(10).FontFamily("arial");
+                            col1.Item().PaddingTop(10).Text("El importe que ampara este pagaré causará intereses moratorios en forma mensual a partir de la fecha de vencimiento calculados a razón de la tasa fija del " + mdl.tasa.tasa  +  "% por ciento anual sobre saldos insolutos.").FontSize(10).FontFamily("arial");
 
                             col1.Item().PaddingTop(10).Text("Los intereses se calcularán dividiendo la tasa anual aplicable entre 360 (Trescientos sesenta) y multiplicando el resultado obtenido por el número de días efectivamente transcurridos durante el periodo en que se devenguen los intereses.").FontSize(10).FontFamily("arial");
 

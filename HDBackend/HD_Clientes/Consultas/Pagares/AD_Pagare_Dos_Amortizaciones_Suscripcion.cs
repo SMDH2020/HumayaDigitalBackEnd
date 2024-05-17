@@ -29,8 +29,10 @@ namespace HD.Clientes.Consultas.Pagares
                 var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Pagare_Impresion_PDF", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 mdl_Pagare_Impresion impresion = new mdl_Pagare_Impresion();
                 impresion.ubicacion = result.Read<mdl_Pagare_Ubicacion_View>().FirstOrDefault();
-                impresion.financiamiento = result.Read<mdl_Pedido_Financiamiento_View>().ToList();
+                impresion.financiamientocerodias = result.Read<mdl_Pedido_Financiamiento_View>().ToList();
+                impresion.financiamientomasdias = result.Read<mdl_Pedido_Financiamiento_View>().ToList();
                 impresion.firmas = result.Read<mdl_Pedido_Firmas_View>().FirstOrDefault();
+                impresion.tasa = result.Read<mdl_Pagare_Tasa>().FirstOrDefault();
                 factory.SQL.Close();
                 return impresion;
             }
