@@ -19,7 +19,26 @@ namespace HD.Endpoints.Controllers.Credito
             Configuracion = configuration;
             Sesion = sesion;
         }
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ImprimirPagare(string folio, int adr, string sucursal)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Pagare_Dos_Amortizaciones_Suscripcion datos = new AD_Pagare_Dos_Amortizaciones_Suscripcion(CadenaConexion);
+            var result = await datos.Get(folio);
 
+            try
+            {
+                RPT_Result documento = RPT_Pagare_Dos_Amortizaciones_Suscripcion.Generar(result, adr, sucursal);
+
+                return Ok(documento);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error de servidor");
+
+            }
+        }
         [HttpGet]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> PagareDosAmortizacionesSuscripcion(string folio)

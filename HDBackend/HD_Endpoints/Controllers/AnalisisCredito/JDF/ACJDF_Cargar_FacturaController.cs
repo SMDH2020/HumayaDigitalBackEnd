@@ -22,6 +22,10 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
             ADJDF_Analisis_Cargar_Factura datos = new ADJDF_Analisis_Cargar_Factura(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.Guardar(mdl);
+            foreach(mdl_documentos_facturados_EQUIP fac in mdl.documentos)
+            {
+                await datos.Guardar_detalle(mdl.folio,mdl.registro,fac.orden, fac.documento, fac.documento);
+            }
             return Ok(result);
         }
         [HttpGet]

@@ -11,6 +11,7 @@ namespace HD_Cobranza.Capturas.RecuperacionCartera
         {
             CadenaConexion = _cadenaconexion;
         }
+
         public async Task<IEnumerable<mdlCob_RecuperacionCartera>> Obtener(DateTime _fechainicio, DateTime _fechafin)
         {
             try
