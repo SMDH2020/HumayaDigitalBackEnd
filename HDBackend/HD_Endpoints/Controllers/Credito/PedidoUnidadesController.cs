@@ -40,6 +40,7 @@ namespace HD.Endpoints.Controllers.Credito
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_PedidoUnidades_DeleteRow datos = new AD_PedidoUnidades_DeleteRow(CadenaConexion);
+
             var result = await datos.Delete(folio,registro,Sesion.usuario());
             return Ok(result);
 
