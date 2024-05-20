@@ -3,6 +3,7 @@
     public class mdlJDFAnalisis_Datos_Facturacion_Guardar
     {
         public string? folio { get; set; }
+        public int registro { get; set; }
         public string? factura { get; set; }
         public string? nota_abono { get; set; }
         public string? comentarios { get; set; }
@@ -13,9 +14,15 @@
         public string? folio_fiscal { get; set; }
         public string? documento { get; set; }
         public string? usuario { get; set; }
-        public IEnumerable<mdlFacturacionFinanciamiento>? documentos { get; set; }   
+        public IEnumerable<mdl_documentos_facturados_EQUIP>? documentos { get; set; }   
     }
 
+
+    public class mdl_documentos_facturados_EQUIP
+    {
+        public int orden { get; set; }
+        public string? documento { get; set; }
+    }
     public class mdlFacturacionFinanciamiento
     {
         public string? docto { get; set; }

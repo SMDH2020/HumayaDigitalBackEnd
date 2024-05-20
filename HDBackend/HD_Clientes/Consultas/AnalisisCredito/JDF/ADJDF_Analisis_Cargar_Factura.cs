@@ -39,9 +39,9 @@ namespace HD.Clientes.Consultas.AnalisisCredito.JDF
                 var parametros = new
                 {
                     folio = mdl.folio,
+                    registro=mdl.registro,
                     factura = mdl.factura,
                     nota_abono = mdl.nota_abono,
-                    comentarios = mdl.comentarios,
                     estatus = mdl.estatus,
                     idequip = mdl.idequip,
                     idsucursal = mdl.idsucursal,
@@ -61,7 +61,7 @@ namespace HD.Clientes.Consultas.AnalisisCredito.JDF
             }
         }
 
-        public async Task<mdlJDFAnalisis_Datos_Facturacion> Guardar_detalle(string folio, string docto, string documento)
+        public async Task<mdlJDFAnalisis_Datos_Facturacion> Guardar_detalle(string folio, int registro,int orden, string documento,string usuario)
         {
             try
             {
@@ -69,8 +69,10 @@ namespace HD.Clientes.Consultas.AnalisisCredito.JDF
                 var parametros = new
                 {
                     folio,
-                    docto,
-                    documento
+                    registro,
+                    orden,
+                    documento,
+                    usuario
                 };
                 var result = await factory.SQL.QueryFirstOrDefaultAsync<mdlJDFAnalisis_Datos_Facturacion>("Credito.sp_Pedido_Detalle_Financiamiento_EQUIP", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
