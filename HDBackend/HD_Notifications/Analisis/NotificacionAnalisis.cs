@@ -1,14 +1,19 @@
-﻿using HD.Clientes.Modelos;
+﻿using HD.Clientes.Modelos.SC_Analisis;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Mail;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace HD.Notifications.Analisis
 {
-    public static class NSolicitud_Enviar
+    public class NotificacionAnalisis
     {
         public static string _Mensaje { get; private set; }
         //         public static void Enviar(string Correo, string _tipoSolicitud, string _folio, string _vendedor, string _cliente, string _linea, string
         //_monto)
-        public static Task<bool> Enviar(mdlSolicitudCredito_Enviar_View datos_correo)
+        public static Task<bool> Enviar(mdlAnalisis_Email datos_correo)
         {
 
             try
@@ -24,14 +29,14 @@ namespace HD.Notifications.Analisis
                 client.UseDefaultCredentials = false;
                 client.Credentials = new System.Net.NetworkCredential(_correo, password);
                 objeto_mail.From = new MailAddress(_correo);
-                objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_responsable_credito));
-                objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_gerente_sucursal));
-                objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_vendedor));
-                //objeto_mail.To.Add(new MailAddress("desarrolladorti@humaya.com.mx"));
-                //objeto_mail.To.Add(new MailAddress("desarrolladorti2@humaya.com.mx"));
 
+                //objeto_mail.To.Add(new MailAddress(datos_correo.correo_responsable_credito));
+                //objeto_mail.To.Add(new MailAddress(datos_correo.correo_gerente_sucursal));
+                //objeto_mail.To.Add(new MailAddress(datos_correo.correo_vendedor));
+                objeto_mail.To.Add(new MailAddress("desarrolladorti@humaya.com.mx"));
+                objeto_mail.To.Add(new MailAddress("desarrolladorti2@humaya.com.mx"));
 
-                objeto_mail.Subject = "Nueva solicitud de credito";
+                objeto_mail.Subject = datos_correo.asunto + datos_correo.proceso;
                 objeto_mail.IsBodyHtml = true;
                 objeto_mail.Body = body(datos_correo);
                 client.EnableSsl = false;
@@ -47,7 +52,7 @@ namespace HD.Notifications.Analisis
 
         }
 
-        static string body(mdlSolicitudCredito_Enviar_View datos_Correo)
+        static string body(mdlAnalisis_Email datos_Correo)
 
         {
 
@@ -94,7 +99,7 @@ namespace HD.Notifications.Analisis
                 "</style>\n" +
                "</HEAD>\n" +
                "<BODY style=\"text-align:center;\"><P>\n" +
-                "<div>\n" +
+                "<div style=\"margin-bottom:100px;\">\n" +
                     "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" role=\"presentation\">\n" +
                         "<tr>\n" +
                             "<td width=\"10%\" style=\"padding: 0;\"> \n" +
@@ -131,57 +136,22 @@ namespace HD.Notifications.Analisis
                             "</td>\n" +
                         "</tr>\n" +
                     "</table>\n" +
-                "</div>\n"+
+                "</div>\n" +
 
-               "<h1 style=\"font-size:18;\"><Font Color='#235B34'>" + datos_Correo.detail.tipo_credito + "</Font></h1></P>\n" +
+            //"<h1 style=\"font-size:18;\"><Font Color='#235B34'>" + datos_Correo.detail.tipo_credito + "</Font></h1></P>\n" +
 
             "<table class=\"tabla-documentacion-vencida\">\n" +
                 "<thead>\n" +
                     "<tr>\n" +
-                        "<th colspan=\"2\" class=\"celda-cliente-titulo\">\n" +
-                           "<div style=\"font-size:18px;\">" + datos_Correo.detail.tipo_credito + "</div>\n" +
+                        "<th class=\"celda-cliente-titulo\">\n" +
+                           "<div style=\"font-size:18px;\">" + datos_Correo.proceso + " " + datos_Correo.estatus + "</div>\n" +
                         "</th>\n" +
                     "</tr>\n" +
-                "</thead>\n"+
+                "</thead>\n" +
                "<tbody>\n" +
                     "<tr>\n" +
-                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d\">\n" +
-                        "FOLIO \n" +
-                        "</td>\n" +
-                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d;text-align:right;\">\n" +
-                        datos_Correo.detail.folio +
-                        "</td>\n" +
-                    "</tr>\n" +
-                    "<tr>\n" +
-                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d\">\n" +
-                        "VENDEDOR \n" +
-                        "</td>\n" +
-                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d;text-align:right\">\n" +
-                        datos_Correo.detail.vendedor +
-                        "</td>\n" +
-                    "</tr>\n" +
-                    "<tr>\n" +
-                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d\">\n" +
-                        "CLIENTE \n" +
-                        "</td>\n" +
-                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d; text-align:right\">\n" +
-                        datos_Correo.detail.razon_social +
-                        "</td>\n" +
-                    "</tr>\n" +
-                    "<tr>\n" +
-                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d\">\n" +
-                        "LINEA \n" +
-                        "</td>\n" +
-                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d;text-align:right\">\n" +
-                        datos_Correo.detail.linea_credito +
-                        "</td>\n" +
-                    "</tr>\n" +
-                    "<tr>\n" +
-                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d\">\n" +
-                        "MONTO \n" +
-                        "</td>\n" +
-                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d;text-align:right\">\n" +
-                        datos_Correo.detail.importe.ToString("N2") +
+                        "<td style=\"padding:4px;text-align:left;margin-left:10px\">\n" +
+                            datos_Correo.comentarios +
                         "</td>\n" +
                     "</tr>\n" +
                "</tbody>\n" +
@@ -192,6 +162,6 @@ namespace HD.Notifications.Analisis
             return sHtml;
 
         }
-
+        
     }
 }

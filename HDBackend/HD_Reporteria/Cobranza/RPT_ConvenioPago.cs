@@ -253,7 +253,7 @@ namespace HD_Reporteria.Cobranza
                                 });
                             });
 
-                            col1.Item().PaddingTop(20).Text("En caso de incumplimiento de este convenio, la cuenta continuará generando intereses moratorios incrementando la cantidad del adeudo y afectando su historial crediticio").FontSize(10).FontFamily("arial");
+                            col1.Item().PaddingTop(20).Text("En caso de incumplimiento de este convenio, la cuenta continuara generando intereses moratorios incrementando la cantidad del adeudo, afectando su historial crediticio, se reporte a buró de credito o se asigne a cobranza extrajudicial.").FontSize(10).FontFamily("arial");
 
                             col1.Item().PaddingTop(20).Text("Es importante cumplir con nuestros compromisos para mantener una relación de confianza, por lo cual, lo invitamos a realizar el pago conveniado en la fecha acordada. ").FontSize(10).Bold().FontFamily("arial");
 
@@ -620,7 +620,7 @@ namespace HD_Reporteria.Cobranza
 
                             });
 
-                            col1.Item().PaddingTop(20).Text("En caso de incumplimiento de este convenio, la cuenta continuará generando intereses moratorios incrementando la cantidad del adeudo y afectando su historial crediticio").FontSize(10).FontFamily("arial");
+                            col1.Item().PaddingTop(20).Text("En caso de incumplimiento de este convenio, la cuenta continuara generando intereses moratorios incrementando la cantidad del adeudo, afectando su historial crediticio, se reporte a buró de credito o se asigne a cobranza extrajudicial.").FontSize(10).FontFamily("arial");
 
                             col1.Item().PaddingTop(20).Text("Es importante cumplir con nuestros compromisos para mantener una relación de confianza, por lo cual, lo invitamos a realizar el pago conveniado en la fecha acordada. ").FontSize(10).Bold().FontFamily("arial");
 
