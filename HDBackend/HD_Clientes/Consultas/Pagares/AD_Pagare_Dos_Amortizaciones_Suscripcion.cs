@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
+using HD.Clientes.Modelos.Pagares;
 using HD.Clientes.Modelos.Pedido_Impresion;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace HD.Clientes.Consultas.Pagares
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<mdl_pedido_impresion> Get(string folio)
+        public async Task<mdl_Pagare_Impresion> Get(string folio)
         {
             try
             {
@@ -25,13 +26,13 @@ namespace HD.Clientes.Consultas.Pagares
                 {
                     folio
                 };
-                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Pedido_Impresion_PDF", parametros, commandType: System.Data.CommandType.StoredProcedure);
-                mdl_pedido_impresion impresion = new mdl_pedido_impresion();
-                impresion.solicitante = result.Read<mdl_Pedido_Solicitante_View>().FirstOrDefault();
-                impresion.unidades = result.Read<mdl_Pedido_Unidades_View>().ToList();
-                impresion.condiciones = result.Read<mdl_Pedido_Condiciones_View>().FirstOrDefault();
-                impresion.financiamiento = result.Read<mdl_Pedido_Financiamiento_View>().ToList();
+                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Pagare_Impresion_PDF", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdl_Pagare_Impresion impresion = new mdl_Pagare_Impresion();
+                impresion.ubicacion = result.Read<mdl_Pagare_Ubicacion_View>().FirstOrDefault();
+                impresion.financiamientocerodias = result.Read<mdl_Pedido_Financiamiento_View>().ToList();
+                impresion.financiamientomasdias = result.Read<mdl_Pedido_Financiamiento_View>().ToList();
                 impresion.firmas = result.Read<mdl_Pedido_Firmas_View>().FirstOrDefault();
+                impresion.tasa = result.Read<mdl_Pagare_Tasa>().FirstOrDefault();
                 factory.SQL.Close();
                 return impresion;
             }
