@@ -36,7 +36,6 @@ namespace HD.Endpoints.Controllers.Cobranza
             var result = await datos.Listado();
             var docresult = await XLSCob_TotalCartera_Sucursal.CrearResumenPorSucursal(result);
             return Ok(docresult);
-
         }
 
         [HttpGet]
