@@ -29,7 +29,7 @@ namespace HD.Endpoints.Controllers.Credito
 
             try
             {
-                RPT_Result documento = RPT_Pagare_Dos_Amortizaciones_Suscripcion.Generar(result, adr, sucursal);
+                RPT_Result documento = new RPT_Result();// RPT_Pagare_Dos_Amortizaciones_Suscripcion.Generar(result, adr, sucursal);
 
                 return Ok(documento);
             }
