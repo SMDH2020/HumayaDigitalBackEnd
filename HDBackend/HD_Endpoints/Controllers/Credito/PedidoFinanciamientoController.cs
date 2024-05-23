@@ -1,4 +1,5 @@
 ﻿using HD.Clientes.Consultas.PedidoFinanciamiento;
+using HD.Clientes.Consultas.PedidoUnidades;
 using HD.Clientes.Modelos;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +33,17 @@ namespace HD.Endpoints.Controllers.Credito
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_PedidoFinanciamiento_Listado datos = new AD_PedidoFinanciamiento_Listado(CadenaConexion);
             var result = await datos.Get(folio);
+            return Ok(result);
+
+        }
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> Delete(string folio, int docto)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_PedidoFinanciamiento_DeleteRow datos = new AD_PedidoFinanciamiento_DeleteRow(CadenaConexion);
+
+            var result = await datos.Delete(folio, docto, Sesion.usuario());
             return Ok(result);
 
         }
