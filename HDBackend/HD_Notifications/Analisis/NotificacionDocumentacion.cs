@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -135,7 +136,7 @@ namespace HD.Notifications.Analisis
                 "</table>\n" +
                 "</div>\n" +
 
-                "<h1 style=\"font-size:18;\"><Font Color='#235B34'>" + datos_Correo.email.proceso + " " + datos_Correo.email.estatus + "</Font></h1></P>\n" +
+                "<h1 style=\"font-size:18;\"><Font Color='#235B34'>" + datos_Correo.email.proceso + "</Font></h1></P>\n" +
 
                 "<table class=\"tabla-documentacion-vencida\">\n" +
                 "<thead>\n" +
@@ -156,13 +157,13 @@ namespace HD.Notifications.Analisis
             foreach (var item in datos_Correo.documentacion)
             {
                 sHtml += "<tr>\n" +
-                    "<td style=\"padding:4px;text-align:left;margin-left:10px\">\n" +
+                    "<td style=\"padding:4px;border-bottom: 1px solid #afb69d;text-align:left;margin-left:10px\">\n" +
                     item.documento +
                     "</td>\n" +
-                    "<td style=\"padding:4px;text-align:left;margin-left:10px\">\n" +
-                    item.icono +
+                    "<td style=\"padding:4px;border-bottom: 1px solid #afb69d;text-align:left;margin-left:10px\">\n" +
+                   (item.icono == "success" ? "APROBADO" : (item.icono == "warning" ? "MODIFICAR" : "Rechazado")) +
                     "</td>\n" +
-                    "<td style=\"padding:4px;text-align:left;margin-left:10px\">\n" +
+                    "<td style=\"padding:4px;border-bottom: 1px solid #afb69d;text-align:left;margin-left:10px\">\n" +
                     item.comentarios +
                     "</td>\n" +
                     "</tr>\n";
