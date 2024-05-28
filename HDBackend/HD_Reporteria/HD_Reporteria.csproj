@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HD_Buro\HD_Buro.csproj" />
     <ProjectReference Include="..\HD_Clientes\HD_Clientes.csproj" />
     <ProjectReference Include="..\HD_Cobranza\HD_Cobranza.csproj" />
     <ProjectReference Include="..\HD_Finanzas\HD_Finanzas.csproj" />
