@@ -11,19 +11,12 @@ namespace HD_Buro.Consultas
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlCarga_Clientes_NoReportados>> reporte(int ejercicio, int periodo, int sucursal, string mostrar)
+        public async Task<IEnumerable<mdlCarga_Clientes_NoReportados>> reporte(int usuario)
         {
             try
             {
-                var parametros = new
-                {
-                    Ejercicio = ejercicio,
-                    Periodo = periodo,
-                    Sucursal = sucursal,
-                    Mostrar = mostrar
-                };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdlCarga_Clientes_NoReportados> result = await factory.SQL.QueryAsync<mdlCarga_Clientes_NoReportados>("BuroCredito.dbo.sp_Carga_Clientes_NoReportados", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdlCarga_Clientes_NoReportados> result = await factory.SQL.QueryAsync<mdlCarga_Clientes_NoReportados>("BuroCredito.dbo.sp_Carga_Clientes_NoReportados", commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
