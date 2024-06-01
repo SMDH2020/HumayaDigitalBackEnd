@@ -11,9 +11,7 @@ namespace HD.Generales.Autenticate
         public int idrel { get; set; }
         public int idusuario { get; set; }
         public int idmenu { get; set; }
-        public int idmodulo { get; set; }
-        public bool estatus { get; set; } = true;
-        public string? usuario { get; set; } = "";
-
+        public bool estatus { get; set; }
+        public string? usuario { get; set; }
     }
 }
