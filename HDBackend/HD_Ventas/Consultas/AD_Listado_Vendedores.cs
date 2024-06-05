@@ -18,7 +18,7 @@ namespace HD_Ventas.Consultas
             {
                 var parametros = new
                 {
-                    usuario = 8919
+                    usuario = usuario
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdlListado_Vendedores> result = await factory.SQL.QueryAsync<mdlListado_Vendedores>("Ventas.sp_scorecard_Listado_Vendedores", parametros, commandType: System.Data.CommandType.StoredProcedure);

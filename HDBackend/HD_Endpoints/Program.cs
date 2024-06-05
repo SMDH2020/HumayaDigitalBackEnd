@@ -31,7 +31,8 @@ builder.Services
              ValidateIssuerSigningKey = true,
              ValidIssuer = builder.Configuration["Jwt:Issuer"],
              ValidAudience = builder.Configuration["Jwt:Audience"],
-             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Login"]))
+             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Login"])),
+            
          };
      });
 
@@ -52,7 +53,8 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();    //app.UseDeveloperExceptionPage(); //codigo socket
+    app.UseSwaggerUI();    
+
 }
 app.UseHttpsRedirection();
 app.UseRouting();

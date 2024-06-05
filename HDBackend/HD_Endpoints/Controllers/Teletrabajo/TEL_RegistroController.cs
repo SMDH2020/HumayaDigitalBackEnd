@@ -1,5 +1,4 @@
 ﻿using HD.Security;
-using HD_Helpers.Consultas;
 using Microsoft.AspNetCore.Mvc;
 using Teletrabajo.Consultas;
 using Teletrabajo.Modelos;
@@ -12,7 +11,7 @@ namespace HD.Endpoints.Controllers.Teletrabajo
     {
         private readonly IConfiguration Configuracion;
         private readonly ISesion Sesion;
-        public TEL_RegistroController(IConfiguration configuration, 
+        public TEL_RegistroController(IConfiguration configuration,
             ISesion sesion)
 
         {
@@ -35,7 +34,10 @@ namespace HD.Endpoints.Controllers.Teletrabajo
 
 
             var token = await JwtManager.GenerarTocken(mdl.usuario.ToString(), "teletrabajo", securitytkey, iussuer, audience, 10080);
-            return Ok(new { registros = result, token });;
+            
+            
+            return Ok(new { registros=result, token
+            }); 
 
         }
     }

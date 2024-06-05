@@ -12,7 +12,7 @@ namespace Teletrabajo.Consultas
             CadenaConexion = _cadenaconexion;
         }
 
-        public async Task<IEnumerable<TEL_mdl_Lecturas>> PrimerRegistro(TEL_mdl_InfoSesion mdl)
+        public async Task<IEnumerable<string>> PrimerRegistro(TEL_mdl_InfoSesion mdl)
         {
             try
             {
@@ -25,7 +25,15 @@ namespace Teletrabajo.Consultas
                     mac = mdl.mac
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<TEL_mdl_Lecturas> result = await factory.SQL.QueryAsync<TEL_mdl_Lecturas>("HumayaDigital_Usuarios.dbo.sp_Usuarios_Teletrabajo_Login", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<string> result = await factory.SQL.QueryAsync<string>("HumayaDigital_Usuarios.dbo.sp_Usuarios_Teletrabajo_Login", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                //TEL_mdl_result modelo = new TEL_mdl_result();
+                //TEL_mdl_Lecturas lec = result.Read< TEL_mdl_Lecturas >().FirstOrDefault();
+                //modelo.registros = result.Read<string>().ToList();
+                //modelo.empleado = lec.empleado;
+                //modelo.sucursal = lec.sucursal;
+                //modelo.puesto = lec.puesto;
+                //modelo.foto = Convert.ToBase64String(lec.foto);
+
                 factory.SQL.Close();
                 return result;
             }
@@ -35,7 +43,7 @@ namespace Teletrabajo.Consultas
             }
         }
 
-        public async Task<IEnumerable<TEL_mdl_Lecturas>> Acceso(TEL_mdl_InfoSesion mdl)
+        public async Task<TEL_mdl_result> Acceso(TEL_mdl_InfoSesion mdl)
         {
             try
             {
@@ -48,9 +56,18 @@ namespace Teletrabajo.Consultas
                     mac = mdl.mac
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<TEL_mdl_Lecturas> result = await factory.SQL.QueryAsync<TEL_mdl_Lecturas>("HumayaDigital_Usuarios.dbo.sp_Usuarios_Teletrabajo_Lecturas", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("HumayaDigital_Usuarios.dbo.sp_Usuarios_Teletrabajo_Lecturas", parametros, commandType: System.Data.CommandType.StoredProcedure);
+
+                TEL_mdl_result modelo = new TEL_mdl_result();
+                TEL_mdl_Lecturas lec = result.Read<TEL_mdl_Lecturas>().FirstOrDefault();
+                modelo.registros = result.Read<string>().ToList();
+                modelo.empleado = lec.empleado;
+                modelo.sucursal = lec.sucursal;
+                modelo.puesto = lec.puesto;
+                modelo.foto = Convert.ToBase64String(lec.foto);
+
                 factory.SQL.Close();
-                return result;
+                return modelo;
             }
             catch (System.Exception ex)
             {
