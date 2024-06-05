@@ -16,14 +16,14 @@ namespace HD.Generales.Consultas
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlRelUsuarioMenu>> ListadoUsuarioMenu(int idusuario, int idmodulo)
+        public async Task<IEnumerable<mdlRelUsuarioMenu>> ListadoUsuarioMenu(int idmodulo, int idusuario)
         {
             try
             {
                 var parametros = new
                 {
-                    idusuario,
-                    idmodulo
+                    idmodulo,
+                    idusuario
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdlRelUsuarioMenu> result = await factory.SQL.QueryAsync<mdlRelUsuarioMenu>("humayadigital_usuarios.dbo.sp_Usuarios_Rel_Usuarios_Menu_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);

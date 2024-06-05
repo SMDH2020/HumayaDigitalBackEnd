@@ -16,16 +16,17 @@ namespace HD.Generales.Consultas
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlUsuarioMenu>> ListadoUsuario(int idusuario)
+        public async Task<IEnumerable<mdlUsuarioMenuAccesos>> ListadoUsuario(int idusuario, int idmodulo)
         {
             try
             {
                 var parametros = new
                 {
-                    idusuario
+                    idusuario,
+                    idmodulo
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdlUsuarioMenu> result = await factory.SQL.QueryAsync<mdlUsuarioMenu>("humayadigital_usuarios.dbo.sp_Usuarios_Menu_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdlUsuarioMenuAccesos> result = await factory.SQL.QueryAsync<mdlUsuarioMenuAccesos>("humayadigital_usuarios.dbo.sp_Usuarios_Menu_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

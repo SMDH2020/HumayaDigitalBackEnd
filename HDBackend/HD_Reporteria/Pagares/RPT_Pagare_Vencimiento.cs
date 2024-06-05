@@ -125,7 +125,7 @@ namespace HD_Reporteria.Pagares
 
                             col1.Item().PaddingTop(20).PaddingBottom(20).Text(txt =>
                             {
-                                txt.Span("Por este PAGARE, por valor recibido, me(nos) obligo(amos) a pagar solidaria, mancomunada e incondicionalmente, a la orden de: MAQUINARIA DEL HUMAYA, S.A. DE C.V., en la dirección de sus oficinas en la ciudad de Navolato, Sinaloa, o en cualquier otra donde se me requiera el pago, según lo elija el tenedor de este pagaré, la cantidad principal de $ ").FontSize(10).FontFamily("arial");
+                                txt.Span("Por este PAGARE, por valor recibido, me(nos) obligo(amos) a pagar solidaria, mancomunada e incondicionalmente, a la orden de: MAQUINARIA DEL HUMAYA, S.A. DE C.V., en la dirección de sus oficinas en la ciudad de Navolato, Sinaloa, o en cualquier otra donde se me requiera el pago, según lo elija el tenedor de este pagaré, la cantidad principal de").FontSize(10).FontFamily("arial");
                                 txt.Span(" $ " + sumaTotal.ToString("N2") + " (" + ConvertirNumeroALetras(sumaTotal) + " pesos " + ((int)((sumaTotal - (int)sumaTotal) * 100)).ToString("00") + "/100 M.N.) ").FontSize(10).Bold().FontFamily("arial");
                                 txt.Span(" mediante las amortizaciones pactadas, por los montos y las fechas que a continuación se detallan:").FontSize(10).FontFamily("arial");
                                 //txt.Span("10 ").FontSize(10).Bold().FontFamily("arial"); 
@@ -166,7 +166,7 @@ namespace HD_Reporteria.Pagares
                             });
 
 
-                            col1.Item().PaddingTop(10).Text("El importe que ampara este pagaré causará intereses moratorios en forma mensual a partir de la fecha de vencimiento, calculados a razón de la tasa fija del " + mdl.tasa.tasa + "% por ciento anual sobre saldos insolutos.").FontSize(10).FontFamily("arial");
+                            col1.Item().PaddingTop(10).Text("El importe que ampara este pagaré causará intereses moratorios en forma mensual a partir de la fecha de vencimiento, calculados a razón de la tasa fija del " + (mdl.tasa.tasa * 2) + "% por ciento anual sobre saldos insolutos.").FontSize(10).FontFamily("arial");
 
                             col1.Item().PaddingTop(10).Text("Los intereses se calcularán dividiendo la tasa anual aplicable entre 360 (Trescientos sesenta) y multiplicando el resultado obtenido por el número de días efectivamente transcurridos durante el periodo en que se devenguen los intereses.").FontSize(10).FontFamily("arial");
 
@@ -214,7 +214,7 @@ namespace HD_Reporteria.Pagares
                                 {
                                     txt1.Item().Height(15).AlignCenter().Text(txt2 =>
                                     {
-                                        txt2.Span("Celina Godoy Valenzuela").FontSize(10).FontFamily(fontFamily);
+                                        txt2.Span(mdl.firmas.suscriptor).FontSize(10).FontFamily(fontFamily);
                                         //txt2.Span("NAVOLATO").FontSize(10);
                                     });
                                 });
@@ -224,7 +224,7 @@ namespace HD_Reporteria.Pagares
                                 {
                                     txt1.Item().Height(15).AlignCenter().Text(txt2 =>
                                     {
-                                        txt2.Span("Asael Jimenez Terrazas").FontSize(10).FontFamily(fontFamily);
+                                        txt2.Span(mdl.firmas.aval).FontSize(10).FontFamily(fontFamily);
                                         //txt2.Span("NAVOLATO").FontSize(10);
                                     });
                                 });
@@ -233,21 +233,21 @@ namespace HD_Reporteria.Pagares
 
                             col1.Item().PaddingTop(00).AlignCenter().Row(row1 =>
                             {
-                                row1.ConstantItem(200).AlignCenter().Column(txt1 =>
+                                row1.ConstantItem(200).AlignCenter().PaddingRight(10).Column(txt1 =>
                                 {
-                                    txt1.Item().Height(15).Text(txt2 =>
+                                    txt1.Item().Text(txt2 =>
                                     {
-                                        txt2.Span("Nombre y Firma").FontSize(08).FontFamily(fontFamily);
+                                        txt2.Span(mdl.firmas.direccion_suscriptor).FontSize(08).FontFamily(fontFamily);
                                         //txt2.Span("NAVOLATO").FontSize(10);
                                     });
                                 });
 
 
-                                row1.ConstantItem(200).AlignCenter().Column(txt1 =>
+                                row1.ConstantItem(200).AlignCenter().PaddingLeft(10).Column(txt1 =>
                                 {
-                                    txt1.Item().Height(15).Text(txt2 =>
+                                    txt1.Item().Text(txt2 =>
                                     {
-                                        txt2.Span("Nombre y Firma").FontSize(08).FontFamily(fontFamily);
+                                        txt2.Span(mdl.firmas.direccion_aval).FontSize(08).FontFamily(fontFamily);
                                     });
                                 });
                             });
