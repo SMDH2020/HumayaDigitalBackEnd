@@ -28,7 +28,7 @@ namespace HD.Security
                 issuer: _Iussuer,
                 audience: _Audience,
                 claims: claims,
-                expires: DateTime.Now.AddHours(_minutossesion),
+                expires: DateTime.Now.AddMinutes(_minutossesion),
                 signingCredentials: credentials);
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
