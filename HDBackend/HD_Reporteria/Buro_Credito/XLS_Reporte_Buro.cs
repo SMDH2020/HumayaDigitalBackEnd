@@ -44,53 +44,27 @@ namespace HD_Reporteria.Buro_Credito
                     rango.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
                     renglon++;
 
-                    var sucursales = lista.GroupBy(item => item.sucursal).ToList();
 
-                    foreach (var mdl in sucursales)
+                    foreach (mdlCarga_Reporte_Buro activos in lista)
                     {
-                        sheet.Cell(renglon, 1).Value = mdl.Key;
-                        rango = sheet.Range(renglon, 1, renglon, 11);
-                        rango.Style.Fill.BackgroundColor = XLColor.FromArgb(218, 230, 190);
-                        rango.Style.Font.Bold = true;
-                        rango.Style.Font.FontSize = 10;
-                        //rango.RangeUsed().SetAutoFilter();
-                        rango.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
-                        rango.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+                        sheet.Cell(renglon, 1).Value = activos.linea;
+                        sheet.Cell(renglon, 2).Value = activos.sucursal;
+                        sheet.Cell(renglon, 3).Value = activos.idcliente;
+                        sheet.Cell(renglon, 4).Value = activos.razon_social;
+                        sheet.Cell(renglon, 5).Value = activos.rfc;
+                        sheet.Cell(renglon, 6).Value = activos.totalfacturas;
+                        sheet.Cell(renglon, 7).Value = activos.vencidas;
+                        sheet.Cell(renglon, 8).Value = activos.porvencer;
+                        sheet.Cell(renglon, 9).Value = activos.saldo;
+                        sheet.Cell(renglon, 10).Value = activos.registrado ? "SI" : "NO";
+                        sheet.Cell(renglon, 10).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                        sheet.Cell(renglon, 11).Value = activos.tiene_domicilio ? "SI" : "NO";
+                        sheet.Cell(renglon, 11).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+
                         renglon++;
-                        foreach (mdlCarga_Reporte_Buro activos in lista)
-                        {
-                            sheet.Cell(renglon, 1).Value = activos.linea;
-                            sheet.Cell(renglon, 2).Value = activos.sucursal;
-                            sheet.Cell(renglon, 3).Value = activos.idcliente;
-                            sheet.Cell(renglon, 4).Value = activos.razon_social;
-                            sheet.Cell(renglon, 5).Value = activos.rfc;
-                            sheet.Cell(renglon, 6).Value = activos.totalfacturas;
-                            sheet.Cell(renglon, 7).Value = activos.vencidas;
-                            sheet.Cell(renglon, 8).Value = activos.porvencer;
-                            sheet.Cell(renglon, 9).Value = activos.saldo;
-                            sheet.Cell(renglon, 10).Value = activos.registrado;
-                            sheet.Cell(renglon, 11).Value = activos.tiene_domicilio;
-
-                            renglon++;
-                        }
-
                     }
 
-
-                    //rango = sheet.Range(renglon - 1, 1, renglon - 1, 17);
-                    //rango.Style.Font.Bold = true;
-                    //rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#e5e6e6");
-
-                    //sheet.Column(2).Style.NumberFormat.Format = "#,##0.00";
-                    //sheet.Column(3).Style.NumberFormat.Format = "#,##0.00";
-                    //sheet.Column(4).Style.NumberFormat.Format = "#,##0.00";
-                    //sheet.Column(5).Style.NumberFormat.Format = "#,##0.00";
-                    //sheet.Column(6).Style.NumberFormat.Format = "0.0 %";
-                    //sheet.Column(7).Style.NumberFormat.Format = "#,##0.00";
-                    //sheet.Column(8).Style.NumberFormat.Format = "0.0 %";
                     sheet.Column(9).Style.NumberFormat.Format = "#,##0.00";
-                    //sheet.Column(10).Style.NumberFormat.Format = "0.0 %";
-                    //sheet.Column(11).Style.NumberFormat.Format = "#,##0.00";
 
                     sheet.Columns().AdjustToContents();
                     workbook.SaveAs(ruta);

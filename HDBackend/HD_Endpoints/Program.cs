@@ -1,8 +1,6 @@
 using HD.Endpoints.Middleware;
 using HD.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using QuestPDF.Infrastructure;
 using System.Text;
@@ -33,7 +31,8 @@ builder.Services
              ValidateIssuerSigningKey = true,
              ValidIssuer = builder.Configuration["Jwt:Issuer"],
              ValidAudience = builder.Configuration["Jwt:Audience"],
-             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Login"]))
+             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Login"])),
+            
          };
      });
 
@@ -47,13 +46,15 @@ builder.Services.AddCors(o =>
     });
 });
 builder.Services.AddScoped<ISesion, Sesion>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI();    
+
 }
 app.UseHttpsRedirection();
 app.UseRouting();
@@ -63,11 +64,14 @@ app.UseAuthorization();
 app.UseMiddleware<ManejadorMiddlewares>();
 app.UseCors("corsApp");
 
-;
+
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
     endpoints.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
     endpoints.MapFallbackToController("Index", "Home");
 });
+
+
+
 app.Run();
