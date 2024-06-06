@@ -30,7 +30,7 @@ namespace HD.Clientes.Modelos
         public string? descripcion { get; set; }
 
         [RegularExpression(@"^[ a-zA-Z0-9]+$", ErrorMessage = "El campo serie debe contener solo numeros y letras")]
-        [StringLength(30, MinimumLength = 0, ErrorMessage = "El campo serie admite como maximo 50 caracteres")]
+        [StringLength(30, MinimumLength = 0, ErrorMessage = "El campo serie admite como maximo 20 caracteres")]
         public string? serie { get; set; } = " ";
 
         [Required(ErrorMessage = "La cantidad es un valor requerido")]

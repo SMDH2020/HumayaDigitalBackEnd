@@ -85,7 +85,7 @@ namespace HD_Reporteria.Pagares
             try
             {
                 string fontFamily = "Calibri";
-                decimal sumaTotal = (decimal)mdl.financiamientocerodias.Sum(item => item.totalpagar);
+                decimal sumaTotal = (decimal)mdl.financiamientocerodias.Sum(item => item.importefinanciar);
                 byte[] doc = Document.Create(document =>
                 {
                     document.Page(page =>
@@ -180,7 +180,7 @@ namespace HD_Reporteria.Pagares
                                     txt1.Item().AlignCenter().Height(15).Text(txt2 =>
                                     {
                                         DateTime fechaActual = DateTime.Now;
-                                        string ciudad = mdl.ubicacion.sucursal == "SANTIAGO I" ? "SANTIAGO IXCUINTLA" : mdl.ubicacion.sucursal;
+                                        string ciudad = mdl.ubicacion.sucursal == "SANTIAGO I." ? "SANTIAGO IXCUINTLA" : mdl.ubicacion.sucursal;
                                         txt2.Span(ciudad + ", " + mdl.ubicacion?.estado + " " + fechaActual.ToString("dd 'DE' MMMM 'DEL' yyyy").ToUpper()).FontSize(10).FontFamily("arial");
                                     });
                                 });

@@ -444,7 +444,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                     Columns.RelativeColumn(0.5f);
                                     Columns.RelativeColumn(1);
                                     Columns.RelativeColumn(1.5f);
-                                    Columns.RelativeColumn(1);
+                                    Columns.RelativeColumn(1.5f);
                                     Columns.RelativeColumn(1);
                                     Columns.RelativeColumn(1);
                                     Columns.RelativeColumn(1);
@@ -605,7 +605,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().AlignCenter().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.condiciones?.plazo).FontSize(10).FontFamily(fontFamily);
+                                        txt2.Span(mdl.condiciones?.tiempo_plazo + " " + mdl.condiciones?.plazo).FontSize(10).FontFamily(fontFamily);
                                     });
                                 });
 
