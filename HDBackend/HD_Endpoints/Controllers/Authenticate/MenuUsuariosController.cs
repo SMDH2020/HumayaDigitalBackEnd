@@ -39,11 +39,23 @@ namespace HD.Endpoints.Controllers.Authenticate
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ListadoUsuarioMenu(int idusuario, int idmodulo)
+        public async Task<ActionResult> ListadoUsuarioMenu(int idmodulo, int idusuario)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_RelUsuariosMenu_Listado datos = new AD_RelUsuariosMenu_Listado(CadenaConexion);
-            var result = await datos.ListadoUsuarioMenu(idusuario, idmodulo);
+            var result = await datos.ListadoUsuarioMenu( idmodulo, idusuario);
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> AccesosMenus(int idmodulo)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_RelUsuariosMenuAccesos_Listado datos = new AD_RelUsuariosMenuAccesos_Listado(CadenaConexion);
+            string idusuario = Sesion.usuario();
+            var result = await datos.AccesosMenus(idmodulo, idusuario);
             return Ok(result);
 
         }

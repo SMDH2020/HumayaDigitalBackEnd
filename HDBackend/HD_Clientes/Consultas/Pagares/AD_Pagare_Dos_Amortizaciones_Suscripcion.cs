@@ -31,7 +31,7 @@ namespace HD.Clientes.Consultas.Pagares
                 impresion.ubicacion = result.Read<mdl_Pagare_Ubicacion_View>().FirstOrDefault();
                 impresion.financiamientocerodias = result.Read<mdl_Pedido_Financiamiento_View>().ToList();
                 impresion.financiamientomasdias = result.Read<mdl_Pedido_Financiamiento_View>().ToList();
-                impresion.firmas = result.Read<mdl_Pedido_Firmas_View>().FirstOrDefault();
+                impresion.firmas = result.Read<mdl_pagare_firmas>().FirstOrDefault();
                 impresion.tasa = result.Read<mdl_Pagare_Tasa>().FirstOrDefault();
                 factory.SQL.Close();
                 return impresion;

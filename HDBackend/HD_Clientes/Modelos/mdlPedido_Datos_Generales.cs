@@ -66,7 +66,9 @@ namespace HD.Clientes.Modelos
 
         public string? foliosanticipos { get; set; }
 
-
+        public string? nombre_aval { get; set; }
+        public string? direccion_aval { get; set; }
+        public string? tipo_persona { get; set; }
         public string? usuario { get; set; }
     }
 }
