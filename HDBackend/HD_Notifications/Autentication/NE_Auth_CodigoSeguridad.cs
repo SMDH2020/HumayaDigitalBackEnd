@@ -20,7 +20,7 @@ namespace HD.Notifications.Autentication
         }
         static string body(string _codigo)
         {
-            byte[] logo = File.ReadAllBytes("C:\\SMDH\\logo.png");
+            byte[] logo = File.ReadAllBytes("C:\\SMDH\\logo.jpg");
             string logo64 = Convert.ToBase64String(logo);
             String sHtml;
             sHtml = "<HTML>\n" +
