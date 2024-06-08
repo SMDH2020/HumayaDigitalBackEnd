@@ -448,7 +448,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                     Columns.RelativeColumn(0.5f);
                                     Columns.RelativeColumn(1);
                                     Columns.RelativeColumn(1.5f);
-                                    Columns.RelativeColumn(1);
+                                    Columns.RelativeColumn(1.5f);
                                     Columns.RelativeColumn(1);
                                     Columns.RelativeColumn(1);
                                     Columns.RelativeColumn(1);

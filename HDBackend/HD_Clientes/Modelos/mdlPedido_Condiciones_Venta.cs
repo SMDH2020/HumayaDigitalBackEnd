@@ -23,8 +23,8 @@ namespace HD.Clientes.Modelos
         [Range(0, double.MaxValue, ErrorMessage = "El campo deposito esta fuera de rango")]
         public double deposito { get; set; }
 
-        [Required(ErrorMessage = "La taza es un valor requerido")]
-        [Range(0, double.MaxValue, ErrorMessage = "El campo taza esta fuera de rango")]
+        //[Required(ErrorMessage = "La taza es un valor requerido")]
+        //[Range(0, double.MaxValue, ErrorMessage = "El campo taza esta fuera de rango")]
         public double taza { get; set; }
 
         [Required(ErrorMessage = "El anticipo es un valor requerido")]
