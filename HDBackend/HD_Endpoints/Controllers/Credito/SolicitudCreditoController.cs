@@ -84,6 +84,17 @@ namespace HD.Endpoints.Controllers.Credito
             AD_SolicitudCredito_DropDownList datos = new AD_SolicitudCredito_DropDownList(CadenaConexion);
             var result = await datos.DropDownList();
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]/{usuario}")]
+        public async Task<ActionResult> Rol(string usuario)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Usuarios_Rol_Listado datos = new AD_Usuarios_Rol_Listado(CadenaConexion);
+            usuario = Sesion.usuario();
+            var result = await datos.Listado(usuario);
+            return Ok(result);
 
         }
     }
