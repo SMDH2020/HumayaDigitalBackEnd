@@ -17,5 +17,6 @@
         public string? tiporelacion { get; set; }
         public string? anticipos { get; set; }
         public string? foliosanticipos { get; set; }
+        public string? unidad_facturar { get; set; }
     }
 }

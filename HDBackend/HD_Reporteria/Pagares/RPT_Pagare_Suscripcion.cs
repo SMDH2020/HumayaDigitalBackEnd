@@ -85,7 +85,7 @@ namespace HD_Reporteria.Pagares
             try
             {
                 string fontFamily = "Calibri";
-                decimal sumaTotal = (decimal)mdl.financiamientocerodias.Sum(item => item.importefinanciar);
+                decimal sumaTotal = (decimal)mdl.financiamientomasdias.Sum(item => item.importefinanciar);
                 byte[] doc = Document.Create(document =>
                 {
                     document.Page(page =>
@@ -127,7 +127,7 @@ namespace HD_Reporteria.Pagares
                                 col1.Item().PaddingTop(20).PaddingBottom(20).Text(txt =>
                                 {
                                     txt.Span("Por este PAGARE, por valor recibido, me(nos) obligo(amos) a pagar solidaria, mancomunada e incondicionalmente, a la orden de: MAQUINARIA DEL HUMAYA, S.A. DE C.V., en la dirección de sus oficinas en la ciudad de Navolato, Sinaloa, o en cualquier otra donde se me requiera el pago, según lo elija el tenedor de este pagaré, la cantidad principal de").FontSize(10).FontFamily("arial");
-                                    txt.Span(" $ " + sumaTotal.ToString("N2") + " (" + ConvertirNumeroALetras(sumaTotal) + " pesos " + ((int)((sumaTotal - (int)sumaTotal) * 100)).ToString("00") + "/100 M.N.) ").FontSize(10).Bold().FontFamily("arial");
+                                    txt.Span("         $ " + sumaTotal.ToString("N2") + " (" + ConvertirNumeroALetras(sumaTotal) + " pesos " + ((int)((sumaTotal - (int)sumaTotal) * 100)).ToString("00") + "/100 M.N.) ").FontSize(10).Bold().FontFamily("arial");
                                     txt.Span(" mediante las amortizaciones pactadas, por los montos y las fechas que a continuación se detallan:").FontSize(10).FontFamily("arial");
                                     //txt.Span("10 ").FontSize(10).Bold().FontFamily("arial"); 
                                     //txt.Span("del mes de ").FontSize(10).FontFamily("arial");
