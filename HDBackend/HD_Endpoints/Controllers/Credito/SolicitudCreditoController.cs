@@ -22,7 +22,7 @@ namespace HD.Endpoints.Controllers.Credito
 
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_SolicitudCredito_Guardar datos = new AD_SolicitudCredito_Guardar(CadenaConexion);
-            mdl.usuario = Sesion.usuario();
+            mdl.usuario = mdl.usuario == "" ? Sesion.usuario() : mdl.usuario;
             var result = await datos.Guardar(mdl);
             return Ok(result);
 

@@ -24,11 +24,13 @@ namespace HD.Clientes.Consultas.SolicitudCredito
                 var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Obtener_SolicitudCredito_Detalle", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 mdlSolicitud_Credito_Detalle? detalle = result.Read<mdlSolicitud_Credito_Detalle>().FirstOrDefault();
                 mdlSolicitudCredito_Screen? screen = result.Read<mdlSolicitudCredito_Screen>().FirstOrDefault();
+                mdlSolicitud_Credito_Asesor? asesor = result.Read<mdlSolicitud_Credito_Asesor>().FirstOrDefault();
                 factory.SQL.Close();
                 return new mdlView_Solicitud_Credito()
                 {
                     solicitud_credito = detalle,
                     config = screen,
+                    asesor = asesor
                 };
             }
             catch (System.Exception ex)
