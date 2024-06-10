@@ -34,6 +34,22 @@ builder.Services
              IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Login"])),
             
          };
+
+         options.Events = new JwtBearerEvents
+         {
+             OnAuthenticationFailed = context =>
+             {
+                 if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                 {
+                     context.Response.Headers.Add("Token-Expired", "true");
+                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                     context.Response.ContentType = "application/json";
+                     var result = System.Text.Json.JsonSerializer.Serialize(new { message = "Token Caducado" });
+                     return context.Response.WriteAsync(result);
+                 }
+                 return Task.CompletedTask;
+             }
+         };
      });
 
 builder.Services.AddCors(o =>

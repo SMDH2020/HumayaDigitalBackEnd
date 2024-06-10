@@ -74,9 +74,10 @@ namespace HD.Endpoints.Controllers.Credito
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> DropDownList()
         {
+            string usuario = Sesion.usuario();
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Clientes_DropDownList datos = new AD_Clientes_DropDownList(CadenaConexion);
-            var result = await datos.DropDownList();
+            var result = await datos.DropDownList(usuario);
             return Ok(result);
 
         }
