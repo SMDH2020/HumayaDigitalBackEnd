@@ -23,12 +23,12 @@ namespace HD.Endpoints.Controllers.BuroCredito
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> Cargar(int ejercicio, int periodo, int sucursal, string mostrar)
+        public async Task<ActionResult> Cargar(int ejercicio, int periodo, int sucursal, string lineacredito)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Carga_Reporte_Buro datos = new AD_Carga_Reporte_Buro(CadenaConexion);
             int usuario = int.Parse(Sesion.usuario());
-            var result = await datos.reporte(ejercicio, periodo, sucursal, mostrar);
+            var result = await datos.reporte(ejercicio, periodo, sucursal, lineacredito);
             return Ok(result);
         }
 
