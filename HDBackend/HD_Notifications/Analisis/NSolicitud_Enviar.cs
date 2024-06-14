@@ -27,6 +27,15 @@ namespace HD.Notifications.Analisis
                 objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_responsable_credito));
                 objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_gerente_sucursal));
                 objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_vendedor));
+                if (datos_correo.mdlSolicitud.correo_responsable_credito2 != null)
+                {
+                    objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_responsable_credito2));
+                }
+                if (datos_correo.mdlSolicitud.correo_responsable_credito3 != null)
+                {
+                    objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_responsable_credito3));
+                }
+
 
                 //objeto_mail.To.Add(new MailAddress("desarrolladorti@humaya.com.mx"));
                 //objeto_mail.To.Add(new MailAddress("desarrolladorti2@humaya.com.mx"));

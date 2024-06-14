@@ -177,12 +177,16 @@ namespace HD_Reporteria.Pagares
                             {
                                 row1.AutoItem().Column(txt1 =>
                                 {
-                                    txt1.Item().AlignCenter().Height(15).Text(txt2 =>
-                                    {
-                                        DateTime fechaActual = DateTime.Now;
-                                        string ciudad = mdl.ubicacion.sucursal == "SANTIAGO I." ? "SANTIAGO IXCUINTLA" : mdl.ubicacion.sucursal;
-                                        txt2.Span(ciudad + ", " + mdl.ubicacion?.estado + " " + fechaActual.ToString("dd 'DE' MMMM 'DEL' yyyy").ToUpper()).FontSize(10).FontFamily("arial");
-                                    });
+                                    if (mdl.ubicacion == null) {
+                                    }
+                                    else {
+                                        txt1.Item().AlignCenter().Height(15).Text(txt2 =>
+                                        {
+                                            DateTime fechaActual = DateTime.Now;
+                                            string ciudad = mdl.ubicacion.sucursal == "SANTIAGO I." ? "SANTIAGO IXCUINTLA" : mdl.ubicacion.sucursal;
+                                            txt2.Span(ciudad + ", " + mdl.ubicacion?.estado + " " + fechaActual.ToString("dd 'DE' MMMM 'DEL' yyyy").ToUpper()).FontSize(10).FontFamily("arial");
+                                        });
+                                    }
                                 });
                             });
 

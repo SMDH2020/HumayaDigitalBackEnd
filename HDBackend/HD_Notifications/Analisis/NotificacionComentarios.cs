@@ -32,6 +32,13 @@ namespace HD.Notifications.Analisis
                 objeto_mail.From = new MailAddress(_correo);
 
                 objeto_mail.To.Add(new MailAddress(datos_correo.correo_responsable_credito));
+                if (datos_correo.correo_responsable_credito2 != null) {
+                    objeto_mail.To.Add(new MailAddress(datos_correo.correo_responsable_credito2));
+                }
+                if (datos_correo.correo_responsable_credito3 != null)
+                {
+                    objeto_mail.To.Add(new MailAddress(datos_correo.correo_responsable_credito3));
+                }
                 objeto_mail.To.Add(new MailAddress(datos_correo.correo_gerente_sucursal));
                 objeto_mail.To.Add(new MailAddress(datos_correo.correo_vendedor));
 
