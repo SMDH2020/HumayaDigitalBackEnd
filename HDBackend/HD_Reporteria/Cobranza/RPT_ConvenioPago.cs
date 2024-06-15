@@ -441,9 +441,9 @@ namespace HD_Reporteria.Cobranza
                                 {
                                     txt1.Item().AlignCenter().Height(15).Text(txt2 =>
                                     {
-                                        DateTime fechaActual = DateTime.Now;
+                                        
 
-                                        txt2.Span(fechaActual.ToString("dd 'de' MMMM 'del' yyyy")).FontSize(10).FontFamily("arial");
+                                        txt2.Span(mdl.cliente.fecha_creacion.ToString("dd 'de' MMMM 'del' yyyy")).FontSize(10).FontFamily("arial");
                                     });
                                 });
                             });

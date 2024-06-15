@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HD.Clientes.Modelos.Pagares
+namespace HD.Clientes.Modelos
 {
-    public class mdl_Pagare_Tasa
+    public class mdlUsuariosRol
     {
-        public double tasa { get; set; } = 0;
-        
+        public string? idrol { get; set; }
     }
 }

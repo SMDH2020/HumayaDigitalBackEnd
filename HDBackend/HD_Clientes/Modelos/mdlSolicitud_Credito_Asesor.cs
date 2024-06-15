@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HD.Clientes.Modelos.Pagares
+namespace HD.Clientes.Modelos
 {
-    public class mdl_Pagare_Tasa
+    public class mdlSolicitud_Credito_Asesor
     {
-        public double tasa { get; set; } = 0;
-        
+        public int asesor { get; set; }
     }
 }

@@ -22,7 +22,7 @@ namespace HD.Endpoints.Controllers.Credito
 
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_SolicitudCredito_Guardar datos = new AD_SolicitudCredito_Guardar(CadenaConexion);
-            mdl.usuario = Sesion.usuario();
+            mdl.usuario = mdl.usuario == "" ? Sesion.usuario() : mdl.usuario;
             var result = await datos.Guardar(mdl);
             return Ok(result);
 
@@ -83,6 +83,17 @@ namespace HD.Endpoints.Controllers.Credito
             string CadenaConexion = Configuracion["ConnectionStrings:Login"];
             AD_SolicitudCredito_DropDownList datos = new AD_SolicitudCredito_DropDownList(CadenaConexion);
             var result = await datos.DropDownList();
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]/{usuario}")]
+        public async Task<ActionResult> Rol(string usuario)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Usuarios_Rol_Listado datos = new AD_Usuarios_Rol_Listado(CadenaConexion);
+            usuario = Sesion.usuario();
+            var result = await datos.Listado(usuario);
             return Ok(result);
 
         }

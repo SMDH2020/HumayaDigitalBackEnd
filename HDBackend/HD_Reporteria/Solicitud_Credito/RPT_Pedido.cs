@@ -79,7 +79,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().AlignCenter().AlignBottom().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span("NAVOLATO").FontSize(08).FontFamily(fontFamily);
+                                        txt2.Span(mdl.solicitante.unidad_facturar).FontSize(08).FontFamily(fontFamily);
                                     });
                                 });
                             });
@@ -444,7 +444,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                     Columns.RelativeColumn(0.5f);
                                     Columns.RelativeColumn(1);
                                     Columns.RelativeColumn(1.5f);
-                                    Columns.RelativeColumn(1);
+                                    Columns.RelativeColumn(1.5f);
                                     Columns.RelativeColumn(1);
                                     Columns.RelativeColumn(1);
                                     Columns.RelativeColumn(1);
@@ -458,7 +458,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                     header.Cell().Background("#ccc").AlignCenter()
                                     .Padding(1).Text("Modelo").FontSize(10).Bold().FontFamily(fontFamily);
                                     header.Cell().Background("#ccc").AlignCenter()
-                                    .Padding(1).Text("Estado").FontSize(10).Bold().FontFamily(fontFamily);
+                                    .Padding(1).Text("Linea").FontSize(10).Bold().FontFamily(fontFamily);
                                     header.Cell().Background("#ccc").AlignCenter()
                                     .Padding(1).Text("Serie").FontSize(10).Bold().FontFamily(fontFamily);
                                     header.Cell().Background("#ccc").AlignCenter()
@@ -605,7 +605,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().AlignCenter().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.condiciones?.plazo).FontSize(10).FontFamily(fontFamily);
+                                        txt2.Span(mdl.condiciones?.tiempo_plazo + " " + mdl.condiciones?.plazo).FontSize(10).FontFamily(fontFamily);
                                     });
                                 });
 

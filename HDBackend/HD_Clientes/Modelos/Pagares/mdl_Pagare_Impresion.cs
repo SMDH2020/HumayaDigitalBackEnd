@@ -13,7 +13,7 @@ namespace HD.Clientes.Modelos.Pagares
 
         public List<mdl_Pedido_Financiamiento_View>? financiamientomasdias { get; set; }
 
-        public mdl_Pedido_Firmas_View? firmas { get; set; }
+        public mdl_pagare_firmas? firmas { get; set; }
 
         public mdl_Pagare_Ubicacion_View? ubicacion { get; set;}
 

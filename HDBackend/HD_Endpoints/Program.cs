@@ -31,7 +31,24 @@ builder.Services
              ValidateIssuerSigningKey = true,
              ValidIssuer = builder.Configuration["Jwt:Issuer"],
              ValidAudience = builder.Configuration["Jwt:Audience"],
-             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Login"]))
+             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Login"])),
+            
+         };
+
+         options.Events = new JwtBearerEvents
+         {
+             OnAuthenticationFailed = context =>
+             {
+                 if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                 {
+                     context.Response.Headers.Add("Token-Expired", "true");
+                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                     context.Response.ContentType = "application/json";
+                     var result = System.Text.Json.JsonSerializer.Serialize(new { message = "Token Caducado" });
+                     return context.Response.WriteAsync(result);
+                 }
+                 return Task.CompletedTask;
+             }
          };
      });
 
@@ -52,7 +69,8 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();    //app.UseDeveloperExceptionPage(); //codigo socket
+    app.UseSwaggerUI();    
+
 }
 app.UseHttpsRedirection();
 app.UseRouting();

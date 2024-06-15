@@ -25,9 +25,9 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
             ADJDF_Analisis_Asignar_promotor_comentario datos = new ADJDF_Analisis_Asignar_promotor_comentario(CadenaConexion);
             var result = await datos.Get(mdl);
 
-            //ADAnalisisNotificacion notificacion = new ADAnalisisNotificacion(CadenaConexion);
-            //var body = await notificacion.GetBody(mdl);
-            //await NotificacionComentarios.Enviar(body);
+            ADJDF_Asignacion_Promotor_Notificacion notificacion = new ADJDF_Asignacion_Promotor_Notificacion(CadenaConexion);
+            var body = await notificacion.GetBody(mdl);
+            await NotificacionComentarios.Enviar(body);
             return Ok(result);
 
 

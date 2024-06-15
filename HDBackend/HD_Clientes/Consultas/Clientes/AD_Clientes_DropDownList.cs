@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
 using HD.Clientes.Modelos;
+using System.Security.Cryptography;
 
 namespace HD.Clientes.Consultas.Clientes
 {
@@ -11,12 +12,16 @@ namespace HD.Clientes.Consultas.Clientes
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlDropDownList>> DropDownList()
+        public async Task<IEnumerable<mdlDropDownList>> DropDownList(string usuario)
         {
             try
             {
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdlDropDownList> result = await factory.SQL.QueryAsync<mdlDropDownList>("Credito.sp_clientes_dropdownlist", commandType: System.Data.CommandType.StoredProcedure);
+                var parametros = new
+                {
+                    usuario = usuario
+                };
+                IEnumerable<mdlDropDownList> result = await factory.SQL.QueryAsync<mdlDropDownList>("Credito.sp_clientes_dropdownlist",parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

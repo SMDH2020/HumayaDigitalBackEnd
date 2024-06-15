@@ -37,6 +37,17 @@ namespace HD.Endpoints.Controllers.Credito
             return Ok(new { mensaje = "datos cargados con exito" });
         }
 
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> Persona_Moral_Vendedor(mdlClientes mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Clientes_Guardar datos = new AD_Clientes_Guardar(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            mdl.idcliente = await datos.Guardar_Persona_Moral(mdl);
+            return Ok(new { mensaje = "datos cargados con exito" });
+        }
+
         [HttpGet]
         [Route("/api/[controller]/[action]/{id}")]
         public async Task<ActionResult> Listado(short filtrar)
@@ -63,9 +74,10 @@ namespace HD.Endpoints.Controllers.Credito
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> DropDownList()
         {
+            string usuario = Sesion.usuario();
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Clientes_DropDownList datos = new AD_Clientes_DropDownList(CadenaConexion);
-            var result = await datos.DropDownList();
+            var result = await datos.DropDownList(usuario);
             return Ok(result);
 
         }
