@@ -23,10 +23,10 @@ namespace HD.Clientes.Consultas.SolicitudCredito
                 };
                 var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Solicitud_Credito_Enviar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 mdlSolicitudCredito_Enviar_View view = new mdlSolicitudCredito_Enviar_View();
-                view.mdlSolicitud = result.Read<mdlSolicitudCredito_Enviar>().FirstOrDefault();
+                view.mdlSolicitud = result.Read<mdlSolicitudCredito_Enviar>().ToList();
                 view.detail = result.Read<mdlSolicitudCredito_Enviar_Details>().FirstOrDefault();
                 factory.SQL.Close();
-                if (view.mdlSolicitud == null) view.mdlSolicitud = new mdlSolicitudCredito_Enviar();
+                //if (view.mdlSolicitud == null) view.mdlSolicitud = new mdlSolicitudCredito_Enviar();
                 if (view.detail == null) view.detail = new mdlSolicitudCredito_Enviar_Details();
                 return view;
             }

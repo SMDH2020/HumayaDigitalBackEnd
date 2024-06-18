@@ -96,20 +96,20 @@ namespace HD_Reporteria.Pagares
                             {
 
                                 //row.ConstantItem(140).Border(1).Placeholder();
-                                row.RelativeItem().PaddingTop(35).Height(50).Background("#477c2c").Row(row2 =>
+                                row.RelativeItem().PaddingTop(35).Height(50).Row(row2 =>
                                 {
 
                                 });
 
                                 row.ConstantColumn(0).Row(row1 =>
                                 {
-                                    var rutaImagen = Path.Combine("C:\\Nube\\HumayaDigital\\HumayaDigitalBackEnd\\HDBackend\\HD_Reporteria\\Imagenes\\Logo.jpg");
-                                    byte[] imageData = System.IO.File.ReadAllBytes(rutaImagen);
-                                    row.ConstantItem(120).Image(imageData);
+                                    //var rutaImagen = Path.Combine("C:\\Nube\\HumayaDigital\\HumayaDigitalBackEnd\\HDBackend\\HD_Reporteria\\Imagenes\\Logo.jpg");
+                                    //byte[] imageData = System.IO.File.ReadAllBytes(rutaImagen);
+                                    //row.ConstantItem(120).Image(imageData);
 
-                                    row.ConstantColumn(450).PaddingTop(35).Height(50).Background("#477c2c").Row(row2 =>
+                                    row.ConstantColumn(450).PaddingTop(35).Height(50).Row(row2 =>
                                     {
-                                        row2.RelativeItem().Padding(10).PaddingLeft(130).Text("PAGARE").FontColor("#fff").FontSize(20).Bold().FontFamily(fontFamily);
+                                        row2.RelativeItem().Padding(10).PaddingLeft(130).Text("PAGARE").FontColor("#000").FontSize(20).Bold().FontFamily(fontFamily);
                                     });
                                 });
 
@@ -167,11 +167,11 @@ namespace HD_Reporteria.Pagares
                                 });
 
 
-                                col1.Item().PaddingTop(10).Text("El importe que ampara este pagaré causará intereses moratorios en forma mensual a partir de la fecha de vencimiento calculados a razón de la tasa fija del " + mdl.tasa.tasa + "% por ciento anual sobre saldos insolutos.").FontSize(10).FontFamily("arial");
+                                col1.Item().PaddingTop(10).Text("El importe que ampara este pagaré causará intereses ordinarios en forma mensual a partir de la fecha de suscripcion hasta la fecha de su liquidacion, calculados a razón de la tasa fija del " + mdl.tasa.tasa + "% por ciento anual sobre saldos insolutos.").FontSize(10).FontFamily("arial");
 
                                 col1.Item().PaddingTop(10).Text("Los intereses se calcularán dividiendo la tasa anual aplicable entre 360 (Trescientos sesenta) y multiplicando el resultado obtenido por el número de días efectivamente transcurridos durante el periodo en que se devenguen los intereses.").FontSize(10).FontFamily("arial");
 
-                                col1.Item().PaddingTop(10).Text("La falta de pago puntual de cualquier amortización o abono en su fecha de vencimiento causará el vencimiento anticipado del pagaré o abonos restantes, aun los no vencidos, los que serán exigibles de inmediato.").FontSize(10).FontFamily("arial");
+                                col1.Item().PaddingTop(10).Text("Asimismo, si se dejare de cumplir con el pago de la amortización pactada o no fuere cubierto a su vencimiento, pagare (mos) al beneficiario intereses moratorios desde la fecha del vencimiento hasta su total liquidación, a razón de la tasa normal vigente de acuerdo a lo establecido en los párrafos que preceden, multiplicado por 2 (dos), sobre saldos insolutos del importe principal de este pagaré, sin perjuicio de que se sigan causando los intereses a que se hace alusión en los párrafos antes mencionados.").FontSize(10).FontFamily("arial");
 
                                 col1.Item().PaddingTop(10).Text("Para todo lo relativo a la interpretación, ejecución y cumplimiento del presente pagaré, el otorgante se somete expresamente a la jurisdicción de los tribunales competentes de la ciudad de Culiacán, Sinaloa, renunciando expresamente a cualquier otro fuero que pudiese corresponderle por razón de su domicilio presente, futuro o por cualquier ubicación de sus bienes.").FontSize(10).FontFamily("arial");
 

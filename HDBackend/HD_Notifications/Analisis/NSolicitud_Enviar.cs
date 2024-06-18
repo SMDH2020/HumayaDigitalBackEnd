@@ -24,17 +24,20 @@ namespace HD.Notifications.Analisis
                 client.UseDefaultCredentials = false;
                 client.Credentials = new System.Net.NetworkCredential(_correo, password);
                 objeto_mail.From = new MailAddress(_correo);
-                objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_responsable_credito));
-                objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_gerente_sucursal));
-                objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_vendedor));
-                if (datos_correo.mdlSolicitud.correo_responsable_credito2 != null)
-                {
-                    objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_responsable_credito2));
+                foreach(mdlSolicitudCredito_Enviar mdlSolicitudCredito_Enviar in datos_correo.mdlSolicitud) {
+                    objeto_mail.To.Add(new MailAddress(mdlSolicitudCredito_Enviar.correo));
                 }
-                if (datos_correo.mdlSolicitud.correo_responsable_credito3 != null)
-                {
-                    objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_responsable_credito3));
-                }
+                //objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_responsable_credito));
+                //objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_gerente_sucursal));
+                //objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_vendedor));
+                //if (datos_correo.mdlSolicitud.correo_responsable_credito2 != null)
+                //{
+                //    objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_responsable_credito2));
+                //}
+                //if (datos_correo.mdlSolicitud.correo_responsable_credito3 != null)
+                //{
+                //    objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_responsable_credito3));
+                //}
 
 
                 //objeto_mail.To.Add(new MailAddress("desarrolladorti@humaya.com.mx"));
