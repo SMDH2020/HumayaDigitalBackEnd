@@ -5,7 +5,7 @@
         public int idcliente { get; set; }
         public string? razon_social {  get; set; }
         public string? rfc {  get; set; }
-        public int fac_operacion { get; set; }
+        public int fac_opercion { get; set; }
         public int fac_o_vencidas { get; set; }
         public int fac_o_porvencer {  get; set; }
         public float saldo_operacion { get; set; }
