@@ -95,20 +95,20 @@ namespace HD_Reporteria.Pagares
                         {
 
                             //row.ConstantItem(140).Border(1).Placeholder();
-                            row.RelativeItem().PaddingTop(35).Height(50).Background("#477c2c").Row(row2 =>
+                            row.RelativeItem().PaddingTop(35).Height(50).Row(row2 =>
                             {
 
                             });
 
                             row.ConstantColumn(0).Row(row1 =>
                             {
-                                var rutaImagen = Path.Combine("C:\\Nube\\HumayaDigital\\HumayaDigitalBackEnd\\HDBackend\\HD_Reporteria\\Imagenes\\Logo.jpg");
-                                byte[] imageData = System.IO.File.ReadAllBytes(rutaImagen);
-                                row.ConstantItem(120).Image(imageData);
+                                //var rutaImagen = Path.Combine("C:\\Nube\\HumayaDigital\\HumayaDigitalBackEnd\\HDBackend\\HD_Reporteria\\Imagenes\\Logo.jpg");
+                                //byte[] imageData = System.IO.File.ReadAllBytes(rutaImagen);
+                                //row.ConstantItem(120).Image(imageData);
 
-                                row.ConstantColumn(450).PaddingTop(35).Height(50).Background("#477c2c").Row(row2 =>
+                                row.ConstantColumn(450).PaddingTop(35).Height(50).Row(row2 =>
                                 {
-                                    row2.RelativeItem().Padding(10).PaddingLeft(130).Text("PAGARE").FontColor("#fff").FontSize(20).Bold().FontFamily(fontFamily);
+                                    row2.RelativeItem().Padding(10).PaddingLeft(130).Text("PAGARE").FontColor("#000").FontSize(20).Bold().FontFamily(fontFamily);
                                 });
                             });
 
@@ -177,12 +177,16 @@ namespace HD_Reporteria.Pagares
                             {
                                 row1.AutoItem().Column(txt1 =>
                                 {
-                                    txt1.Item().AlignCenter().Height(15).Text(txt2 =>
-                                    {
-                                        DateTime fechaActual = DateTime.Now;
-                                        string ciudad = mdl.ubicacion.sucursal == "SANTIAGO I." ? "SANTIAGO IXCUINTLA" : mdl.ubicacion.sucursal;
-                                        txt2.Span(ciudad + ", " + mdl.ubicacion?.estado + " " + fechaActual.ToString("dd 'DE' MMMM 'DEL' yyyy").ToUpper()).FontSize(10).FontFamily("arial");
-                                    });
+                                    if (mdl.ubicacion == null) {
+                                    }
+                                    else {
+                                        txt1.Item().AlignCenter().Height(15).Text(txt2 =>
+                                        {
+                                            DateTime fechaActual = DateTime.Now;
+                                            string ciudad = mdl.ubicacion.sucursal == "SANTIAGO I." ? "SANTIAGO IXCUINTLA" : mdl.ubicacion.sucursal;
+                                            txt2.Span(ciudad + ", " + mdl.ubicacion?.estado + " " + fechaActual.ToString("dd 'DE' MMMM 'DEL' yyyy").ToUpper()).FontSize(10).FontFamily("arial");
+                                        });
+                                    }
                                 });
                             });
 

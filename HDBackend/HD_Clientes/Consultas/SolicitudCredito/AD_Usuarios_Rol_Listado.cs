@@ -1,27 +1,31 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
-using HD_Buro.Modelos;
+using HD.Clientes.Modelos;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace HD_Buro.Consultas
+namespace HD.Clientes.Consultas.SolicitudCredito
 {
-    public class AD_Carga_Reporte_Buro
+    public class AD_Usuarios_Rol_Listado
     {
         private string CadenaConexion;
-        public AD_Carga_Reporte_Buro(string _cadenaconexion)
+        public AD_Usuarios_Rol_Listado(string _cadenaconexion)
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlCarga_Reporte_Buro>> reporte(int ejercicio, int periodo)
+        public async Task<IEnumerable<mdlUsuariosRol>> Listado(string usuario)
         {
             try
             {
                 var parametros = new
                 {
-                    Ejercicio = ejercicio,
-                    Periodo = periodo,
+                    usuario
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdlCarga_Reporte_Buro> result = await factory.SQL.QueryAsync<mdlCarga_Reporte_Buro>("Cartera_clientes.dbo.sp_obtener_Listado_Mensual_Credito_Mhusa", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdlUsuariosRol> result = await factory.SQL.QueryAsync<mdlUsuariosRol>("dbo.sp_Roles_Usuarios_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
@@ -30,6 +34,5 @@ namespace HD_Buro.Consultas
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
-
     }
 }
