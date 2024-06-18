@@ -27,7 +27,7 @@ namespace HD.Clientes.Consultas.AnalisisCredito
                     idproceso = comentario.idproceso,
                     estatus = comentario.estatus,
                 };
-                mdlAnalisis_Email_Facturacion result = await factory.SQL.QueryFirstOrDefaultAsync<mdlAnalisis_Email_Facturacion>("Credito.sp_Analisis_Notificacion", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlAnalisis_Email_Facturacion result = await factory.SQL.QueryFirstOrDefaultAsync<mdlAnalisis_Email_Facturacion>("Credito.sp_Analisis_Notificacion_Facturacion", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 if (result != null)
                     result.comentarios = comentario.comentarios;

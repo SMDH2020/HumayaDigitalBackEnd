@@ -26,24 +26,24 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             {
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             }
-            //if (result.idproceso == 10)
-            //{
-            //    ADAnalisisNotificacion notificacion = new ADAnalisisNotificacion(CadenaConexion);
-            //    var body = await notificacion.GetBody(mdl);
-            //    await NotificacionComentarios.Enviar(body);
-            //    return Ok(result);
-            //}
-            //else
-            //{
-            //    ADAnalisisNotificacion notificacion = new ADAnalisisNotificacion(CadenaConexion);
-            //    var body = await notificacion.GetBody(mdl);
-            //    await NotificacionComentarios.Enviar(body);
-            //    return Ok(result);
-            //}
-            ADAnalisisNotificacion notificacion = new ADAnalisisNotificacion(CadenaConexion);
-            var body = await notificacion.GetBody(mdl);
-            await NotificacionComentarios.Enviar(body);
-            return Ok(result);
+            if (result.idproceso == 10)
+            {
+                ADAnalisisNotificacionFacturacion notificacion = new ADAnalisisNotificacionFacturacion(CadenaConexion);
+                var body = await notificacion.GetBody(mdl);
+                await NotificacionComentarios.EnviarNotificacionFacturacion(body);
+                return Ok(result);
+            }
+            else
+            {
+                ADAnalisisNotificacion notificacion = new ADAnalisisNotificacion(CadenaConexion);
+                var body = await notificacion.GetBody(mdl);
+                await NotificacionComentarios.Enviar(body);
+                return Ok(result);
+            }
+            //ADAnalisisNotificacion notificacion = new ADAnalisisNotificacion(CadenaConexion);
+            //var body = await notificacion.GetBody(mdl);
+            //await NotificacionComentarios.Enviar(body);
+            //return Ok(result);
         }
 
 
