@@ -54,7 +54,7 @@ namespace HD.Endpoints.Controllers.Credito
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_SolcitudCredito_Enviar datos = new AD_SolcitudCredito_Enviar(CadenaConexion);
-            var result = await datos.Detalle(folio, Sesion.usuario());
+             var result = await datos.Detalle(folio, Sesion.usuario());
             string mensaje = "Solicitud enviada a revision";
 
             if (result != null)
