@@ -43,10 +43,10 @@ namespace HD.Notifications.Analisis
                 //objeto_mail.To.Add(new MailAddress(datos_correo.detalle.correo_gerente_sucursal));
                 //objeto_mail.To.Add(new MailAddress(datos_correo.detalle.correo_vendedor));
 
-                foreach (mdlCorreo_Notificacion notificacion in datos_correo.notificacion)
-                {
-                    objeto_mail.To.Add(new MailAddress(notificacion.correo));
-                }
+                //foreach (mdlCorreo_Notificacion notificacion in datos_correo.notificacion)
+                //{
+                //    objeto_mail.To.Add(new MailAddress(notificacion.correo));
+                //}
 
                 objeto_mail.To.Add(new MailAddress("desarrolladorti@humaya.com.mx"));
                 objeto_mail.To.Add(new MailAddress("desarrolladorti2@humaya.com.mx"));
