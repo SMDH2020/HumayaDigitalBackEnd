@@ -16,6 +16,7 @@
         public bool registrado { get; set; }
         public bool solicitud { get; set; }
         public bool domicilio { get; set; }
+        public bool reporta_buro { get; set; }
 
     }
 }
