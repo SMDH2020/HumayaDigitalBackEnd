@@ -14,7 +14,7 @@ namespace HD.Notifications.Analisis
         public static string _Mensaje { get; private set; }
         //         public static void Enviar(string Correo, string _tipoSolicitud, string _folio, string _vendedor, string _cliente, string _linea, string
         //_monto)
-        public static Task<bool> Enviar(mdlAnalisis_Email datos_correo)
+        public static Task<bool> Enviar(mdlAnalisis_Email_View datos_correo)
         {
 
             try
@@ -31,22 +31,27 @@ namespace HD.Notifications.Analisis
                 client.Credentials = new System.Net.NetworkCredential(_correo, password);
                 objeto_mail.From = new MailAddress(_correo);
 
-                objeto_mail.To.Add(new MailAddress(datos_correo.correo_responsable_credito));
-                if (datos_correo.correo_responsable_credito2 != null)
-                {
-                    objeto_mail.To.Add(new MailAddress(datos_correo.correo_responsable_credito2));
-                }
-                if (datos_correo.correo_responsable_credito3 != null)
-                {
-                    objeto_mail.To.Add(new MailAddress(datos_correo.correo_responsable_credito3));
-                }
-                objeto_mail.To.Add(new MailAddress(datos_correo.correo_gerente_sucursal));
-                objeto_mail.To.Add(new MailAddress(datos_correo.correo_vendedor));
+                //objeto_mail.To.Add(new MailAddress(datos_correo.detalle.correo_responsable_credito));
+                //if (datos_correo.detalle.correo_responsable_credito2 != null)
+                //{
+                //    objeto_mail.To.Add(new MailAddress(datos_correo.detalle.correo_responsable_credito2));
+                //}
+                //if (datos_correo.detalle.correo_responsable_credito3 != null)
+                //{
+                //    objeto_mail.To.Add(new MailAddress(datos_correo.detalle.correo_responsable_credito3));
+                //}
+                //objeto_mail.To.Add(new MailAddress(datos_correo.detalle.correo_gerente_sucursal));
+                //objeto_mail.To.Add(new MailAddress(datos_correo.detalle.correo_vendedor));
 
-                //objeto_mail.To.Add(new MailAddress("desarrolladorti@humaya.com.mx"));
-                //objeto_mail.To.Add(new MailAddress("desarrolladorti2@humaya.com.mx"));
+                foreach (mdlCorreo_Notificacion notificacion in datos_correo.notificacion)
+                {
+                    objeto_mail.To.Add(new MailAddress(notificacion.correo));
+                }
 
-                objeto_mail.Subject = datos_correo.asunto + datos_correo.proceso;
+                objeto_mail.To.Add(new MailAddress("desarrolladorti@humaya.com.mx"));
+                objeto_mail.To.Add(new MailAddress("desarrolladorti2@humaya.com.mx"));
+
+                objeto_mail.Subject = datos_correo.detalle.asunto + datos_correo.detalle.proceso;
                 objeto_mail.IsBodyHtml = true;
                 objeto_mail.Body = body(datos_correo);
                 client.EnableSsl = false;
@@ -266,7 +271,7 @@ namespace HD.Notifications.Analisis
 
         }
 
-        static string body(mdlAnalisis_Email datos_Correo)
+        static string body(mdlAnalisis_Email_View datos_Correo)
 
         {
 
@@ -358,14 +363,14 @@ namespace HD.Notifications.Analisis
                 "<thead>\n" +
                     "<tr>\n" +
                         "<th class=\"celda-cliente-titulo\">\n" +
-                           "<div style=\"font-size:18px;\">" + datos_Correo.proceso + " " + datos_Correo.estatus + "</div>\n" +
+                           "<div style=\"font-size:18px;\">" + datos_Correo.detalle.proceso + " " + datos_Correo.detalle.estatus + "</div>\n" +
                         "</th>\n" +
                     "</tr>\n" +
                 "</thead>\n" +
                "<tbody>\n" +
                     "<tr>\n" +
                         "<td style=\"padding:4px;text-align:left;margin-left:10px\">\n" +
-                            datos_Correo.comentarios +
+                            datos_Correo.detalle.comentarios +
                         "</td>\n" +
                     "</tr>\n" +
                "</tbody>\n" +
