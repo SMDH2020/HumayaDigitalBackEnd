@@ -9,6 +9,6 @@ namespace HD.Clientes.Modelos.SC_Analisis.Modal
     public class mdlSC_Analisis_Credito
     {
         public IEnumerable<mdlSCAnalisis_Documentacion>? documentacion { get; set; }
-        public mdlAnalisis_Email? email { get; set; }
+        public IEnumerable <mdlCorreo_Notificacion>? email { get; set; }
     }
 }

@@ -39,11 +39,6 @@ namespace HD.Notifications.Analisis
                 //    objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_responsable_credito3));
                 //}
 
-
-                //objeto_mail.To.Add(new MailAddress("desarrolladorti@humaya.com.mx"));
-                //objeto_mail.To.Add(new MailAddress("desarrolladorti2@humaya.com.mx"));
-
-
                 objeto_mail.Subject = "Nueva solicitud de credito";
                 objeto_mail.IsBodyHtml = true;
                 objeto_mail.Body = body(datos_correo);

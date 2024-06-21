@@ -29,7 +29,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             {
                 ADAnalisisSolicitudNotificacion notificacion = new ADAnalisisSolicitudNotificacion(CadenaConexion);
                 var body = await notificacion.GetBody(mdl);
-                await NotificacionDocumentacion.Enviar(body);
+                await NotificacionDocumentacion.Enviar(body,mdl.folio);
             }
 
             return Ok(result);

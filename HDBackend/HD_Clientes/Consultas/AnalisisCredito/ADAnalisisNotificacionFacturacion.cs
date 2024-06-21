@@ -16,7 +16,7 @@ namespace HD.Clientes.Consultas.AnalisisCredito
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<mdlAnalisis_Email_Facturacion> GetBody(mdlSCAnalisis_Comentarios comentario)
+        public async Task<mdlAnalisis_Email_View> GetBody(mdlSCAnalisis_Comentarios comentario)
         {
             try
             {
@@ -27,11 +27,12 @@ namespace HD.Clientes.Consultas.AnalisisCredito
                     idproceso = comentario.idproceso,
                     estatus = comentario.estatus,
                 };
-                mdlAnalisis_Email_Facturacion result = await factory.SQL.QueryFirstOrDefaultAsync<mdlAnalisis_Email_Facturacion>("Credito.sp_Analisis_Notificacion", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var view = await factory.SQL.QueryMultipleAsync("Credito.sp_Analisis_Notificacion_Facturacion", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlAnalisis_Email_View result = new mdlAnalisis_Email_View();
+                result.notificacion = view.Read<mdlCorreo_Notificacion>().ToList();
+                result.detalle = view.Read<mdlAnalisis_Email>().FirstOrDefault();
                 factory.SQL.Close();
-                if (result != null)
-                    result.comentarios = comentario.comentarios;
-                else result = new mdlAnalisis_Email_Facturacion();
+                if (result.detalle == null) result.detalle = new mdlAnalisis_Email();
                 return result;
             }
             catch (System.Exception ex)

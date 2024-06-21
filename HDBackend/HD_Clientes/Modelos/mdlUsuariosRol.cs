@@ -9,5 +9,7 @@ namespace HD.Clientes.Modelos
     public class mdlUsuariosRol
     {
         public string? idrol { get; set; }
+        public string? idusuario { get; set; }
+
     }
 }
