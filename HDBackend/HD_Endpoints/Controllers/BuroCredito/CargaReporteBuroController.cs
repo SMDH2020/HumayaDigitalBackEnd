@@ -23,22 +23,22 @@ namespace HD.Endpoints.Controllers.BuroCredito
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> Cargar(int ejercicio, int periodo, int sucursal, string mostrar)
+        public async Task<ActionResult> Cargar(int ejercicio, int periodo)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Carga_Reporte_Buro datos = new AD_Carga_Reporte_Buro(CadenaConexion);
             int usuario = int.Parse(Sesion.usuario());
-            var result = await datos.reporte(ejercicio, periodo, sucursal, mostrar);
+            var result = await datos.reporte(ejercicio, periodo);
             return Ok(result);
         }
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> GenerarExcel(int ejercicio, int periodo, int sucursal, string mostrar)
+        public async Task<ActionResult> GenerarExcel(int ejercicio, int periodo)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Carga_Reporte_Buro datos = new AD_Carga_Reporte_Buro(CadenaConexion);
-            var result = await datos.reporte(ejercicio, periodo, sucursal, mostrar);
+            var result = await datos.reporte(ejercicio, periodo);
             var docResult = await XLS_Reporte_Buro.CrearExcel(result);
             return Ok(docResult);
         }
