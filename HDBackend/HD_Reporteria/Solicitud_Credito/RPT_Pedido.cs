@@ -118,7 +118,7 @@ namespace HD_Reporteria.Solicitud_Credito
 
                                 row1.ConstantItem(240).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
                                 {
-                                    txt1.Item().AlignBottom().Height(15).Text(txt2 =>
+                                    txt1.Item().AlignBottom().Text(txt2 =>
                                     {
                                         txt2.Span(mdl.solicitante?.solicitante).FontSize(8).FontFamily(fontFamily);
                                     });
@@ -146,7 +146,7 @@ namespace HD_Reporteria.Solicitud_Credito
                             {
                                 row1.ConstantItem(100).Column(txt1 =>
                                 {
-                                    txt1.Item().Height(15).Text(txt2 =>
+                                    txt1.Item().Text(txt2 =>
                                     {
                                         txt2.Span("Encargado de pagos: ").Bold().FontSize(10).FontFamily(fontFamily);
                                         //txt2.Span("NAVOLATO").FontSize(10);
@@ -155,7 +155,7 @@ namespace HD_Reporteria.Solicitud_Credito
 
                                 row1.ConstantItem(220).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
                                 {
-                                    txt1.Item().Height(15).Text(txt2 =>
+                                    txt1.Item().Text(txt2 =>
                                     {
                                         txt2.Span(mdl.solicitante?.solicitante).FontSize(8).FontFamily(fontFamily);
                                     });
@@ -805,7 +805,7 @@ namespace HD_Reporteria.Solicitud_Credito
                             col1.Item().Text("Se aceptan condiciones de operacion anteriormente descritas e incluye todo lo acordado en la negociacion, firma de comun acuerdo.").FontSize(8).FontFamily(fontFamily);
                         });
 
-                        page.Footer().Height(80).PaddingLeft(30).PaddingRight(30).Column(col1 =>
+                        page.Footer().Height(100).PaddingLeft(30).PaddingRight(30).Column(col1 =>
                         {
                             col1.Item().PaddingTop(00).Row(row1 =>
                             {
@@ -840,7 +840,7 @@ namespace HD_Reporteria.Solicitud_Credito
                             {
                                 row1.ConstantItem(180).BorderBottom(1).Column(txt1 =>
                                 {
-                                    txt1.Item().Height(30).AlignCenter()
+                                    txt1.Item().Height(50).AlignCenter()
                                     .AlignBottom()
                                     .Text(txt2 =>
                                     {

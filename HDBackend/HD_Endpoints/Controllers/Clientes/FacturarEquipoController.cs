@@ -21,8 +21,7 @@ namespace HD.Endpoints.Controllers.Clientes
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Facturar_Equipo datos = new AD_Facturar_Equipo(CadenaConexion);
-            int usuario = 8919;
-                //int.Parse(Sesion.usuario());
+            int usuario = int.Parse(Sesion.usuario());
             var result = await datos.Listado(usuario);
             return Ok(result);
         }

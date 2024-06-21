@@ -27,5 +27,6 @@ namespace HD.Clientes.Modelos
         public string? solicitud { get; set; }
 
         public string? usuario { get; set; } = "";
+        public string? vendedor { get; set; } = "";
     }
 }
