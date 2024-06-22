@@ -48,60 +48,103 @@ namespace HD.Endpoints.Controllers.Credito
             var result = await datos.Get(folio);
             List<RPT_Result> documento = new List<RPT_Result>();
 
-            // Primer conjunto de condiciones
-            if (result.financiamientocerodias.Count() > 1)
+            try
             {
-                try
-                {
-                    RPT_Result reporte = RPT_Pagare_Dos_Amortizaciones_Vencimiento.Generar(result);
-                    documento.Add(reporte);
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest("Error de servidor");
-                }
-            }
-            else if (result.financiamientocerodias.Count() == 1)
-            {
-                try
-                {
-                    RPT_Result reporte = RPT_Pagare_Vencimiento.Generar(result);
-                    documento.Add(reporte);
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest("Error de servidor");
-                }
-            }
+                // Agrupar por tasas diferentes
+                var gruposTasas = result.financiamientocerodias.GroupBy(f => f.tasa);
+                var gruposTasasmas = result.financiamientomasdias.GroupBy(f => f.tasa);
 
-            // Segundo conjunto de condiciones
-            if (result.financiamientomasdias.Count() > 1)
-            {
-                try
+
+                foreach (var grupo in gruposTasas)
                 {
-                    RPT_Result reporte = RPT_Pagare_Dos_Amortizaciones_Suscripcion.Generar(result);
-                    documento.Add(reporte);
+                    if (grupo.Count() > 1)
+                    {
+                        RPT_Result reporte = RPT_Pagare_Dos_Amortizaciones_Vencimiento.Generar(result, grupo.ToList());
+                        documento.Add(reporte);
+                    }
+                    else
+                    {
+                        RPT_Result reporte = RPT_Pagare_Vencimiento.Generar(result,grupo.First());
+                        documento.Add(reporte);
+                    }
                 }
-                catch (Exception ex)
+                
+                foreach(var grupo in gruposTasasmas)
                 {
-                    return BadRequest("Error de servidor");
+                    if (grupo.Count() > 1)
+                    {
+                        RPT_Result reporte = RPT_Pagare_Dos_Amortizaciones_Suscripcion.Generar(result, grupo.ToList());
+                        documento.Add(reporte);
+                    }
+                    else
+                    {
+                        RPT_Result reporte = RPT_Pagare_Suscripcion.Generar(result,grupo.First());
+                        documento.Add(reporte);
+                    }
                 }
             }
-            else if (result.financiamientomasdias.Count() == 1)
+            catch (Exception ex)
             {
-                try
-                {
-                    RPT_Result reporte = RPT_Pagare_Suscripcion.Generar(result);
-                    documento.Add(reporte);
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest("Error de servidor");
-                }
+                return BadRequest("Error de servidor: " + ex.Message);
             }
 
             return Ok(documento);
         }
+
+        //    // Primer conjunto de condiciones
+        //    if (result.financiamientocerodias.Count() > 1)
+        //    {
+        //        try
+        //        {
+        //            RPT_Result reporte = RPT_Pagare_Dos_Amortizaciones_Vencimiento.Generar(result);
+        //            documento.Add(reporte);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            return BadRequest("Error de servidor");
+        //        }
+        //    }
+        //    else if (result.financiamientocerodias.Count() == 1)
+        //    {
+        //        try
+        //        {
+        //            RPT_Result reporte = RPT_Pagare_Vencimiento.Generar(result);
+        //            documento.Add(reporte);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            return BadRequest("Error de servidor");
+        //        }
+        //    }
+
+        //    // Segundo conjunto de condiciones
+        //    if (result.financiamientomasdias.Count() > 1)
+        //    {
+        //        try
+        //        {
+        //            RPT_Result reporte = RPT_Pagare_Dos_Amortizaciones_Suscripcion.Generar(result);
+        //            documento.Add(reporte);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            return BadRequest("Error de servidor");
+        //        }
+        //    }
+        //    else if (result.financiamientomasdias.Count() == 1)
+        //    {
+        //        try
+        //        {
+        //            RPT_Result reporte = RPT_Pagare_Suscripcion.Generar(result);
+        //            documento.Add(reporte);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            return BadRequest("Error de servidor");
+        //        }
+        //    }
+
+        //    return Ok(documento);
+        //}
 
 
 
