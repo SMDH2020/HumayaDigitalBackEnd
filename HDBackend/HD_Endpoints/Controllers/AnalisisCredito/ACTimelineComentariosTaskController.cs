@@ -59,5 +59,29 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             //await NotificacionComentarios.Enviar(body);
             //return Ok(result);
         }
+        [Route("/api/[controller]/[action]")]
+        [HttpPost]
+        public async Task<ActionResult> EnviarComentarioOtorgamiento(mdlSCAnalisis_Comentarios mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADAnalisiCreditoMhusa datos = new ADAnalisiCreditoMhusa(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.GuardarOtorgamiento(mdl);
+            if (result.mdldatos is null)
+            {
+                return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
+            }
+            await NotificacionComentarios.Enviar_Mhusa(result);
+            return Ok(new
+            {
+                documentacion = result.documentacion,
+                estado = result.estado
+            });
+
+            //ADAnalisisNotificacion notificacion = new ADAnalisisNotificacion(CadenaConexion);
+            //var body = await notificacion.GetBody(mdl);
+            //await NotificacionComentarios.Enviar(body);
+            //return Ok(result);
+        }
     }
 }
