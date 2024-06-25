@@ -4,34 +4,24 @@ using HD.Notifications.Analisis;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HD.Endpoints.Controllers.AnalisisCredito
+namespace HD.Endpoints.Controllers.AnalisisCredito.Mhusa
 {
-    public class ACTimelineComentariosTaskController : MyBase
+    public class AC_Validar_Condiciones_OperacionController : MyBase
     {
         private readonly IConfiguration Configuracion;
         private readonly ISesion Sesion;
-        public ACTimelineComentariosTaskController(IConfiguration configuration, ISesion sesion)
+        public AC_Validar_Condiciones_OperacionController(IConfiguration configuration, ISesion sesion)
         {
             Configuracion = configuration;
             Sesion = sesion;
         }
-        [HttpPost]
-        public async Task<ActionResult> Post(mdlSCAnalisisComentariosTask mdl)
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ValidarCondicionesOperacion(string folio)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-            ADAnalisis_Comentarios_Task datos = new ADAnalisis_Comentarios_Task(CadenaConexion);
-            mdl.usuario = Sesion.usuario();
-            var result = await datos.Guardar(mdl);
-
-            bool notificar = result.documentacion.All(item => item.icono != "wait");
-
-            if (notificar)
-            {
-                ADAnalisisSolicitudNotificacion notificacion = new ADAnalisisSolicitudNotificacion(CadenaConexion);
-                var body = await notificacion.GetBody(mdl);
-                await NotificacionDocumentacion.Enviar(body,mdl.folio);
-            }
-
+            ADAnalisiCreditoMhusa datos = new ADAnalisiCreditoMhusa(CadenaConexion);
+            var result = await datos.ValidarCondicionesOperacion(folio, Sesion.usuario());
             return Ok(result);
 
         }
@@ -48,12 +38,8 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             }
             await NotificacionComentarios.Enviar_Mhusa(result);
-            return Ok(new
-            {
-                documentacion= result.documentacion,
-                estado= result.estado
-            });
-
+            return Ok(result.estado);
+            
             //ADAnalisisNotificacion notificacion = new ADAnalisisNotificacion(CadenaConexion);
             //var body = await notificacion.GetBody(mdl);
             //await NotificacionComentarios.Enviar(body);
