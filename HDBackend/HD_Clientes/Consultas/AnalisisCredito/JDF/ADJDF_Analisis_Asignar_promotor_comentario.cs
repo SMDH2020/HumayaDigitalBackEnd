@@ -24,15 +24,15 @@ namespace HD.Clientes.Consultas.AnalisisCredito.JDF
                     comentarios = comentarios.comentarios,
                     usuario = comentarios.usuario
                 };
-                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_AC_asignar_promotor_comentario", parametros, commandType: System.Data.CommandType.StoredProcedure);
-                mdlJDFAnalisis_AsignarPromotorView view = new mdlJDFAnalisis_AsignarPromotorView();
-                view.estado = result.Read<mdlSCAnalisis_Pedido_Estado>().FirstOrDefault();
-                view.promotor = result.Read<mdlJDFAnalisis_Asignarpromotor>().ToList();
+                var view = await factory.SQL.QueryMultipleAsync("Credito.sp_AC_asignar_promotor_comentario", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlJDFAnalisis_AsignarPromotorView result = new mdlJDFAnalisis_AsignarPromotorView();
+                result.estado = view.Read<mdlSCAnalisis_Pedido_Estado>().FirstOrDefault();
+                result.promotor = view.Read<mdlJDFAnalisis_Asignarpromotor>().ToList();
 
-                if (view.estado is null) view.estado = new mdlSCAnalisis_Pedido_Estado();
+                if (result.estado is null) result.estado = new mdlSCAnalisis_Pedido_Estado();
 
                 factory.SQL.Close();
-                return view;
+                return result;
             }
             catch (System.Exception ex)
             {

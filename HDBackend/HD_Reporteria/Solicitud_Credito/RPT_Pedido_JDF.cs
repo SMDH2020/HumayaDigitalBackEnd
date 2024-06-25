@@ -609,7 +609,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().AlignCenter().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.condiciones?.plazo).FontSize(10).FontFamily(fontFamily);
+                                        txt2.Span(mdl.condiciones?.tiempo_plazo + " " + mdl.condiciones?.plazo).FontSize(10).FontFamily(fontFamily);
                                     });
                                 });
 

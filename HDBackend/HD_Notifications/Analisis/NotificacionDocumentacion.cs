@@ -15,7 +15,7 @@ namespace HD.Notifications.Analisis
         public static string _Mensaje { get; private set; }
         //         public static void Enviar(string Correo, string _tipoSolicitud, string _folio, string _vendedor, string _cliente, string _linea, string
         //_monto)
-        public static Task<bool> Enviar(mdlSC_Analisis_Credito datos_correo)
+        public static Task<bool> Enviar(mdlSC_Analisis_Credito datos_correo,string folio)
         {
 
             try
@@ -32,22 +32,27 @@ namespace HD.Notifications.Analisis
                 client.Credentials = new System.Net.NetworkCredential(_correo, password);
                 objeto_mail.From = new MailAddress(_correo);
 
-                objeto_mail.To.Add(new MailAddress(datos_correo.email.correo_responsable_credito));
-                if (datos_correo.email.correo_responsable_credito2 != null)
+                //objeto_mail.To.Add(new MailAddress(datos_correo.email.correo_responsable_credito));
+                //if (datos_correo.email.correo_responsable_credito2 != null)
+                //{
+                //    objeto_mail.To.Add(new MailAddress(datos_correo.email.correo_responsable_credito2));
+                //}
+                //if (datos_correo.email.correo_responsable_credito3 != null)
+                //{
+                //    objeto_mail.To.Add(new MailAddress(datos_correo.email.correo_responsable_credito3));
+                //}
+                //objeto_mail.To.Add(new MailAddress(datos_correo.email.correo_gerente_sucursal));
+                //objeto_mail.To.Add(new MailAddress(datos_correo.email.correo_vendedor));
+
+                foreach (mdlCorreo_Notificacion notificacion in datos_correo.email)
                 {
-                    objeto_mail.To.Add(new MailAddress(datos_correo.email.correo_responsable_credito2));
+                    objeto_mail.To.Add(new MailAddress(notificacion.correo));
                 }
-                if (datos_correo.email.correo_responsable_credito3 != null)
-                {
-                    objeto_mail.To.Add(new MailAddress(datos_correo.email.correo_responsable_credito3));
-                }
-                objeto_mail.To.Add(new MailAddress(datos_correo.email.correo_gerente_sucursal));
-                objeto_mail.To.Add(new MailAddress(datos_correo.email.correo_vendedor));
 
                 //objeto_mail.To.Add(new MailAddress("desarrolladorti@humaya.com.mx"));
                 //objeto_mail.To.Add(new MailAddress("desarrolladorti2@humaya.com.mx"));
 
-                objeto_mail.Subject = datos_correo.email.asunto + datos_correo.email.proceso;
+                objeto_mail.Subject = "VALIDACION DE DOCUMENTOS: " + folio;
                 objeto_mail.IsBodyHtml = true;
                 objeto_mail.Body = body(datos_correo);
                 client.EnableSsl = false;
@@ -145,7 +150,7 @@ namespace HD.Notifications.Analisis
                 "</table>\n" +
                 "</div>\n" +
 
-                "<h1 style=\"font-size:18;\"><Font Color='#235B34'>" + datos_Correo.email.proceso + "</Font></h1></P>\n" +
+                //"<h1 style=\"font-size:18;\"><Font Color='#235B34'>" + datos_Correo.email.proceso + "</Font></h1></P>\n" +
 
                 "<table class=\"tabla-documentacion-vencida\">\n" +
                 "<thead>\n" +

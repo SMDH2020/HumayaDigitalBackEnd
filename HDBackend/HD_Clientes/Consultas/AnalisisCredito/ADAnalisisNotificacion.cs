@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dapper;
+using HD.Clientes.Modelos;
 
 namespace HD.Clientes.Consultas.AnalisisCredito
 {
@@ -17,7 +18,7 @@ namespace HD.Clientes.Consultas.AnalisisCredito
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<mdlAnalisis_Email> GetBody(mdlSCAnalisis_Comentarios comentario)
+        public async Task<mdlAnalisis_Email_View> GetBody(mdlSCAnalisis_Comentarios comentario)
         {
             try
             {
@@ -28,12 +29,13 @@ namespace HD.Clientes.Consultas.AnalisisCredito
                     idproceso = comentario.idproceso,
                     estatus = comentario.estatus,
                 };
-                mdlAnalisis_Email result = await factory.SQL.QueryFirstOrDefaultAsync<mdlAnalisis_Email>("Credito.sp_Analisis_Notificacion", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Analisis_Notificacion", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlAnalisis_Email_View view = new mdlAnalisis_Email_View();
+                view.notificacion = result.Read<mdlCorreo_Notificacion>().ToList();
+                view.detalle = result.Read<mdlAnalisis_Email>().FirstOrDefault();
                 factory.SQL.Close();
-                if (result != null)
-                    result.comentarios = comentario.comentarios;
-                else result = new mdlAnalisis_Email();
-                return result;
+                if (view.detalle == null) view.detalle = new mdlAnalisis_Email();
+                return view;
             }
             catch (System.Exception ex)
             {

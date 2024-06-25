@@ -46,6 +46,9 @@ namespace HD.Clientes.Modelos
         [Required(ErrorMessage = "El campo enganche es un valor requerido")]
         [Range(0, double.MaxValue, ErrorMessage = "El campo enganche esta fuera de rango")]
         public double enganche { get; set; }
+
+        public int tipo_tasa { get; set; }
+        public int tipo_esquema { get; set; }
         public string? usuario { get; set; }
     }
 }
