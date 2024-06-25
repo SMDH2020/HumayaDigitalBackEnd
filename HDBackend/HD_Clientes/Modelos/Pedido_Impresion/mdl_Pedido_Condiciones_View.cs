@@ -11,6 +11,7 @@
         public string? plazo { get; set; }
         public int? tiempo_plazo { get; set; }
         public string? mhusajdf { get; set; }
+        public string? moneda { get; set; }
         public double gastos { get; set; }
         public double enganche { get; set; }
     }

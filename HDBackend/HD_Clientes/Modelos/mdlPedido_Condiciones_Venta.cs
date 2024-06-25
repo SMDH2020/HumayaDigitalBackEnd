@@ -46,7 +46,10 @@ namespace HD.Clientes.Modelos
         [Required(ErrorMessage = "El campo enganche es un valor requerido")]
         [Range(0, double.MaxValue, ErrorMessage = "El campo enganche esta fuera de rango")]
         public double enganche { get; set; }
-
+        [Required(ErrorMessage = "La moneda es un valor requerido")]
+        [RegularExpression(@"^[MXN|USD]+$", ErrorMessage = "Favor de seleccionar una moneda")]
+        [StringLength(3, MinimumLength = 3, ErrorMessage = "El campo medio de contacto debe estar formado por 3 digitos")]
+        public string? moneda { get; set; }
         public int tipo_tasa { get; set; }
         public int tipo_esquema { get; set; }
         public string? usuario { get; set; }
