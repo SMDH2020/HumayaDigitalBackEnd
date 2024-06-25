@@ -17,7 +17,7 @@ namespace HD.Clientes.Modelos
         public int idlocalidad { get; set; }
 
         [Required(ErrorMessage = "La dirección es un valor requerido")]
-        [RegularExpression(@"^[,.# A-Za-z0-9]+$", ErrorMessage = "El campo dirección puede contener letras,numeros, espacio, puto, coma y el signo numeral")]
+        [RegularExpression(@"^[ ñÑ,.# A-Za-z0-9]+$", ErrorMessage = "El campo dirección puede contener letras,numeros, espacio, puto, coma y el signo numeral")]
         [StringLength(200, MinimumLength = 1, ErrorMessage = "El campo dirección admite como maximo 200 caracteres")]
         public string? direccion { get; set; }
 
@@ -28,11 +28,11 @@ namespace HD.Clientes.Modelos
 
         public bool principal { get; set; }
 
-        [RegularExpression(@"^[,.# A-Za-z0-9]+$", ErrorMessage = "El campo Referencia1 debe estar formado por letras y números")]
+        [RegularExpression(@"^[ ñÑ,.# A-Za-z0-9]+$", ErrorMessage = "El campo Referencia1 debe estar formado por letras y números")]
         [StringLength(100, ErrorMessage = "El campo Referencia1 admite como máximo 100 caracteres")]
         public string? referencia1 { get; set; }
 
-        [RegularExpression(@"^[,.# A-Za-z0-9]+$", ErrorMessage = "El campo Referencia2 debe estar formado por letras y números")]
+        [RegularExpression(@"^[ ñÑ,.# A-Za-z0-9]+$", ErrorMessage = "El campo Referencia2 debe estar formado por letras y números")]
         [StringLength(100, ErrorMessage = "El campo Referencia2 admite como máximo 100 caracteres")]
         public string? referencia2 { get; set; }
 
