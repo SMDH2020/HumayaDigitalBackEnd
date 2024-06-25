@@ -65,6 +65,24 @@ namespace HD.Endpoints.Controllers.Credito
         }
 
         [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> enviarCondicionesOperacion(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_SolcitudCredito_Enviar datos = new AD_SolcitudCredito_Enviar(CadenaConexion);
+            var result = await datos.Enviar_Condiciones_Operacion(folio, Sesion.usuario());
+            string mensaje = "Validación de condiciones en proceso";
+
+            if (result != null)
+            {
+                await NSolicitud_Enviar.Enviar(result);
+            }
+            return Ok(new { mensaje });
+
+        }
+
+
+        [HttpGet]
         [Route("/api/[controller]/[action]/{id}")]
         public async Task<ActionResult> BuscarID(string id)
         {
