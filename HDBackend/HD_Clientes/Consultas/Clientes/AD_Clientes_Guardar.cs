@@ -83,5 +83,25 @@ namespace HD.Clientes.Consultas.Clientes
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<bool> GuardarRel(mdl_Rel_Cliente_Vendedor mdl)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    idcliente = mdl.idcliente,
+                    usuario = mdl.usuario
+                };
+                await factory.SQL.QueryAsync("Credito.sp_Rel_Cliente_Vendedor_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }

@@ -20,11 +20,11 @@ namespace HD_Reporteria.Solicitud_Credito
                         //string imagePath = Path.Combine(desktopPath, "proyecto C#", "Logo.jpg");
 
 
-                        page.Header().Height(120).Row(row =>
+                        page.Header().Height(100).Row(row =>
                         {
 
                             //row.ConstantItem(140).Border(1).Placeholder();
-                            row.RelativeItem().PaddingTop(35).Height(50).Background("#477c2c").Row(row2 =>
+                            row.RelativeItem().PaddingTop(30).Height(47).Background("#477c2c").Row(row2 =>
                             {
 
                             });
@@ -33,14 +33,13 @@ namespace HD_Reporteria.Solicitud_Credito
                             {
                                 var rutaImagen = Path.Combine("C:\\Nube\\HumayaDigital\\HumayaDigitalBackEnd\\HDBackend\\HD_Reporteria\\Imagenes\\Logo.jpg");
                                 byte[] imageData = System.IO.File.ReadAllBytes(rutaImagen);
-                                row.ConstantItem(120).Image(imageData);
+                                row.ConstantItem(100).Image(imageData);
 
-                                row.ConstantColumn(450).PaddingTop(35).Height(50).Background("#477c2c").Row(row2 =>
+                                row.ConstantColumn(450).PaddingTop(30).Height(47).Background("#477c2c").Row(row2 =>
                                 {
-                                    row2.RelativeItem().Padding(10).PaddingLeft(30).Text("PEDIDO DE MAQUINARIA").FontColor("#fff").FontSize(20).Bold().FontFamily(fontFamily);
+                                    row2.RelativeItem().Padding(10).PaddingLeft(30).Text("PEDIDO DE MAQUINARIA").FontColor("#fff").FontSize(18).Bold().FontFamily(fontFamily);
                                 });
                             });
-
 
                         });
 
@@ -99,6 +98,24 @@ namespace HD_Reporteria.Solicitud_Credito
                                     txt1.Item().AlignCenter().AlignBottom().Height(15).Text(txt2 =>
                                     {
                                         txt2.Span("").FontSize(08).FontFamily(fontFamily);
+                                    });
+                                });
+                            });
+
+                            col1.Item().AlignRight().Row(row1 =>
+                            {
+                                row1.ConstantItem(120).Column(txt1 =>
+                                {
+                                    txt1.Item().Height(15).Text(txt2 =>
+                                    {
+                                        txt2.Span("MONEDA: ").Bold().FontSize(08).FontFamily(fontFamily);
+                                    });
+                                });
+                                row1.ConstantItem(080).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
+                                {
+                                    txt1.Item().AlignCenter().AlignBottom().Height(15).Text(txt2 =>
+                                    {
+                                        txt2.Span(mdl.condiciones.moneda).FontSize(08).FontFamily(fontFamily);
                                     });
                                 });
                             });
@@ -803,13 +820,13 @@ namespace HD_Reporteria.Solicitud_Credito
                                 }
                             });
 
-                            col1.Item().Text("La tasa es informativa, la tasa real a pagar en cada vencimiento será la que rija al momento de la liquidación del documento o firma de contrato JDF.").FontSize(8).FontFamily(fontFamily);
-                            col1.Item().Text("Acepto que se elabore la factura con los datos anteriormente proporcionados, los cuales manifiesto son correctos y acepto que dicha factura no podrá cancelarse o re-facturarse posteriormente.").FontSize(8).FontFamily(fontFamily);
-                            col1.Item().Text("Se firma el presente escrito como constancia, para los efectos fiscales y legales que corresponda, quitando como entendido de que no se realizará refacturación alguna. Si por algún motivo requieren cancelación de la misma, se realizará un cobro adicional del 5% por los gastos que dicha cancelación origina.").FontSize(8).FontFamily(fontFamily);
-                            col1.Item().Text("Se aceptan condiciones de operacion anteriormente descritas e incluye todo lo acordado en la negociacion, firma de comun acuerdo.").FontSize(8).FontFamily(fontFamily);
+                            col1.Item().Text("La tasa es informativa, la tasa real a pagar en cada vencimiento será la que rija al momento de la liquidación del documento o firma de contrato JDF.").FontSize(6).FontFamily(fontFamily);
+                            col1.Item().Text("Acepto que se elabore la factura con los datos anteriormente proporcionados, los cuales manifiesto son correctos y acepto que dicha factura no podrá cancelarse o re-facturarse posteriormente.").FontSize(6).FontFamily(fontFamily);
+                            col1.Item().Text("Se firma el presente escrito como constancia, para los efectos fiscales y legales que corresponda, quitando como entendido de que no se realizará refacturación alguna. Si por algún motivo requieren cancelación de la misma, se realizará un cobro adicional del 5% por los gastos que dicha cancelación origina.").FontSize(6).FontFamily(fontFamily);
+                            col1.Item().Text("Se aceptan condiciones de operacion anteriormente descritas e incluye todo lo acordado en la negociacion, firma de comun acuerdo.").FontSize(6).FontFamily(fontFamily);
                         });
 
-                        page.Footer().Height(100).PaddingLeft(30).PaddingRight(30).Column(col1 =>
+                        page.Footer().Height(120).PaddingLeft(30).PaddingRight(30).Column(col1 =>
                         {
                             col1.Item().PaddingTop(00).Row(row1 =>
                             {
@@ -840,11 +857,11 @@ namespace HD_Reporteria.Solicitud_Credito
                                 });
                             });
 
-                            col1.Item().PaddingTop(15).Row(row1 =>
+                            col1.Item().PaddingTop(0).Row(row1 =>
                             {
                                 row1.ConstantItem(180).BorderBottom(1).Column(txt1 =>
                                 {
-                                    txt1.Item().Height(50).AlignCenter()
+                                    txt1.Item().AlignCenter()
                                     .AlignBottom()
                                     .Text(txt2 =>
                                     {
@@ -856,7 +873,7 @@ namespace HD_Reporteria.Solicitud_Credito
 
                                 row1.ConstantItem(180).PaddingLeft(15).BorderBottom(1).Column(txt1 =>
                                 {
-                                    txt1.Item().Height(30)
+                                    txt1.Item()
                                     .AlignCenter()
                                     .AlignBottom()
                                     .Text(txt2 =>
@@ -869,7 +886,7 @@ namespace HD_Reporteria.Solicitud_Credito
 
                                 row1.ConstantItem(175).PaddingLeft(15).BorderBottom(1).Column(txt1 =>
                                 {
-                                    txt1.Item().Height(30)
+                                    txt1.Item()
                                     .AlignCenter()
                                     .AlignBottom()
                                     .Text(txt2 =>

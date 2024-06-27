@@ -31,7 +31,7 @@ namespace HD.Clientes.Modelos
         public string? valor { get; set; } = "";
 
   
-        [RegularExpression(@"^[a-zA-Z0-9 ]+$", ErrorMessage = "El campo comentarios debe estar formado por valores alfanumericos")]
+        [RegularExpression(@"^[ ñÑa-zA-Z0-9 ]+$", ErrorMessage = "El campo comentarios debe estar formado por valores alfanumericos")]
         [StringLength(maximumLength:500, ErrorMessage = "El campo comentarios debe de contener una longitud maxima de 500 caracteres")]
         public string? comentarios { get; set; } = "";
 
