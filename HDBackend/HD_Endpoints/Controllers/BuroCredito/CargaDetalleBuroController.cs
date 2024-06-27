@@ -42,5 +42,16 @@ namespace HD.Endpoints.Controllers.BuroCredito
             var result = await datosPorvencer.detalle_porvencer(ejercicio, periodo, idcliente);
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> Cargar_Comentario(int idcliente)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Carga_ClientesBuro_Comentarios datosComentario = new AD_Carga_ClientesBuro_Comentarios(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datosComentario.comentarios(idcliente);
+            return Ok(result);
+        }
     }
 }

@@ -4,27 +4,23 @@ using HD_Buro.Modelos;
 
 namespace HD_Buro.Consultas
 {
-    public class AD_Carga_Reporte_Buro
+    public class AD_Desmarcar_ClienteBuro
     {
         private string CadenaConexion;
-        public AD_Carga_Reporte_Buro(string _cadenaconexion)
+        public AD_Desmarcar_ClienteBuro(string _cadenaconexion)
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlCarga_Reporte_Buro>> reporte(mdlFiltrosView view)
+        public async Task<IEnumerable<mdl_Desmarcar_ClienteBuro>> cliente(int idcliente)
         {
             try
             {
                 var parametros = new
                 {
-                    ejercicio = view.ejercicio,
-                    periodo = view.periodo,
-                    linea = view.linea,
-                    vencimiento = view.vencimiento,
-                    registrado = view.registrado,
+                    idcliente = idcliente
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdlCarga_Reporte_Buro> result = await factory.SQL.QueryAsync<mdlCarga_Reporte_Buro>("Cartera_clientes.dbo.sp_obtener_Listado_Mensual_Credito_Mhusa", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Desmarcar_ClienteBuro> result = await factory.SQL.QueryAsync<mdl_Desmarcar_ClienteBuro>("Credito.Elimina_Comentario_ClienteBuro", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
@@ -33,6 +29,5 @@ namespace HD_Buro.Consultas
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
-
     }
 }
