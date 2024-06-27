@@ -1,6 +1,9 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
+using HD.Clientes.Modelos;
+using HD.Clientes.Modelos.Facturacion;
 using HD.Clientes.Modelos.SC_Analisis.JDF;
+using HD.Clientes.Modelos.SC_Analisis.Modal;
 
 namespace HD.Clientes.Consultas.AnalisisCredito.JDF
 {
@@ -39,7 +42,7 @@ namespace HD.Clientes.Consultas.AnalisisCredito.JDF
                 var parametros = new
                 {
                     folio = mdl.folio,
-                    registro=mdl.registro,
+                    registro = mdl.registro,
                     factura = mdl.factura,
                     nota_abono = mdl.nota_abono,
                     estatus = mdl.estatus,
@@ -54,6 +57,39 @@ namespace HD.Clientes.Consultas.AnalisisCredito.JDF
                 factory.SQL.Close();
                 if (result == null) { result = new mdlJDFAnalisis_Datos_Facturacion(); }
                 return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+        public async Task<mdlAnalisis_Mhusa> GuardarMhusa(mdlJDFAnalisis_Datos_Facturacion_Guardar mdl)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    folio = mdl.folio,
+                    registro=mdl.registro,
+                    factura = mdl.factura,
+                    nota_abono = mdl.nota_abono,
+                    estatus = mdl.estatus,
+                    idequip = mdl.idequip,
+                    idsucursal = mdl.idsucursal,
+                    serie_fiscal = mdl.serie_fiscal,
+                    folio_fiscal = mdl.folio_fiscal,
+                    documento = mdl.documento,
+                    usuario = mdl.usuario
+                };
+                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Mhusa_Datos_Facturacion_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlAnalisis_Mhusa mhusa = new mdlAnalisis_Mhusa();
+                mhusa.mdldatos = result.Read<mdldatos_notificacion>().FirstOrDefault();
+                mhusa.mdlSolicitud = result.Read<mdlSolicitudCredito_Enviar>().ToList();
+
+                factory.SQL.Close();
+    
+                return mhusa;
             }
             catch (System.Exception ex)
             {

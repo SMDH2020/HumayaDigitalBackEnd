@@ -2,6 +2,7 @@
 using HD.AccesoDatos;
 using HD.Clientes.Modelos.Facturar_Equipo;
 using HD.Clientes.Modelos.SC_Analisis.JDF;
+using HD.Clientes.Modelos.SC_Analisis.Modal;
 
 namespace HD.Clientes.Consultas.Facturar_Equipo
 {
@@ -26,6 +27,7 @@ namespace HD.Clientes.Consultas.Facturar_Equipo
 
                 mdl_datos_view data = new mdl_datos_view();
                 data.datos_pedido = result.Read<mdl_datos_pedido>().FirstOrDefault();
+                data.informacion = result.Read<mdlSCAnalisis_Pedido_Estado>().FirstOrDefault();
                 data.unidades = result.Read<mdlFacturaUnidadesSolicitadas>().ToList();
                 data.financiamiento = result.Read<mdlPEdidoFinanciamiento>().ToList();
                 factory.SQL.Close();

@@ -1,6 +1,5 @@
 ﻿using HD.Clientes.Consultas.SolicitudCredito;
 using HD.Clientes.Modelos;
-using HD.Clientes.Notificaciones;
 using HD.Notifications.Analisis;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
@@ -44,7 +43,7 @@ namespace HD.Endpoints.Controllers.Credito
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_SolicitudCredito_Detalle datos = new AD_SolicitudCredito_Detalle(CadenaConexion);
-            var result = await datos.Detalle(folio,Sesion.usuario());
+            var result = await datos.Detalle(folio, Sesion.usuario());
             return Ok(result);
 
         }
@@ -54,7 +53,7 @@ namespace HD.Endpoints.Controllers.Credito
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_SolcitudCredito_Enviar datos = new AD_SolcitudCredito_Enviar(CadenaConexion);
-             var result = await datos.Detalle(folio, Sesion.usuario());
+            var result = await datos.Detalle(folio, Sesion.usuario());
             string mensaje = "Solicitud enviada a revision";
 
             if (result != null)
@@ -64,6 +63,24 @@ namespace HD.Endpoints.Controllers.Credito
             return Ok(new { mensaje });
 
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> enviarCondicionesOperacion(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_SolcitudCredito_Enviar datos = new AD_SolcitudCredito_Enviar(CadenaConexion);
+            var result = await datos.Enviar_Condiciones_Operacion(folio, Sesion.usuario());
+            string mensaje = "Validación de condiciones en proceso";
+
+            if (result != null)
+            {
+                await NSolicitud_Enviar.Enviar(result);
+            }
+            return Ok(new { mensaje });
+
+        }
+
 
         [HttpGet]
         [Route("/api/[controller]/[action]/{id}")]

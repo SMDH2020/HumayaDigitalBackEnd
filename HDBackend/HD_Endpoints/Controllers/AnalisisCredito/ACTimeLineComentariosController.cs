@@ -26,26 +26,43 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             {
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             }
-            //if (result.idproceso == 10)
-            //{
-            //    ADAnalisisNotificacion notificacion = new ADAnalisisNotificacion(CadenaConexion);
-            //    var body = await notificacion.GetBody(mdl);
-            //    await NotificacionComentarios.Enviar(body);
-            //    return Ok(result);
-            //}
-            //else
-            //{
-            //    ADAnalisisNotificacion notificacion = new ADAnalisisNotificacion(CadenaConexion);
-            //    var body = await notificacion.GetBody(mdl);
-            //    await NotificacionComentarios.Enviar(body);
-            //    return Ok(result);
-            //}
-            ADAnalisisNotificacion notificacion = new ADAnalisisNotificacion(CadenaConexion);
-            var body = await notificacion.GetBody(mdl);
-            await NotificacionComentarios.Enviar(body);
-            return Ok(result);
+            if (mdl.idproceso == 10)
+            {
+                ADAnalisisNotificacionFacturacion notificacion = new ADAnalisisNotificacionFacturacion(CadenaConexion);
+                var body = await notificacion.GetBody(mdl);
+                await NotificacionComentarios.Enviar(body);
+                return Ok(result.estado);
+            }
+            else
+            {
+                if (result.mdldatos is null)
+                {
+                    return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
+                }
+                await NotificacionComentarios.Enviar_Mhusa(result);
+                return Ok(result.estado);
+            }
+            //ADAnalisisNotificacion notificacion = new ADAnalisisNotificacion(CadenaConexion);
+            //var body = await notificacion.GetBody(mdl);
+            //await NotificacionComentarios.Enviar(body);
+            //return Ok(result);
         }
 
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> OtorgamientoCredito(mdlSCAnalisis_Comentarios mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADAnalisis_Comentarios datos = new ADAnalisis_Comentarios(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.GuardarOtorgamiento(mdl);
+            if (result is null)
+            {
+                return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
+            }
 
+            await NotificacionComentarios.Enviar_Mhusa(result);
+            return Ok(result.estado);
+        }
     }
 }

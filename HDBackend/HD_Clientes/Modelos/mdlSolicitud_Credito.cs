@@ -15,7 +15,7 @@ namespace HD.Clientes.Modelos
         public int idcliente { get; set; }
 
         [Required(ErrorMessage = "El Tipo de Solicitud es un valor requerido")]
-        [RegularExpression(@"^[A|I|O|J|E]+$", ErrorMessage = "El campo Tipo de Solicitud debe estar formado por las siguientes opciones [A][I][O][J][E]")]
+        [RegularExpression(@"^[A|I|O|J|E|C]+$", ErrorMessage = "El campo Tipo de Solicitud debe estar formado por las siguientes opciones [A][I][O][J][E][C]")]
         [StringLength(1, MinimumLength = 1, ErrorMessage = "El campo Tipo de Solicitud debe estar formado por 1 digito")]
         public string tipo_solicitud { get; set; } = "";
 
@@ -27,5 +27,6 @@ namespace HD.Clientes.Modelos
         public string? solicitud { get; set; }
 
         public string? usuario { get; set; } = "";
+        public string? vendedor { get; set; } = "";
     }
 }

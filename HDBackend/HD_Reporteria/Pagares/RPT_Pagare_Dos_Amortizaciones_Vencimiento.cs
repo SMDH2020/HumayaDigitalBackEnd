@@ -1,4 +1,5 @@
-﻿using HD.Clientes.Modelos.Pagares;
+﻿using DocumentFormat.OpenXml.Office.CustomUI;
+using HD.Clientes.Modelos.Pagares;
 using HD.Clientes.Modelos.Pedido_Impresion;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
@@ -80,7 +81,7 @@ namespace HD_Reporteria.Pagares
             return letras.Trim();
         }
 
-        public static RPT_Result Generar(mdl_Pagare_Impresion mdl)
+        public static RPT_Result Generar(mdl_Pagare_Impresion mdl, IEnumerable <mdl_Pedido_Financiamiento_View> detalle)
         {
             try
             {
@@ -159,7 +160,7 @@ namespace HD_Reporteria.Pagares
                                             header.Cell().Background("#264f26").AlignRight().AlignMiddle().Padding(1).PaddingRight(5).Text("IMPORTE A FINANCIAR").FontColor("#fff").FontSize(08).Bold().FontFamily(fontFamily);
                                         });
 
-                                        foreach (var item in mdl.financiamientocerodias.Where((item, index) => index % 2 == 0))
+                                        foreach (var item in detalle.Where((item, index) => index % 2 == 0))
                                         {
                                             // Colocar en las últimas tres columnas
                                             tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignCenter().Text(item.docto).FontSize(8).FontFamily(fontFamily);
@@ -187,7 +188,7 @@ namespace HD_Reporteria.Pagares
                                             header.Cell().Background("#264f26").AlignRight().AlignMiddle().Padding(1).PaddingRight(5).Text("IMPORTE A FINANCIAR").FontColor("#fff").FontSize(08).Bold().FontFamily(fontFamily);
                                         });
 
-                                        foreach (var item in mdl.financiamientocerodias.Where((item, index) => index % 2 != 0))
+                                        foreach (var item in detalle.Where((item, index) => index % 2 != 0))
                                         {
                                             // Colocar en las últimas tres columnas
                                             tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignCenter().Text(item.docto).FontSize(8).FontFamily(fontFamily);
@@ -199,7 +200,7 @@ namespace HD_Reporteria.Pagares
                             });
 
 
-                            col1.Item().PaddingTop(10).Text("El importe que ampara este pagaré causará intereses moratorios en forma mensual a partir de la fecha de vencimiento calculados a razón de la tasa fija del " + (mdl.tasa.tasa * 2) +  "% por ciento anual sobre saldos insolutos.").FontSize(10).FontFamily("arial");
+                            col1.Item().PaddingTop(10).Text("El importe que ampara este pagaré causará intereses moratorios en forma mensual a partir de la fecha de vencimiento calculados a razón de la tasa fija del " + (detalle.First().tasa * 2) +  "% por ciento anual sobre saldos insolutos.").FontSize(10).FontFamily("arial");
 
                             col1.Item().PaddingTop(10).Text("Los intereses se calcularán dividiendo la tasa anual aplicable entre 360 (Trescientos sesenta) y multiplicando el resultado obtenido por el número de días efectivamente transcurridos durante el periodo en que se devenguen los intereses.").FontSize(10).FontFamily("arial");
 
@@ -212,12 +213,19 @@ namespace HD_Reporteria.Pagares
                             {
                                 row1.AutoItem().Column(txt1 =>
                                 {
-                                    txt1.Item().AlignCenter().Height(15).Text(txt2 =>
+                                    if (mdl.ubicacion == null)
                                     {
-                                        DateTime fechaActual = DateTime.Now;
-                                        string ciudad = mdl.ubicacion.sucursal == "SANTIAGO I." ? "SANTIAGO IXCUINTLA" : mdl.ubicacion.sucursal;
-                                        txt2.Span(ciudad + ", " + mdl.ubicacion?.estado + " " + fechaActual.ToString("dd 'DE' MMMM 'DEL' yyyy").ToUpper()).FontSize(10).FontFamily("arial");
-                                    });
+                                    }
+                                    else
+                                    {
+                                        txt1.Item().AlignCenter().Height(15).Text(txt2 =>
+                                        {
+                                            DateTime fechaActual = DateTime.Now;
+                                            string ciudad = mdl.ubicacion.sucursal == "SANTIAGO I." ? "SANTIAGO IXCUINTLA" : mdl.ubicacion.sucursal;
+                                            txt2.Span(ciudad + ", " + mdl.ubicacion?.estado + " " + fechaActual.ToString("dd 'DE' MMMM 'DEL' yyyy").ToUpper()).FontSize(10).FontFamily("arial");
+                                        });
+                                    }
+
                                 });
                             });
 

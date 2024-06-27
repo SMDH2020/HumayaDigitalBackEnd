@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace HD.Clientes.Modelos
 {
-    public class mdlUsuariosRol
+    public class mdl_Clientes_Coincidencias
     {
-        public string? idrol { get; set; }
-        public string? idusuario { get; set; }
+        public int idcliente { get; set; }
+        public string? razon_social { get; set; }
 
     }
 }

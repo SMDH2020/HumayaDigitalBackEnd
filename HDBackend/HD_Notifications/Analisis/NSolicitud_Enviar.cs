@@ -24,10 +24,10 @@ namespace HD.Notifications.Analisis
                 client.UseDefaultCredentials = false;
                 client.Credentials = new System.Net.NetworkCredential(_correo, password);
                 objeto_mail.From = new MailAddress(_correo);
-                foreach(mdlSolicitudCredito_Enviar mdlSolicitudCredito_Enviar in datos_correo.mdlSolicitud) {
-                    objeto_mail.To.Add(new MailAddress(mdlSolicitudCredito_Enviar.correo));
-                }
-                //objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_responsable_credito));
+                //foreach(mdlSolicitudCredito_Enviar mdlSolicitudCredito_Enviar in datos_correo.mdlSolicitud) {
+                //    objeto_mail.To.Add(new MailAddress(mdlSolicitudCredito_Enviar.correo));
+                //}
+                objeto_mail.To.Add(new MailAddress("Guadalupeolivas@humaya.com.mx"));
                 //objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_gerente_sucursal));
                 //objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_vendedor));
                 //if (datos_correo.mdlSolicitud.correo_responsable_credito2 != null)
@@ -38,11 +38,6 @@ namespace HD.Notifications.Analisis
                 //{
                 //    objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_responsable_credito3));
                 //}
-
-
-                //objeto_mail.To.Add(new MailAddress("desarrolladorti@humaya.com.mx"));
-                //objeto_mail.To.Add(new MailAddress("desarrolladorti2@humaya.com.mx"));
-
 
                 objeto_mail.Subject = "Nueva solicitud de credito";
                 objeto_mail.IsBodyHtml = true;
@@ -145,9 +140,6 @@ namespace HD.Notifications.Analisis
                         "</tr>\n" +
                     "</table>\n" +
                 "</div>\n"+
-
-               "<h1 style=\"font-size:18;\"><Font Color='#235B34'>" + datos_Correo.detail.tipo_credito + "</Font></h1></P>\n" +
-
             "<table class=\"tabla-documentacion-vencida\">\n" +
                 "<thead>\n" +
                     "<tr>\n" +
@@ -161,7 +153,7 @@ namespace HD.Notifications.Analisis
                         "<td style=\"padding:4px;border-bottom:1px solid #afb69d\">\n" +
                         "FOLIO \n" +
                         "</td>\n" +
-                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d;text-align:right;\">\n" +
+                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d;text-align:left;\">\n" +
                         datos_Correo.detail.folio +
                         "</td>\n" +
                     "</tr>\n" +
@@ -169,23 +161,23 @@ namespace HD.Notifications.Analisis
                         "<td style=\"padding:4px;border-bottom:1px solid #afb69d\">\n" +
                         "VENDEDOR \n" +
                         "</td>\n" +
-                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d;text-align:right\">\n" +
-                        datos_Correo.detail.vendedor +
+                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d;text-align:left\">\n" +
+                        datos_Correo.detail.vendedor.ToUpper() +
                         "</td>\n" +
                     "</tr>\n" +
                     "<tr>\n" +
                         "<td style=\"padding:4px;border-bottom:1px solid #afb69d\">\n" +
                         "CLIENTE \n" +
                         "</td>\n" +
-                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d; text-align:right\">\n" +
-                        datos_Correo.detail.razon_social +
+                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d; text-align:left\">\n" +
+                        datos_Correo.detail.razon_social.ToUpper() +
                         "</td>\n" +
                     "</tr>\n" +
                     "<tr>\n" +
                         "<td style=\"padding:4px;border-bottom:1px solid #afb69d\">\n" +
                         "LINEA \n" +
                         "</td>\n" +
-                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d;text-align:right\">\n" +
+                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d;text-align:left\">\n" +
                         datos_Correo.detail.linea_credito +
                         "</td>\n" +
                     "</tr>\n" +

@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace HD.Clientes.Modelos
 {
-    public class mdlUsuariosRol
+    public class mdl_Rel_Cliente_Vendedor
     {
-        public string? idrol { get; set; }
-        public string? idusuario { get; set; }
-
+        public int idcliente { get; set; }
+        public string? usuario { get; set; }
     }
 }

@@ -18,7 +18,7 @@ namespace HD.Clientes.Consultas.AnalisisCredito.JDF
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<mdlAnalisis_Email> GetBody(mdlJDFAnalisis_Asignar_Promotor_Comentarios comentario)
+        public async Task<mdlAnalisis_Email_View> GetBody(mdlJDFAnalisis_Asignar_Promotor_Comentarios comentario)
         {
             try
             {
@@ -27,15 +27,13 @@ namespace HD.Clientes.Consultas.AnalisisCredito.JDF
                 {
                     folio = comentario.folio,
                 };
-                mdlAnalisis_Email result = await factory.SQL.QueryFirstOrDefaultAsync<mdlAnalisis_Email>("Credito.sp_Asignacion_promotor_Notificacion", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Asignacion_promotor_Notificacion", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlAnalisis_Email_View view = new mdlAnalisis_Email_View();
+                view.notificacion = result.Read<mdlCorreo_Notificacion>().ToList();
+                view.detalle = result.Read<mdlAnalisis_Email>().FirstOrDefault();
                 factory.SQL.Close();
-                if (result != null)
-                    result.comentarios = comentario.comentarios;
-                else result = new mdlAnalisis_Email();
-                if (result != null)
-                    result.proceso = "ASIGNACION DE PROMOTOR";
-                else result = new mdlAnalisis_Email();
-                return result;
+                if (view.detalle == null) view.detalle = new mdlAnalisis_Email();
+                return view;
             }
             catch (System.Exception ex)
             {
