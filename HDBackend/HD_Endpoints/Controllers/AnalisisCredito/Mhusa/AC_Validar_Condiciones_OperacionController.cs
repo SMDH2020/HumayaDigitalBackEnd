@@ -32,7 +32,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Mhusa
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             ADAnalisiCreditoMhusa datos = new ADAnalisiCreditoMhusa(CadenaConexion);
             mdl.usuario = Sesion.usuario();
-            var result = await datos.Guardar(mdl);
+            var result = await datos.GuardarValidacion(mdl);
             if (result.mdldatos is null)
             {
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
