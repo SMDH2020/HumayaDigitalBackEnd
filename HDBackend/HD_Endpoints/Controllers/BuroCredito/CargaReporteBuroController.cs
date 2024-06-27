@@ -21,24 +21,24 @@ namespace HD.Endpoints.Controllers.BuroCredito
             Sesion = sesion;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> Cargar(int ejercicio, int periodo)
+        public async Task<ActionResult> Cargar(mdlFiltrosView view)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Carga_Reporte_Buro datos = new AD_Carga_Reporte_Buro(CadenaConexion);
             int usuario = int.Parse(Sesion.usuario());
-            var result = await datos.reporte(ejercicio, periodo);
+            var result = await datos.reporte(view);
             return Ok(result);
         }
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> GenerarExcel(int ejercicio, int periodo)
+        public async Task<ActionResult> GenerarExcel(mdlFiltrosView view)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Carga_Reporte_Buro datos = new AD_Carga_Reporte_Buro(CadenaConexion);
-            var result = await datos.reporte(ejercicio, periodo);
+            var result = await datos.reporte(view);
             var docResult = await XLS_Reporte_Buro.CrearExcel(result);
             return Ok(docResult);
         }
