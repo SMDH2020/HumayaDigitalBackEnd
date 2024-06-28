@@ -64,11 +64,11 @@ namespace HD.Notifications.Analisis
                 client.UseDefaultCredentials = false;
                 client.Credentials = new System.Net.NetworkCredential(_correo, password);
                 objeto_mail.From = new MailAddress(_correo);
-                //foreach (mdlSolicitudCredito_Enviar notificacion in datos_correo.mdlSolicitud)
-                //{
-                //    objeto_mail.To.Add(new MailAddress(notificacion.correo));
-                //}
-                objeto_mail.To.Add("Guadalupeolivas@humaya.com.mx");
+                foreach (mdlSolicitudCredito_Enviar notificacion in datos_correo.mdlSolicitud)
+                {
+                    objeto_mail.To.Add(new MailAddress(notificacion.correo));
+                }
+                //objeto_mail.To.Add("desarrolladorti@humaya.com.mx");
                 objeto_mail.Subject = datos_correo.mdldatos.asunto;
                 objeto_mail.IsBodyHtml = true;
                 objeto_mail.Body = bodyMhusa(datos_correo);
@@ -163,7 +163,7 @@ namespace HD.Notifications.Analisis
                 "</style>\n" +
                "</HEAD>\n" +
                "<BODY style=\"text-align:center;\"><P>\n" +
-                "<div>\n" +
+               "<div style=\"margin-bottom:30px;\">\n" +
                     "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" role=\"presentation\">\n" +
                         "<tr>\n" +
                             "<td width=\"10%\" style=\"padding: 0;\"> \n" +
@@ -205,22 +205,22 @@ namespace HD.Notifications.Analisis
                "<tbody>\n" +
                     "<tr>\n" +
                         "<td style=\"padding:4px;border-bottom:1px solid #afb69d\" colspan=\"2\">\n" +
-                        datos_Correo.mdldatos.folio +
+                        " FOLIO: " + datos_Correo.mdldatos.folio +
                         "</td>\n" +
                     "</tr>\n" +
                     "<tr>\n" +
                         "<td style=\"padding:4px;border-bottom:1px solid #afb69d\"  colspan=\"2\">\n" +
-                        datos_Correo.mdldatos.asesor+
+                        " VENDEDOR: " + datos_Correo.mdldatos.asesor+
                         "</td>\n" +
                     "</tr>\n" +
                     "<tr>\n" +
                         "<td style=\"padding:4px;border-bottom:1px solid #afb69d\"  colspan=\"2\">\n" +
-                        datos_Correo.mdldatos.cliente +
+                        " CLIENTE: " + datos_Correo.mdldatos.cliente +
                         "</td>\n" +
                     "</tr>\n" +
                     "<tr>\n" +
                         "<td style=\"padding:4px;border-bottom:1px solid #afb69d\" colspan=\"2\">\n" +
-                           datos_Correo.mdldatos.comentarios +
+                           " COMENTARIO: " + datos_Correo.mdldatos.comentarios +
                         "</td>\n" +
                     "</tr>\n" +
                "</tbody>\n" +
