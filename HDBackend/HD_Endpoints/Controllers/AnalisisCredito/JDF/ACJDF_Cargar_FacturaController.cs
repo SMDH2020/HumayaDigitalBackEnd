@@ -1,4 +1,5 @@
-﻿using HD.Clientes.Consultas.AnalisisCredito.JDF;
+﻿using HD.Clientes.Consultas.AnalisisCredito;
+using HD.Clientes.Consultas.AnalisisCredito.JDF;
 using HD.Clientes.Modelos.SC_Analisis.JDF;
 using HD.Notifications.Analisis;
 using HD.Security;
@@ -41,6 +42,9 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
             {
                 await datos.Guardar_detalle(mdl.folio, mdl.registro, fac.orden, fac.documento,mdl.usuario);
             }
+            //ADNotificacionFinalizacionProceso notificacion = new ADNotificacionFinalizacionProceso(CadenaConexion);
+            //var body = await notificacion.GetBody(mdl.folio);
+            //await NotificacionComentarios.EnviarProcesoFinalizado(body, mdl.folio);
             return Ok(new {mensaje="Datos Cargados cone exito"});
         }
         [HttpPost]
