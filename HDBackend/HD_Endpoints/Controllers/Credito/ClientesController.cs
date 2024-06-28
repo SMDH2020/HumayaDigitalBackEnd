@@ -55,11 +55,11 @@ namespace HD.Endpoints.Controllers.Credito
         public async Task<ActionResult> Persona_Moral_Registro_Vendedor(mdlClientes mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-            AD_Clientes_Guardar datos = new AD_Clientes_Guardar(CadenaConexion);
+            AD_Clientes_Vendedor_Guardar datos = new AD_Clientes_Vendedor_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             mdl.idvendedor = mdl.idvendedor == "0" ? Sesion.usuario() : mdl.idvendedor;
-            mdl.idcliente = await datos.Guardar_Persona_Moral(mdl);
-            return Ok(new { mensaje = "datos cargados con exito" });
+            var result = await datos.Guardar_Persona_Moral(mdl); 
+            return Ok(result);
         }
 
         [HttpGet]
