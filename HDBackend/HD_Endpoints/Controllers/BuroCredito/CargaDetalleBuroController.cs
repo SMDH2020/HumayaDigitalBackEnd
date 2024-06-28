@@ -1,12 +1,6 @@
-﻿using HD_Buro.Consultas;
-using HD.Security;
+﻿using HD.Security;
+using HD_Buro.Consultas;
 using Microsoft.AspNetCore.Mvc;
-using HD_Ventas.Consultas;
-using HD_Cobranza.Capturas;
-using HD_Cobranza.Reportes;
-using HD_Reporteria.Buro_Credito;
-using HD_Buro.Modelos;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace HD.Endpoints.Controllers.BuroCredito
 {

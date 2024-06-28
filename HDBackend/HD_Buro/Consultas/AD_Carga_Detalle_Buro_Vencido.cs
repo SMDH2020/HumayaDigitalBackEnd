@@ -11,7 +11,7 @@ namespace HD_Buro.Consultas
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlCarga_Detalle_Buro>> detalle_vencido(int ejercicio, int periodo, string idcliente)
+        public async Task<mdlBuroMarcadosResult> detalle_vencido(int ejercicio, int periodo, string idcliente)
         {
             try
             {
@@ -22,9 +22,12 @@ namespace HD_Buro.Consultas
                     idCliente = idcliente
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdlCarga_Detalle_Buro> result = await factory.SQL.QueryAsync<mdlCarga_Detalle_Buro>("Cartera_clientes.dbo.sp_Cargar_Detalle_Buro_Vencido", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("Cartera_clientes.dbo.sp_Cargar_Detalle_Buro_Vencido", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlBuroMarcadosResult mdlresult = new mdlBuroMarcadosResult();
+                mdlresult.operacion = result.Read<mdlCarga_Detalle_Buro>().ToList();
+                mdlresult.revolvente = result.Read<mdlCarga_Detalle_Buro>().ToList();
                 factory.SQL.Close();
-                return result;
+                return mdlresult;
             }
             catch (System.Exception ex)
             {
