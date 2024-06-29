@@ -64,11 +64,11 @@ namespace HD.Notifications.Analisis
                 client.UseDefaultCredentials = false;
                 client.Credentials = new System.Net.NetworkCredential(_correo, password);
                 objeto_mail.From = new MailAddress(_correo);
-                //foreach (mdlSolicitudCredito_Enviar notificacion in datos_correo.mdlSolicitud)
-                //{
-                //    objeto_mail.To.Add(new MailAddress(notificacion.correo));
-                //}
-                objeto_mail.To.Add("Guadalupeolivas@humaya.com.mx");
+                foreach (mdlSolicitudCredito_Enviar notificacion in datos_correo.mdlSolicitud)
+                {
+                    objeto_mail.To.Add(new MailAddress(notificacion.correo));
+                }
+                //objeto_mail.To.Add("Guadalupeolivas@humaya.com.mx");
                 objeto_mail.Subject = datos_correo.mdldatos.asunto;
                 objeto_mail.IsBodyHtml = true;
                 objeto_mail.Body = bodyMhusa(datos_correo);

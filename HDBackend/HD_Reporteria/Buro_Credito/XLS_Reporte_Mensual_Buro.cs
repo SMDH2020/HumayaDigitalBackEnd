@@ -21,7 +21,7 @@ namespace HD_Reporteria.Buro_Credito
                     sheet.Style.Font.FontName = "Calibri";
                     sheet.Style.Font.FontSize = 10;
 
-                    int renglon = XLSEncabezado.Encabezado(ref sheet, sheetname, 108);
+                    int renglon = XLSEncabezado.Encabezado(ref sheet, sheetname, 111);
                     sheet.Cell(renglon, 1).Value = "Identificador";
                     sheet.Cell(renglon, 2).Value = "RFC";
                     sheet.Cell(renglon, 3).Value = "Codigo Ciudadano";
@@ -130,11 +130,14 @@ namespace HD_Reporteria.Buro_Credito
                     sheet.Cell(renglon, 106).Value = "Identificador";
                     sheet.Cell(renglon, 107).Value = "Numero de compañias";
                     sheet.Cell(renglon, 108).Value = "Cantidad";
+                    sheet.Cell(renglon, 109).Value = "Identificador";
+                    sheet.Cell(renglon, 110).Value = "Numero de Compañias";
+                    sheet.Cell(renglon, 111).Value = "Cantidad";
 
 
 
 
-                    var rango = sheet.Range(renglon, 1, renglon, 108);
+                    var rango = sheet.Range(renglon, 1, renglon, 111);
                     rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
                     rango.Style.Font.Bold = true;
                     rango.Style.Font.FontSize = 12;
@@ -150,8 +153,8 @@ namespace HD_Reporteria.Buro_Credito
                         sheet.Cell(renglon, 2).Value = mdl.rfc; // RFC
                         sheet.Cell(renglon, 3).Value = ""; // Codigo Ciudadano
                         sheet.Cell(renglon, 4).Value = ""; // RAZON Numero Dun
-                        sheet.Cell(renglon, 5).Value = mdl.razon_social; // Compañia
-                        sheet.Cell(renglon, 6).Value = mdl.nombre; // Nombre 1
+                        sheet.Cell(renglon, 5).Value = mdl.compania; // Compañia
+                        sheet.Cell(renglon, 6).Value = mdl.nombre1; // Nombre 1
                         sheet.Cell(renglon, 7).Value = mdl.nombre2; // Nombre 2
                         sheet.Cell(renglon, 8).Value = mdl.paterno; // Paterno
                         sheet.Cell(renglon, 9).Value = mdl.materno; // Materno
@@ -160,9 +163,9 @@ namespace HD_Reporteria.Buro_Credito
                         sheet.Cell(renglon, 12).Value = ""; // Banxico 1
                         sheet.Cell(renglon, 13).Value = ""; // Banxico 2
                         sheet.Cell(renglon, 14).Value = ""; // Banxico 3
-                        sheet.Cell(renglon, 15).Value = mdl.direccion; // Direccion 1
+                        sheet.Cell(renglon, 15).Value = mdl.direccion1; // Direccion 1
                         sheet.Cell(renglon, 16).Value = mdl.direccion2; // Direccion 2
-                        sheet.Cell(renglon, 17).Value = mdl.colonia; // Colonia/Poblacion
+                        sheet.Cell(renglon, 17).Value = mdl.poblacion; // Colonia/Poblacion
                         sheet.Cell(renglon, 18).Value = mdl.municipio; // Delegacion/Municipio
                         sheet.Cell(renglon, 19).Value = ""; // Ciudad
                         sheet.Cell(renglon, 20).Value = mdl.estado; // Estado
@@ -170,9 +173,9 @@ namespace HD_Reporteria.Buro_Credito
                         sheet.Cell(renglon, 22).Value = ""; // Telefono
                         sheet.Cell(renglon, 23).Value = ""; // Extension
                         sheet.Cell(renglon, 24).Value = ""; // Fax
-                        sheet.Cell(renglon, 25).Value = ""; // Tipo Cliente
+                        sheet.Cell(renglon, 25).Value = mdl.tipocliente; // Tipo Cliente
                         sheet.Cell(renglon, 26).Value = ""; // Estado extranjero
-                        sheet.Cell(renglon, 27).Value = ""; // Pais
+                        sheet.Cell(renglon, 27).Value = "MX"; // Pais
                         sheet.Cell(renglon, 28).Value = ""; // Clave de Consolidacion
                         sheet.Cell(renglon, 29).Value = ""; // Identificador
                         sheet.Cell(renglon, 30).Value = ""; // RFC Accionista
@@ -199,14 +202,14 @@ namespace HD_Reporteria.Buro_Credito
                         sheet.Cell(renglon, 51).Value = ""; // Pais
                         sheet.Cell(renglon, 52).Value = "CR"; // Identificador
                         sheet.Cell(renglon, 53).Value = mdl.rfc; // RFC Empresa
-                        sheet.Cell(renglon, 54).Value = mdl.experiencias; // Numero Experiencias
+                        sheet.Cell(renglon, 54).Value = mdl.facturas; // Numero Experiencias
                         sheet.Cell(renglon, 55).Value = ""; // Contrado
                         sheet.Cell(renglon, 56).Value = ""; // Contrado Anterior
                         sheet.Cell(renglon, 57).Value = ""; // Fecha Apertura
                         sheet.Cell(renglon, 58).Value = ""; // Plazo en meses
                         sheet.Cell(renglon, 59).Value = ""; // Tipo de Credito
                         sheet.Cell(renglon, 60).Value = ""; // Saldo Inicial
-                        sheet.Cell(renglon, 61).Value = ""; // Moneda
+                        sheet.Cell(renglon, 61).Value = "001"; // Moneda
                         sheet.Cell(renglon, 62).Value = ""; // Numero Pagos
                         sheet.Cell(renglon, 63).Value = ""; // Frecuencia de Pagos
                         sheet.Cell(renglon, 64).Value = ""; // Importe de pagos
@@ -226,8 +229,8 @@ namespace HD_Reporteria.Buro_Credito
                         sheet.Cell(renglon, 78).Value = "DET"; // Identificador
                         sheet.Cell(renglon, 79).Value = mdl.rfc; // RFC Empresa
                         sheet.Cell(renglon, 80).Value = ""; // Contrato
-                        sheet.Cell(renglon, 81).Value = mdl.vencido; // Dias Vencimiento
-                        sheet.Cell(renglon, 82).Value = mdl.saldo; // Cantidad
+                        sheet.Cell(renglon, 81).Value = mdl.diasvencido; // Dias Vencimiento
+                        sheet.Cell(renglon, 82).Value = Math.Round(decimal.Parse(mdl.saldo.ToString()),0); // Cantidad
                         sheet.Cell(renglon, 83).Value = ""; // Interes
                         sheet.Cell(renglon, 84).Value = ""; // Identificador
                         sheet.Cell(renglon, 85).Value = ""; // RFC Aval
@@ -258,6 +261,12 @@ namespace HD_Reporteria.Buro_Credito
 
                         renglon++;
                     }
+                    renglon -= 1;
+                    var group = lista.GroupBy(item => item.rfc);
+                    var suma = lista.Sum(item => item.saldo);
+                    sheet.Cell(renglon, 109).Value = "TS";//SEccion TS
+                    sheet.Cell(renglon, 110).Value = group.Count(); ;//Numero de compañias
+                    sheet.Cell(renglon, 111).Value = Math.Round(suma.Value,0);//Cantidad
 
 
                     sheet.Columns().AdjustToContents();
