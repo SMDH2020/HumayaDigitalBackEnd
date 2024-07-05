@@ -73,7 +73,7 @@ namespace HD.Endpoints.Controllers.Credito
             {
                 ADPedido_Impresion_View pdf = new ADPedido_Impresion_View(CadenaConexion);
                 var resultpdf = await pdf.Get(folio);
-                if (resultpdf.condiciones is null || resultpdf.condiciones is null || resultpdf.financiamiento.Count == 0 || resultpdf.unidades.Count == 0)
+                if (resultpdf.condiciones is null || resultpdf.condiciones is null  || resultpdf.unidades.Count == 0)
                 {
                     return BadRequest(new { mensaje = "Para poder imprimir el Pedido es necesario completar toda la información solicitada" });
                 }
