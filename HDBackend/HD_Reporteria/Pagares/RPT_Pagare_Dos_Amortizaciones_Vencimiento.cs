@@ -200,7 +200,7 @@ namespace HD_Reporteria.Pagares
                             });
 
 
-                            col1.Item().PaddingTop(10).Text("El importe que ampara este pagaré causará intereses moratorios en forma mensual a partir de la fecha de vencimiento calculados a razón de la tasa fija del " + (detalle.First().tasa * 2) +  "% por ciento anual sobre saldos insolutos.").FontSize(10).FontFamily("arial");
+                            col1.Item().PaddingTop(10).Text("El importe que ampara este pagaré causará intereses moratorios en forma mensual a partir de la fecha de vencimiento calculados a razón de la tasa fija del " + (detalle.First().tasa > 0 ? detalle.First().tasa * 2 : mdl.tasa.tasa * 2) +  "% por ciento anual sobre saldos insolutos.").FontSize(10).FontFamily("arial");
 
                             col1.Item().PaddingTop(10).Text("Los intereses se calcularán dividiendo la tasa anual aplicable entre 360 (Trescientos sesenta) y multiplicando el resultado obtenido por el número de días efectivamente transcurridos durante el periodo en que se devenguen los intereses.").FontSize(10).FontFamily("arial");
 
