@@ -47,6 +47,18 @@ namespace HD.Endpoints.Controllers.Credito
             return Ok(result);
 
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> obtenerID(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_SolicitudCredito_ObtenerID datos = new AD_SolicitudCredito_ObtenerID(CadenaConexion);
+            var result = await datos.ObteneriD(folio);
+            return Ok(result);
+
+        }
+
         [HttpGet]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> enviar(string folio)
