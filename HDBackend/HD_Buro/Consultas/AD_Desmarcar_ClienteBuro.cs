@@ -1,33 +1,26 @@
-﻿
-using Dapper;
+﻿using Dapper;
 using HD.AccesoDatos;
 using HD_Buro.Modelos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HD_Buro.Consultas
 {
-    public class AD_REporteBuro_Credito
+    public class AD_Desmarcar_ClienteBuro
     {
         private string CadenaConexion;
-        public AD_REporteBuro_Credito(string _cadenaconexion)
+        public AD_Desmarcar_ClienteBuro(string _cadenaconexion)
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlDatosReporteBuro>> reporte(int ejercicio, int periodo)
+        public async Task<IEnumerable<mdl_Desmarcar_ClienteBuro>> cliente(int idcliente)
         {
             try
             {
                 var parametros = new
                 {
-                    Ejercicio = ejercicio,
-                    Periodo = periodo,
+                    idcliente = idcliente
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdlDatosReporteBuro> result = await factory.SQL.QueryAsync<mdlDatosReporteBuro>("Cartera_Clientes.dbo.sp_Buro_Credito_Informe_Mensual", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Desmarcar_ClienteBuro> result = await factory.SQL.QueryAsync<mdl_Desmarcar_ClienteBuro>("Credito.Elimina_Comentario_ClienteBuro", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
@@ -36,6 +29,5 @@ namespace HD_Buro.Consultas
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
-
     }
 }

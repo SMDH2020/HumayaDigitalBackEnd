@@ -68,7 +68,9 @@ namespace HD.Notifications.Analisis
                 {
                     objeto_mail.To.Add(new MailAddress(notificacion.correo));
                 }
+
                 //objeto_mail.To.Add("desarrolladorti@humaya.com.mx");
+
                 objeto_mail.Subject = datos_correo.mdldatos.asunto;
                 objeto_mail.IsBodyHtml = true;
                 objeto_mail.Body = bodyMhusa(datos_correo);

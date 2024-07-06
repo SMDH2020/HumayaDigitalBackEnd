@@ -25,5 +25,15 @@ namespace HD.Endpoints.Controllers.Cobranza
             var result = await datos.Obtener(ejercicio);
             return Ok(result);
         }
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerObjetivoRecuperado(int ejercicio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADRecuperacionCarteraMensual datos = new ADRecuperacionCarteraMensual(CadenaConexion);
+
+            var result = await datos.ObtenerObjetivoRecuperado(ejercicio);
+            return Ok(result);
+        }
     }
 }
