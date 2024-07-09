@@ -27,7 +27,7 @@ namespace HD_Buro.Consultas
                     Periodo = periodo,
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdlDatosReporteBuro> result = await factory.SQL.QueryAsync<mdlDatosReporteBuro>("BuroCredito.dbo.sp_reporte_buro", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdlDatosReporteBuro> result = await factory.SQL.QueryAsync<mdlDatosReporteBuro>("Cartera_Clientes.dbo.sp_Buro_Credito_Informe_Mensual", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
