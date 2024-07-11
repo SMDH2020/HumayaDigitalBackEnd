@@ -80,7 +80,7 @@ namespace HD.Endpoints.Controllers.Credito
 
                 try
                 {
-                    var documento = resultpdf.condiciones.mhusajdf == "JDT" ? RPT_Pedido_JDF.Generar(resultpdf) : RPT_Pedido.Generar(resultpdf);
+                    var documento = resultpdf.condiciones.mhusajdf == "JDF" ? RPT_Pedido_JDF.Generar(resultpdf) : RPT_Pedido.Generar(resultpdf);
                     documento.documento = "data:application/pdf;base64," + documento.documento;
                     return Ok(documento);
                 }
