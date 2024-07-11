@@ -313,7 +313,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.solicitante?.domicilio).FontSize(8).FontFamily(fontFamily);
+                                        txt2.Span("BLVD. DIAZ ORDAZ NO.500, COL. LA LEONA, SAN PEDRO GARZA GARCIA, NUEVO LEON. C.P. 66210").FontSize(8).FontFamily(fontFamily);
                                     });
                                 });
 
