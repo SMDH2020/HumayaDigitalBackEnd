@@ -58,5 +58,16 @@ namespace HD.Endpoints.Controllers.Credito
             return Ok(result);
 
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetTasa(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_PedidoFinanciamiento_Interes datos = new AD_PedidoFinanciamiento_Interes(CadenaConexion);
+            var result = await datos.Get(folio);
+            return Ok(result);
+
+        }
     }
 }
