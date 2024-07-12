@@ -9,6 +9,7 @@
         public double r_vencido { get; set; }
         public double r_porvencer { get; set; }
         public double r_activa { get; set; }
+        public double total_cartera { get; set; }
         public double total_vencido { get; set; }
         public double convenio { get; set; }
         public double vencido_recuperar { get; set; }
