@@ -8,6 +8,9 @@
         public double cartera_activa { get; set; }
         public double cartera_porvencer { get; set; }
         public double cartera_vencida { get; set; }
+        public double recuperacion_cartera_activa { get; set; }
+        public double recuperacion_cartera_porvencer { get; set; }
+        public double recuperacion_cartera_vencida { get; set; }
         public double objetivo { get; set; }
         public double recuperado { get; set; }
         public double porc { get; set; }
