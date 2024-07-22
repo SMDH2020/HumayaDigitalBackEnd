@@ -2,6 +2,7 @@
 {
     public class mdlLoginResult
     {
+        public int idempleado { get; set; } 
         public string empleado { get; set; } = "";
         public string sucursal { get; set; } = "";
         public string departamento { get; set; } = "";
