@@ -47,7 +47,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             {
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             }
-            await NotificacionComentarios.Enviar_Mhusa(result);
+            if (result.mdldatos.noificar == true) await NotificacionComentarios.Enviar_Mhusa(result);
             return Ok(new
             {
                 documentacion= result.documentacion,

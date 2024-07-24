@@ -41,6 +41,21 @@ namespace HD.Endpoints.Controllers.Clientes
             return Ok(result);
 
         }
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> Particionar(string folio,int registro)
+        {
+            if (folio == null || folio.Length != 13)
+            {
+                return BadRequest("la información proporcionada no es correcta");
+            }
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Facturar_Equipo_Estado datos = new AD_Facturar_Equipo_Estado(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.Paricionar(folio,registro, usuario);
+            return Ok(result);
+
+        }
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]

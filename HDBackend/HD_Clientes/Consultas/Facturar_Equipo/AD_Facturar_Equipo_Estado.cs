@@ -88,5 +88,32 @@ namespace HD.Clientes.Consultas.Facturar_Equipo
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+        public async Task<mdl_datos_view> Paricionar(string folio,int registro, int usuario)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    folio,
+                    registro,
+                    usuario
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Pedido_Unidades_Particionar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+
+                mdl_datos_view data = new mdl_datos_view();
+                data.datos_pedido = result.Read<mdl_datos_pedido>().FirstOrDefault();
+                data.informacion = result.Read<mdlSCAnalisis_Pedido_Estado>().FirstOrDefault();
+                data.unidades = result.Read<mdlFacturaUnidadesSolicitadas>().ToList();
+                data.financiamiento = result.Read<mdlPEdidoFinanciamiento>().ToList();
+                factory.SQL.Close();
+
+                return data;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }
