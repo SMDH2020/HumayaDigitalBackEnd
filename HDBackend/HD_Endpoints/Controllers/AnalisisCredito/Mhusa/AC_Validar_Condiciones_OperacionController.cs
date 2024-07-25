@@ -1,4 +1,5 @@
 ﻿using HD.Clientes.Consultas.AnalisisCredito;
+using HD.Clientes.Modelos;
 using HD.Clientes.Modelos.SC_Analisis;
 using HD.Notifications.Analisis;
 using HD.Security;
@@ -25,6 +26,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Mhusa
             return Ok(result);
 
         }
+
         [Route("/api/[controller]/[action]")]
         [HttpPost]
         public async Task<ActionResult> EnviarComentario(mdlSCAnalisis_Comentarios mdl)
@@ -38,7 +40,13 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Mhusa
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             }
             await NotificacionComentarios.Enviar_Mhusa(result);
-            return Ok(result.estado);
+
+            var response = new mdlAnalisis_Mhusa_Resultado
+            {
+                estado = result.estado,
+                socket = result.mdlSolicitud
+            };
+            return Ok(response);
             
             //ADAnalisisNotificacion notificacion = new ADAnalisisNotificacion(CadenaConexion);
             //var body = await notificacion.GetBody(mdl);

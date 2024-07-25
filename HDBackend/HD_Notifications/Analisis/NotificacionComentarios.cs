@@ -29,10 +29,16 @@ namespace HD.Notifications.Analisis
                 client.UseDefaultCredentials = false;
                 client.Credentials = new System.Net.NetworkCredential(_correo, password);
                 objeto_mail.From = new MailAddress(_correo);
-                foreach (mdlCorreo_Notificacion notificacion in datos_correo.notificacion)
-                {
-                    objeto_mail.To.Add(new MailAddress(notificacion.correo));
-                }
+                //foreach (mdlCorreo_Notificacion notificacion in datos_correo.notificacion)
+                //{
+                //    objeto_mail.To.Add(new MailAddress(notificacion.correo));
+                //}
+                objeto_mail.To.Add(datos_correo.detalle.correo_gerente_sucursal);
+                objeto_mail.To.Add(datos_correo.detalle.correo_vendedor);
+                objeto_mail.To.Add(datos_correo.detalle.correo_responsable_credito);
+                //objeto_mail.To.Add(datos_correo.detalle.correo_responsable_credito2);
+                //objeto_mail.To.Add(datos_correo.detalle.correo_responsable_credito3);
+
                 objeto_mail.Subject = datos_correo.detalle.asunto + datos_correo.detalle.proceso;
                 objeto_mail.IsBodyHtml = true;
                 objeto_mail.Body = body(datos_correo);
