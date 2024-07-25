@@ -21,12 +21,25 @@ namespace HD.Endpoints.Controllers.Credito.PrestamoClientes
         }
 
         [HttpPost]
+        [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> Guardar(mdlPrestamo_Clientes_Guardar mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Prestamo_Clientes_Guardar datos = new AD_Prestamo_Clientes_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.GuardarRel(mdl);
+            return Ok(new { mensaje="Timeline creado con exito"});
+
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> Crear_Timeline(mdlPrestamoClientesView mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Prestamo_Clientes_Guardar datos = new AD_Prestamo_Clientes_Guardar(CadenaConexion);
+            mdl.usuario = int.Parse(Sesion.usuario());
+            var result = await datos.Crear_Timeline(mdl);
             return Ok(result);
 
         }

@@ -17,5 +17,6 @@ namespace HD.Clientes.Modelos
         public string? cliente { get; set; }
         public string? asesor { get; set; }
         public string? comentarios { get; set; }
+        public bool noificar { get; set; }
     }
 }
