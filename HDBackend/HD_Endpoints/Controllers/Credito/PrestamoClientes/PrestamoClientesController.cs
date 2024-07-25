@@ -28,7 +28,7 @@ namespace HD.Endpoints.Controllers.Credito.PrestamoClientes
             AD_Prestamo_Clientes_Guardar datos = new AD_Prestamo_Clientes_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.GuardarRel(mdl);
-            return Ok(new { mensaje="Timeline creado con exito"});
+            return Ok(result);
 
         }
 
