@@ -40,5 +40,27 @@ namespace HD.Clientes.Consultas.PrestamoClientes
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<object> Crear_Timeline(mdlPrestamoClientesView mdl)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    folio_Solicitud = mdl.folio_solicitud,
+                    folio_prestamo = mdl.folio_prestamo,
+                    usuario = mdl.usuario
+                };
+                await factory.SQL.QueryMultipleAsync("Credito.sp_Timeline_PrestamoClientes", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return new { };
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
     }
 }
