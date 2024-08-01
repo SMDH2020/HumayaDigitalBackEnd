@@ -18,5 +18,6 @@
         public string? anticipos { get; set; }
         public string? foliosanticipos { get; set; }
         public string? unidad_facturar { get; set; }
+        public string? fecha_elaboracion_pedido { get; set; }
     }
 }

@@ -6,5 +6,6 @@
         public string? asesor { get; set; }
         public string? linea_credito { get; set; }
         public double importe { get; set; }
+        public bool cerrado { get; set; }
     }
 }
