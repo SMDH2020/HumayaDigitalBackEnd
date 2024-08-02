@@ -584,6 +584,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                     .Text(totalValor.ToString("N")).FontSize(8).Bold().FontFamily(fontFamily);
                                 });
                             });
+
                             //col1.Item().Text("Fecha de pedido:").Bold();
                             col1.Item().Text("Condiciones para operacion de venta").FontSize(10).FontFamily(fontFamily);
                             col1.Item().Border(1).BorderColor("#afb69d").Padding(05).Text(mdl.condiciones?.condiciones).FontSize(8).FontFamily(fontFamily);

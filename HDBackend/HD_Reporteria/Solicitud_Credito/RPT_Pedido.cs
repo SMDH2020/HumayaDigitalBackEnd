@@ -487,6 +487,12 @@ namespace HD_Reporteria.Solicitud_Credito
                                     .Padding(1).Text("Valor").FontSize(10).Bold().FontFamily(fontFamily);
                                 });
 
+                                // Variables para los totales
+                                double totalCantidad = 0;
+                                double totalPrecio = 0;
+                                double totalDescuento = 0;
+                                double totalValor = 0;
+
                                 foreach (var item in mdl.unidades)
                                 {
                                     var cantidad = Placeholders.Random.Next(1, 10);
@@ -543,25 +549,39 @@ namespace HD_Reporteria.Solicitud_Credito
                                             .Text(item.total.ToString()).FontSize(8).FontFamily(fontFamily);
                                     }
 
+                                    // Actualiza los totales
+                                    totalCantidad += item.cantidad;
+                                    totalPrecio += item.precio;
+                                    totalDescuento += item.descuento;
+                                    totalValor += item.total;
+
                                     // tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
                                     //.Text($"{formattedTotal}").FontSize(8).FontFamily(fontFamily);
                                 }
-                                //footer de tabla para los totales de las columnas
-                                //tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
-                                //.Text("hola").FontSize(8).FontFamily(fontFamily);
-                                //tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
-                                //.Text("hola").FontSize(8).FontFamily(fontFamily);
-                                //tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
-                                //.Text("hola").FontSize(8).FontFamily(fontFamily);
-                                //tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
-                                //.Text("hola").FontSize(8).FontFamily(fontFamily);
-                                //tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
-                                //.Text("hola").FontSize(8).FontFamily(fontFamily);
-                                //tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
-                                //.Text("hola").FontSize(8).FontFamily(fontFamily);
-                                //tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
-                                //.Text("hola").FontSize(8).FontFamily(fontFamily);
+
+                                // Agregar el pie de tabla
+                                tabla.Footer(footer =>
+                                {
+                                    footer.Cell().BorderTop(1).BorderColor("#afb69d").Padding(1).AlignCenter()
+                                    .Text("Total").FontSize(8).Bold().FontFamily(fontFamily);
+
+                                    footer.Cell().BorderTop(1).BorderColor("#afb69d").Padding(1).AlignCenter().Text("");
+
+                                    footer.Cell().BorderTop(1).BorderColor("#afb69d").Padding(1).AlignCenter().Text("");
+
+                                    footer.Cell().BorderTop(1).BorderColor("#afb69d").Padding(1).AlignCenter().Text("");
+
+                                    footer.Cell().BorderTop(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                    .Text(totalPrecio.ToString("N")).FontSize(8).Bold().FontFamily(fontFamily);
+
+                                    footer.Cell().BorderTop(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                    .Text(totalDescuento.ToString("N")).FontSize(8).Bold().FontFamily(fontFamily);
+
+                                    footer.Cell().BorderTop(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                    .Text(totalValor.ToString("N")).FontSize(8).Bold().FontFamily(fontFamily);
+                                });
                             });
+
                             //col1.Item().Text("Fecha de pedido:").Bold();
                             col1.Item().Text("Condiciones para operacion de venta").FontSize(10).FontFamily(fontFamily);
                             col1.Item().Border(1).BorderColor("#afb69d").Padding(05).Text(mdl.condiciones?.condiciones).FontSize(8).FontFamily(fontFamily);
@@ -743,6 +763,7 @@ namespace HD_Reporteria.Solicitud_Credito
 
                             });
 
+
                             col1.Item().PaddingVertical(10).Table(tabla =>
                             {
                                 tabla.ColumnsDefinition(Columns =>
@@ -775,6 +796,11 @@ namespace HD_Reporteria.Solicitud_Credito
                                     .Padding(1).Text("Total a Pagar").FontSize(10).Bold().FontFamily(fontFamily);
                                 });
 
+                                // Variables para los totales
+                                double totalImporteFinanciar = 0;
+                                double totalInteres = 0;
+                                double totalPagar = 0;
+
                                 foreach (var item in mdl.financiamiento)
                                 {
                                     var cantidad = Placeholders.Random.Next(1, 10);
@@ -795,6 +821,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                     {
                                         tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
                                         .Text(item.importefinanciar.ToString("N")).FontSize(8).FontFamily(fontFamily);
+                                        totalImporteFinanciar += item.importefinanciar;
                                     }
                                     else
                                     {
@@ -812,6 +839,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                     {
                                         tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
                                         .Text(item.interes.ToString("N")).FontSize(8).FontFamily(fontFamily);
+                                        totalInteres += item.interes;
                                     }
                                     else
                                     {
@@ -823,6 +851,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                     {
                                         tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
                                         .Text(item.totalpagar.ToString("N")).FontSize(8).FontFamily(fontFamily);
+                                        totalPagar += item.totalpagar;
                                     }
                                     else
                                     {
@@ -830,6 +859,29 @@ namespace HD_Reporteria.Solicitud_Credito
                                         .Text(item.totalpagar.ToString()).FontSize(8).FontFamily(fontFamily);
                                     }
                                 }
+                                // Agregar el pie de tabla
+                                tabla.Footer(footer =>
+                                {
+                                    footer.Cell().BorderTop(1).BorderColor("#afb69d").Padding(1).AlignCenter().Text("");
+
+                                    footer.Cell().BorderTop(1).BorderColor("#afb69d").Padding(1).AlignCenter()
+                                    .Text("Total").FontSize(8).Bold().FontFamily(fontFamily);
+
+                                    footer.Cell().BorderTop(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                    .Text(totalImporteFinanciar.ToString("N")).FontSize(8).Bold().FontFamily(fontFamily);
+
+                                    footer.Cell().BorderTop(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                    .Text(""); // Si no necesitas total para "Dias", deja la celda en blanco.
+
+                                    footer.Cell().BorderTop(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                    .Text(""); // Si no necesitas total para "Tasa %", deja la celda en blanco.
+
+                                    footer.Cell().BorderTop(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                    .Text(totalInteres.ToString("N")).FontSize(8).Bold().FontFamily(fontFamily);
+
+                                    footer.Cell().BorderTop(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                    .Text(totalPagar.ToString("N")).FontSize(8).Bold().FontFamily(fontFamily);
+                                });
                             });
 
                             col1.Item().Text("La tasa es informativa, la tasa real a pagar en cada vencimiento será la que rija al momento de la liquidación del documento o firma de contrato JDF.").FontSize(6).FontFamily(fontFamily);
