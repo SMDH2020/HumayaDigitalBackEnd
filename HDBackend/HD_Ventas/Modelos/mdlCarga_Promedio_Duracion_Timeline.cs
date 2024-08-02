@@ -2,6 +2,7 @@
 {
     public class mdlCarga_Promedio_Duracion_Timeline
     {
+     
         public string TipoCredito {  get; set; }
         public int idproceso { get; set; }
         public string medida { get; set; }

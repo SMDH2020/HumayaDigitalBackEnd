@@ -546,6 +546,9 @@ namespace HD_Reporteria.Solicitud_Credito
                                     // tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
                                     //.Text($"{formattedTotal}").FontSize(8).FontFamily(fontFamily);
                                 }
+                                //footer de tabla para los totales de las columnas
+                                //tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                //.Text("hola").FontSize(8).FontFamily(fontFamily);
                             });
                             //col1.Item().Text("Fecha de pedido:").Bold();
                             col1.Item().Text("Condiciones para operacion de venta").FontSize(10).FontFamily(fontFamily);
