@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HD.Endpoints.Controllers.Ventas
 {
-    public class CargaScorecardVendedorController : MyBase
+    public class CargaScorecardporVendedorDashController : MyBase
     {
         private readonly IConfiguration Configuracion;
         private readonly ISesion Sesion;
-        public CargaScorecardVendedorController(IConfiguration configuration, ISesion sesion)
+        public CargaScorecardporVendedorDashController(IConfiguration configuration, ISesion sesion)
         {
             Configuracion = configuration;
             Sesion = sesion;
@@ -17,24 +17,24 @@ namespace HD.Endpoints.Controllers.Ventas
         [HttpGet]
         [Route("/api/[controller]/[action]")]
 
-        public async Task<ActionResult> MostrarScorecardVendedor(int ejercicio, int vendedor)
+        public async Task<ActionResult> MostrarScorecardVendedor()
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-            AD_Carga_Scorecard_Vendedor datos = new AD_Carga_Scorecard_Vendedor(CadenaConexion);
+            AD_Carga_Scorecard_porVendedor_Dash datos = new AD_Carga_Scorecard_porVendedor_Dash(CadenaConexion);
             int usuario = int.Parse(Sesion.usuario());
-            var result = await datos.Scorecard(ejercicio, usuario, vendedor);
+            var result = await datos.Scorecard(usuario);
             return Ok(result);
         }
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
 
-        public async Task<ActionResult> MostrarScorecardRealVendedor(int ejercicio, int vendedor)
+        public async Task<ActionResult> MostrarScorecardVendedorporID(int vendedor)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-            AD_Carga_Scorecard_Real_Vendedor datos = new AD_Carga_Scorecard_Real_Vendedor(CadenaConexion);
-            int usuario = int.Parse(Sesion.usuario());
-            var result = await datos.Scorecard(ejercicio, usuario, vendedor);
+            AD_Carga_Scorecard_porVendedor_Dash datos = new AD_Carga_Scorecard_porVendedor_Dash(CadenaConexion);
+            int usuario = vendedor;
+            var result = await datos.Scorecard(usuario);
             return Ok(result);
         }
     }
