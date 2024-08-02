@@ -97,7 +97,7 @@ namespace HD.Clientes.Consultas.AnalisisCredito.JDF
             }
         }
 
-        public async Task<mdlJDFAnalisis_Datos_Facturacion> Guardar_detalle(string folio, int registro,int orden, string documento,string usuario)
+        public async Task<mdlJDFAnalisis_Datos_Facturacion> Guardar_detalle(string folio, int registro,int orden, string documento,string usuario, string docto_financiamiento)
         {
             try
             {
@@ -108,7 +108,8 @@ namespace HD.Clientes.Consultas.AnalisisCredito.JDF
                     registro,
                     orden,
                     documento,
-                    usuario
+                    usuario,
+                    docto_financiamiento
                 };
                 var result = await factory.SQL.QueryFirstOrDefaultAsync<mdlJDFAnalisis_Datos_Facturacion>("Credito.sp_Pedido_Detalle_Financiamiento_EQUIP", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
