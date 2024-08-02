@@ -1,4 +1,5 @@
 ﻿using HD.Clientes.Consultas.AnalisisCredito;
+using HD.Clientes.Modelos;
 using HD.Clientes.Modelos.SC_Analisis;
 using HD.Notifications.Analisis;
 using HD.Security;
@@ -15,6 +16,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             Configuracion = configuration;
             Sesion = sesion;
         }
+
         [HttpPost]
         public async Task<ActionResult> Post(mdlSCAnalisis_Comentarios mdl)
         {
@@ -31,7 +33,12 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
                 ADAnalisisNotificacionFacturacion notificacion = new ADAnalisisNotificacionFacturacion(CadenaConexion);
                 var body = await notificacion.GetBody(mdl);
                 await NotificacionComentarios.Enviar(body);
-                return Ok(result.estado);
+                var response = new mdlAnalisis_Mhusa_Resultado
+                {
+                    estado = result.estado,
+                    socket = result.mdlSolicitud
+                };
+                return Ok(response);
             }
             else
             {
@@ -40,7 +47,13 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
                     return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
                 }
                 await NotificacionComentarios.Enviar_Mhusa(result);
-                return Ok(result.estado);
+
+                var response = new mdlAnalisis_Mhusa_Resultado
+                {
+                    estado = result.estado,
+                    socket = result.mdlSolicitud
+                };
+                return Ok(response);
             }
             //ADAnalisisNotificacion notificacion = new ADAnalisisNotificacion(CadenaConexion);
             //var body = await notificacion.GetBody(mdl);
@@ -63,6 +76,29 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
 
             await NotificacionComentarios.Enviar_Mhusa(result);
             return Ok(result.estado);
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarEnganche(mdlEnchanche_Mhusa mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADSolicitud_Credito_Enganche_Guardar datos = new ADSolicitud_Credito_Enganche_Guardar(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.Guardar(mdl);
+            if (result is null)
+            {
+                return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
+            }
+            else
+            {
+                if (result.mdldatos is null)
+                {
+                    return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
+                }
+                await NotificacionComentarios.Enviar_Mhusa(result);
+                return Ok(result.estado);
+            }
         }
     }
 }

@@ -60,7 +60,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().AlignCenter().AlignBottom().Height(15).Text(txt2 =>
                                     {
-                                        string formattedDate = DateTime.Now.ToString("dd/MM/yyyy");
+                                        string formattedDate = mdl.solicitante.fecha_elaboracion_pedido;
                                         txt2.Span(formattedDate).FontSize(08).FontFamily(fontFamily);
                                     });
                                 });
@@ -546,6 +546,9 @@ namespace HD_Reporteria.Solicitud_Credito
                                     // tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
                                     //.Text($"{formattedTotal}").FontSize(8).FontFamily(fontFamily);
                                 }
+                                //footer de tabla para los totales de las columnas
+                                //tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                //.Text("hola").FontSize(8).FontFamily(fontFamily);
                             });
                             //col1.Item().Text("Fecha de pedido:").Bold();
                             col1.Item().Text("Condiciones para operacion de venta").FontSize(10).FontFamily(fontFamily);
