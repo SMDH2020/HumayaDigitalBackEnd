@@ -42,6 +42,7 @@ namespace HD.Clientes.Consultas.AnalisisCredito
                     folio = comentario.folio,
                     comentarios = comentario.comentarios,
                     estatus = comentario.estatus,
+                    idproceso = comentario.idproceso,
                     usuario = comentario.usuario
                 };
                 var result = await factory.SQL.QueryMultipleAsync("Credito.SP_Validar_Condiciones_Operacion_Comentarios_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
