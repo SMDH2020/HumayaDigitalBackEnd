@@ -24,7 +24,6 @@ namespace HD.Endpoints.Controllers.Credito
             mdl.usuario = mdl.usuario == "" ? Sesion.usuario() : mdl.usuario;
             var result = await datos.Guardar(mdl);
             return Ok(result);
-
         }
 
         [HttpGet]

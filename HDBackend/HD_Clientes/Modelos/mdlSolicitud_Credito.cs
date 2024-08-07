@@ -20,7 +20,7 @@ namespace HD.Clientes.Modelos
         public string tipo_solicitud { get; set; } = "";
 
         [Required(ErrorMessage = "El Importe es un valor requerido")]
-        [RegularExpression(@"^[0-9]+$", ErrorMessage = "El campo Importe debe estar formado por numeros")]
+        [RegularExpression(@"^[. , 0-9]+$", ErrorMessage = "El campo Importe debe estar formado por numeros")]
         public double importe { get; set; }
 
         public string? estatus { get; set; }

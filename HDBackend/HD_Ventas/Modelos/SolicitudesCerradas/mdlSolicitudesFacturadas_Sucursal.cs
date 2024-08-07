@@ -10,5 +10,6 @@
         public int jdf { get; set; }
         public int mhusa { get; set; }
         public int contado { get; set; }
+        public int pendientes { get; set; }
     }
 }
