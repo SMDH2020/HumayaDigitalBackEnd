@@ -22,6 +22,8 @@
     {
         public int orden { get; set; }
         public string? documento { get; set; }
+        public string? docto_financiamiento { get; set; }
+
     }
     public class mdlFacturacionFinanciamiento
     {
