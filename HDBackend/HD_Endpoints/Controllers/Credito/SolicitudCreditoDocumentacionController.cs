@@ -62,6 +62,21 @@ namespace HD.Endpoints.Controllers.Credito
             return Ok(result);
 
         }
+
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerDocumentoValidacionF(string folio, int iddocumento)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Solicitud_Credito_Documentos_Validar_Factura datos = new AD_Solicitud_Credito_Documentos_Validar_Factura(CadenaConexion);
+            var result = await datos.Obtener(folio, iddocumento);
+            if (result is null)
+                return BadRequest(new { mensaje = "Documento no encontrado. Favor de comunicarse con el administrador del sistema" });
+            return Ok(result);
+
+        }
+
         [HttpGet]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> ObtenerDocumentoPedido(string folio, int iddocumento)
