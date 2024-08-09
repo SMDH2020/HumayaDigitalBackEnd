@@ -126,7 +126,7 @@ namespace HD_Reporteria.Pagares
 
                             col1.Item().PaddingTop(20).PaddingBottom(10).Text(txt =>
                             {
-                                string moneda = mdl.tasa.moneda == "MXN" ? " pesos " + ((int)((sumaTotal - (int)sumaTotal) * 100)).ToString("00") + "/100 M.N. " : " dolares ";
+                                string moneda = mdl.tasa.moneda == "MXN" ? " pesos " + ((int)((sumaTotal - (int)sumaTotal) * 100)).ToString("00") + "/100 M.N. " : " dolares " + ((int)((sumaTotal - (int)sumaTotal) * 100)).ToString("00") + "/100 USD ";
                                 txt.Span("Por este PAGARE, por valor recibido, me(nos) obligo(amos) a pagar solidaria, mancomunada e incondicionalmente, a la orden de: MAQUINARIA DEL HUMAYA, S.A. DE C.V., en la dirección de sus oficinas en la ciudad de Navolato, Sinaloa, o en cualquier otra donde se me requiera el pago, según lo elija el tenedor de este pagaré, la cantidad principal de").FontSize(10).FontFamily("arial");
                                 txt.Span("         $ " + sumaTotal.ToString("N2") + " (" + ConvertirNumeroALetras(sumaTotal) + moneda + ")").FontSize(10).Bold().FontFamily("arial");
                                 txt.Span("mediante las amortizaciones pactadas, por los montos y las fechas que a continuación se detallan:").FontSize(10).FontFamily("arial");
