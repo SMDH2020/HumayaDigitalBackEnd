@@ -14,5 +14,6 @@
         public double objetivo { get; set; }
         public double recuperado { get; set; }
         public double porc { get; set; }
+        public string indicador { get; set; }
     }
 }
