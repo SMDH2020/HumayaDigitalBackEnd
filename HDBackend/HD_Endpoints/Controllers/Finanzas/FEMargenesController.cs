@@ -25,6 +25,7 @@ namespace HD.Endpoints.Controllers.Finanzas
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             FAD_Margenes margenes = new FAD_Margenes(CadenaConexion);
             string usuario = Sesion.usuario();
+            usuario = "1";
             return Ok(await margenes.GetMargenes(vm, usuario));
         }
 
