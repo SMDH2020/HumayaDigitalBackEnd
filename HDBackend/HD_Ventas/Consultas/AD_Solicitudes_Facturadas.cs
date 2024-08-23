@@ -17,14 +17,15 @@ namespace HD_Ventas.Consultas
             CadenaConexion = _cadenaconexion;
         }
 
-        public async Task<mdlSolicitudesFacturadasResult> GetSolicitudes(int ejercicio, int periodo)
+        public async Task<mdlSolicitudesFacturadasResult> GetSolicitudes(int ejercicio, int periodo, string linea)
         {
             try
             {
                 var parametros = new
                 {
                     ejercicio = ejercicio,
-                    periodo=periodo
+                    periodo=periodo,
+                    linea= linea
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var result = await factory.SQL.QueryMultipleAsync("Ventas.sp_Solicitudes_Credito_Facturadas", parametros, commandType: System.Data.CommandType.StoredProcedure);
@@ -40,7 +41,7 @@ namespace HD_Ventas.Consultas
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
-        public async Task<IEnumerable<mdlOperacionesDetalle>> GetSolicitudesDetalle(int ejercicio, int periodo,int idsucursal)
+        public async Task<IEnumerable<mdlOperacionesDetalle>> GetSolicitudesDetalle(int ejercicio, int periodo,int idsucursal, string linea)
         {
             try
             {
@@ -48,7 +49,8 @@ namespace HD_Ventas.Consultas
                 {
                     ejercicio = ejercicio,
                     periodo = periodo,
-                    idsucursal = idsucursal
+                    idsucursal = idsucursal,
+                    linea = linea
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var result = await factory.SQL.QueryAsync<mdlOperacionesDetalle>("Ventas.sp_Solicitudes_Credito_Facturadas_Detalle", parametros, commandType: System.Data.CommandType.StoredProcedure);

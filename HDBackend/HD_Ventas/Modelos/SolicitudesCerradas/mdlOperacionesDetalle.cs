@@ -5,6 +5,9 @@
         public int idcliente { get; set; }
         public string? cliente { get; set; }
         public string? asesor { get; set; }
+        public int idestado { get; set; }
+        public int idsucursal { get; set; }
+        public string? sucursal { get; set; }
         public string? linea { get; set; }
         public string? modelo { get; set; }
         public string? linea_credito { get; set; }
