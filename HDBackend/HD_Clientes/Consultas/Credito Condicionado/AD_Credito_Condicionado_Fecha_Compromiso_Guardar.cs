@@ -1,6 +1,8 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
+using HD.Clientes.Modelos;
 using HD.Clientes.Modelos.SC_Analisis.Credito_Condicionados;
+using HD.Clientes.Modelos.SC_Analisis.Modal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +18,7 @@ namespace HD.Clientes.Consultas.Credito_Condicionado
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<mdl_fecha_compromiso> Guardar(mdl_fecha_compromiso mdl)
+        public async Task<mdlSC_Credito_Condicionado> Guardar(mdl_fecha_compromiso mdl)
         {
             FactoryConection factory = new FactoryConection(CadenaConexion);
             try
@@ -28,9 +30,13 @@ namespace HD.Clientes.Consultas.Credito_Condicionado
                     usuario=mdl.usuario,
                     fecha_compromiso=mdl.fecha_compromiso,
                 };
-                mdl_fecha_compromiso result = await factory.SQL.QueryFirstOrDefaultAsync<mdl_fecha_compromiso>("Credito.sp_Solicitud_Credito_Documentacion_Fecha_Compromiso_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
-               factory.SQL.Close();
-                return result;
+                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Solicitud_Credito_Documentacion_Fecha_Compromiso_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlSC_Credito_Condicionado condicionado = new mdlSC_Credito_Condicionado();
+                condicionado.datos_fecha = result.Read<mdl_fecha_compromiso>().FirstOrDefault();
+                condicionado.mdldatos = result.Read<mdldatos_notificacion>().FirstOrDefault();
+                condicionado.mdlSolicitud = result.Read<mdlSolicitudCredito_Enviar>().ToList();
+                factory.SQL.Close();
+                return condicionado;
             }
             catch (Exception ex)
             {
