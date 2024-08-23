@@ -56,5 +56,28 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Modal
             return Ok(result);
 
         }
+
+        
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetAsesorCondicionado(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADAnalisis_Documentacion datos = new ADAnalisis_Documentacion(CadenaConexion);
+            var result = await datos.GetAsesorCondicionado(folio, Sesion.usuario());
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetGerenteCondicionado(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADAnalisis_Documentacion datos = new ADAnalisis_Documentacion(CadenaConexion);
+            var result = await datos.GetGerenteCondicionado(folio, Sesion.usuario());
+            return Ok(result);
+
+        }
     }
 }

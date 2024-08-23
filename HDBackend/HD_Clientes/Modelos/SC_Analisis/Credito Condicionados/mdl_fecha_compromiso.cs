@@ -12,5 +12,6 @@ namespace HD.Clientes.Modelos.SC_Analisis.Credito_Condicionados
         public string? usuario { get; set; }
         public DateTime fecha_compromiso { get; set; }
         public string? comentarios { get; set; }
+        public string? habilitar_fecha { get; set; }
     }
 }
