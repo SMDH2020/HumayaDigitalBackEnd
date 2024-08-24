@@ -29,6 +29,7 @@ namespace HD.Clientes.Consultas.Credito_Condicionado
                     folio=mdl.folio,
                     usuario=mdl.usuario,
                     fecha_compromiso=mdl.fecha_compromiso,
+                    comentarios=mdl.comentarios,
                 };
                 var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Solicitud_Credito_Documentacion_Fecha_Compromiso_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 mdlSC_Credito_Condicionado condicionado = new mdlSC_Credito_Condicionado();
