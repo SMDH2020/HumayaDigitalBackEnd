@@ -18,18 +18,33 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Credito_Condicionado
         }
 
         [HttpPost]
-        public async Task<ActionResult> Enviar(mdl_fecha_compromiso mdl)
+        public async Task<ActionResult> Enviar(mdl_fecha_compromiso_documentos_detalle mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-            AD_Credito_Condicionado_Fecha_Compromiso_Guardar datos = new AD_Credito_Condicionado_Fecha_Compromiso_Guardar(CadenaConexion);
-            mdl.usuario = Sesion.usuario();
-            var result = await datos.Guardar(mdl);
+            foreach (mdl_fecha_compromiso_documentos detalle in mdl.detalle) {
+                AD_Credito_Condicionado_Fecha_Compromiso_Documentos datos = new AD_Credito_Condicionado_Fecha_Compromiso_Documentos(CadenaConexion);
+                detalle.usuario = Sesion.usuario();
+                if (detalle.enviar_revision == false) {
+                    detalle.comentarios = "No se entregara documento";
+                }
+                else if (detalle.fecha_compromiso != DateTime.MinValue)
+                {
+                    detalle.comentarios = "Fecha de entrega del documento: " + detalle.fecha_compromiso.ToString();
+                }
+                else
+                {
+                    detalle.comentarios = "Documento Entregado";
+                }
+                var result = await datos.Guardar(detalle);
+            }
+
+
             //if (result.mdldatos is null)
             //{
             //    return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             //}
             //await NotificacionComentarios.EnviarOperacionCondicionada(result);
-            return Ok(result.datos_fecha);
+            return Ok("hola");
 
         }
 
