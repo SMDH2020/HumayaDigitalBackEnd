@@ -60,7 +60,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Modal
         
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> GetAsesorCondicionado(string folio)
+        public async Task<ActionResult> GetGerenteCondicionado(string folio)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             ADAnalisis_Documentacion datos = new ADAnalisis_Documentacion(CadenaConexion);
@@ -71,7 +71,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Modal
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> GetGerenteCondicionado(string folio)
+        public async Task<ActionResult> GetAsesorCondicionado(string folio)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             ADAnalisis_Documentacion datos = new ADAnalisis_Documentacion(CadenaConexion);
