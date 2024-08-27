@@ -22,7 +22,7 @@ namespace HD.Clientes.Consultas.Credito_Condicionado
                     if(detalle.enviar_revision==true && detalle.tiene_documentacion==false
                         && detalle.fecha_compromiso < DateTime.Now)
                     {
-                        throw new Exception($"La fecha para entrega de documento {detalle.documento} no puede ser menor a la fecha actual");
+                        throw new Exception($"La fecha para entrega del documento {detalle.documento} no puede ser menor a la fecha actual");
                     }
                 }
 
@@ -56,7 +56,7 @@ namespace HD.Clientes.Consultas.Credito_Condicionado
                 }
                 datos.Commit();
                 AD_Credito_Condicionado_Fecha_Compromiso_Guardar compromiso = new AD_Credito_Condicionado_Fecha_Compromiso_Guardar(CadenaConexion);
-                var result = await compromiso.Guardar(folio, usuario);
+                var result = await compromiso.Guardar(folio, usuario,mdl.comentarios);
 
                 return true;
             }
