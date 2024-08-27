@@ -26,7 +26,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
             var result = await datos.Guardar(mdl);
             foreach (mdl_documentos_facturados_EQUIP fac in mdl.documentos)
             {
-                await datos.Guardar_detalle(mdl.folio, mdl.registro, fac.orden, fac.documento, fac.documento);
+                await datos.Guardar_detalle(mdl.folio, mdl.registro, fac.orden, fac.documento, mdl.usuario, fac.docto_financiamiento);
             }
             return Ok(result);
         }
@@ -40,7 +40,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
             mdl.usuario = Sesion.usuario();
             foreach (mdl_documentos_facturados_EQUIP fac in mdl.documentos)
             {
-                await datos.Guardar_detalle(mdl.folio, mdl.registro, fac.orden, fac.documento,mdl.usuario);
+                await datos.Guardar_detalle(mdl.folio, mdl.registro, fac.orden, fac.documento,mdl.usuario, fac.docto_financiamiento);
             }
             //ADNotificacionFinalizacionProceso notificacion = new ADNotificacionFinalizacionProceso(CadenaConexion);
             //var body = await notificacion.GetBody(mdl.folio);

@@ -22,7 +22,6 @@ namespace HD.Endpoints.Controllers.Ventas
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Carga_Scorecard_Vendedor datos = new AD_Carga_Scorecard_Vendedor(CadenaConexion);
             int usuario = int.Parse(Sesion.usuario());
-            usuario = 8919;
             var result = await datos.Scorecard(ejercicio, usuario, vendedor);
             return Ok(result);
         }
@@ -35,7 +34,6 @@ namespace HD.Endpoints.Controllers.Ventas
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Carga_Scorecard_Real_Vendedor datos = new AD_Carga_Scorecard_Real_Vendedor(CadenaConexion);
             int usuario = int.Parse(Sesion.usuario());
-            usuario = 8919;
             var result = await datos.Scorecard(ejercicio, usuario, vendedor);
             return Ok(result);
         }

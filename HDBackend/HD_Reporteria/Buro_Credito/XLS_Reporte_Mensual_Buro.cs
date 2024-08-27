@@ -8,7 +8,7 @@ namespace HD_Reporteria.Buro_Credito
 {
     public class XLS_Reporte_Mensual_Buro
     {
-        public static Task<DocResult> CrearExcel(IEnumerable<mdlDatosReporteBuro> lista,string periodo,int ejercicio)
+        public static Task<DocResult> CrearExcel(IEnumerable<mdlInformeBuroCredito> lista,string periodo,int ejercicio)
         {
             try
             {
@@ -147,7 +147,7 @@ namespace HD_Reporteria.Buro_Credito
                     renglon++;
 
 
-                    foreach (mdlDatosReporteBuro mdl in lista)
+                    foreach (mdlInformeBuroCredito mdl in lista)
                     {
                         sheet.Cell(renglon, 1).Value = "EM"; // Identificador
                         sheet.Cell(renglon, 2).Value = mdl.rfc; // RFC
@@ -158,7 +158,7 @@ namespace HD_Reporteria.Buro_Credito
                         sheet.Cell(renglon, 7).Value = mdl.nombre2; // Nombre 2
                         sheet.Cell(renglon, 8).Value = mdl.paterno; // Paterno
                         sheet.Cell(renglon, 9).Value = mdl.materno; // Materno
-                        sheet.Cell(renglon, 10).Value = mdl.nacionalidad; // Nacionalidad
+                        sheet.Cell(renglon, 10).Value = "MX"; // Nacionalidad
                         sheet.Cell(renglon, 11).Value = ""; // Calificacion Banco de Mex.
                         sheet.Cell(renglon, 12).Value = ""; // Banxico 1
                         sheet.Cell(renglon, 13).Value = ""; // Banxico 2
@@ -166,7 +166,7 @@ namespace HD_Reporteria.Buro_Credito
                         sheet.Cell(renglon, 15).Value = mdl.direccion1; // Direccion 1
                         sheet.Cell(renglon, 16).Value = mdl.direccion2; // Direccion 2
                         sheet.Cell(renglon, 17).Value = mdl.poblacion; // Colonia/Poblacion
-                        sheet.Cell(renglon, 18).Value = mdl.municipio; // Delegacion/Municipio
+                        sheet.Cell(renglon, 18).Value = mdl.domicilio; // Delegacion/Municipio
                         sheet.Cell(renglon, 19).Value = ""; // Ciudad
                         sheet.Cell(renglon, 20).Value = mdl.estado; // Estado
                         sheet.Cell(renglon, 21).Value = mdl.cp; // C.P.
@@ -266,7 +266,7 @@ namespace HD_Reporteria.Buro_Credito
                     var suma = lista.Sum(item => item.saldo);
                     sheet.Cell(renglon, 109).Value = "TS";//SEccion TS
                     sheet.Cell(renglon, 110).Value = group.Count(); ;//Numero de compañias
-                    sheet.Cell(renglon, 111).Value = Math.Round(suma.Value,0);//Cantidad
+                    sheet.Cell(renglon, 111).Value = suma;//Cantidad
 
 
                     sheet.Columns().AdjustToContents();
