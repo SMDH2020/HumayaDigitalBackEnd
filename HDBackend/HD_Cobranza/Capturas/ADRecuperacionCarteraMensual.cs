@@ -31,7 +31,7 @@ namespace HD_Cobranza.Capturas
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
-        public async Task<mdlRecuperacionObjetivoView> ObtenerObjetivoRecuperado(int ejercicio)
+        public async Task<mdlRecuperacionObjetivoView> ObtenerObjetivoRecuperado(int ejercicio,string adr, string sucursales)
         {
             try
             {
@@ -39,6 +39,8 @@ namespace HD_Cobranza.Capturas
                 var parametros = new
                 {
                     ejercicio = ejercicio,
+                    adr,
+                    sucursales
                 };
 
                 var result = await factory.SQL.QueryMultipleAsync("Cartera_Clientes.dbo.sp_Recuperacion_Objetivo_Mensual", parametros, commandType: System.Data.CommandType.StoredProcedure);

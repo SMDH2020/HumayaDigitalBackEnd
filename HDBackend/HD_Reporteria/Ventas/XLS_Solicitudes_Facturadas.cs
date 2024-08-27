@@ -1,14 +1,8 @@
 ﻿using ClosedXML.Excel;
 using HD.AccesoDatos;
 using HD_Cobranza;
-using HD_Cobranza.Modelos;
 using HD_Cobranza.Reportes;
 using HD_Ventas.Modelos.SolicitudesCerradas;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HD_Reporteria.Ventas
 {
@@ -48,7 +42,7 @@ namespace HD_Reporteria.Ventas
                     renglon++;
 
                     // Filtra la lista para incluir solo aquellos elementos con datos en "facturado"
-                    var listaFiltrada = lista.Where(x => !string.IsNullOrEmpty(x.facturado)).OrderBy(x => x.sucursal).ToList();
+                    var listaFiltrada = lista.Where(x => !string.IsNullOrEmpty(x.facturado)).OrderBy(x => x.idestado).ThenBy(x => x.idsucursal).ToList();
                     string sucursalActual = string.Empty;
                     int renglonInicioSucursal = renglon;
                     double totalGeneral = 0.0;
