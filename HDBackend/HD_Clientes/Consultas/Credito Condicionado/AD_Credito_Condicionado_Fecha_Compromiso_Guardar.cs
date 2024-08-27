@@ -18,7 +18,7 @@ namespace HD.Clientes.Consultas.Credito_Condicionado
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<mdlSC_Credito_Condicionado> Guardar( mdl_fecha_compromiso_documentos mdl)
+        public async Task<mdlSC_Credito_Condicionado> Guardar( string folio, string usuario)
         {
             FactoryConection factory = new FactoryConection(CadenaConexion);
             try
@@ -26,9 +26,10 @@ namespace HD.Clientes.Consultas.Credito_Condicionado
 
                 var parametros = new
                 {
-                    folio=mdl.folio,
-                    usuario=mdl.usuario,
-                    comentarios=mdl.comentarios,
+                    folio=folio,
+                    usuario=usuario,
+                    fecha_compromiso=DateTime.Now,
+                    comentarios= "Se agrego fecha compromiso"
                 };
                 var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Solicitud_Credito_Documentacion_Fecha_Compromiso_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 mdlSC_Credito_Condicionado condicionado = new mdlSC_Credito_Condicionado();
