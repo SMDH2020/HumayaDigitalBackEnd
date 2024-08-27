@@ -35,19 +35,30 @@ namespace HD.Endpoints.Controllers.BuroCredito
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Carga_Reporte_Buro datos = new AD_Carga_Reporte_Buro(CadenaConexion);
             var result = await datos.reporte(view);
-            var docResult = await XLS_Reporte_Buro.CrearExcel(result);
+            var docResult = 0;// await XLS_Reporte_Buro.CrearExcel(result);
             return Ok(docResult);
         }
 
         [HttpPost]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> GenerarExcelInforme(mdlReporteBuroView view)
+        public async Task<ActionResult> GenerarExcelInforme(mdlFiltrosView view)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-            AD_REporteBuro_Credito datos = new AD_REporteBuro_Credito(CadenaConexion);
-            var result = await datos.reporte(view.ejercicio, view.periodo);
-            var docResult = await XLS_Reporte_Mensual_Buro.CrearExcel(result,view.mes,view.ejercicio);
+            AD_Carga_Reporte_Buro datos = new AD_Carga_Reporte_Buro(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.reporte(view);
+            var docResult = await XLS_Reporte_Mensual_Buro.CrearExcel(result, nombre_mes(view.periodo), view.ejercicio);
             return Ok(docResult);
+            //AD_REporteBuro_Credito datos = new AD_REporteBuro_Credito(CadenaConexion);
+            //var result = await datos.reporte(view.ejercicio, view.periodo);
+            //var docResult = await XLS_Reporte_Mensual_Buro.CrearExcel(result,view.mes,view.ejercicio);
+            //return Ok(docResult);
+        }
+
+        string nombre_mes (int periodo)
+        {
+            List<string> meses = new List<string> { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
+            return meses[periodo - 1];
         }
     }
 }
