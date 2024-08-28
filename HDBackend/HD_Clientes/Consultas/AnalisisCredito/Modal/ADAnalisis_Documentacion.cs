@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
+using HD.Clientes.Modelos.SC_Analisis.Credito_Condicionados;
 using HD.Clientes.Modelos.SC_Analisis.Modal;
 
 namespace HD.Clientes.Consultas.AnalisisCredito.Modal
@@ -172,7 +173,7 @@ namespace HD.Clientes.Consultas.AnalisisCredito.Modal
                 var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Cargar_Documentacion_Aceptada_Condicionado", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 mdlSCAnalisis_Documentacion_View view = new mdlSCAnalisis_Documentacion_View();
                 view.estado = result.Read<mdlSCAnalisis_Pedido_Estado>().FirstOrDefault();
-                view.documentacion = result.Read<mdlSCAnalisis_Documentacion>().ToList();
+                view.detalle = result.Read<mdl_Analisis_100_detalle>().ToList();
 
                 if (view.estado is null) view.estado = new mdlSCAnalisis_Pedido_Estado();
 
