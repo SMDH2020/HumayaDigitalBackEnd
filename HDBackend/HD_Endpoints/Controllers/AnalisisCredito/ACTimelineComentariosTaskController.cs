@@ -110,5 +110,24 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             //await NotificacionComentarios.Enviar(body);
             //return Ok(result);
         }
+
+
+        [Route("/api/[controller]/[action]")]
+        [HttpPost]
+        public async Task<ActionResult> EnviarComentarioOtorgamientoCondicionado(mdlSCAnalisis_Comentarios mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADAnalisiCreditoMhusa datos = new ADAnalisiCreditoMhusa(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.GuardarOtorgamientoComentariosCondicionado(mdl);
+
+            //await NotificacionComentarios.Enviar_Mhusa(result);
+            return Ok(result);
+
+            //ADAnalisisNotificacion notificacion = new ADAnalisisNotificacion(CadenaConexion);
+            //var body = await notificacion.GetBody(mdl);
+            //await NotificacionComentarios.Enviar(body);
+            //return Ok(result);
+        }
     }
 }
