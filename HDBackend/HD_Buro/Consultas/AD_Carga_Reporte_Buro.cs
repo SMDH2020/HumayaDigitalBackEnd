@@ -11,7 +11,7 @@ namespace HD_Buro.Consultas
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlCarga_Reporte_Buro>> reporte(mdlFiltrosView view)
+        public async Task<IEnumerable<mdlInformeBuroCredito>> reporte(mdlFiltrosView view)
         {
             try
             {
@@ -19,12 +19,13 @@ namespace HD_Buro.Consultas
                 {
                     ejercicio = view.ejercicio,
                     periodo = view.periodo,
-                    linea = view.linea,
-                    vencimiento = view.vencimiento,
-                    registrado = view.registrado,
+                    //linea = view.linea,
+                    //vencimiento = view.vencimiento,
+                    //registrado = view.registrado,
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdlCarga_Reporte_Buro> result = await factory.SQL.QueryAsync<mdlCarga_Reporte_Buro>("Cartera_clientes.dbo.sp_obtener_Listado_Mensual_Credito_Mhusa", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                //IEnumerable<mdlCarga_Reporte_Buro> result = await factory.SQL.QueryAsync<mdlCarga_Reporte_Buro>("Cartera_clientes.dbo.sp_obtener_Listado_Mensual_Credito_Mhusa", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdlInformeBuroCredito> result = await factory.SQL.QueryAsync<mdlInformeBuroCredito>("Cartera_clientes.dbo.sp_Buro_Credito_Informe_Mensual_Detalle", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

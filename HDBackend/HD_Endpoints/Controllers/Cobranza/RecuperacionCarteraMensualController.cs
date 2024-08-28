@@ -1,6 +1,7 @@
 ﻿using HD.Security;
 using HD_Cobranza.Capturas;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 
 namespace HD.Endpoints.Controllers.Cobranza
 {
@@ -21,18 +22,16 @@ namespace HD.Endpoints.Controllers.Cobranza
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             ADRecuperacionCarteraMensual datos = new ADRecuperacionCarteraMensual(CadenaConexion);
-
             var result = await datos.Obtener(ejercicio);
             return Ok(result);
         }
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ObtenerObjetivoRecuperado(int ejercicio)
+        public async Task<ActionResult> ObtenerObjetivoRecuperado(int ejercicio,string sucursales,string adr)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             ADRecuperacionCarteraMensual datos = new ADRecuperacionCarteraMensual(CadenaConexion);
-
-            var result = await datos.ObtenerObjetivoRecuperado(ejercicio);
+            var result = await datos.ObtenerObjetivoRecuperado(ejercicio,adr,sucursales);
             return Ok(result);
         }
     }
