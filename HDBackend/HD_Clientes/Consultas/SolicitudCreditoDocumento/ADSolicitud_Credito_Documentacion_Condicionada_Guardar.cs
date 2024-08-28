@@ -1,11 +1,6 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
 using HD.Clientes.Modelos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HD.Clientes.Consultas.SolicitudCreditoDocumento
 {
