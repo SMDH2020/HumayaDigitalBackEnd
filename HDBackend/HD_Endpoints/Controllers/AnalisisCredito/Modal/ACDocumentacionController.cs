@@ -90,5 +90,16 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Modal
             return Ok(result);
 
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> AgregarDocumentoCondicionado(string folio, int iddocumento)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADAnalisis_Documentacion datos = new ADAnalisis_Documentacion(CadenaConexion);
+            var result = await datos.SetOtorgamientoCondicionadoDocumento(folio, iddocumento, Sesion.usuario());
+            return Ok(result);
+
+        }
     }
 }
