@@ -41,5 +41,30 @@ namespace HD.Clientes.Consultas.SolicitudCreditoDocumento
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<IEnumerable<mdlSolicitudCredito_Documentacion>> GuardarDocumentacionAceptada(mdlSolicitudCredito_Documentacion_View view)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    folio = view.folio,
+                    iddocumento = view.iddocumento,
+                    documento = view.documento,
+                    comentarios = view.comentarios,
+                    extension = view.extension,
+                    vigencia = view.vigencia,
+                    usuario = view.usuario,
+                };
+                IEnumerable<mdlSolicitudCredito_Documentacion> result = await factory.SQL.QueryAsync<mdlSolicitudCredito_Documentacion>("Credito.sp_Solicitud_Credito_Documentacion_Aceptada_Condicionado_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }
