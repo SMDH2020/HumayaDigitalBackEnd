@@ -5,5 +5,6 @@
         public string? comentarios_finanzas { get; set; }
         public string? comentarios_gerente { get; set; }
         public bool habilitar { get; set; }
+        public string estatus { get; set; }
     }
 }
