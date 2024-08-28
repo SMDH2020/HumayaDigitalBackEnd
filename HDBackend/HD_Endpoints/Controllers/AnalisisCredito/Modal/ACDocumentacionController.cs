@@ -79,5 +79,16 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Modal
             return Ok(result);
 
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> CargarDocumentosAceptadosCondicionado(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADAnalisis_Documentacion datos = new ADAnalisis_Documentacion(CadenaConexion);
+            var result = await datos.CargarDocumentosAceptadosCondicionado(folio, Sesion.usuario());
+            return Ok(result);
+
+        }
     }
 }

@@ -30,8 +30,8 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
             }
             return Ok(result);
         }
-        [HttpPost]
 
+        [HttpPost]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> GuardarMhusaDetalle(mdlJDFAnalisis_Datos_Facturacion_Guardar mdl)
         {
@@ -47,6 +47,24 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
             //await NotificacionComentarios.EnviarProcesoFinalizado(body, mdl.folio);
             return Ok(new {mensaje="Datos Cargados cone exito"});
         }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarMhusaDetalleCondicionado(mdlJDFAnalisis_Datos_Facturacion_Guardar mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADJDF_Analisis_Cargar_Factura datos = new ADJDF_Analisis_Cargar_Factura(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            foreach (mdl_documentos_facturados_EQUIP fac in mdl.documentos)
+            {
+                await datos.Guardar_detalle_Condicionado(mdl.folio, mdl.registro, fac.orden, fac.documento, mdl.usuario, fac.docto_financiamiento);
+            }
+            //ADNotificacionFinalizacionProceso notificacion = new ADNotificacionFinalizacionProceso(CadenaConexion);
+            //var body = await notificacion.GetBody(mdl.folio);
+            //await NotificacionComentarios.EnviarProcesoFinalizado(body, mdl.folio);
+            return Ok(new { mensaje = "Datos Cargados cone exito" });
+        }
+
         [HttpPost]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> GuardarMhusa(mdlJDFAnalisis_Datos_Facturacion_Guardar mdl)

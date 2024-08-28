@@ -120,5 +120,17 @@ namespace HD.Endpoints.Controllers.Credito
 
         }
 
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarDocumentoAceptadoCondicionado(mdlSolicitudCredito_Documentacion_View mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADSolicitud_Credito_Documentacion_Condicionada_Guardar datos = new ADSolicitud_Credito_Documentacion_Condicionada_Guardar(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.GuardarDocumentacionAceptada(mdl);
+            return Ok(result);
+
+        }
+
     }
 }
