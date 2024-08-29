@@ -1,6 +1,9 @@
 ﻿using HD.Clientes.Consultas.AnalisisCredito;
 using HD.Clientes.Consultas.Credito_Condicionado;
+using HD.Clientes.Modelos.SC_Analisis;
+using HD.Clientes.Modelos;
 using HD.Clientes.Modelos.SC_Analisis.Credito_Condicionados;
+using HD.Notifications.Analisis;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +27,31 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Credito_Condicionado
             var result = await datos.BuscarFolio(mdl);
             return Ok(result);
 
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> FinalizaCreditoCondicionado(mdlSCAnalisis_Comentarios mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Finaliza_Credito_Condicionado_Guardar datos = new AD_Finaliza_Credito_Condicionado_Guardar(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.Guardar(mdl);
+            //if (result is null)
+            //{
+            //    return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
+            //}
+            //else
+            //{
+            //    await NotificacionComentarios.Enviar_Mhusa(result);
+
+            //}
+            var response = new mdlAnalisis_Mhusa_Resultado
+            {
+                estado = result.estado,
+                socket = result.mdlSolicitud
+            };
+            return Ok(response);
         }
     }
 }

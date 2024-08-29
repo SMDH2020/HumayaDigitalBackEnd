@@ -37,5 +37,17 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Modal
             return Ok(result);
 
         }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerFinalizacionCondicionado(mdlSCAnalisis_Dedidion_View mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADAnalisisDecicion datos = new ADAnalisisDecicion(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.ObtenerFinalizacionCondicionado(mdl);
+            return Ok(result);
+
+        }
     }
 }
