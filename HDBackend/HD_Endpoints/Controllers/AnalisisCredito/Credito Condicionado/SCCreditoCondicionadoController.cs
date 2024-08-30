@@ -53,5 +53,17 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Credito_Condicionado
             };
             return Ok(response);
         }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> Cancelar(mdlSCCredito_Condicionado mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Credito_Condicionado_Cancelar datos = new AD_Credito_Condicionado_Cancelar(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.CancelarFolio(mdl);
+            return Ok(result);
+
+        }
     }
 }
