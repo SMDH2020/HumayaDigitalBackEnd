@@ -38,5 +38,17 @@ namespace HD.Endpoints.Controllers.Ventas
             var result = await datos.Scorecard(usuario);
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+
+        public async Task<ActionResult> MostrarScorecardVendedorporParametros(int region, int sucursal, int vendedor)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Carga_Scorecard_porParametros_Dash datos = new AD_Carga_Scorecard_porParametros_Dash(CadenaConexion);
+            int usuario = vendedor;
+            var result = await datos.Scorecard(region, sucursal, usuario);
+            return Ok(result);
+        }
     }
 }
