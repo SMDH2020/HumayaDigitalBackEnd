@@ -62,5 +62,27 @@ namespace HD_Ventas.Consultas
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+        public async Task<IEnumerable<mdlOperacionesDetalle>> GetSolicitudesDetalle(int ejercicio, int periodo, int idsucursal, string linea,string card)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    ejercicio = ejercicio,
+                    periodo = periodo,
+                    idsucursal = idsucursal,
+                    linea = linea,
+                    card=card
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var result = await factory.SQL.QueryAsync<mdlOperacionesDetalle>("Ventas.sp_Resultado_operaciones_card_Detalle", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }

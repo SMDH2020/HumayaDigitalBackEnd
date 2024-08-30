@@ -33,6 +33,15 @@ namespace HD.Endpoints.Controllers.Ventas
             var result = await datos.GetSolicitudesDetalle(ejercicio, periodo,idsucursal, linea);
             return Ok(result);
         }
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> SolicitudesFacturadasCardDetalle(int ejercicio, int periodo, int idsucursal, string linea,string card)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Solicitudes_Facturadas datos = new AD_Solicitudes_Facturadas(CadenaConexion);
+            var result = await datos.GetSolicitudesDetalle(ejercicio, periodo, idsucursal, linea,card);
+            return Ok(result);
+        }
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]

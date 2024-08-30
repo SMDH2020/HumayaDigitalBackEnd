@@ -1,6 +1,7 @@
 ﻿using HD.Clientes.Consultas.PedidoImpresion;
 using HD.Clientes.Consultas.SolicitudCreditoDocumento;
 using HD.Clientes.Modelos;
+using HD.Notifications.Analisis;
 using HD.Security;
 using HD_Reporteria.Solicitud_Credito;
 using Microsoft.AspNetCore.Mvc;
@@ -128,6 +129,14 @@ namespace HD.Endpoints.Controllers.Credito
             ADSolicitud_Credito_Documentacion_Condicionada_Guardar datos = new ADSolicitud_Credito_Documentacion_Condicionada_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.GuardarDocumentacionAceptada(mdl);
+            if (result.mdldatos is null)
+            {
+                return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
+            }
+            if (result.completado.completado == 1)
+            {
+                await NotificacionComentarios.EnviarCargaDocumentosAprobadosCondicionado(result);
+            }
             return Ok(result);
 
         }

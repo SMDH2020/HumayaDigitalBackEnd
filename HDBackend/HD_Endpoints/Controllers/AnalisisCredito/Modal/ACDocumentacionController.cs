@@ -37,6 +37,17 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Modal
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetOtorgamientoCondicionado(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADAnalisis_Documentacion datos = new ADAnalisis_Documentacion(CadenaConexion);
+            var result = await datos.GetOtorgamientoCondicionado(folio, Sesion.usuario());
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> OtorgamientoAgregarDocumento(string folio,int iddocumento)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
@@ -87,6 +98,17 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Modal
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             ADAnalisis_Documentacion datos = new ADAnalisis_Documentacion(CadenaConexion);
             var result = await datos.CargarDocumentosAceptadosCondicionado(folio, Sesion.usuario());
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> AnalizarDocumentosAceptadosCondicionado(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADAnalisis_Documentacion datos = new ADAnalisis_Documentacion(CadenaConexion);
+            var result = await datos.AnalizarDocumentosAceptadosCondicionado(folio, Sesion.usuario());
             return Ok(result);
 
         }
