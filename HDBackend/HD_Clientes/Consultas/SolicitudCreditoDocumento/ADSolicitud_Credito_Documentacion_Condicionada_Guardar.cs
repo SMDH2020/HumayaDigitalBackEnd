@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
 using HD.Clientes.Modelos;
+using HD.Clientes.Modelos.SC_Analisis.Credito_Condicionados;
 
 namespace HD.Clientes.Consultas.SolicitudCreditoDocumento
 {
@@ -37,7 +38,7 @@ namespace HD.Clientes.Consultas.SolicitudCreditoDocumento
             }
         }
 
-        public async Task<IEnumerable<mdlSolicitudCredito_Documentacion>> GuardarDocumentacionAceptada(mdlSolicitudCredito_Documentacion_View view)
+        public async Task<mdl_Cargar_Documentacion_Aceptada_Condicionado_View> GuardarDocumentacionAceptada(mdlSolicitudCredito_Documentacion_View view)
         {
             try
             {
@@ -52,9 +53,13 @@ namespace HD.Clientes.Consultas.SolicitudCreditoDocumento
                     vigencia = view.vigencia,
                     usuario = view.usuario,
                 };
-                IEnumerable<mdlSolicitudCredito_Documentacion> result = await factory.SQL.QueryAsync<mdlSolicitudCredito_Documentacion>("Credito.sp_Solicitud_Credito_Documentacion_Aceptada_Condicionado_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Solicitud_Credito_Documentacion_Aceptada_Condicionado_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdl_Cargar_Documentacion_Aceptada_Condicionado_View documentosaprobados = new mdl_Cargar_Documentacion_Aceptada_Condicionado_View();
+                documentosaprobados.completado = result.Read<mdl_Analisis_Documentacion_Aceptada_Condicionado_Completado>().FirstOrDefault();
+                documentosaprobados.mdldatos = result.Read<mdldatos_notificacion>().FirstOrDefault();
+                documentosaprobados.mdlSolicitud = result.Read<mdlSolicitudCredito_Enviar>().ToList();
                 factory.SQL.Close();
-                return result;
+                return documentosaprobados;
             }
             catch (System.Exception ex)
             {

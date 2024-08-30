@@ -87,6 +87,35 @@ namespace HD.Clientes.Consultas.AnalisisCredito
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<mdl_Analisis_Documentacion_Aceptada_Condicionado_View> GuardarAnalisisDocumentosAceptadosCondicionados(mdlSCAnalisis_Comentarios comentario)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    folio = comentario.folio,
+                    iddocumento = comentario.iddocumento,
+                    comentarios = comentario.comentarios,
+                    estatus = comentario.estatus,
+                    usuario = comentario.usuario
+                };
+                var result = await factory.SQL.QueryMultipleAsync("Credito.SP_Solicitud_Credito_Task_Analizar_Documentacion_Condicionado_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdl_Analisis_Documentacion_Aceptada_Condicionado_View documentosaprobados = new mdl_Analisis_Documentacion_Aceptada_Condicionado_View();
+                documentosaprobados.completado = result.Read<mdl_Analisis_Documentacion_Aceptada_Condicionado_Completado>().FirstOrDefault();
+                documentosaprobados.documentos = result.Read<mdl_Analisis_100_detalle>().ToList();
+                documentosaprobados.mdldatos = result.Read<mdldatos_notificacion>().FirstOrDefault();
+                documentosaprobados.mdlSolicitud = result.Read<mdlSolicitudCredito_Enviar>().ToList();
+                factory.SQL.Close();
+                return documentosaprobados;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
         public async Task<mdlAnalisis_Mhusa> GuardarComentarioCondicionado(mdlSCAnalisis_Comentarios comentario)
         {
             try
