@@ -37,15 +37,15 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Credito_Condicionado
             AD_Finaliza_Credito_Condicionado_Guardar datos = new AD_Finaliza_Credito_Condicionado_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.Guardar(mdl);
-            //if (result is null)
-            //{
-            //    return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
-            //}
-            //else
-            //{
-            //    await NotificacionComentarios.Enviar_Mhusa(result);
+            if (result is null)
+            {
+                return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
+            }
+            else
+            {
+                await NotificacionComentarios.Enviar_Mhusa(result);
 
-            //}
+            }
             var response = new mdlAnalisis_Mhusa_Resultado
             {
                 estado = result.estado,
