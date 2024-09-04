@@ -21,16 +21,17 @@ namespace HD_Cobranza.Capturas.ConvenioPago
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var parametros = new
                 {
+                    @idmedio = mdl.idmedio,
                     @idcliente = mdl.idcliente,
                     @medio_contacto = mdl.medio_contacto,
-                    @orden = mdl.orden,
-                    @valor = mdl.valor,
+                    @medio = mdl.medio,
                     @comentarios = mdl.comentarios,
                     @usuario = mdl.usuario,
+                    @utilizado = mdl.utilizado,
                 };
 
                 var result = await
-                factory.SQL.QueryAsync<mdlClientes_Datos_Contacto_Editar>("Credito.Clientes_Datos_Contacto_Cobranza_Editar",
+                factory.SQL.QueryAsync<mdlClientes_Datos_Contacto_Editar>("Cobranza.sp_Clientes_Datos_Contacto_Editar",
                 parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;

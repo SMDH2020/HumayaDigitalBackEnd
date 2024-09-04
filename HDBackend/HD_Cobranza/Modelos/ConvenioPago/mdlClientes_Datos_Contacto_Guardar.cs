@@ -7,5 +7,6 @@
         public string valor {  get; set; }
         public string comentarios { get; set; }
         public int usuario { get; set; }
+        public int utilizado { get; set; }
     }
 }
