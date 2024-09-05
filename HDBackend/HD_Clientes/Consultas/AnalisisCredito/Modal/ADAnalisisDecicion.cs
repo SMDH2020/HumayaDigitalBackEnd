@@ -75,5 +75,27 @@ namespace HD.Clientes.Consultas.AnalisisCredito.Modal
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<mdlSCAnalisis_Decicion> ObtenerFinalizacionCondicionado(mdlSCAnalisis_Dedidion_View mdl)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    folio = mdl.folio,
+                    idproceso = mdl.idproceso,
+                    usuario = mdl.usuario,
+                    responsable = mdl.responsable
+                };
+                mdlSCAnalisis_Decicion result = await factory.SQL.QueryFirstOrDefaultAsync<mdlSCAnalisis_Decicion>("Credito.sp_Analisis_Decicion_Credito_Condicionado", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }
