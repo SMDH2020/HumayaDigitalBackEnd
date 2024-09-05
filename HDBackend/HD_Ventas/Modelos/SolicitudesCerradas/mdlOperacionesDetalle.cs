@@ -2,6 +2,7 @@
 {
     public class mdlOperacionesDetalle
     {
+        public string? tipo_solicitud {  get; set; }
         public int estatus { get; set; }
         public int idcliente { get; set; }
         public string? cliente { get; set; }
