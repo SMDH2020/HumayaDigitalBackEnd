@@ -23,7 +23,7 @@ namespace HD_Ventas.Consultas
                     linea,
                     card
                 };
-                var result = await factory.SQL.QueryAsync<mdlOperacionesDetalle>("Ventas.sp_Resultado_operaciones_card_Detalle_Excel", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryAsync<mdlOperacionesDetalle>("Ventas.sp_Resultado_operaciones_card_Detalle_excel", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
 
                 List<mdlOperacionesDetalle> listado = result.ToList();
