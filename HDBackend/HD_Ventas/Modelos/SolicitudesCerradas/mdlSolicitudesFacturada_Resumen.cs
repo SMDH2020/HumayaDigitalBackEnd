@@ -10,5 +10,6 @@
         public int prestamos_clientes { get; set; }
         public int mhusa { get; set; }
         public int contado { get; set; }
+        public int solicitudes_jdf { get; set; }
     }
 }
