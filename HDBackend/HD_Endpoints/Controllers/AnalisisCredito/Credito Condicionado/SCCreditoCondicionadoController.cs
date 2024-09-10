@@ -18,8 +18,20 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Credito_Condicionado
             Configuracion = configuration;
             Sesion = sesion;
         }
+        //[HttpPost]
+        //public async Task<ActionResult> Enviar(mdlSCCredito_Condicionado mdl)
+        //{
+        //    string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+        //    AD_Credito_Condicionado_Enviar datos = new AD_Credito_Condicionado_Enviar(CadenaConexion);
+        //    mdl.usuario = Sesion.usuario();
+        //    var result = await datos.BuscarFolio(mdl);
+        //    return Ok(result);
+
+        //}
+
         [HttpPost]
-        public async Task<ActionResult> Enviar(mdlSCCredito_Condicionado mdl)
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> CrearCondicionado(mdlSCCredito_Condicionado mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Credito_Condicionado_Enviar datos = new AD_Credito_Condicionado_Enviar(CadenaConexion);
@@ -62,6 +74,18 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Credito_Condicionado
             AD_Credito_Condicionado_Cancelar datos = new AD_Credito_Condicionado_Cancelar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.CancelarFolio(mdl);
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> CargarTimelineCondicionado(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Cargar_Credito_Condicionado datos = new AD_Cargar_Credito_Condicionado(CadenaConexion);
+            string usuario = Sesion.usuario();
+            var result = await datos.BuscarFolio(folio, usuario);
             return Ok(result);
 
         }

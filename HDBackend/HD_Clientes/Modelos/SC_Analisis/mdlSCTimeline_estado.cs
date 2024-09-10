@@ -9,5 +9,7 @@
         public string? tiempotranscurrido { get; set; }
         public string? pantallacompleta { get; set; }
         public Boolean habilitarcondicionado { get; set; }
+        public string? folio_condicionado { get; set; }
+
     }
 }
