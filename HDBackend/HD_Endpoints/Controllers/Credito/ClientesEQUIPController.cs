@@ -1,5 +1,4 @@
 ﻿using HD.Clientes.Consultas.ClientesEQUIP;
-using HD.Clientes.Consultas.GiroEmpresarial;
 using HD.Clientes.Modelos;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
@@ -19,21 +18,32 @@ namespace HD.Endpoints.Controllers.Credito
         public async Task<ActionResult> Post(mdlClientes_EQUIP mdl)
         {
 
-            string CadenaConexion = Configuracion["ConnectionStrings:Login"];
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_ClientesEQUIP_Guardar datos = new AD_ClientesEQUIP_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
-            await datos.Guardar(mdl);
-            return Ok(new { mensaje = "datos cargados con exito" });
+            var result = await datos.Guardar(mdl);
+            return Ok(result);
 
         }
 
         [HttpGet]
-        [Route("/api/[controller]/[action]/{id}")]
-        public async Task<ActionResult> Listado(short filtrar)
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> Listado(short idcliente)
         {
-            string CadenaConexion = Configuracion["ConnectionStrings:Login"];
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_ClientesEQUIP_Listado datos = new AD_ClientesEQUIP_Listado(CadenaConexion);
-            var result = await datos.Listado(filtrar);
+            var result = await datos.Listado(idcliente);
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> Eliminar(int idcliente,int idequip)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_ClientesEQUIP_Listado datos = new AD_ClientesEQUIP_Listado(CadenaConexion);
+            var result = await datos.Eliminar(idcliente,idequip);
             return Ok(result);
 
         }
@@ -59,5 +69,18 @@ namespace HD.Endpoints.Controllers.Credito
             return Ok(result);
 
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> Sucursales(string idcliente)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Clientes_Sucursales_Equip datos = new AD_Clientes_Sucursales_Equip(CadenaConexion);
+            var result = await datos.BuscarID(idcliente);
+            return Ok(result);
+
+        }
+
+
     }
 }

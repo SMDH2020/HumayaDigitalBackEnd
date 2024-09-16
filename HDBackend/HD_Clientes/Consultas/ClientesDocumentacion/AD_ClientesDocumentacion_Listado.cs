@@ -11,16 +11,36 @@ namespace HD.Clientes.Consultas.ClientesDocumentacion
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlClientesDocumento_Listado>> Listado(int idcliente)
+        public async Task<IEnumerable<mdlClientesDocumento_Listado>> Listado(int idcliente,string financiera)
         {
             try
             {
                 var parametros = new
                 {
-                    idcliente
+                    idcliente,
+                    financiera
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdlClientesDocumento_Listado> result = await factory.SQL.QueryAsync<mdlClientesDocumento_Listado>("Credito.sp_Clientes_Documentacion_BuscarPorCliente", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+        public async Task<IEnumerable<mdlClientesDocumento_Listado>> ListadoPorLinea(int idcliente,string lineaCredito)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    idcliente,
+                    lineaCredito
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdlClientesDocumento_Listado> result = await factory.SQL.QueryAsync<mdlClientesDocumento_Listado>("Credito.sp_Clientes_Documentacion_BuscarPorClienteAndLineaCredito", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

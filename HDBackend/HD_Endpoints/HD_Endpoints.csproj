@@ -5,19 +5,37 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>$(MSBuildProjectName.Replace("_", "."))</RootNamespace>
+    <UserSecretsId>21236b0a-37f5-46b4-a274-57b1560c177d</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CsvHelper" Version="32.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.21" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.22" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HD_Administracion\HD_Administracion.csproj" />
+    <ProjectReference Include="..\HD_Buro\HD_Buro.csproj" />
     <ProjectReference Include="..\HD_Clientes\HD_Clientes.csproj" />
+    <ProjectReference Include="..\HD_Cobranza\HD_Cobranza.csproj" />
     <ProjectReference Include="..\HD_Dashboard\HD_Dashboard.csproj" />
+    <ProjectReference Include="..\HD_Finanzas\HD_Finanzas.csproj" />
     <ProjectReference Include="..\HD_Generales\HD_Generales.csproj" />
+    <ProjectReference Include="..\HD_Helpers\HD_Helpers.csproj" />
     <ProjectReference Include="..\HD_Notifications\HD_Notifications.csproj" />
+    <ProjectReference Include="..\HD_Reporteria\HD_Reporteria.csproj" />
+	<ProjectReference Include="..\HD_Ventas\HD_Ventas.csproj" />
+	<ProjectReference Include="..\Teletrabajo\Teletrabajo.csproj" />
+    <ProjectReference Include="..\Ventas\Ventas.csproj" />
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\Cobranza\RecuperacionCartera\" />
   </ItemGroup>
 
 </Project>

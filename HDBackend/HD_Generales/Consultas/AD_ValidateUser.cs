@@ -25,15 +25,25 @@ namespace HD.Generales.Consultas
                 mdlLoginResult? usuario = result.Read<mdlLoginResult>().FirstOrDefault();
                 IEnumerable<mdlModulo> modulos = result.Read<mdlModulo>().ToList();
                 IEnumerable<mdlMenu> menus = result.Read<mdlMenu>().ToList();
+                IEnumerable<mdlPresas_Niveles> presas = result.Read<mdlPresas_Niveles>().ToList();
                 factory.SQL.Close();
 
                 if (usuario == null) { usuario = new mdlLoginResult(); }
+
+
+
+                if (modulos.Count() == 0 || menus.Count() == 0)
+                {
+                    throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { mensaje = "No cuenta con permisos para acceder a la aplicación, favor de comunicarse con el administrador del sistema" });
+                }
+
 
                 return new mdlDatosSesion()
                 {
                     usuario = usuario,
                     menus = menus,
-                    modulos = modulos
+                    modulos = modulos,
+                    presas = presas
                 };
 
             }

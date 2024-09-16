@@ -5,5 +5,6 @@
         public mdlLoginResult usuario { get; set; } = new mdlLoginResult();
         public IEnumerable<mdlMenu> menus { get; set; } = new   List<mdlMenu>();    
         public IEnumerable<mdlModulo> modulos { get; set; } = new List<mdlModulo>();
+        public IEnumerable<mdlPresas_Niveles>? presas { get; set; }
     }
 }
