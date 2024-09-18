@@ -1,4 +1,5 @@
-﻿using HD.Clientes.Consultas.PedidoImpresion;
+﻿using HD.Clientes.Consultas.AnalisisCredito.JDF_Condicionado;
+using HD.Clientes.Consultas.PedidoImpresion;
 using HD.Clientes.Consultas.SolicitudCreditoDocumento;
 using HD.Clientes.Modelos;
 using HD.Notifications.Analisis;
@@ -137,6 +138,19 @@ namespace HD.Endpoints.Controllers.Credito
             {
                 await NotificacionComentarios.EnviarCargaDocumentosAprobadosCondicionado(result);
             }
+            return Ok(result);
+
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarDocumentoJDF(mdlSolicitudCredito_Documentacion_View mdl)
+        {
+
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADSolicitud_Credito_Documentacion_JDF_Guardar datos = new ADSolicitud_Credito_Documentacion_JDF_Guardar(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.Guardar(mdl);
             return Ok(result);
 
         }
