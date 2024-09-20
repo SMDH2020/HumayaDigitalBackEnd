@@ -5,27 +5,26 @@ using HD_Cobranza.Modelos.PlantillaKarbot;
 
 namespace HD_Cobranza.Capturas.PlantillaKarbot
 {
-    public class ADCarga_PlantillaKarbot
+    public class ADGuarda_Telefonos_Karbot
     {
         private string CadenaConexion;
-        public ADCarga_PlantillaKarbot(string _cadenaconexion)
+        public ADGuarda_Telefonos_Karbot(string _cadenaconexion)
         {
             CadenaConexion = _cadenaconexion;
         }
 
-        public async Task<IEnumerable<mdl_Carga_PlantillaKarbot>> Plantillas(string cartera, int ejercicio, int periodo, string telefono)
+        public async Task<IEnumerable<mdl_Carga_PlantillaKarbot>> Contacto(int idcliente, string telefono, int usuario)
         {
             try
             {
                 var parametros = new
                 {
-                    cartera = cartera,
-                    ejercicio = ejercicio,
-                    periodo = periodo,
-                    telefono = telefono
+                    idcliente = idcliente,
+                    valor = telefono,
+                    usuario = usuario
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_Carga_PlantillaKarbot> result = await factory.SQL.QueryAsync<mdl_Carga_PlantillaKarbot>("Cobranza.sp_Cargar_Plantillas_Karbot", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Carga_PlantillaKarbot> result = await factory.SQL.QueryAsync<mdl_Carga_PlantillaKarbot>("Cobranza.sp_Guardar_Telefono_Plantillas_Karbot", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
