@@ -5,6 +5,7 @@
         public string? operacion {  get; set; }
         public string? folio {  get; set; }
         public string? asesor_ventas { get; set; }
+        public string? responsable_cobranza { get; set; }
         public int idcliente { get; set; }
         public string? razon_social { get; set; }
         public string? idequip {  get; set; }
@@ -19,6 +20,8 @@
         public DateTime? vencimiento { get; set; }
         public double tasa { get; set; }
         public string? moneda { get; set; }
+        public string? celular {  get; set; }
+
         public float importe_financiar { get; set; }
         public float interes_pactado { get; set; }
         public float total_pagar { get; set; }
