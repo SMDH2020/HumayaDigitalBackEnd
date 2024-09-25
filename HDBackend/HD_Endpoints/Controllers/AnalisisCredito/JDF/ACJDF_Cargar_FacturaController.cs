@@ -72,6 +72,27 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
 
         [HttpPost]
         [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarMhusaDetalleCondicionadoMhusa(mdlJDFAnalisis_Datos_Facturacion_Guardar mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADJDF_Analisis_Cargar_Factura datos = new ADJDF_Analisis_Cargar_Factura(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            foreach (mdl_documentos_facturados_EQUIP fac in mdl.documentos)
+            {
+                await datos.Guardar_detalle_Condicionado_Mhusa(mdl.folio, mdl.registro, fac.orden, fac.documento, mdl.usuario, fac.docto_financiamiento);
+            }
+            AD_Credito_Condicionado_Notificacion_Correo correo = new AD_Credito_Condicionado_Notificacion_Correo(CadenaConexion);
+            var resultado = await correo.Notificacion(mdl.folio, mdl.usuario, mdl.comentarios, 250);
+            if (resultado.mdldatos is null)
+            {
+                return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
+            }
+            await NotificacionComentarios.EnviarNotificacionOperacionCondicionada(resultado);
+            return Ok(new { mensaje = "Datos Cargados cone exito" });
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> GuardarMhusa(mdlJDFAnalisis_Datos_Facturacion_Guardar mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
