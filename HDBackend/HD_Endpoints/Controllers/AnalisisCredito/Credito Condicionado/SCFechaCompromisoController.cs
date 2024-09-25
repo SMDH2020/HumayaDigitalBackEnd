@@ -26,7 +26,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Credito_Condicionado
             string usuario = Sesion.usuario();
 
             AD_Credito_Condicionado_Solicitud_Guardar ac = new AD_Credito_Condicionado_Solicitud_Guardar(CadenaConexion);
-            await ac.Guardar(mdl,usuario);
+            var result = await ac.Guardar(mdl,usuario);
             //foreach (mdl_fecha_compromiso_documentos detalle in mdl.detalle) {
             //    AD_Credito_Condicionado_Fecha_Comprimiso_Documentacion_Vendedor_Guardar datos = new AD_Credito_Condicionado_Fecha_Comprimiso_Documentacion_Vendedor_Guardar(CadenaConexion);
             //    detalle.usuario = Sesion.usuario();
@@ -55,11 +55,11 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Credito_Condicionado
             //AD_Credito_Condicionado_Fecha_Compromiso_Guardar compromiso = new AD_Credito_Condicionado_Fecha_Compromiso_Guardar(CadenaConexion);
             //var result =await compromiso.Guardar(folio,usuario);
 
-            //if (result.mdldatos is null)
-            //{
-            //    return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
-            //}
-            //await NotificacionComentarios.EnviarOperacionCondicionada(result);
+            if (result.mdldatos is null)
+            {
+                return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
+            }
+            await NotificacionComentarios.EnviarOperacionCondicionada(result);
             return Ok(new { mensaje="Datos cargados con exito"});
 
         }

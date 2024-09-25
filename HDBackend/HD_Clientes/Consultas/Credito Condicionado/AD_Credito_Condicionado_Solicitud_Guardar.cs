@@ -11,7 +11,7 @@ namespace HD.Clientes.Consultas.Credito_Condicionado
             CadenaConexion = _cadenaconexion;
         }
 
-        public async Task<bool> Guardar(mdl_fecha_compromiso_documentos_detalle mdl,string usuario)
+        public async Task<mdlSC_Credito_Condicionado> Guardar(mdl_fecha_compromiso_documentos_detalle mdl,string usuario)
         {
             FactoryConection factory = new FactoryConection(CadenaConexion,true);
             try
@@ -58,7 +58,7 @@ namespace HD.Clientes.Consultas.Credito_Condicionado
                 AD_Credito_Condicionado_Fecha_Compromiso_Guardar compromiso = new AD_Credito_Condicionado_Fecha_Compromiso_Guardar(CadenaConexion);
                 var result = await compromiso.Guardar(folio, usuario,mdl.comentarios);
 
-                return true;
+                return result;
             }
             catch (Exception ex)
             {

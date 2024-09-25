@@ -20,6 +20,7 @@ namespace HD.Clientes.Consultas.Credito_Condicionado
                 folio = mdl.folio,
                 comentarios = mdl.comentarios,
                 fecha = mdl.fecha,
+                estatus=mdl.estatus,
                 usuario = mdl.usuario,
             };
             var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Aprobar_Facturacion_Condicionada", parametros, commandType: System.Data.CommandType.StoredProcedure);
