@@ -13,7 +13,7 @@ namespace HD_Ventas.Consultas
             CadenaConexion = _cadenaconexion;
         }
 
-        public async Task<IEnumerable<mdlCarga_Scorecard_porVendedor_Dash>> Scorecard(int region, int sucursal, int usuario)
+        public async Task<IEnumerable<mdlCarga_Scorecard_porVendedor_Dash>> Scorecard(int region, int sucursal, int usuario, int ejercicioinicio, int periodoinicio, int ejercicio, int mes_actual)
         {
             try
             {
@@ -21,7 +21,11 @@ namespace HD_Ventas.Consultas
                 {
                     usuario = usuario,
                     region = region,
-                    sucursal = sucursal
+                    sucursal = sucursal,
+                    ejercicioinicio = ejercicioinicio,
+                    periodoinicio = periodoinicio,
+                    ejercicio = ejercicio,
+                    mes_actual = mes_actual
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdlCarga_Scorecard_porVendedor_Dash> result = await factory.SQL.QueryAsync<mdlCarga_Scorecard_porVendedor_Dash>("Ventas.Obtener_Scorecard_porParametro", parametros, commandType: System.Data.CommandType.StoredProcedure);

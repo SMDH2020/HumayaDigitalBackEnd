@@ -42,12 +42,12 @@ namespace HD.Endpoints.Controllers.Ventas
         [HttpGet]
         [Route("/api/[controller]/[action]")]
 
-        public async Task<ActionResult> MostrarScorecardVendedorporParametros(int region, int sucursal, int vendedor)
+        public async Task<ActionResult> MostrarScorecardVendedorporParametros(int region, int sucursal, int vendedor, int ejercicioinicio, int periodoinicio, int ejercicio, int mes_actual)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Carga_Scorecard_porParametros_Dash datos = new AD_Carga_Scorecard_porParametros_Dash(CadenaConexion);
             int usuario = vendedor;
-            var result = await datos.Scorecard(region, sucursal, usuario);
+            var result = await datos.Scorecard(region, sucursal, usuario, ejercicioinicio, periodoinicio, ejercicio, mes_actual);
             return Ok(result);
         }
     }

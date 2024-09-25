@@ -3,29 +3,30 @@ using HD.AccesoDatos;
 using HD_Cobranza.Modelos;
 using HD_Cobranza.Modelos.PlantillaKarbot;
 
-namespace HD_Cobranza.Capturas.PlantillaKarbot
+namespace HD_Cobranza.Capturas
 {
-    public class ADCarga_PlantillaKarbot
+    public class ADCarga_Pedidos_Facturados
     {
         private string CadenaConexion;
-        public ADCarga_PlantillaKarbot(string _cadenaconexion)
+        public ADCarga_Pedidos_Facturados(string _cadenaconexion)
         {
             CadenaConexion = _cadenaconexion;
         }
 
-        public async Task<IEnumerable<mdl_Carga_PlantillaKarbot>> Plantillas(string cartera, int ejercicio, int periodo, string telefono)
+        public async Task<IEnumerable<mdlPedidos_Facturados>> Pedidos(int ejercicio, int periodo, string adr, string sucursales, string operacion)
         {
             try
             {
                 var parametros = new
                 {
-                    cartera = cartera,
                     ejercicio = ejercicio,
                     periodo = periodo,
-                    telefono = telefono
+                    adr = adr,
+                    sucursales = sucursales,
+                    operacion = operacion
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_Carga_PlantillaKarbot> result = await factory.SQL.QueryAsync<mdl_Carga_PlantillaKarbot>("Cobranza.sp_Cargar_Plantillas_Karbot", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdlPedidos_Facturados> result = await factory.SQL.QueryAsync<mdlPedidos_Facturados>("Credito.sp_Pedidos_Facturados_Intereses", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
