@@ -43,6 +43,18 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Credito_Condicionado
 
         [HttpPost]
         [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> CancelarCondicionado(mdlSCCredito_Condicionado mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Credito_Condicionado_Enviar datos = new AD_Credito_Condicionado_Enviar(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.Cancelar(mdl);
+            return Ok(result);
+
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> FinalizaCreditoCondicionado(mdlSCAnalisis_Comentarios mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
