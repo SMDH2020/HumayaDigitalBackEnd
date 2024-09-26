@@ -42,5 +42,27 @@ namespace HD.Clientes.Consultas.Credito_Condicionado
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+        public async Task<bool> Cancelar(mdlSCCredito_Condicionado mdl)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    folio = mdl.folio,
+                    usuario = mdl.usuario,
+                };
+               await factory.SQL.QueryMultipleAsync("Credito.sp_TimelineCondicionado_Cancelar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+
+
+
+                factory.SQL.Close();
+                return true;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }
