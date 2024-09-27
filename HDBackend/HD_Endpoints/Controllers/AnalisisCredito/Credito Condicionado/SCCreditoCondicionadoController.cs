@@ -53,7 +53,6 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Credito_Condicionado
 
         }
 
-        [HttpPost]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> FinalizaCreditoCondicionado(mdlSCAnalisis_Comentarios mdl)
         {
