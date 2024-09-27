@@ -47,7 +47,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
                 {
                     return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
                 }
-                //await NotificacionComentarios.Enviar_Mhusa(result);
+                await NotificacionComentarios.Enviar_Mhusa(result);
 
                 var response = new mdlAnalisis_Mhusa_Resultado
                 {
@@ -118,7 +118,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             {
                 ADAnalisisNotificacionFacturacion notificacion = new ADAnalisisNotificacionFacturacion(CadenaConexion);
                 var body = await notificacion.GetBody(mdl);
-                //await NotificacionComentarios.Enviar(body);
+                await NotificacionComentarios.Enviar(body);
                 var response = new mdlAnalisis_Mhusa_Resultado
                 {
                     estado = result.estado,
@@ -132,7 +132,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
                 {
                     return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
                 }
-                //await NotificacionComentarios.Enviar_Mhusa(result);
+                await NotificacionComentarios.Enviar_Mhusa(result);
 
                 var response = new mdlAnalisis_Mhusa_Resultado
                 {
@@ -163,7 +163,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             {
                 ADAnalisisNotificacionFacturacion notificacion = new ADAnalisisNotificacionFacturacion(CadenaConexion);
                 var body = await notificacion.GetBodyPrecalificacion(mdl);
-                //await NotificacionComentarios.Enviar(body);
+                await NotificacionComentarios.Enviar(body);
                 var response = new mdlAnalisis_Mhusa_Resultado
                 {
                     estado = result.estado,
@@ -177,7 +177,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
                 {
                     return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
                 }
-                //await NotificacionComentarios.Enviar_Mhusa(result);
+                await NotificacionComentarios.Enviar_Mhusa(result);
 
                 var response = new mdlAnalisis_Mhusa_Resultado
                 {
