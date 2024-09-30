@@ -11,17 +11,18 @@ namespace HD_Cobranza.GestionCobranza.Capturas
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_Obtener_Convenios_Cliente_Gestionar>> ObtenerConvenios(int idcliente)
+        public async Task<IEnumerable<mdl_Obtener_Convenios_Cliente_Gestionar>> ObtenerConvenios(int idcliente, int card)
         {
             try
             {
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var parametros = new
                 {
-                    idcliente
+                    idcliente,
+                    card
                 };
 
-                IEnumerable<mdl_Obtener_Convenios_Cliente_Gestionar> result = await factory.SQL.QueryAsync<mdl_Obtener_Convenios_Cliente_Gestionar>("GestionCobranza.sp_Obtener_Convenios_Cliente_Gestionar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Obtener_Convenios_Cliente_Gestionar> result = await factory.SQL.QueryAsync<mdl_Obtener_Convenios_Cliente_Gestionar>("GestionCobranza.sp_Obtener_Facturas_ClienteGestionar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
