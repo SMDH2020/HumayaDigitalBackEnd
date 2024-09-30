@@ -26,10 +26,5 @@ namespace HD.Endpoints.Controllers.Cobranza
             var result = await datos.Guardar(mdl);
             return Ok(result);
         }
-
-        private ActionResult Ok(IEnumerable<mdlClientes_Responsable_Cobranza> result)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

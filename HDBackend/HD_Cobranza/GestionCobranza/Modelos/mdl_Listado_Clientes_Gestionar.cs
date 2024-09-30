@@ -11,9 +11,11 @@
         public string? registro { get; set; }
         public string? telefono { get; set; }
         public string? correo { get; set; }
+        public int idResponsableCobranza { get; set; }
         public string? ResponsableCobranza {  get; set; }
         public float SaldoVencido { get; set; }
         public float SaldoporVencer {  get; set; }
         public string? linea {  get; set; }
+        public string? gestion {  get; set; }
     }
 }
