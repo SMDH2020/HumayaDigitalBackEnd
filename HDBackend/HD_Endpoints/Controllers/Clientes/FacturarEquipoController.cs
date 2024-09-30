@@ -75,6 +75,22 @@ namespace HD.Endpoints.Controllers.Clientes
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> informacion_pedido_unidad_Condicionado(string folio, int registro)
+        {
+            if (folio == null || folio.Length != 13)
+            {
+                return BadRequest("la información proporcionada no es correcta");
+            }
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Facturar_Equipo_Estado datos = new AD_Facturar_Equipo_Estado(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.informacionCondicionado(folio, registro, usuario);
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> EliminarRegistro(string folio,int orden,int registro)
         {
             if (folio == null || folio.Length != 13)
@@ -86,6 +102,22 @@ namespace HD.Endpoints.Controllers.Clientes
             int usuario = int.Parse(Sesion.usuario());
              await datos.EliminarRegistro(folio,registro,orden);
             return Ok(new {mensaje="Datos guardados con exito"});
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> EliminarRegistroCondicionado(string folio, int orden, int registro)
+        {
+            if (folio == null || folio.Length != 13)
+            {
+                return BadRequest("la información proporcionada no es correcta");
+            }
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Facturar_Equipo_Estado datos = new AD_Facturar_Equipo_Estado(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+            await datos.EliminarRegistroCondicionado(folio, registro, orden);
+            return Ok(new { mensaje = "Datos guardados con exito" });
 
         }
     }

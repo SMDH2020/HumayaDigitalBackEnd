@@ -18,7 +18,10 @@
         public float tasa_anual {  get; set; }
         public int dias_financiamiento { get; set; }
         public DateTime? vencimiento { get; set; }
+        public double tasa { get; set; }
+        public string? moneda { get; set; }
         public string? celular {  get; set; }
+
         public float importe_financiar { get; set; }
         public float interes_pactado { get; set; }
         public float total_pagar { get; set; }

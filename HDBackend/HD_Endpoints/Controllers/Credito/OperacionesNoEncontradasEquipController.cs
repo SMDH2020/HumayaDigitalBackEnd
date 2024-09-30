@@ -22,5 +22,14 @@ namespace HD.Endpoints.Controllers.Credito
             var result = await datos.operaciones();
             return Ok(result);
         }
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ListadoOperaciones_tasa0()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Operaciones_noEncontradas_Equip datos = new AD_Operaciones_noEncontradas_Equip(CadenaConexion);
+            var result = await datos.operaciones_tasa0();
+            return Ok(result);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using HD.Clientes.Consultas.PedidoImpresion;
+﻿using HD.Clientes.Consultas.AnalisisCredito.JDF_Condicionado;
+using HD.Clientes.Consultas.PedidoImpresion;
 using HD.Clientes.Consultas.SolicitudCreditoDocumento;
 using HD.Clientes.Modelos;
 using HD.Notifications.Analisis;
@@ -47,6 +48,19 @@ namespace HD.Endpoints.Controllers.Credito
             var result = await datos.Obtener(folio, iddocumento);
             if (result is null)
                 return BadRequest(new {mensaje= "Documento no encontrado. Favor de comunicarse con el administrador del sistema" });
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerDocumentoResultadoOperacion(string folio, int iddocumento)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADSolicitudCredito_Documentacion_ObtenerDocumento datos = new ADSolicitudCredito_Documentacion_ObtenerDocumento(CadenaConexion);
+            var result = await datos.ObtenerResultadoOperacion(folio, iddocumento);
+            if (result is null)
+                return BadRequest(new { mensaje = "Documento no encontrado. Favor de comunicarse con el administrador del sistema" });
             return Ok(result);
 
         }
@@ -137,6 +151,19 @@ namespace HD.Endpoints.Controllers.Credito
             {
                 await NotificacionComentarios.EnviarCargaDocumentosAprobadosCondicionado(result);
             }
+            return Ok(result);
+
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarDocumentoJDF(mdlSolicitudCredito_Documentacion_View mdl)
+        {
+
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADSolicitud_Credito_Documentacion_JDF_Guardar datos = new ADSolicitud_Credito_Documentacion_JDF_Guardar(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.Guardar(mdl);
             return Ok(result);
 
         }

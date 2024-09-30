@@ -9,12 +9,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HD.Clientes.Consultas.Credito_Condicionado
+namespace HD.Clientes.Consultas.AnalisisCredito.JDF_Condicionado
 {
-    public class AD_Finaliza_Credito_Condicionado_Guardar
+    public class ADAnalisis_Comentarios_JDF_Condicionado
     {
         private string CadenaConexion;
-        public AD_Finaliza_Credito_Condicionado_Guardar(string _cadenaconexion)
+        public ADAnalisis_Comentarios_JDF_Condicionado(string _cadenaconexion)
         {
             CadenaConexion = _cadenaconexion;
         }
@@ -32,7 +32,7 @@ namespace HD.Clientes.Consultas.Credito_Condicionado
                     estatus = comentario.estatus,
                     usuario = comentario.usuario
                 };
-                var result = await factory.SQL.QueryMultipleAsync("Credito.SP_Finaliza_Credito_Condicionado_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("Credito.SP_Solicitud_Credito_Comentarios_JDF_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 mdlAnalisis_Mhusa mhusa = new mdlAnalisis_Mhusa();
                 mhusa.mdldatos = result.Read<mdldatos_notificacion>().FirstOrDefault();
                 mhusa.estado = result.Read<mdlSCAnalisis_Pedido_Estado>().FirstOrDefault();
@@ -46,7 +46,7 @@ namespace HD.Clientes.Consultas.Credito_Condicionado
             }
         }
 
-        public async Task<mdlAnalisis_Mhusa> GuardarJDFCondicionado(mdlSCAnalisis_Comentarios comentario)
+        public async Task<mdlAnalisis_Mhusa> GuardarPrecalificacion(mdlSCAnalisis_Comentarios_Precalificacion comentario)
         {
             try
             {
@@ -58,9 +58,10 @@ namespace HD.Clientes.Consultas.Credito_Condicionado
                     consecutivo = comentario.consecutivo,
                     comentarios = comentario.comentarios,
                     estatus = comentario.estatus,
-                    usuario = comentario.usuario
+                    usuario = comentario.usuario,
+                    precalificacion = comentario.precalificacion,
                 };
-                var result = await factory.SQL.QueryMultipleAsync("Credito.SP_Finaliza_Credito_Condicionado_JDF_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("Credito.SP_Solicitud_Credito_Comentarios_JDF_Precalificacion_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 mdlAnalisis_Mhusa mhusa = new mdlAnalisis_Mhusa();
                 mhusa.mdldatos = result.Read<mdldatos_notificacion>().FirstOrDefault();
                 mhusa.estado = result.Read<mdlSCAnalisis_Pedido_Estado>().FirstOrDefault();

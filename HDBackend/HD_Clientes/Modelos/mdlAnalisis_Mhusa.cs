@@ -19,4 +19,11 @@ namespace HD.Clientes.Modelos
         public string? comentarios { get; set; }
         public bool noificar { get; set; }
     }
+
+    public class mdlAnalisis_JDF_comentarios
+    {
+        public mdldatos_notificacion? mdldatos { get; set; }
+        public mdlSCAnalisis_Pedido_Estado? estado { get; set; }
+        public IEnumerable<mdlSolicitudCredito_Enviar>? mdlSolicitud { get; set; }
+    }
 }
