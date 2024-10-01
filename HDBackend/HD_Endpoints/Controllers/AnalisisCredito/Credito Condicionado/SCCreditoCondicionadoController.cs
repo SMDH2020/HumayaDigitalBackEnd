@@ -50,9 +50,9 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Credito_Condicionado
             mdl.usuario = Sesion.usuario();
             var result = await datos.Cancelar(mdl);
             return Ok(result);
-
         }
 
+        [HttpPost]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> FinalizaCreditoCondicionado(mdlSCAnalisis_Comentarios mdl)
         {
