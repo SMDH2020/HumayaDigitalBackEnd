@@ -24,7 +24,7 @@ namespace HD.Endpoints.Controllers.BuroCredito
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Carga_Reporte_Buro datos = new AD_Carga_Reporte_Buro(CadenaConexion);
             int usuario = int.Parse(Sesion.usuario());
-            var result = await datos.reporte(view);
+            var result = await datos.reporte_Listado(view);
             return Ok(result);
         }
 

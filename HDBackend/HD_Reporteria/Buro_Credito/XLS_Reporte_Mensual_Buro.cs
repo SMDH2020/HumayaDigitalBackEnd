@@ -159,7 +159,7 @@ namespace HD_Reporteria.Buro_Credito
                         sheet.Cell(renglon, 8).Value = mdl.paterno; // Paterno
                         sheet.Cell(renglon, 9).Value = mdl.materno; // Materno
                         sheet.Cell(renglon, 10).Value = "MX"; // Nacionalidad
-                        sheet.Cell(renglon, 11).Value = ""; // Calificacion Banco de Mex.
+                        sheet.Cell(renglon, 11).Value = mdl.banxico; // Calificacion Banco de Mex.
                         sheet.Cell(renglon, 12).Value = ""; // Banxico 1
                         sheet.Cell(renglon, 13).Value = ""; // Banxico 2
                         sheet.Cell(renglon, 14).Value = ""; // Banxico 3
@@ -167,7 +167,7 @@ namespace HD_Reporteria.Buro_Credito
                         sheet.Cell(renglon, 16).Value = mdl.direccion2; // Direccion 2
                         sheet.Cell(renglon, 17).Value = mdl.poblacion; // Colonia/Poblacion
                         sheet.Cell(renglon, 18).Value = mdl.domicilio; // Delegacion/Municipio
-                        sheet.Cell(renglon, 19).Value = ""; // Ciudad
+                        sheet.Cell(renglon, 19).Value = mdl.ciudad; // Ciudad
                         sheet.Cell(renglon, 20).Value = mdl.estado; // Estado
                         sheet.Cell(renglon, 21).Value = mdl.cp; // C.P.
                         sheet.Cell(renglon, 22).Value = ""; // Telefono
