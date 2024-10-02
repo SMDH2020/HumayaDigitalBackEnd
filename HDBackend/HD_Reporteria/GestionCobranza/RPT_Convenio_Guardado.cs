@@ -17,7 +17,7 @@ namespace HD_Reporteria.GestionCobranza
                 ? Path.Combine("C:\\Nube\\HumayaDigital\\HumayaDigitalBackEnd\\HDBackend\\HD_Reporteria\\Imagenes\\QRNayarit.png")
                 : Path.Combine("C:\\Nube\\HumayaDigital\\HumayaDigitalBackEnd\\HDBackend\\HD_Reporteria\\Imagenes\\QRSinaloa.png");
 
-                var telefono = mdl.ADR == 2 ? "Tel. (311) 341 4978" : "Tel. (667) 758 8200";
+                var telefono = mdl.ADR == 2 ? "Tel. (311) 341 4978" : "Tel. (667) 502 3527";
 
                 var extension = mdl.ADR == 2 ? "Ext. 8511" : "Ext. 8111";
                 byte[] doc = Document.Create(document =>
