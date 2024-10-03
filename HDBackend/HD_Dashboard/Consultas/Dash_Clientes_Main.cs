@@ -11,13 +11,14 @@ namespace HD_Dashboard.Consultas
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<mdlDashboard_Clientes> Dashboard(int idcliente)
+        public async Task<mdlDashboard_Clientes> Dashboard(int idcliente, string usuario)
         {
             try
             {
                 var parametros = new
                 {
-                    idcliente
+                    idcliente,
+                    usuario
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var result = await factory.SQL.QueryMultipleAsync("Dashboard.sp_Clientes_general", parametros, commandType: System.Data.CommandType.StoredProcedure);
