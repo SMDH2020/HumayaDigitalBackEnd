@@ -15,5 +15,6 @@
         public double saldo { get; set; }
         public string? vencimiento { get; set; }
         public double total => saldo + intereses;
+        public string? serie { get; set; }
     }
 }
