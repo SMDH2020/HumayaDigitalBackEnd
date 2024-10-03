@@ -5,6 +5,7 @@
         public int renglon { get; set; }
         public string? rfc { get; set; }
         public string? compania { get; set; }
+        public string? banxico { get; set; }
         public string? nombre1 { get; set; }
         public string? nombre2 { get; set; }
         public string? paterno { get; set; }
