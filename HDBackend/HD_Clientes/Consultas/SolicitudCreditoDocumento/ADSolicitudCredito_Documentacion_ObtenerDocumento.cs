@@ -69,5 +69,25 @@ namespace HD.Clientes.Consultas.SolicitudCreditoDocumento
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<RPT_Result> ObtenerPagare(string folio, int iddocumento)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    folio,
+                    iddocumento
+                };
+                RPT_Result result = await factory.SQL.QueryFirstOrDefaultAsync<RPT_Result>("Credito.sp_Solicitud_Credito_Documentacion_Pagare_Obtener", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }
