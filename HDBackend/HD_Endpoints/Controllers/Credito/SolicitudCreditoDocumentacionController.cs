@@ -1,9 +1,12 @@
 ﻿using HD.Clientes.Consultas.AnalisisCredito.JDF_Condicionado;
+using HD.Clientes.Consultas.Pagares;
 using HD.Clientes.Consultas.PedidoImpresion;
 using HD.Clientes.Consultas.SolicitudCreditoDocumento;
 using HD.Clientes.Modelos;
 using HD.Notifications.Analisis;
 using HD.Security;
+using HD_Reporteria.Pagares;
+using HD_Reporteria;
 using HD_Reporteria.Solicitud_Credito;
 using Microsoft.AspNetCore.Mvc;
 
@@ -119,6 +122,64 @@ namespace HD.Endpoints.Controllers.Credito
                     return BadRequest("Error de servidor");
 
                 }
+            }
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerDocumentoPagare(string folio, int iddocumento)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADSolicitudCredito_Documentacion_ObtenerDocumento datos = new ADSolicitudCredito_Documentacion_ObtenerDocumento(CadenaConexion);
+            var result = await datos.ObtenerPagare(folio, iddocumento);
+            if (result is null)
+            {
+                AD_Pagare_Dos_Amortizaciones_Suscripcion datoss = new AD_Pagare_Dos_Amortizaciones_Suscripcion(CadenaConexion);
+                var results = await datoss.Get(folio);
+                List<HD_Reporteria.RPT_Result> documento = new List<HD_Reporteria.RPT_Result>();
+
+                try
+                {
+                    // Agrupar por tasas diferentes
+                    var gruposTasas = results.financiamientocerodias.GroupBy(f => f.tasa);
+                    var gruposTasasmas = results.financiamientomasdias.GroupBy(f => f.tasa);
+
+
+                    foreach (var grupo in gruposTasas)
+                    {
+                        if (grupo.Count() > 1)
+                        {
+                            HD_Reporteria.RPT_Result reporte = RPT_Pagare_Dos_Amortizaciones_Vencimiento.Generar(results, grupo.ToList());
+                            documento.Add(reporte);
+                        }
+                        else
+                        {
+                            HD_Reporteria.RPT_Result reporte = RPT_Pagare_Vencimiento.Generar(results, grupo.First());
+                            documento.Add(reporte);
+                        }
+                    }
+
+                    foreach (var grupo in gruposTasasmas)
+                    {
+                        if (grupo.Count() > 1)
+                        {
+                            HD_Reporteria.RPT_Result reporte = RPT_Pagare_Dos_Amortizaciones_Suscripcion.Generar(results, grupo.ToList());
+                            documento.Add(reporte);
+                        }
+                        else
+                        {
+                            HD_Reporteria.RPT_Result reporte = RPT_Pagare_Suscripcion.Generar(results, grupo.First());
+                            documento.Add(reporte);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest("Error de servidor: " + ex.Message);
+                }
+
+                return Ok(documento);
             }
             return Ok(result);
         }
