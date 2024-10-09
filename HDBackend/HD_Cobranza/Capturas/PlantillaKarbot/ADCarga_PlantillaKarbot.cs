@@ -13,7 +13,9 @@ namespace HD_Cobranza.Capturas.PlantillaKarbot
             CadenaConexion = _cadenaconexion;
         }
 
-        public async Task<IEnumerable<mdl_Carga_PlantillaKarbot>> Plantillas(string linea,string cartera, string telefono)
+        public async Task<IEnumerable<mdl_Carga_PlantillaKarbot>> Plantillas(string linea, string cartera, string telefono)
+
+
         {
             try
             {
@@ -22,6 +24,7 @@ namespace HD_Cobranza.Capturas.PlantillaKarbot
                     linea,
                     cartera,
                     telefono
+
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdl_Carga_PlantillaKarbot> result = await factory.SQL.QueryAsync<mdl_Carga_PlantillaKarbot>("Cobranza.sp_Cargar_Plantillas_Karbot", parametros, commandType: System.Data.CommandType.StoredProcedure);
