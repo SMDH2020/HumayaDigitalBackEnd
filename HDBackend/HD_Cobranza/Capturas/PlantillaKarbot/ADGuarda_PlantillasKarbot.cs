@@ -13,15 +13,15 @@ namespace HD_Cobranza.Capturas.PlantillaKarbot
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_Guarda_PlantillasKarbot>>
-
-            Guardar(mdl_Guarda_PlantillasKarbot mdl)
+        public async Task<IEnumerable<mdl_Guarda_PlantillasKarbot>>Guardar(mdl_Guarda_PlantillasKarbot mdl)
         {
             try
             {
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var parametros = new
                 {
+                    cartera=mdl.cartera,
+                    linea=mdl.linea,
                     @listado_plantillas = mdl.listado_plantillas,
                     @usuario = mdl.usuario
                 };

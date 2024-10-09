@@ -3,8 +3,9 @@
     public class mdl_Detalle_Clientes_Gestionar_Convenios
     {
         public string? folio { get; set; }
-
-        public int monto { get; set; }
+        public string? razon_social { get; set; }
+        public double saldo { get; set; }
+        public double monto { get; set; }
 
         public DateTime fecha_convenio { get; set; }
 

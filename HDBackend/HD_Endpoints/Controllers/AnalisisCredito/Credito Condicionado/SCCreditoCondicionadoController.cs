@@ -50,7 +50,6 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Credito_Condicionado
             mdl.usuario = Sesion.usuario();
             var result = await datos.Cancelar(mdl);
             return Ok(result);
-
         }
 
         [HttpPost]

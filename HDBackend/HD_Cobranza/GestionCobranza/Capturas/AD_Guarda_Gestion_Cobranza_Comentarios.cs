@@ -1,18 +1,17 @@
 ﻿using Dapper;
-using DocumentFormat.OpenXml.Vml;
 using HD.AccesoDatos;
 using HD_Cobranza.GestionCobranza.Modelos;
 
 namespace HD_Cobranza.GestionCobranza.Capturas
 {
-    public class AD_Guardar_Convenio_Detalle
+    public class AD_Guarda_Gestion_Cobranza_Comentarios
     {
         private string CadenaConexion;
-        public AD_Guardar_Convenio_Detalle(string _cadenaconexion)
+        public AD_Guarda_Gestion_Cobranza_Comentarios(string _cadenaconexion)
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_Facturas_Seleccionadas>> Guardar(mdl_Convenio_Guardar mdl)
+        public async Task<IEnumerable<mdl_Gestion_Cobranza_Comentarios>> Guardar(mdl_Gestion_Cobranza_Comentarios mdl)
         {
             try
             {
@@ -43,7 +42,7 @@ namespace HD_Cobranza.GestionCobranza.Capturas
                     @total = mdl.total
                 };
 
-                var result = await factory.SQL.QueryAsync<mdl_Facturas_Seleccionadas>("GestionCobranza.sp_Guardar_Gestion_Cobranza", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryAsync<mdl_Gestion_Cobranza_Comentarios>("GestionCobranza.sp_Guardar_Gestion_Cobranza", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
