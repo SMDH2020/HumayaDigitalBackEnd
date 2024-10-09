@@ -13,15 +13,14 @@ namespace HD_Cobranza.Capturas.PlantillaKarbot
             CadenaConexion = _cadenaconexion;
         }
 
-        public async Task<IEnumerable<mdl_Carga_PlantillaKarbot>> Plantillas(string cartera, int ejercicio, int periodo, string telefono)
+        public async Task<IEnumerable<mdl_Carga_PlantillaKarbot>> Plantillas(string linea, string cartera, string telefono)
         {
             try
             {
                 var parametros = new
                 {
+                    linea = linea,
                     cartera = cartera,
-                    ejercicio = ejercicio,
-                    periodo = periodo,
                     telefono = telefono
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
