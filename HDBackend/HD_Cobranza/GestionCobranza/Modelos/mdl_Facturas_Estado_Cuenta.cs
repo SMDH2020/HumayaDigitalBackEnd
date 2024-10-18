@@ -9,6 +9,7 @@
         public string? estado {  get; set; }
         public int idcliente_HD {  get; set; }
         public int idcliente {  get; set; }
+        public string? direccion { get; set; }
         public string? razonsocial {  get; set; }
         public string? descripcion {  get; set; }
         public string? serie_fiscal { get; set; }

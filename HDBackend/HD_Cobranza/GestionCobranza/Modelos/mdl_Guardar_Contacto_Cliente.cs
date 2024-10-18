@@ -9,5 +9,6 @@
         public string? medio { get; set; }
         public string? comentarios { get; set; } = "";
         public string? usuario { get; set; }
+        public string? responsable_pago { get; set; }
     }
 }

@@ -34,5 +34,16 @@ namespace HD.Endpoints.Controllers.Ventas
             var result = await datos.Get(ejercicio, periodo, adr, sucursal, linea);
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> Editar(int id, string nip, string modelo, string usuario)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Editar_Modelo_Facturacion_Maquinaria datos = new AD_Editar_Modelo_Facturacion_Maquinaria(CadenaConexion);
+            usuario = Sesion.usuario();
+            var result = await datos.Editar(id, nip, modelo, usuario);
+            return Ok(result);
+        }
     }
 }
