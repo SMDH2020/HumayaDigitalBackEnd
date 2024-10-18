@@ -40,7 +40,7 @@ namespace HD.Endpoints.Controllers.Credito
 
             try
             {
-                RPT_Result documento = result.condiciones.mhusajdf=="MHUSA" ? RPT_Pedido.Generar(result) : RPT_Pedido_JDF.Generar(result) ;
+                RPT_Result documento = result.condiciones.mhusajdf=="JDF" ? RPT_Pedido_JDF.Generar(result) : RPT_Pedido.Generar(result);
 
                 return Ok(documento);
             }
