@@ -21,6 +21,7 @@ namespace HD.Endpoints.Controllers.Dashboard
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Seleccionar_Scorecard datos = new AD_Seleccionar_Scorecard(CadenaConexion);
             int usuario = int.Parse(Sesion.usuario());
+            //usuario = 5630;
             var result = await datos.usuario(usuario);
             return Ok(result);
 

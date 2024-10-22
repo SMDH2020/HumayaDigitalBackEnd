@@ -24,6 +24,7 @@ namespace HD_Cobranza.GestionCobranza.Capturas
                     @medio = mdl.medio,
                     @comentarios = mdl.comentarios,
                     @usuario = mdl.usuario,
+                    @responsable_pago = mdl.responsable_pago,
                 };
 
                 var result = await factory.SQL.QueryAsync<mdl_Guardar_Contacto_Cliente>("GestionCobranza.sp_Guardar_Contacto_Cliente", parametros, commandType: System.Data.CommandType.StoredProcedure);

@@ -19,11 +19,14 @@ namespace HD.Endpoints.Controllers.Cobranza.PlantillaKarbot
         [HttpGet]
         [Route("/api/[controller]/[action]")]
 
+
         public async Task<ActionResult> CargarPlantillasKarbot(string linea,string cartera, string telefono)
+
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             ADCarga_PlantillaKarbot datos = new ADCarga_PlantillaKarbot(CadenaConexion);
             //int usuario = int.Parse(Sesion.usuario());
+
             var result = await datos.Plantillas(linea,cartera,  telefono);
             return Ok(result);
         }

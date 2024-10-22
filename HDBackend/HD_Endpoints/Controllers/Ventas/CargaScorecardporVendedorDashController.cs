@@ -22,7 +22,7 @@ namespace HD.Endpoints.Controllers.Ventas
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Carga_Scorecard_porVendedor_Dash datos = new AD_Carga_Scorecard_porVendedor_Dash(CadenaConexion);
             int usuario = int.Parse(Sesion.usuario());
-            //usuario = 8176;
+            //usuario = 5630;
             var result = await datos.Scorecard(usuario);
             return Ok(result);
         }
@@ -47,7 +47,9 @@ namespace HD.Endpoints.Controllers.Ventas
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Carga_Scorecard_porParametros_Dash datos = new AD_Carga_Scorecard_porParametros_Dash(CadenaConexion);
             int usuario = vendedor;
-            var result = await datos.Scorecard(region, sucursal, usuario, ejercicioinicio, periodoinicio, ejercicio, mes_actual);
+            int sesion = int.Parse(Sesion.usuario());
+            //sesion = 5630;
+            var result = await datos.Scorecard(region, sucursal, usuario, ejercicioinicio, periodoinicio, ejercicio, mes_actual, sesion);
             return Ok(result);
         }
     }
