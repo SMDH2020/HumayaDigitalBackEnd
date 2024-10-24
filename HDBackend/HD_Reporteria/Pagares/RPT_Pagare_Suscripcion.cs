@@ -134,6 +134,7 @@ namespace HD_Reporteria.Pagares
                                     txt.Span("Por este PAGARE, por valor recibido, me(nos) obligo(amos) a pagar solidaria, mancomunada e incondicionalmente, a la orden de: MAQUINARIA DEL HUMAYA, S.A. DE C.V., en la dirección de sus oficinas en la ciudad de Navolato, Sinaloa, o en cualquier otra donde se me requiera el pago, según lo elija el tenedor de este pagaré, la cantidad principal de").FontSize(10).FontFamily("arial");
                                     txt.Span("         $ " + detalle.importefinanciar.ToString("N2") + " (" + ConvertirNumeroALetras(detalle.importefinanciar) + moneda + ")").FontSize(10).Bold().FontFamily("arial");
                                     txt.Span(" mediante las amortizaciones pactadas, por los montos y las fechas que a continuación se detallan:").FontSize(10).FontFamily("arial");
+                                    txt.Justify();
                                     //txt.Span("10 ").FontSize(10).Bold().FontFamily("arial"); 
                                     //txt.Span("del mes de ").FontSize(10).FontFamily("arial");
                                     //txt.Span("Enero ").FontSize(10).Bold().FontFamily("arial");
@@ -175,13 +176,13 @@ namespace HD_Reporteria.Pagares
                                 });
 
 
-                                col1.Item().PaddingTop(10).Text("El importe que ampara este pagaré causará intereses ordinarios en forma mensual a partir de la fecha de suscripcion hasta la fecha de su vencimiento, calculados a razón de la tasa fija del " + detalle.tasa + "% por ciento anual sobre saldos insolutos.").FontSize(10).FontFamily("arial");
+                                col1.Item().PaddingTop(10).Text("El importe que ampara este pagaré causará intereses ordinarios en forma mensual a partir de la fecha de suscripcion hasta la fecha de su vencimiento, calculados a razón de la tasa fija del " + detalle.tasa + "% por ciento anual sobre saldos insolutos.").FontSize(10).FontFamily("arial").Justify();
 
-                                col1.Item().PaddingTop(10).Text("Los intereses se calcularán dividiendo la tasa anual aplicable entre 360 (Trescientos sesenta) y multiplicando el resultado obtenido por el número de días efectivamente transcurridos durante el periodo en que se devenguen los intereses.").FontSize(10).FontFamily("arial");
+                                col1.Item().PaddingTop(10).Text("Los intereses se calcularán dividiendo la tasa anual aplicable entre 360 (Trescientos sesenta) y multiplicando el resultado obtenido por el número de días efectivamente transcurridos durante el periodo en que se devenguen los intereses.").FontSize(10).FontFamily("arial").Justify();
 
-                                col1.Item().PaddingTop(10).Text("Asimismo, si se dejare de cumplir con el pago de la amortización pactada o no fuere cubierto a su vencimiento, pagare (mos) al beneficiario intereses moratorios desde la fecha del vencimiento hasta su total liquidación, a razón de la tasa normal vigente de acuerdo a lo establecido en los párrafos que preceden, multiplicado por 2 (dos), sobre saldos insolutos del importe principal de este pagaré, sin perjuicio de que se sigan causando los intereses a que se hace alusión en los párrafos antes mencionados.").FontSize(10).FontFamily("arial");
+                                col1.Item().PaddingTop(10).Text("Asimismo, si se dejare de cumplir con el pago de la amortización pactada o no fuere cubierto a su vencimiento, pagare (mos) al beneficiario intereses moratorios desde la fecha del vencimiento hasta su total liquidación, a razón de la tasa normal vigente de acuerdo a lo establecido en los párrafos que preceden, multiplicado por 2 (dos), sobre saldos insolutos del importe principal de este pagaré, sin perjuicio de que se sigan causando los intereses a que se hace alusión en los párrafos antes mencionados.").FontSize(10).FontFamily("arial").Justify();
 
-                                col1.Item().PaddingTop(10).Text("Para todo lo relativo a la interpretación, ejecución y cumplimiento del presente pagaré, el otorgante se somete expresamente a la jurisdicción de los tribunales competentes de la ciudad de Culiacán, Sinaloa, renunciando expresamente a cualquier otro fuero que pudiese corresponderle por razón de su domicilio presente, futuro o por cualquier ubicación de sus bienes.").FontSize(10).FontFamily("arial");
+                                col1.Item().PaddingTop(10).Text("Para todo lo relativo a la interpretación, ejecución y cumplimiento del presente pagaré, el otorgante se somete expresamente a la jurisdicción de los tribunales competentes de la ciudad de Culiacán, Sinaloa, renunciando expresamente a cualquier otro fuero que pudiese corresponderle por razón de su domicilio presente, futuro o por cualquier ubicación de sus bienes.").FontSize(10).FontFamily("arial").Justify();
 
 
                                 col1.Item().PaddingTop(15).PaddingBottom(5).AlignRight().Row(row1 =>
