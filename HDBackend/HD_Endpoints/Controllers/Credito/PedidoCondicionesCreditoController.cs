@@ -1,4 +1,5 @@
-﻿using HD.Clientes.Consultas.PedidoCondicionesCredito;
+﻿using HD.Clientes.Consultas.InteresMensual;
+using HD.Clientes.Consultas.PedidoCondicionesCredito;
 using HD.Clientes.Modelos;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +33,28 @@ namespace HD.Endpoints.Controllers.Credito
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_PedidoCondicionesVenta_Listado datos = new AD_PedidoCondicionesVenta_Listado(CadenaConexion);
             var result = await datos.Get(folio);
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ListadoCondiciones(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_PedidoCondicionesVenta_Listado datos = new AD_PedidoCondicionesVenta_Listado(CadenaConexion);
+            var result = await datos.Obtener(folio);
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ActualizarTasa(string folio, int ejercicio, int periodo)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Actualizar_Interes_Condiciones datos = new AD_Actualizar_Interes_Condiciones(CadenaConexion);
+            var result = await datos.Get(folio,ejercicio,periodo);
             return Ok(result);
 
         }

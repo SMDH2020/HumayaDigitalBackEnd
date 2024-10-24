@@ -30,5 +30,30 @@ namespace HD.Clientes.Consultas.PedidoCondicionesCredito
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<mdlCondiciones_Venta_View> Obtener(string folio)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    folio
+                };
+                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Pedido_Condiciones_Credito_Venta_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlCondiciones_Venta_View view = new mdlCondiciones_Venta_View();
+                view.condiciones = result.Read<mdlPedido_Condiciones_Venta>().FirstOrDefault();
+                view.interes = result.Read<mdlInteres_Credito>().FirstOrDefault();
+                factory.SQL.Close();
+                //if (view.mdlSolicitud == null) view.mdlSolicitud = new mdlSolicitudCredito_Enviar();
+                if (view.condiciones == null) view.condiciones = new mdlPedido_Condiciones_Venta();
+                if (view.interes == null) view.interes = new mdlInteres_Credito();
+                return view;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }
