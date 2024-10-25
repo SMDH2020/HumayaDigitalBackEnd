@@ -17,17 +17,19 @@ namespace HD.Clientes.Consultas.ReporteCompromisoCondicionadas
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<mdl_Cumplimiento_Compromiso_Condicionado_Vista> Obtener(int ejercicio, int sucursal)
+        public async Task<mdl_Cumplimiento_Compromiso_Condicionado_Vista> Obtener(int ejercicio, string sucursales, string adr, int periodo)
         {
             try
             {
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var parametros = new
                 {
-                    ejercicio,
-                    sucursal
+                    ejercicio = ejercicio,
+                    adr,
+                    sucursales,
+                    periodo
                 };
-                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Cumplimiento_Compromiso_Condicionado", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Cumplimiento_Compromiso_Condicionado_General_Nuevo", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 mdl_Cumplimiento_Compromiso_Condicionado_Vista mdl = new mdl_Cumplimiento_Compromiso_Condicionado_Vista();
                 mdl.resumen = result.Read<mdl_Cumplimiento_Compromiso_Condicionado>().FirstOrDefault();
                 mdl.detalle = result.Read<mdl_Cumplimiento_Compromiso_Condicionado_General>().ToList();

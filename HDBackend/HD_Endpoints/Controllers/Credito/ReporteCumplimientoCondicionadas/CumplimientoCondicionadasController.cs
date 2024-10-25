@@ -21,14 +21,14 @@ namespace HD.Endpoints.Controllers.Credito.ReporteCumplimientoCondicionadas
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ObtenerGeneral(int ejercicio, int sucursal)
+        public async Task<ActionResult> ObtenerGeneral(int ejercicio, string sucursales, string adr,int periodo)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Reporte_Cumplimiento_Compromiso_Condicionado datos = new AD_Reporte_Cumplimiento_Compromiso_Condicionado(CadenaConexion);
-            var result = await datos.Obtener(ejercicio, sucursal);
+            var result = await datos.Obtener(ejercicio, sucursales,adr,periodo);
             result.resumen.titulo = $"OPERACIONES CONDICIONADAS - {ejercicio}";
             result.resumen.ejercicio = ejercicio;
-            result.resumen.sucursal = sucursal;
+            //result.resumen.sucursal = sucursal;
             var ArrayMes = result.detalle.GroupBy(item => item.mes).Select(item => item.Key).ToList();
             return Ok(new { ArrayMes, result });
 
@@ -36,11 +36,11 @@ namespace HD.Endpoints.Controllers.Credito.ReporteCumplimientoCondicionadas
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ObtenerDetalle(int usuario, int ejercicio, int sucursal)
+        public async Task<ActionResult> ObtenerDetalle(int usuario, int ejercicio, string sucursales, string adr, int periodo)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Cumplimiento_Compromiso_Condicionado_Detalle datos = new AD_Cumplimiento_Compromiso_Condicionado_Detalle(CadenaConexion);
-            var result = await datos.Obtenerdetalle(usuario, ejercicio, sucursal);
+            var result = await datos.Obtenerdetalle(usuario, ejercicio, sucursales, adr, periodo);
             var ArrayMes = result.GroupBy(item => item.mes).Select(item => item.Key ).ToList();
             return Ok(new{ArrayMes, result});
 
