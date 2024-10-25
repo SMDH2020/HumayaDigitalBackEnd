@@ -1,8 +1,13 @@
 ﻿using HD.Security;
 using HD_Cobranza.GestionCobranza.Capturas;
 using HD_Cobranza.GestionCobranza.Modelos;
+using HD_Cobranza.Reportes;
 using HD_Reporteria;
+using HD_Reporteria.Cobranza;
 using HD_Reporteria.GestionCobranza;
+using HD_Reporteria.Ventas;
+using HD_Ventas.Consultas;
+using HD_Ventas.Reportes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HD.Endpoints.Controllers.GestionCobranza
@@ -35,6 +40,40 @@ namespace HD.Endpoints.Controllers.GestionCobranza
             AD_Detalle_Cliente_Gestionar_Convenios_Parametros datos = new AD_Detalle_Cliente_Gestionar_Convenios_Parametros(CadenaConexion);
             var result = await datos.Get(ejercicio, periodo, adr, sucursal, responsable);
             return Ok(result);
+        }
+
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ImprimirExcelReporte(int ejercicio, int periodo, string adr, string sucursal, int responsable)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Detalle_Cliente_Gestionar_Convenios_Parametros datos = new AD_Detalle_Cliente_Gestionar_Convenios_Parametros(CadenaConexion);
+            var result = await datos.Get(ejercicio, periodo, adr, sucursal, responsable);
+            var docresult = await XLSCob_Listado_Convenios_Realizados.GenerarExcel(result, ejercicio, periodo);
+            return Ok(docresult);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ImprimirPDFReporte(int ejercicio, int periodo, string adr, string sucursal, int responsable)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Detalle_Cliente_Gestionar_Convenios_Parametros datos = new AD_Detalle_Cliente_Gestionar_Convenios_Parametros(CadenaConexion);
+            var result = await datos.Get(ejercicio, periodo, adr, sucursal, responsable);
+
+            try
+            {
+                RPT_Result documento = RPT_Listado_Convenios_Realizados.GenerarPDF(result, ejercicio, periodo);
+
+                return Ok(documento);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error de servidor");
+
+            }
+
         }
 
         [HttpPost]

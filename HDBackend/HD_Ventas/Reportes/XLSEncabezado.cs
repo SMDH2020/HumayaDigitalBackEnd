@@ -1,6 +1,6 @@
 ﻿using ClosedXML.Excel;
 
-namespace HD_Cobranza.Reportes
+namespace HD_Ventas.Reportes
 {
     public class XLSEncabezado
     {

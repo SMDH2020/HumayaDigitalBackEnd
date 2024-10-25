@@ -134,6 +134,7 @@ namespace HD_Reporteria.Pagares
                                 txt.Span("Por este PAGARE, por valor recibido, me(nos) obligo(amos) a pagar solidaria, mancomunada e incondicionalmente, a la orden de: MAQUINARIA DEL HUMAYA, S.A. DE C.V., en la dirección de sus oficinas en la ciudad de Navolato, Sinaloa, o en cualquier otra donde se me requiera el pago, según lo elija el tenedor de este pagaré, la cantidad principal de").FontSize(10).FontFamily("arial");
                                 txt.Span("         $ " + sumaTotal.ToString("N2") + " (" + ConvertirNumeroALetras(sumaTotal) + moneda + ")").FontSize(10).Bold().FontFamily("arial");
                                 txt.Span("mediante las amortizaciones pactadas, por los montos y las fechas que a continuación se detallan:").FontSize(10).FontFamily("arial");
+                                txt.Justify();
                                 //txt.Span("10 ").FontSize(10).Bold().FontFamily("arial"); 
                                 //txt.Span("del mes de ").FontSize(10).FontFamily("arial");
                                 //txt.Span("Enero ").FontSize(10).Bold().FontFamily("arial");
@@ -205,13 +206,13 @@ namespace HD_Reporteria.Pagares
                             });
 
 
-                            col1.Item().PaddingTop(10).Text("El importe que ampara este pagaré causará intereses moratorios en forma mensual a partir de la fecha de vencimiento calculados a razón de la tasa fija del " + (detalle.First().tasa > 0 ? detalle.First().tasa * 2 : mdl.tasa.tasa * 2) +  "% por ciento anual sobre saldos insolutos.").FontSize(10).FontFamily("arial");
+                            col1.Item().PaddingTop(10).Text("El importe que ampara este pagaré causará intereses moratorios en forma mensual a partir de la fecha de vencimiento calculados a razón de la tasa fija del " + (detalle.First().tasa > 0 ? detalle.First().tasa * 2 : mdl.tasa.tasa * 2) +  "% por ciento anual sobre saldos insolutos.").FontSize(10).FontFamily("arial").Justify();
 
-                            col1.Item().PaddingTop(10).Text("Los intereses se calcularán dividiendo la tasa anual aplicable entre 360 (Trescientos sesenta) y multiplicando el resultado obtenido por el número de días efectivamente transcurridos durante el periodo en que se devenguen los intereses.").FontSize(10).FontFamily("arial");
+                            col1.Item().PaddingTop(10).Text("Los intereses se calcularán dividiendo la tasa anual aplicable entre 360 (Trescientos sesenta) y multiplicando el resultado obtenido por el número de días efectivamente transcurridos durante el periodo en que se devenguen los intereses.").FontSize(10).FontFamily("arial").Justify();
 
-                            col1.Item().PaddingTop(10).Text("La falta de pago puntual de cualquier amortización o abono en su fecha de vencimiento causará el vencimiento anticipado del pagaré o abonos restantes, aun los no vencidos, los que serán exigibles de inmediato.").FontSize(10).FontFamily("arial");
+                            col1.Item().PaddingTop(10).Text("La falta de pago puntual de cualquier amortización o abono en su fecha de vencimiento causará el vencimiento anticipado del pagaré o abonos restantes, aun los no vencidos, los que serán exigibles de inmediato.").FontSize(10).FontFamily("arial").Justify();
 
-                            col1.Item().PaddingTop(10).Text("Para todo lo relativo a la interpretación, ejecución y cumplimiento del presente pagaré, el otorgante se somete expresamente a la jurisdicción de los tribunales competentes de la ciudad de Culiacán, Sinaloa, renunciando expresamente a cualquier otro fuero que pudiese corresponderle por razón de su domicilio presente, futuro o por cualquier ubicación de sus bienes.").FontSize(10).FontFamily("arial");
+                            col1.Item().PaddingTop(10).Text("Para todo lo relativo a la interpretación, ejecución y cumplimiento del presente pagaré, el otorgante se somete expresamente a la jurisdicción de los tribunales competentes de la ciudad de Culiacán, Sinaloa, renunciando expresamente a cualquier otro fuero que pudiese corresponderle por razón de su domicilio presente, futuro o por cualquier ubicación de sus bienes.").FontSize(10).FontFamily("arial").Justify();
 
 
                             col1.Item().PaddingTop(15).PaddingBottom(5).AlignRight().Row(row1 =>

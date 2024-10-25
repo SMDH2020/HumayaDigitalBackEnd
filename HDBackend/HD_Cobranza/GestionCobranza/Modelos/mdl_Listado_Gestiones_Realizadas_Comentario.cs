@@ -7,6 +7,8 @@ namespace HD_Cobranza.GestionCobranza.Modelos
         public int idgestion { get; set; }
         public int IDEstado  { get; set; }
         public int IDSucursal { get; set; }
+
+        public string? sucursal { get; set; }
         public int idcliente { get; set; }
         public string? RazonSocial { get; set; }
         public string? comentarios { get; set; }
