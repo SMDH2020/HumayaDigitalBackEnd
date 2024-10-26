@@ -26,5 +26,15 @@ namespace HD.Endpoints.Controllers.Credito.SolicitudCreditoAcciones
             await datos.Guardar(mdl);
             return Ok(new { mensaje = "datos cargados con exito" });
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerEstado( string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Solicitud_Credito_Accion_ObtenerEstado datos = new AD_Solicitud_Credito_Accion_ObtenerEstado(CadenaConexion);
+            var result = await datos.Obtener(folio);
+            return Ok(result);
+        }
     }
 }
