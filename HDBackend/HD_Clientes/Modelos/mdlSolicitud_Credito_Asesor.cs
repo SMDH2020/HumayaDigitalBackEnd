@@ -9,5 +9,6 @@ namespace HD.Clientes.Modelos
     public class mdlSolicitud_Credito_Asesor
     {
         public int asesor { get; set; }
+        public bool creadorsolicitud { get; set; }
     }
 }
