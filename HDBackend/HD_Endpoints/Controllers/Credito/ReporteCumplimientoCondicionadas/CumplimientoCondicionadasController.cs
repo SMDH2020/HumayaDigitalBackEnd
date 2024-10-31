@@ -21,7 +21,7 @@ namespace HD.Endpoints.Controllers.Credito.ReporteCumplimientoCondicionadas
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ObtenerGeneral(int ejercicio, string sucursales, string adr,int periodo)
+        public async Task<ActionResult> ObtenerGeneral(int ejercicio, string sucursales, string adr,string periodo)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Reporte_Cumplimiento_Compromiso_Condicionado datos = new AD_Reporte_Cumplimiento_Compromiso_Condicionado(CadenaConexion);
@@ -36,7 +36,7 @@ namespace HD.Endpoints.Controllers.Credito.ReporteCumplimientoCondicionadas
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ObtenerDetalle(int usuario, int ejercicio, string sucursales, string adr, int periodo)
+        public async Task<ActionResult> ObtenerDetalle(int usuario, int ejercicio, string sucursales, string adr, string periodo)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Cumplimiento_Compromiso_Condicionado_Detalle datos = new AD_Cumplimiento_Compromiso_Condicionado_Detalle(CadenaConexion);

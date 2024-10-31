@@ -17,7 +17,7 @@ namespace HD.Clientes.Consultas.ReporteCompromisoCondicionadas
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<mdl_Cumplimiento_Compromiso_Condicionado_Vista> Obtener(int ejercicio, string sucursales, string adr, int periodo)
+        public async Task<mdl_Cumplimiento_Compromiso_Condicionado_Vista> Obtener(int ejercicio, string sucursales, string adr, string periodo)
         {
             try
             {
