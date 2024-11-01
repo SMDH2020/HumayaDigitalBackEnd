@@ -1,14 +1,13 @@
 ﻿using HD.Security;
 using HD_Cobranza.Capturas;
 using HD_Cobranza.Reportes;
+using HD_Reporteria;
 using HD_Reporteria.Cobranza;
 using Microsoft.AspNetCore.Mvc;
-using HD_Reporteria;
-using System.Globalization;
 
 namespace HD.Endpoints.Controllers.Cobranza
 {
-    public class RecuperacionCarteraMensualController:MyBase
+    public class RecuperacionCarteraMensualController : MyBase
     {
         private readonly IConfiguration Configuracion;
         private readonly ISesion Sesion;
@@ -31,11 +30,11 @@ namespace HD.Endpoints.Controllers.Cobranza
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ObtenerObjetivoRecuperado(int ejercicio,string sucursales,string adr)
+        public async Task<ActionResult> ObtenerObjetivoRecuperado(int ejercicio, string sucursales, string adr)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             ADRecuperacionCarteraMensual datos = new ADRecuperacionCarteraMensual(CadenaConexion);
-            var result = await datos.ObtenerObjetivoRecuperado(ejercicio,adr,sucursales);
+            var result = await datos.ObtenerObjetivoRecuperado(ejercicio, adr, sucursales);
             return Ok(result);
         }
 
