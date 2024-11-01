@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace HD.Clientes.Modelos
 {
-    public class mdlSolicitud_Credito_Asesor
+    public class mdlInteres_Credito
     {
-        public int asesor { get; set; }
-        public bool creadorsolicitud { get; set; }
+        public double interes { get; set; }
+        public double interes2 { get; set; }
     }
 }
