@@ -24,6 +24,7 @@
         public string? extension { get; set; } = "";
         public string? usuario { get; set; }
         public string? gestion {  get; set; }
+        public int objecion {  get; set; }
         public string? comentarios {  get; set; }
         public int volvercontactar { get; set; }
         public DateTime? fechavolveracontactar { get; set; }

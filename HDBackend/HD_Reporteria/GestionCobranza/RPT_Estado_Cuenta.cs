@@ -186,23 +186,23 @@ namespace HD_Reporteria.GestionCobranza
 
                                         tabla.Header(header =>
                                         {
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("FACTURA").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("DESCRIPCIÓN").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("FECHA").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("VENC.").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("DIAS VDOS.").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("IMPORTE").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("ABONOS").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("INT. MORATORIO").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("TOTAL").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         });
 
@@ -307,23 +307,23 @@ namespace HD_Reporteria.GestionCobranza
 
                                                     tabla.Header(header =>
                                                     {
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("FACTURA").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("DESCRIPCIÓN").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("FECHA").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("VENC.").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("DIAS VDOS.").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("IMPORTE").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("ABONOS").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("INT. MORATORIO").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("TOTAL").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
                                                     });
 
@@ -569,25 +569,25 @@ namespace HD_Reporteria.GestionCobranza
 
                                         tabla.Header(header =>
                                         {
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("FACTURA").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("DESCRIPCIÓN").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("FECHA").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("VENC.").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("DIAS VDOS.").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("IMPORTE").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("ABONOS").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("INT. NORMAL").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("INT. MORAT.").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("TOTAL").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         });
 
@@ -696,25 +696,25 @@ namespace HD_Reporteria.GestionCobranza
 
                                                     tabla.Header(header =>
                                                     {
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("FACTURA").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("DESCRIPCIÓN").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("FECHA").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("VENC.").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("DIAS VDOS.").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("IMPORTE").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("ABONOS").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("INT. NORMAL").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("INT. MORAT.").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("TOTAL").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
                                                     });
 
@@ -1020,44 +1020,35 @@ namespace HD_Reporteria.GestionCobranza
                                         //    .Padding(1).Text("NÚMERO DE REFERENCIA").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         //header.Cell().Border(1).BorderColor("#D3D3D3").AlignCenter().AlignMiddle()
                                         //      .Padding(1).Text(primeraReferencia).FontSize(8).FontFamily(fontFamily).FontColor("#000");
-                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("ANTIGÜEDAD").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("MAQUINARIA Y OTRAS LINEAS").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("REFACCIONES Y TALLER").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("TOTAL").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     });
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("TOTAL VENCIDO").FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaVencidoTotalOperacion.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaVencidoTotalRevolvente.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaTotalVencidoAmbos.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text("VENCIDO MÁS DE 90 DIAS").FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidosmas90Operacion.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidosmas90Revolvente.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidoMas90Ambos.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text("VENCIDO DE 61 A 90 DIAS").FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidos61a90Operacion.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidos61a90Revolvente.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencido61a90Ambos.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text("VENCIDO DE 31 A 60 DIAS").FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidos31a60Operacion.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidos31a60Revolvente.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencido31a60Ambos.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                         tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text("VENCIDO DE UNO A 30 DIAS").FontSize(8).FontFamily(fontFamily);
                                         tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidos1a30Operacion.ToString("N2")).FontSize(8).FontFamily(fontFamily);
                                         tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidos1a30Revolvente.ToString("N2")).FontSize(8).FontFamily(fontFamily);
                                         tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumavencido1a30Ambos.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("POR VENCER").FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaporVencerOperacion.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaporVencerRevolvente.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaporVencerAmbos.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text("VENCIDO DE 31 A 60 DIAS").FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidos31a60Operacion.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidos31a60Revolvente.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencido31a60Ambos.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text("VENCIDO DE 61 A 90 DIAS").FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidos61a90Operacion.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidos61a90Revolvente.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencido61a90Ambos.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text("VENCIDO MÁS DE 90 DIAS").FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidosmas90Operacion.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidosmas90Revolvente.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidoMas90Ambos.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                         tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("INT. NORMAL").FontSize(8).FontFamily(fontFamily);
                                         tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaInteresNormalOperacion.ToString("N2")).FontSize(8).FontFamily(fontFamily);
@@ -1069,9 +1060,19 @@ namespace HD_Reporteria.GestionCobranza
                                         tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaInteresMoratorioRevolvente.ToString("N2")).FontSize(8).FontFamily(fontFamily);
                                         tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaInteresMoratorioAmbos.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("SALDO TOTAL").FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaImporteTotalOperacion.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaImporteTotalRevolvente.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("TOTAL VENCIDO").FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaVencidoTotalOperacion.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaVencidoTotalRevolvente.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaTotalVencidoAmbos.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("POR VENCER").FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaporVencerOperacion.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaporVencerRevolvente.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaporVencerAmbos.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("SALDO TOTAL").FontSize(8).FontFamily(fontFamily).Bold();
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaImporteTotalOperacion.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaImporteTotalRevolvente.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
                                         tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaImporteTotalAmbos.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
 
 
@@ -1204,7 +1205,7 @@ namespace HD_Reporteria.GestionCobranza
 
                                     tablaDatos.Header(header =>
                                     {
-                                        header.Cell().ColumnSpan(4).Background("#275027").AlignCenter().AlignMiddle().Padding(1).Text("NUMEROS DE CUENTA").FontSize(10).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        header.Cell().ColumnSpan(4).Background("#477c2c").AlignCenter().AlignMiddle().Padding(1).Text("NUMEROS DE CUENTA").FontSize(10).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     });
 
                                     

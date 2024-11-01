@@ -95,7 +95,19 @@ namespace HD_Reporteria.Cobranza
                                 });
                             });
 
-                            col1.Item().PaddingVertical(10).Border(1).BorderColor("#275027").Table(tabla =>
+                            DateTime fecha = DateTime.Now;
+                            string fechaActual = fecha.ToString("dd/MM/yyyy", new System.Globalization.CultureInfo("es-ES"));
+
+                            col1.Item().Row(row =>
+                            {
+                                row.RelativeItem().AlignRight().Text(txt =>
+                                {
+                                    txt.Span("INFORMACION AL: ").Bold().FontSize(8);
+                                    txt.Span(fechaActual).FontSize(8);
+                                });
+                            });
+
+                            col1.Item().PaddingVertical(10).Border(1).BorderColor("#477c2c").Table(tabla =>
                             {
                                 tabla.ColumnsDefinition(Columns =>
                                 {
@@ -117,45 +129,45 @@ namespace HD_Reporteria.Cobranza
 
                                 tabla.Header(header =>
                                 {
-                                    header.Cell().Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().ColumnSpan(4).BorderLeft(0.6f).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().ColumnSpan(4).BorderLeft(0.6f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("CARTERA").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().BorderLeft(0.6f).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().BorderLeft(0.6f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                    .Padding(1).Text("").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().ColumnSpan(5).BorderLeft(0.6f).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().ColumnSpan(5).BorderLeft(0.6f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("RECUPERACION DE CARTERA").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().ColumnSpan(3).BorderLeft(0.6f).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().ColumnSpan(3).BorderLeft(0.6f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                    .Padding(1).Text("").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
                                 });
 
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("PERIODO").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderLeft(0.6f).BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderLeft(0.6f).BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("ACTIVA").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("POR VENCER").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("VENCIDA").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("TOTAL").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderLeft(0.6f).BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderLeft(0.6f).BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("OBJETIVO").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderLeft(0.6f).BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderLeft(0.6f).BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("MES").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("ACTIVA").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("POR VENCER").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("VENCIDA").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("TOTAL").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderLeft(0.6f).BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderLeft(0.6f).BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("   OBJETIVO\nRECUPERADO").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("%").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
 
                                 foreach (var total in datos.total)
@@ -265,7 +277,17 @@ namespace HD_Reporteria.Cobranza
                                 });
                             });
 
-                            col1.Item().PaddingVertical(10).Border(1).BorderColor("#275027").Table(tabla =>
+                            col1.Item().Row(row =>
+                            {
+                                row.RelativeItem().AlignRight().Text(txt =>
+                                {
+                                    txt.Span("INFORMACION AL: ").Bold().FontSize(8);
+                                    txt.Span(fechaActual).FontSize(8);
+                                });
+                            });
+
+
+                            col1.Item().PaddingVertical(10).Border(1).BorderColor("#477c2c").Table(tabla =>
                             {
                                 tabla.ColumnsDefinition(Columns =>
                                 {
@@ -287,45 +309,45 @@ namespace HD_Reporteria.Cobranza
 
                                 tabla.Header(header =>
                                 {
-                                    header.Cell().Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().ColumnSpan(4).BorderLeft(0.6f).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().ColumnSpan(4).BorderLeft(0.6f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("CARTERA").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().BorderLeft(0.6f).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().BorderLeft(0.6f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                    .Padding(1).Text("").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().ColumnSpan(5).BorderLeft(0.6f).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().ColumnSpan(5).BorderLeft(0.6f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("RECUPERACION DE CARTERA").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().ColumnSpan(3).BorderLeft(0.6f).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().ColumnSpan(3).BorderLeft(0.6f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                    .Padding(1).Text("").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
                                 });
 
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("PERIODO").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderLeft(0.6f).BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderLeft(0.6f).BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("ACTIVA").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("POR VENCER").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("VENCIDA").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("TOTAL").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderLeft(0.6f).BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderLeft(0.6f).BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("OBJETIVO").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderLeft(0.6f).BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderLeft(0.6f).BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("MES").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("ACTIVA").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("POR VENCER").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("VENCIDA").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("TOTAL").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderLeft(0.6f).BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderLeft(0.6f).BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("   OBJETIVO\nRECUPERADO").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("%").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
 
                                 foreach (var operacion in datos.operacion)
@@ -433,7 +455,17 @@ namespace HD_Reporteria.Cobranza
                                 });
                             });
 
-                            col1.Item().PaddingVertical(10).Border(1).BorderColor("#275027").Table(tabla =>
+                            col1.Item().Row(row =>
+                            {
+                                row.RelativeItem().AlignRight().Text(txt =>
+                                {
+                                    txt.Span("INFORMACION AL: ").Bold().FontSize(8);
+                                    txt.Span(fechaActual).FontSize(8);
+                                });
+                            });
+
+
+                            col1.Item().PaddingVertical(10).Border(1).BorderColor("#477c2c").Table(tabla =>
                             {
                                 tabla.ColumnsDefinition(Columns =>
                                 {
@@ -455,45 +487,45 @@ namespace HD_Reporteria.Cobranza
 
                                 tabla.Header(header =>
                                 {
-                                    header.Cell().Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().ColumnSpan(4).BorderLeft(0.6f).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().ColumnSpan(4).BorderLeft(0.6f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("CARTERA").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().BorderLeft(0.6f).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().BorderLeft(0.6f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                    .Padding(1).Text("").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().ColumnSpan(5).BorderLeft(0.6f).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().ColumnSpan(5).BorderLeft(0.6f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("RECUPERACION DE CARTERA").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().ColumnSpan(3).BorderLeft(0.6f).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().ColumnSpan(3).BorderLeft(0.6f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                    .Padding(1).Text("").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
                                 });
 
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("PERIODO").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderLeft(0.6f).BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderLeft(0.6f).BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("ACTIVA").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("POR VENCER").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("VENCIDA").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("TOTAL").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderLeft(0.6f).BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderLeft(0.6f).BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("OBJETIVO").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderLeft(0.6f).BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderLeft(0.6f).BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("MES").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("ACTIVA").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("POR VENCER").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("VENCIDA").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("TOTAL").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderLeft(0.6f).BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderLeft(0.6f).BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("   OBJETIVO\nRECUPERADO").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("%").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
 
                                 foreach (var revolvente in datos.revolvente)

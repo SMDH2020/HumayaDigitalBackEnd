@@ -84,15 +84,19 @@ namespace HD_Reporteria.Ventas
 
                             //col1.Item().LineHorizontal(0.5f);
 
-                            //col1.Item().Row(row =>
-                            //{
-                            //    row.RelativeItem().AlignCenter().Text(txt =>
-                            //    {
-                            //        txt.Span("SCORECARD GENERAL").FontSize(12).Bold();
-                            //    });
-                            //});
+                            DateTime fecha = DateTime.Now;
+                            string fechaActual = fecha.ToString("dd/MM/yyyy", new System.Globalization.CultureInfo("es-ES"));
 
-                            col1.Item().PaddingVertical(10).Border(1).BorderColor("#275027").Table(tabla =>
+                            col1.Item().Row(row =>
+                            {
+                                row.RelativeItem().AlignRight().Text(txt =>
+                                {
+                                    txt.Span("INFORMACION AL: ").Bold().FontSize(8);
+                                    txt.Span(fechaActual).FontSize(8);
+                                });
+                            });
+
+                            col1.Item().PaddingVertical(10).Border(1).BorderColor("#477c2c").Table(tabla =>
                             {
                                 tabla.ColumnsDefinition(Columns =>
                                 {
@@ -108,21 +112,21 @@ namespace HD_Reporteria.Ventas
 
                                 tabla.Header(header =>
                                 {
-                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("LINEA").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("SUCURSAL").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("CLIENTE").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("VENDEDOR").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("FECHA").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("NO. ECONOMICO").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("MODELO").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("IMPORTE").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
                                 });
 
@@ -156,7 +160,16 @@ namespace HD_Reporteria.Ventas
                                 }
                             });
                         });
-
+                        page.Footer().Height(60).PaddingLeft(30).PaddingRight(30).PaddingBottom(10).Row(row =>
+                        {
+                            row.RelativeItem().AlignRight().PaddingTop(20).Text(txt =>
+                            {
+                                txt.Span("Pág. ").FontSize(10).FontFamily("arial");
+                                txt.CurrentPageNumber().FontSize(10).Bold().FontFamily("arial");
+                                txt.Span(" de ").FontSize(10).FontFamily("arial");
+                                txt.TotalPages().FontSize(10).Bold().FontFamily("arial");
+                            });
+                        });
                     });
 
                 }).GeneratePdf();
