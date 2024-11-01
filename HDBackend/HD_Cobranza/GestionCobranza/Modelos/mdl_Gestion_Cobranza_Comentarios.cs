@@ -22,6 +22,7 @@
         public DateTime fecha_creacion { get; set; }
         public string? usuario { get; set; }
         public string? gestion { get; set; }
+        public int objecion { get; set; }
         public string? comentarios { get; set; }
         public bool volvercontactar { get; set; }
         public DateTime? fechavolveracontactar { get; set; }

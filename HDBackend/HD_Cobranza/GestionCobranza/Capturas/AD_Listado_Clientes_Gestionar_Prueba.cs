@@ -4,15 +4,15 @@ using HD_Cobranza.GestionCobranza.Modelos;
 
 namespace HD_Cobranza.GestionCobranza.Capturas
 {
-    public class AD_Listado_Clientes_Gestionar
+    public class AD_Listado_Clientes_Gestionar_Prueba
     {
         private string CadenaConexion;
-        public AD_Listado_Clientes_Gestionar(string _cadenaconexion)
+        public AD_Listado_Clientes_Gestionar_Prueba(string _cadenaconexion)
         {
             CadenaConexion = _cadenaconexion;
         }
 
-        public async Task<IEnumerable<mdl_Listado_Clientes_Gestionar>> Clientes(string adr, string sucursal, int responsable, string linea, string cartera, string convenio, string juridico)
+        public async Task<IEnumerable<mdl_Listado_Clientes_Gestionar_Prueba>> Clientes(string adr, string sucursal, int responsable, string linea, string cartera, string convenio, string juridico)
         {
             try
             {
@@ -21,13 +21,13 @@ namespace HD_Cobranza.GestionCobranza.Capturas
                     @adr = adr,
                     @sucursal = sucursal,
                     @responsable = responsable,
-                    //@linea = linea,
-                    //@cartera = cartera,
-                    //@convenio = convenio,
-                    //@juridico = juridico
+                    @linea_credito = linea,
+                    @cartera = cartera,
+                    @convenio = convenio,
+                    @juridico = juridico
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_Listado_Clientes_Gestionar> result = await factory.SQL.QueryAsync<mdl_Listado_Clientes_Gestionar>("GestionCobranza.sp_Listado_Clientes_Gestionar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Listado_Clientes_Gestionar_Prueba> result = await factory.SQL.QueryAsync<mdl_Listado_Clientes_Gestionar_Prueba>("Cartera_Clientes.Cobranza.sp_Obtener_Gestion", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
