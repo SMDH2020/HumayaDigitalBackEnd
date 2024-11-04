@@ -71,8 +71,10 @@ namespace HD_Reporteria.GestionCobranza
                             // Mostrar la tabla para la primera sucursal
                             var primeraSucursal = sucursales.FirstOrDefault()?.Key;
                             var registrosPrimeraSucursal = sucursales.FirstOrDefault()?.ToList();
+                                if (registrosRefaccionesYTaller.Any())
+                                {
 
-                            col1.Item().PaddingBottom(2).Row(row =>
+                                    col1.Item().PaddingBottom(2).Row(row =>
                             {
                                 // Columna 1: "Cliente"
                                 row.ConstantItem(340).Column(col =>
@@ -126,8 +128,7 @@ namespace HD_Reporteria.GestionCobranza
 
                                 //col1.Item().LineHorizontal(0.01f).LineColor("#D3D3D3");
 
-                                if (registrosRefaccionesYTaller.Any())
-                                {
+                                
                                     double sumaImporteTotal = 0;
 
                                     foreach (var item in registrosRefaccionesYTaller)
@@ -648,10 +649,10 @@ namespace HD_Reporteria.GestionCobranza
                                             .Text(item.importepagado.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                             tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
-                                            .Text("0").FontSize(8).FontFamily(fontFamily);
+                                            .Text(item.interes_pactado.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                             tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
-                                            .Text((item.interes_moratorio + item.interes_pactado).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                            .Text((item.interes_moratorio).ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                             double importetotal = item.saldo + item.interes_moratorio + item.interes_pactado;
 
@@ -661,7 +662,8 @@ namespace HD_Reporteria.GestionCobranza
                                         }
                                         tabla.Footer(footer =>
                                         {
-                                            double sumaInteresesTotal = (registrosPrimeraSucursalOtros.Sum(item => item.interes_pactado)) + (registrosPrimeraSucursalOtros.Sum(item => item.interes_moratorio));
+                                            double sumaInteresesTotal = registrosPrimeraSucursalOtros.Sum(item => item.interes_moratorio);
+                                            double sumaInteresesPactado = registrosPrimeraSucursalOtros.Sum(item => item.interes_pactado);
                                             double sumasaldoTotal = registrosPrimeraSucursalOtros.Sum(item => item.saldo);
                                             double sumaImportePagadoTotal = registrosPrimeraSucursalOtros.Sum(item => item.importepagado);
                                             double sumaImporteFacturaTotal = registrosPrimeraSucursalOtros.Sum(item => item.importefactura);
@@ -673,7 +675,7 @@ namespace HD_Reporteria.GestionCobranza
                                             footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignLeft().Text("TOTAL").FontSize(8).FontFamily("arial").Bold();
                                             footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaImporteFacturaTotal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
                                             footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaImportePagadoTotal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
-                                            footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text("0").FontSize(8).FontFamily("arial").Bold();
+                                            footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaInteresesPactado.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
                                             footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaInteresesTotal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
                                             footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaImporteTotalPrimeraSucursal.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
                                         }
@@ -798,10 +800,10 @@ namespace HD_Reporteria.GestionCobranza
                                                         .Text(item.importepagado.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                                         tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
-                                                        .Text("0").FontSize(8).FontFamily(fontFamily);
+                                                        .Text(item.interes_pactado.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                                         tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
-                                                        .Text((item.interes_moratorio + item.interes_pactado).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                                        .Text((item.interes_moratorio).ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                                         double importetotal = item.saldo + item.interes_moratorio + item.interes_pactado;
 
@@ -811,7 +813,8 @@ namespace HD_Reporteria.GestionCobranza
                                                     }
                                                     tabla.Footer(footer =>
                                                     {
-                                                        double sumaInteresesTotalSucursal = (registrosSucursal.Sum(item => item.interes_pactado)) + (registrosSucursal.Sum(item => item.interes_moratorio));
+                                                        double sumaInteresesTotalSucursal = registrosSucursal.Sum(item => item.interes_moratorio);
+                                                        double sumaInteresesPactadosTotalSucursal = registrosSucursal.Sum(item => item.interes_pactado);
                                                         double sumasaldoTotalSucursal = registrosSucursal.Sum(item => item.saldo);
                                                         double sumaImportePagadoTotalSucursal = registrosSucursal.Sum(item => item.importepagado);
                                                         double sumaImporteFacturaTotalSucursal = registrosSucursal.Sum(item => item.importefactura);
@@ -823,7 +826,7 @@ namespace HD_Reporteria.GestionCobranza
                                                         footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignLeft().Text("TOTAL").FontSize(8).FontFamily("arial").Bold();
                                                         footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaImporteFacturaTotalSucursal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
                                                         footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaImportePagadoTotalSucursal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
-                                                        footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignLeft().Text("0").FontSize(8).FontFamily("arial").Bold();
+                                                        footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignLeft().Text(sumaInteresesPactadosTotalSucursal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
                                                         footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaInteresesTotalSucursal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
                                                         footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaImporteTotalsucursal.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
                                                     });
