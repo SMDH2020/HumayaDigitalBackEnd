@@ -15,10 +15,14 @@ namespace HD.Clientes.Modelos.Reporte_Cumplimiento_Condicionadas
         public int documentos_solicitados { get; set; }
         public int documentos_entregados { get; set; }
         public double porcentaje_documentos_entregados { get; set; }
+        public int documentos_faltantes { get; set; }
+        public double porcentaje_documentos_faltantes { get; set; }
         public int documentos_puntuales { get; set; }
         public double porcentaje_documentos_puntuales { get; set; }
         public int documentos_retrasados { get; set; }
         public double porcentaje_documentos_retrasados { get; set; }
+        public string? fecha_vencido { get; set; }
+        public int dias_vencido { get; set; }
         public int idmes { get; set; }
         public string? mes { get; set; }
     }
