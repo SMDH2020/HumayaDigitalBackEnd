@@ -17,11 +17,12 @@ namespace HD_Buro.Consultas
             {
                 var parametros = new
                 {
-                    ejercicio = view.ejercicio,
-                    periodo = view.periodo,
-                    //linea = view.linea,
-                    //vencimiento = view.vencimiento,
-                    //registrado = view.registrado,
+                    @ejercicio = view.ejercicio,
+                    @periodo = view.periodo,
+                    @linea = view.linea,
+                    @vencimiento = view.vencimiento,
+                    @registrado = view.registrado,
+                    @domicilio = view.domicilio,
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 //IEnumerable<mdlCarga_Reporte_Buro> result = await factory.SQL.QueryAsync<mdlCarga_Reporte_Buro>("Cartera_clientes.dbo.sp_obtener_Listado_Mensual_Credito_Mhusa", parametros, commandType: System.Data.CommandType.StoredProcedure);
@@ -40,8 +41,8 @@ namespace HD_Buro.Consultas
             {
                 var parametros = new
                 {
-                    ejercicio = view.ejercicio,
-                    periodo = view.periodo,
+                    @ejercicio = view.ejercicio,
+                    @periodo = view.periodo,
                     //linea = view.linea,
                     //vencimiento = view.vencimiento,
                     //registrado = view.registrado,
