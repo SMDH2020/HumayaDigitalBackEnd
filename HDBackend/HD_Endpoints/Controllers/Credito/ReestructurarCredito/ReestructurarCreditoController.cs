@@ -1,0 +1,43 @@
+﻿using HD.Clientes.Consultas.PrestamoClientes;
+using HD.Clientes.Modelos.PrestamoClientes;
+using HD.Clientes.Modelos;
+using HD.Security;
+using Microsoft.AspNetCore.Mvc;
+using HD.Clientes.Consultas.ReestructurarCredito;
+
+namespace HD.Endpoints.Controllers.Credito.ReestructurarCredito
+{
+    public class ReestructurarCreditoController : MyBase
+    {
+        private readonly IConfiguration Configuracion;
+        private readonly ISesion Sesion;
+        public ReestructurarCreditoController(IConfiguration configuration, ISesion sesion)
+        {
+            Configuracion = configuration;
+            Sesion = sesion;
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ListadoSolicitudes(int idcliente)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Reestructurar_Credito_Listado_Solicitudes datos = new AD_Reestructurar_Credito_Listado_Solicitudes(CadenaConexion);
+            var usuario = int.Parse(Sesion.usuario());
+            var result = await datos.Listado(usuario, idcliente);
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> DatosSolicitud(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Reestructurar_Credito_Informacion_Solicitud datos = new AD_Reestructurar_Credito_Informacion_Solicitud(CadenaConexion);
+            var result = await datos.Obtener(folio);
+            return Ok(result);
+
+        }
+    }
+}
