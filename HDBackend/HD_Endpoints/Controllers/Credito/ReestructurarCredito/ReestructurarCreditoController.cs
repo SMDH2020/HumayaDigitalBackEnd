@@ -39,5 +39,17 @@ namespace HD.Endpoints.Controllers.Credito.ReestructurarCredito
             return Ok(result);
 
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> CrearReestructuracion(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Reestructurar_Credito_Crear_Folio datos = new AD_Reestructurar_Credito_Crear_Folio(CadenaConexion);
+            var usuario = int.Parse(Sesion.usuario());
+            var result = await datos.Crear(folio,usuario);
+            return Ok(result);
+
+        }
     }
 }
