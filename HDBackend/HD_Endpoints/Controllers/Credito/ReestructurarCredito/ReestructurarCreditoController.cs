@@ -4,6 +4,8 @@ using HD.Clientes.Modelos;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
 using HD.Clientes.Consultas.ReestructurarCredito;
+using HD.Clientes.Consultas.SolicitudCredito;
+using HD.Notifications.Analisis;
 
 namespace HD.Endpoints.Controllers.Credito.ReestructurarCredito
 {
@@ -51,5 +53,23 @@ namespace HD.Endpoints.Controllers.Credito.ReestructurarCredito
             return Ok(result);
 
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> enviarRevision(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Reestructurar_Credito_Enviar_Revision datos = new AD_Reestructurar_Credito_Enviar_Revision(CadenaConexion);
+            var result = await datos.Enviar_Solicitud(folio, Sesion.usuario());
+            string mensaje = "Validación de condiciones en proceso";
+
+            if (result != null)
+            {
+                await NSolicitud_Enviar.Enviar(result);
+            }
+            return Ok(new { mensaje });
+
+        }
+
     }
 }
