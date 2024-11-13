@@ -351,5 +351,18 @@ namespace HD.Endpoints.Controllers.Credito
 
         }
 
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarDocumentoReestructuracion(mdlSolicitudCredito_Documentacion_View mdl)
+        {
+
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADSolicitud_Credito_Documentacion_JDF_Guardar datos = new ADSolicitud_Credito_Documentacion_JDF_Guardar(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.GuardarDocumentoReestructuracion(mdl);
+            return Ok(result);
+
+        }
+
     }
 }
