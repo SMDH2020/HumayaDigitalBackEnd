@@ -90,7 +90,19 @@ namespace HD_Reporteria.Ventas
                                 });
                             });
 
-                            col1.Item().PaddingVertical(10).Border(1).BorderColor("#275027").Table(tabla =>
+                            DateTime fecha = DateTime.Now;
+                            string fechaActual = fecha.ToString("dd/MM/yyyy", new System.Globalization.CultureInfo("es-ES"));
+
+                            col1.Item().Row(row =>
+                            {
+                                row.RelativeItem().AlignRight().Text(txt =>
+                                {
+                                    txt.Span("INFORMACION AL: ").Bold().FontSize(8);
+                                    txt.Span(fechaActual).FontSize(8);
+                                });
+                            });
+
+                            col1.Item().PaddingVertical(10).Border(1).BorderColor("#477c2c").Table(tabla =>
                             {
                                 tabla.ColumnsDefinition(Columns =>
                                 {
@@ -105,27 +117,27 @@ namespace HD_Reporteria.Ventas
 
                                 tabla.Header(header =>
                                 {
-                                    header.Cell().Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().ColumnSpan(3).BorderLeft(0.6f).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().ColumnSpan(3).BorderLeft(0.6f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text(obtenernombre_mes(mes_actual)).FontSize(10).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().ColumnSpan(3).BorderLeft(0.6f).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().ColumnSpan(3).BorderLeft(0.6f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text(obtenernombre_mes(periodo_inicio) + " " + ejercicio_inicio + " A " + obtenernombre_mes(mes_actual) + " " + ejercicio).FontSize(10).Bold().FontFamily(fontFamily).FontColor("#fff");
                                 });
 
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("LINEA").FontSize(10).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("OBJETIVO").FontSize(10).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("REAL").FontSize(10).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("ALCANCE").FontSize(10).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("OBJETIVO").FontSize(10).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("REAL").FontSize(10).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#275027").AlignCenter().AlignMiddle()
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("ALCANCE").FontSize(10).Bold().FontFamily(fontFamily).FontColor("#fff");
 
                                 double porcentaje = 0;
@@ -195,7 +207,16 @@ namespace HD_Reporteria.Ventas
                                     .Text("").FontSize(10).FontFamily(fontFamily);
                             });
                         });
-
+                        page.Footer().Height(60).PaddingLeft(30).PaddingRight(30).PaddingBottom(10).Row(row =>
+                        {
+                            row.RelativeItem().AlignRight().PaddingTop(20).Text(txt =>
+                            {
+                                txt.Span("Pág. ").FontSize(10).FontFamily("arial");
+                                txt.CurrentPageNumber().FontSize(10).Bold().FontFamily("arial");
+                                txt.Span(" de ").FontSize(10).FontFamily("arial");
+                                txt.TotalPages().FontSize(10).Bold().FontFamily("arial");
+                            });
+                        });
                     });
 
                 }).GeneratePdf();

@@ -22,7 +22,7 @@ namespace HD_Cobranza.GestionCobranza.Capturas
                     card
                 };
 
-                IEnumerable<mdl_Obtener_Convenios_Cliente_Gestionar> result = await factory.SQL.QueryAsync<mdl_Obtener_Convenios_Cliente_Gestionar>("GestionCobranza.sp_Obtener_Facturas_ClienteGestionar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Obtener_Convenios_Cliente_Gestionar> result = await factory.SQL.QueryAsync<mdl_Obtener_Convenios_Cliente_Gestionar>("Cartera_Clientes.Cobranza.sp_Obtener_Facturas_ClienteGestionar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

@@ -7,6 +7,6 @@
         public string? linea { get; set; }
         public string? vencimiento { get; set; }
         public string? registrado { get; set; }
-
+        public string? domicilio { get; set; }
     }
 }

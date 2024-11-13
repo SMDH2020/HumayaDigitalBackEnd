@@ -25,6 +25,7 @@
         public double saldo_total { get; set; }
         public int diasvencido { get; set; }
         public float tasa {  get; set; }
+        public float tasa_moratoria { get; set; }
         //public string? descripcion { get; set; }
         
         //public double intereses { get; set; }

@@ -71,8 +71,10 @@ namespace HD_Reporteria.GestionCobranza
                             // Mostrar la tabla para la primera sucursal
                             var primeraSucursal = sucursales.FirstOrDefault()?.Key;
                             var registrosPrimeraSucursal = sucursales.FirstOrDefault()?.ToList();
+                                if (registrosRefaccionesYTaller.Any())
+                                {
 
-                            col1.Item().PaddingBottom(2).Row(row =>
+                                    col1.Item().PaddingBottom(2).Row(row =>
                             {
                                 // Columna 1: "Cliente"
                                 row.ConstantItem(340).Column(col =>
@@ -126,8 +128,7 @@ namespace HD_Reporteria.GestionCobranza
 
                                 //col1.Item().LineHorizontal(0.01f).LineColor("#D3D3D3");
 
-                                if (registrosRefaccionesYTaller.Any())
-                                {
+                                
                                     double sumaImporteTotal = 0;
 
                                     foreach (var item in registrosRefaccionesYTaller)
@@ -186,23 +187,23 @@ namespace HD_Reporteria.GestionCobranza
 
                                         tabla.Header(header =>
                                         {
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("FACTURA").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("DESCRIPCIÓN").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("FECHA").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("VENC.").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("DIAS VDOS.").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("IMPORTE").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("ABONOS").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("INT. MORATORIO").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("TOTAL").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         });
 
@@ -275,12 +276,13 @@ namespace HD_Reporteria.GestionCobranza
                                             {
                                                 var registrosSucursal = sucursal.ToList();
 
+                                                //col1.Item().PageBreak();
                                                 // Mostrar la tabla para la sucursal diferente
-                                                col1.Item().PaddingTop(10).Text(txt =>
-                                                {
-                                                    txt.Span("Sucursal: ").Bold().FontSize(10);
-                                                    txt.Span(CapitalizeWords(registrosSucursal.FirstOrDefault()?.sucursal)).FontSize(10);
-                                                });
+                                                //col1.Item().PaddingTop(10).Text(txt =>
+                                                //{
+                                                //    txt.Span("Sucursal: ").Bold().FontSize(10);
+                                                //    txt.Span(CapitalizeWords(registrosSucursal.FirstOrDefault()?.sucursal)).FontSize(10);
+                                                //});
 
                                                 double sumaImporteTotalsucursal = 0;
 
@@ -290,101 +292,125 @@ namespace HD_Reporteria.GestionCobranza
                                                     sumaImporteTotalsucursal += importetotal;
                                                 };
 
-                                                col1.Item().PaddingVertical(4).Table(tabla =>
+                                                //col1.Item().PaddingVertical(4).Table(tabla =>
+                                                //{
+                                                //    tabla.ColumnsDefinition(Columns =>
+                                                //    {
+                                                //        Columns.RelativeColumn(1.4f);
+                                                //        Columns.RelativeColumn(1.4f);
+                                                //        Columns.RelativeColumn(1f);
+                                                //        Columns.RelativeColumn(1f);
+                                                //        Columns.RelativeColumn(1f);
+                                                //        Columns.RelativeColumn(1.5f);
+                                                //        Columns.RelativeColumn(1.4f);
+                                                //        Columns.RelativeColumn(1.4f);
+                                                //        Columns.RelativeColumn(1.4f);
+                                                //    });
+
+                                                col1.Item().ShowEntire().Column(column =>
                                                 {
-                                                    tabla.ColumnsDefinition(Columns =>
+                                                    column.Item().PaddingTop(10).Text(txt =>
                                                     {
-                                                        Columns.RelativeColumn(1.4f);
-                                                        Columns.RelativeColumn(1.4f);
-                                                        Columns.RelativeColumn(1f);
-                                                        Columns.RelativeColumn(1f);
-                                                        Columns.RelativeColumn(1f);
-                                                        Columns.RelativeColumn(1.5f);
-                                                        Columns.RelativeColumn(1.4f);
-                                                        Columns.RelativeColumn(1.4f);
-                                                        Columns.RelativeColumn(1.4f);
+                                                        txt.Span("Sucursal: ").Bold().FontSize(10);
+                                                        txt.Span(CapitalizeWords(registrosSucursal.FirstOrDefault()?.sucursal)).FontSize(10);
                                                     });
 
-                                                    tabla.Header(header =>
+                                                    column.Item().PaddingVertical(4).Table(tabla =>
                                                     {
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                                        .Padding(1).Text("FACTURA").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                                        .Padding(1).Text("DESCRIPCIÓN").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                                        .Padding(1).Text("FECHA").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                                        .Padding(1).Text("VENC.").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                                        .Padding(1).Text("DIAS VDOS.").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                                        .Padding(1).Text("IMPORTE").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                                        .Padding(1).Text("ABONOS").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                                        .Padding(1).Text("INT. MORATORIO").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                                        .Padding(1).Text("TOTAL").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                    });
-
-                                                    foreach (var item in registrosSucursal)
-                                                    {
-
-                                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1)
-                                                       .Text(item.serie_fiscal + " " + item.folio_fiscal).FontSize(8).FontFamily(fontFamily);
-
-                                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1)
-                                                       .Text(item.descripcion).FontSize(8).FontFamily(fontFamily);
-
-                                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
-                                                        .Text($"{item.fecha}").FontSize(8).FontFamily(fontFamily);
-
-                                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
-                                                       .Text(item.vencimiento).FontSize(8).FontFamily(fontFamily);
-
-                                                        if (item.diasvencido < 0)
+                                                        tabla.ColumnsDefinition(Columns =>
                                                         {
-                                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
-                                                           .Text("").FontSize(8).FontFamily(fontFamily);
-                                                        }
-                                                        else
+                                                            Columns.RelativeColumn(1.4f);
+                                                            Columns.RelativeColumn(1.4f);
+                                                            Columns.RelativeColumn(1f);
+                                                            Columns.RelativeColumn(1f);
+                                                            Columns.RelativeColumn(1f);
+                                                            Columns.RelativeColumn(1.5f);
+                                                            Columns.RelativeColumn(1.4f);
+                                                            Columns.RelativeColumn(1.4f);
+                                                            Columns.RelativeColumn(1.4f);
+                                                        });
+
+                                                        tabla.Header(header =>
                                                         {
+                                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
+                                                            .Padding(1).Text("FACTURA").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
+                                                            .Padding(1).Text("DESCRIPCIÓN").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
+                                                            .Padding(1).Text("FECHA").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
+                                                            .Padding(1).Text("VENC.").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
+                                                            .Padding(1).Text("DIAS VDOS.").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
+                                                            .Padding(1).Text("IMPORTE").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
+                                                            .Padding(1).Text("ABONOS").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
+                                                            .Padding(1).Text("INT. MORATORIO").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
+                                                            .Padding(1).Text("TOTAL").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                                        });
+
+                                                        foreach (var item in registrosSucursal)
+                                                        {
+
+                                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1)
+                                                           .Text(item.serie_fiscal + " " + item.folio_fiscal).FontSize(8).FontFamily(fontFamily);
+
+                                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1)
+                                                           .Text(item.descripcion).FontSize(8).FontFamily(fontFamily);
+
                                                             tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
-                                                            .Text(item.diasvencido).FontSize(8).FontFamily(fontFamily);
+                                                            .Text($"{item.fecha}").FontSize(8).FontFamily(fontFamily);
+
+                                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
+                                                           .Text(item.vencimiento).FontSize(8).FontFamily(fontFamily);
+
+                                                            if (item.diasvencido < 0)
+                                                            {
+                                                                tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
+                                                               .Text("").FontSize(8).FontFamily(fontFamily);
+                                                            }
+                                                            else
+                                                            {
+                                                                tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
+                                                                .Text(item.diasvencido).FontSize(8).FontFamily(fontFamily);
+                                                            }
+
+                                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
+                                                           .Text($"{item.importefactura.ToString("N2")}").FontSize(8).FontFamily(fontFamily);
+
+                                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
+                                                            .Text(item.importepagado.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+
+
+                                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
+                                                            .Text((item.interes_moratorio + item.interes_pactado).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+
+                                                            double importetotal = item.saldo + item.interes_moratorio + item.interes_pactado;
+
+                                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
+                                                            .Text(importetotal.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+
                                                         }
+                                                        tabla.Footer(footer =>
+                                                        {
+                                                            double sumaInteresesTotalSucursal = (registrosSucursal.Sum(item => item.interes_pactado)) + (registrosSucursal.Sum(item => item.interes_moratorio));
+                                                            double sumasaldoTotalSucursal = registrosSucursal.Sum(item => item.saldo);
+                                                            double sumaImportePagadoTotalSucursal = registrosSucursal.Sum(item => item.importepagado);
+                                                            double sumaImporteFacturaTotalSucursal = registrosSucursal.Sum(item => item.importefactura);
 
-                                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
-                                                       .Text($"{item.importefactura.ToString("N2")}").FontSize(8).FontFamily(fontFamily);
-
-                                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
-                                                        .Text(item.importepagado.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-
-
-                                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
-                                                        .Text((item.interes_moratorio + item.interes_pactado).ToString("N2")).FontSize(8).FontFamily(fontFamily);
-
-                                                        double importetotal = item.saldo + item.interes_moratorio + item.interes_pactado;
-
-                                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
-                                                        .Text(importetotal.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-
-                                                    }
-                                                    tabla.Footer(footer =>
-                                                    {
-                                                        double sumaInteresesTotalSucursal = (registrosSucursal.Sum(item => item.interes_pactado)) + (registrosSucursal.Sum(item => item.interes_moratorio));
-                                                        double sumasaldoTotalSucursal = registrosSucursal.Sum(item => item.saldo);
-                                                        double sumaImportePagadoTotalSucursal = registrosSucursal.Sum(item => item.importepagado);
-                                                        double sumaImporteFacturaTotalSucursal = registrosSucursal.Sum(item => item.importefactura);
-
-                                                        footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
-                                                        footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
-                                                        footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
-                                                        footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
-                                                        footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignLeft().Text("TOTAL").FontSize(8).FontFamily("arial").Bold();
-                                                        footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaImporteFacturaTotalSucursal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
-                                                        footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaImportePagadoTotalSucursal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
-                                                        footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaInteresesTotalSucursal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
-                                                        footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaImporteTotalsucursal.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
+                                                            footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
+                                                            footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
+                                                            footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
+                                                            footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignCenter().Text("").FontSize(8).FontFamily("arial");
+                                                            footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignLeft().Text("TOTAL").FontSize(8).FontFamily("arial").Bold();
+                                                            footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaImporteFacturaTotalSucursal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
+                                                            footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaImportePagadoTotalSucursal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
+                                                            footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaInteresesTotalSucursal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
+                                                            footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaImporteTotalsucursal.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
+                                                        });
                                                     });
                                                 });
                                             }
@@ -551,7 +577,7 @@ namespace HD_Reporteria.GestionCobranza
                                         txt.Span(CapitalizeWords(registrosOtros.FirstOrDefault().sucursal)).FontSize(10);
                                     });
 
-                                    col1.Item().PaddingVertical(4).Table(tabla =>
+                                    col1.Item().PaddingVertical(4).ShowEntire().Table(tabla =>
                                     {
                                         tabla.ColumnsDefinition(Columns =>
                                         {
@@ -569,25 +595,25 @@ namespace HD_Reporteria.GestionCobranza
 
                                         tabla.Header(header =>
                                         {
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("FACTURA").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("DESCRIPCIÓN").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("FECHA").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("VENC.").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("DIAS VDOS.").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("IMPORTE").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("ABONOS").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("INT. NORMAL").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("INT. MORAT.").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                            header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                            header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("TOTAL").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         });
 
@@ -596,7 +622,7 @@ namespace HD_Reporteria.GestionCobranza
                                             tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1)
                                            .Text(item.serie_fiscal + " " + item.folio_fiscal).FontSize(8).FontFamily(fontFamily);
 
-                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1)
+                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").MaxHeight(30).Padding(1)
                                            .Text(item.descripcion).FontSize(8).FontFamily(fontFamily);
 
                                             tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
@@ -623,10 +649,10 @@ namespace HD_Reporteria.GestionCobranza
                                             .Text(item.importepagado.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                             tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
-                                            .Text("0").FontSize(8).FontFamily(fontFamily);
+                                            .Text(item.interes_pactado.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                             tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
-                                            .Text((item.interes_moratorio + item.interes_pactado).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                            .Text((item.interes_moratorio).ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                             double importetotal = item.saldo + item.interes_moratorio + item.interes_pactado;
 
@@ -636,7 +662,8 @@ namespace HD_Reporteria.GestionCobranza
                                         }
                                         tabla.Footer(footer =>
                                         {
-                                            double sumaInteresesTotal = (registrosPrimeraSucursalOtros.Sum(item => item.interes_pactado)) + (registrosPrimeraSucursalOtros.Sum(item => item.interes_moratorio));
+                                            double sumaInteresesTotal = registrosPrimeraSucursalOtros.Sum(item => item.interes_moratorio);
+                                            double sumaInteresesPactado = registrosPrimeraSucursalOtros.Sum(item => item.interes_pactado);
                                             double sumasaldoTotal = registrosPrimeraSucursalOtros.Sum(item => item.saldo);
                                             double sumaImportePagadoTotal = registrosPrimeraSucursalOtros.Sum(item => item.importepagado);
                                             double sumaImporteFacturaTotal = registrosPrimeraSucursalOtros.Sum(item => item.importefactura);
@@ -648,7 +675,7 @@ namespace HD_Reporteria.GestionCobranza
                                             footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignLeft().Text("TOTAL").FontSize(8).FontFamily("arial").Bold();
                                             footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaImporteFacturaTotal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
                                             footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaImportePagadoTotal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
-                                            footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text("0").FontSize(8).FontFamily("arial").Bold();
+                                            footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaInteresesPactado.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
                                             footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaInteresesTotal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
                                             footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaImporteTotalPrimeraSucursal.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
                                         }
@@ -664,11 +691,11 @@ namespace HD_Reporteria.GestionCobranza
                                                 var registrosSucursal = sucursal.ToList();
 
                                                 // Mostrar la tabla para la sucursal diferente
-                                                col1.Item().PaddingTop(10).Text(txt =>
-                                                {
-                                                    txt.Span("Sucursal: ").Bold().FontSize(10);
-                                                    txt.Span(CapitalizeWords(registrosSucursal.FirstOrDefault()?.sucursal)).FontSize(10);
-                                                });
+                                                //col1.Item().PaddingTop(10).Text(txt =>
+                                                //{
+                                                //    txt.Span("Sucursal: ").Bold().FontSize(10);
+                                                //    txt.Span(CapitalizeWords(registrosSucursal.FirstOrDefault()?.sucursal)).FontSize(10);
+                                                //});
 
                                                 double sumaImporteTotalsucursal = 0;
 
@@ -678,17 +705,40 @@ namespace HD_Reporteria.GestionCobranza
                                                     sumaImporteTotalsucursal += importetotal;
                                                 };
 
-                                                col1.Item().PaddingVertical(4).Table(tabla =>
+                                            //col1.Item().PaddingVertical(4).ShowEntire().Table(tabla =>
+                                            //{
+                                            //    tabla.ColumnsDefinition(Columns =>
+                                            //    {
+                                            //        Columns.RelativeColumn(1.4f);
+                                            //        Columns.RelativeColumn(1.4f);
+                                            //        Columns.RelativeColumn(1.2f);
+                                            //        Columns.RelativeColumn(1.2f);
+                                            //        Columns.RelativeColumn(1.4f);
+                                            //        Columns.RelativeColumn(1.4f);
+                                            //        Columns.RelativeColumn(1.4f);
+                                            //        Columns.RelativeColumn(1.4f);
+                                            //        Columns.RelativeColumn(1.4f);
+                                            //        Columns.RelativeColumn(1.4f);
+                                            //    });
+
+                                            col1.Item().ShowEntire().Column(column =>
+                                            {
+                                                column.Item().PaddingTop(10).Text(txt =>
+                                                {
+                                                    txt.Span("Sucursal: ").Bold().FontSize(10);
+                                                    txt.Span(CapitalizeWords(registrosSucursal.FirstOrDefault()?.sucursal)).FontSize(10);
+                                                });
+
+                                                column.Item().PaddingVertical(4).Table(tabla =>
                                                 {
                                                     tabla.ColumnsDefinition(Columns =>
                                                     {
                                                         Columns.RelativeColumn(1.4f);
                                                         Columns.RelativeColumn(1.4f);
-                                                        Columns.RelativeColumn(1.2f);
-                                                        Columns.RelativeColumn(1.2f);
-                                                        Columns.RelativeColumn(1.4f);
-                                                        Columns.RelativeColumn(1.4f);
-                                                        Columns.RelativeColumn(1.4f);
+                                                        Columns.RelativeColumn(1f);
+                                                        Columns.RelativeColumn(1f);
+                                                        Columns.RelativeColumn(1f);
+                                                        Columns.RelativeColumn(1.5f);
                                                         Columns.RelativeColumn(1.4f);
                                                         Columns.RelativeColumn(1.4f);
                                                         Columns.RelativeColumn(1.4f);
@@ -696,25 +746,25 @@ namespace HD_Reporteria.GestionCobranza
 
                                                     tabla.Header(header =>
                                                     {
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("FACTURA").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("DESCRIPCIÓN").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("FECHA").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("VENC.").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("DIAS VDOS.").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("IMPORTE").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("ABONOS").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("INT. NORMAL").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("INT. MORAT.").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                                         .Padding(1).Text("TOTAL").FontSize(08).Bold().FontFamily(fontFamily).FontColor("#fff");
                                                     });
 
@@ -723,7 +773,7 @@ namespace HD_Reporteria.GestionCobranza
                                                         tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1)
                                                         .Text(item.serie_fiscal + " " + item.folio_fiscal).FontSize(8).FontFamily(fontFamily);
 
-                                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1)
+                                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").MaxHeight(30).Padding(1)
                                                         .Text(item.descripcion).FontSize(8).FontFamily(fontFamily);
 
                                                         tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignCenter()
@@ -750,10 +800,10 @@ namespace HD_Reporteria.GestionCobranza
                                                         .Text(item.importepagado.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                                         tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
-                                                        .Text("0").FontSize(8).FontFamily(fontFamily);
+                                                        .Text(item.interes_pactado.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                                         tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Height(15).Padding(1).AlignRight()
-                                                        .Text((item.interes_moratorio + item.interes_pactado).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                                        .Text((item.interes_moratorio).ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                                         double importetotal = item.saldo + item.interes_moratorio + item.interes_pactado;
 
@@ -763,7 +813,8 @@ namespace HD_Reporteria.GestionCobranza
                                                     }
                                                     tabla.Footer(footer =>
                                                     {
-                                                        double sumaInteresesTotalSucursal = (registrosSucursal.Sum(item => item.interes_pactado)) + (registrosSucursal.Sum(item => item.interes_moratorio));
+                                                        double sumaInteresesTotalSucursal = registrosSucursal.Sum(item => item.interes_moratorio);
+                                                        double sumaInteresesPactadosTotalSucursal = registrosSucursal.Sum(item => item.interes_pactado);
                                                         double sumasaldoTotalSucursal = registrosSucursal.Sum(item => item.saldo);
                                                         double sumaImportePagadoTotalSucursal = registrosSucursal.Sum(item => item.importepagado);
                                                         double sumaImporteFacturaTotalSucursal = registrosSucursal.Sum(item => item.importefactura);
@@ -775,11 +826,12 @@ namespace HD_Reporteria.GestionCobranza
                                                         footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignLeft().Text("TOTAL").FontSize(8).FontFamily("arial").Bold();
                                                         footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaImporteFacturaTotalSucursal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
                                                         footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaImportePagadoTotalSucursal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
-                                                        footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignLeft().Text("0").FontSize(8).FontFamily("arial").Bold();
+                                                        footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignLeft().Text(sumaInteresesPactadosTotalSucursal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
                                                         footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaInteresesTotalSucursal.ToString("N2")).FontSize(8).FontFamily("arial").Bold();
                                                         footer.Cell().BorderBottom(1).BorderColor("#ccc").Padding(2).AlignRight().Text(sumaImporteTotalsucursal.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
                                                     });
                                                 });
+                                            });
                                             }
                                         }
                                     });
@@ -1020,44 +1072,35 @@ namespace HD_Reporteria.GestionCobranza
                                         //    .Padding(1).Text("NÚMERO DE REFERENCIA").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         //header.Cell().Border(1).BorderColor("#D3D3D3").AlignCenter().AlignMiddle()
                                         //      .Padding(1).Text(primeraReferencia).FontSize(8).FontFamily(fontFamily).FontColor("#000");
-                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("ANTIGÜEDAD").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("MAQUINARIA Y OTRAS LINEAS").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("REFACCIONES Y TALLER").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                        header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                        header.Cell().Background("#477c2c").AlignCenter().AlignMiddle()
                                             .Padding(1).Text("TOTAL").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     });
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("TOTAL VENCIDO").FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaVencidoTotalOperacion.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaVencidoTotalRevolvente.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaTotalVencidoAmbos.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text("VENCIDO MÁS DE 90 DIAS").FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidosmas90Operacion.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidosmas90Revolvente.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidoMas90Ambos.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text("VENCIDO DE 61 A 90 DIAS").FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidos61a90Operacion.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidos61a90Revolvente.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencido61a90Ambos.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text("VENCIDO DE 31 A 60 DIAS").FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidos31a60Operacion.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidos31a60Revolvente.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencido31a60Ambos.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                         tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text("VENCIDO DE UNO A 30 DIAS").FontSize(8).FontFamily(fontFamily);
                                         tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidos1a30Operacion.ToString("N2")).FontSize(8).FontFamily(fontFamily);
                                         tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidos1a30Revolvente.ToString("N2")).FontSize(8).FontFamily(fontFamily);
                                         tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumavencido1a30Ambos.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("POR VENCER").FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaporVencerOperacion.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaporVencerRevolvente.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaporVencerAmbos.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text("VENCIDO DE 31 A 60 DIAS").FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidos31a60Operacion.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidos31a60Revolvente.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencido31a60Ambos.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text("VENCIDO DE 61 A 90 DIAS").FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidos61a90Operacion.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidos61a90Revolvente.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencido61a90Ambos.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text("VENCIDO MÁS DE 90 DIAS").FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidosmas90Operacion.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidosmas90Revolvente.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Background("#ECF3DB").Padding(1).AlignCenter().Text(sumaVencidoMas90Ambos.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                         tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("INT. NORMAL").FontSize(8).FontFamily(fontFamily);
                                         tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaInteresNormalOperacion.ToString("N2")).FontSize(8).FontFamily(fontFamily);
@@ -1069,9 +1112,19 @@ namespace HD_Reporteria.GestionCobranza
                                         tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaInteresMoratorioRevolvente.ToString("N2")).FontSize(8).FontFamily(fontFamily);
                                         tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaInteresMoratorioAmbos.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("SALDO TOTAL").FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaImporteTotalOperacion.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaImporteTotalRevolvente.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("TOTAL VENCIDO").FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaVencidoTotalOperacion.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaVencidoTotalRevolvente.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaTotalVencidoAmbos.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("POR VENCER").FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaporVencerOperacion.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaporVencerRevolvente.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaporVencerAmbos.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("SALDO TOTAL").FontSize(8).FontFamily(fontFamily).Bold();
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaImporteTotalOperacion.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
+                                        tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaImporteTotalRevolvente.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
                                         tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text(sumaImporteTotalAmbos.ToString("N2")).FontSize(8).FontFamily(fontFamily).Bold();
 
 
@@ -1204,7 +1257,7 @@ namespace HD_Reporteria.GestionCobranza
 
                                     tablaDatos.Header(header =>
                                     {
-                                        header.Cell().ColumnSpan(4).Background("#275027").AlignCenter().AlignMiddle().Padding(1).Text("NUMEROS DE CUENTA").FontSize(10).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        header.Cell().ColumnSpan(4).Background("#477c2c").AlignCenter().AlignMiddle().Padding(1).Text("NUMEROS DE CUENTA").FontSize(10).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     });
 
                                     

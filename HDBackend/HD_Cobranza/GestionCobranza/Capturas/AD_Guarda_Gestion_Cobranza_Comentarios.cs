@@ -33,6 +33,7 @@ namespace HD_Cobranza.GestionCobranza.Capturas
                     @usuario = mdl.usuario,
                     @detalle = mdl.detalle,
                     @gestion = mdl.gestion,
+                    @objecion = mdl.objecion,
                     @comentarios = mdl.comentarios,
                     @volvercontactar = mdl.volvercontactar,
                     @fechavolveracontactar = mdl.fechavolveracontactar,

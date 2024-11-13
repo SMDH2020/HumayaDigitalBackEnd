@@ -85,15 +85,20 @@ namespace HD_Reporteria.Cobranza
 
                             //col1.Item().LineHorizontal(0.5f);
 
-                            //col1.Item().Row(row =>
-                            //{
-                            //    row.RelativeItem().AlignCenter().Text(txt =>
-                            //    {
-                            //        txt.Span("SCORECARD GENERAL").FontSize(12).Bold();
-                            //    });
-                            //});
+                            DateTime fecha = DateTime.Now;
+                            string fechaActual = fecha.ToString("dd/MM/yyyy", new System.Globalization.CultureInfo("es-ES"));
 
-                            col1.Item().PaddingVertical(10).Border(1).BorderColor("#275027").Table(tabla =>
+                            col1.Item().Row(row =>
+                            {
+                                row.RelativeItem().AlignRight().Text(txt =>
+                                {
+                                    txt.Span("INFORMACION AL: ").Bold().FontSize(8);
+                                    txt.Span(fechaActual).FontSize(8);
+                                });
+                            });
+
+
+                            col1.Item().PaddingVertical(10).Border(1).BorderColor("#477c2c").Table(tabla =>
                             {
                                 tabla.ColumnsDefinition(Columns =>
                                 {
@@ -107,17 +112,17 @@ namespace HD_Reporteria.Cobranza
 
                                 tabla.Header(header =>
                                 {
-                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("SUCURSAL").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("RAZON SOCIAL").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("SALDO").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("MONTO DE CONVENIO").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("VENCIMIENTO").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#275027").AlignCenter().Height(20).AlignMiddle()
+                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("RESPONSABLE").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
                                 });
 
@@ -142,6 +147,17 @@ namespace HD_Reporteria.Cobranza
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignLeft().MaxHeight(60).AlignMiddle().PaddingLeft(4).PaddingRight(3).PaddingVertical(3).ShowEntire()
                                     .Text(det.NombreCompleto?.ToUpper()).FontSize(9).FontFamily(fontFamily);
                                 }
+                            });
+                        });
+
+                        page.Footer().Height(60).PaddingLeft(30).PaddingRight(30).PaddingBottom(10).Row(row =>
+                        {
+                            row.RelativeItem().AlignRight().PaddingTop(20).Text(txt =>
+                            {
+                                txt.Span("Pág. ").FontSize(10).FontFamily("arial");
+                                txt.CurrentPageNumber().FontSize(10).Bold().FontFamily("arial");
+                                txt.Span(" de ").FontSize(10).FontFamily("arial");
+                                txt.TotalPages().FontSize(10).Bold().FontFamily("arial");
                             });
                         });
 
