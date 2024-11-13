@@ -33,5 +33,7 @@ namespace HD_Cobranza.Reportes
                 throw ex;
             }
         }
+
+
     }
 }

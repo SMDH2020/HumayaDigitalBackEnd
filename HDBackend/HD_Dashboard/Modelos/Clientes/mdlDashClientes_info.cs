@@ -7,5 +7,9 @@
         public string? celular { get; set; }
         public double limitecredito { get; set; }
         public double saldo { get; set; }
+        public string? asesor { get; set; }
+        public int idasesor { get; set; }
+        public bool crea_solicitud { get; set; }
+
     }
 }

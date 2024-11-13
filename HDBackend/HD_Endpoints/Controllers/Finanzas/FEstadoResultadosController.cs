@@ -33,7 +33,6 @@ namespace HD.Endpoints.Controllers.Finanzas
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> ReportePDF(Fmdl_EstadoResultados_PDF prm)
         {
-
             try
             {
                 RPT_Result documento = RPT_Finanzas_EstadoResultados.Generar(prm);

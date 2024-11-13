@@ -40,5 +40,30 @@ namespace HD.Clientes.Consultas.AnalisisCredito
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<mdlAnalisis_Email_View> GetBodyPrecalificacion(mdlSCAnalisis_Comentarios_Precalificacion comentario)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    folio = comentario.folio,
+                    idproceso = comentario.idproceso,
+                    estatus = comentario.estatus,
+                };
+                var view = await factory.SQL.QueryMultipleAsync("Credito.sp_Analisis_Notificacion_Facturacion", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlAnalisis_Email_View result = new mdlAnalisis_Email_View();
+                result.notificacion = view.Read<mdlCorreo_Notificacion>().ToList();
+                result.detalle = view.Read<mdlAnalisis_Email>().FirstOrDefault();
+                factory.SQL.Close();
+                if (result.detalle == null) result.detalle = new mdlAnalisis_Email();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }

@@ -5,6 +5,7 @@
         public string? folio { get; set; }
         public string? comentarios { get; set; }
         public string? fecha { get; set; }
+        public string? estatus { get; set; }
         public string? usuario { get; set; }
     }
 }

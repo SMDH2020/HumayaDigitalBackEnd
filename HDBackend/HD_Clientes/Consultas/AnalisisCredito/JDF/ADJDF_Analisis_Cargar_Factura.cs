@@ -146,5 +146,30 @@ namespace HD.Clientes.Consultas.AnalisisCredito.JDF
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<mdlJDFAnalisis_Datos_Facturacion> Guardar_detalle_Condicionado_Mhusa(string folio, int registro, int orden, string documento, string usuario, string docto_financiamiento)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    folio,
+                    registro,
+                    orden,
+                    documento,
+                    usuario,
+                    docto_financiamiento
+                };
+                var result = await factory.SQL.QueryFirstOrDefaultAsync<mdlJDFAnalisis_Datos_Facturacion>("Credito.sp_Pedido_Detalle_Financiamiento_EQUIP_Condicionado_Mhusa", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                if (result == null) { result = new mdlJDFAnalisis_Datos_Facturacion(); }
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }

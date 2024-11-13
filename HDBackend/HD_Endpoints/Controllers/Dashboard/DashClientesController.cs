@@ -20,7 +20,8 @@ namespace HD.Endpoints.Controllers.Dashboard
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             Dash_Clientes_Main datos = new Dash_Clientes_Main(CadenaConexion);
-            var result = await datos.Dashboard(idcliente);
+            var usuario = Sesion.usuario();
+            var result = await datos.Dashboard(idcliente, usuario);
             return Ok(result);
 
         }

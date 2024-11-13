@@ -7,5 +7,6 @@
         public int IDSucursal { get; set; }
         public string? Descripcion { get; set; }
         public int IDEstado { get; set; }
+        public string? ADR { get; set; }
     }
 }

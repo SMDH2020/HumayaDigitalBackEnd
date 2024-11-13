@@ -36,7 +36,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
                    estatus=mdl.estatus
             };
             var body = await notificacion.GetBody(not);
-            await NotificacionComentarios.Enviar(body);
+            //await NotificacionComentarios.Enviar(body);
             return Ok(result);
 
         }
