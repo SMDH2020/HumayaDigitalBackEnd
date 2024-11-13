@@ -329,7 +329,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                     });
                                 });
 
-                                row1.ConstantItem(435).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
+                                row1.ConstantItem(170).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
                                 {
                                     txt1.Item().Height(15).Text(txt2 =>
                                     {
@@ -337,6 +337,21 @@ namespace HD_Reporteria.Solicitud_Credito
                                     });
                                 });
 
+                                row1.ConstantItem(90).Column(txt1 =>
+                                {
+                                    txt1.Item().PaddingLeft(10).Height(15).Text(txt2 =>
+                                    {
+                                        txt2.Span("Uso del CFDI: ").Bold().FontSize(10).FontFamily(fontFamily);
+                                    });
+                                });
+
+                                row1.ConstantItem(175).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
+                                {
+                                    txt1.Item().Height(15).Text(txt2 =>
+                                    {
+                                        txt2.Span(mdl.solicitante?.usocfdi).FontSize(8).FontFamily(fontFamily);
+                                    });
+                                });
                             });
 
                             col1.Item().PaddingTop(02).Row(row1 =>
@@ -350,7 +365,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                     });
                                 });
 
-                                row1.ConstantItem(435).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
+                                row1.ConstantItem(170).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
                                 {
                                     txt1.Item().Height(15).Text(txt2 =>
                                     {
@@ -358,39 +373,15 @@ namespace HD_Reporteria.Solicitud_Credito
                                     });
                                 });
 
-                            });
-
-                            col1.Item().PaddingTop(02).Row(row1 =>
-                            {
-                                row1.ConstantItem(100).Column(txt1 =>
+                                row1.ConstantItem(90).Column(txt1 =>
                                 {
-                                    txt1.Item().Height(15).Text(txt2 =>
-                                    {
-                                        txt2.Span("Uso del CFDI: ").Bold().FontSize(10).FontFamily(fontFamily);
-                                    });
-                                });
-
-                                row1.ConstantItem(435).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
-                                {
-                                    txt1.Item().Height(15).Text(txt2 =>
-                                    {
-                                        txt2.Span(mdl.solicitante?.usocfdi).FontSize(8).FontFamily(fontFamily);
-                                    });
-                                });
-
-                            });
-
-                            col1.Item().PaddingTop(02).Row(row1 =>
-                            {
-                                row1.ConstantItem(100).Column(txt1 =>
-                                {
-                                    txt1.Item().Height(15).Text(txt2 =>
+                                    txt1.Item().Height(15).PaddingLeft(10).Text(txt2 =>
                                     {
                                         txt2.Span("Tipo de relacion: ").Bold().FontSize(10).FontFamily(fontFamily);
                                     });
                                 });
 
-                                row1.ConstantItem(435).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
+                                row1.ConstantItem(175).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
                                 {
                                     txt1.Item().PaddingTop(2).Height(15).Text(txt2 =>
                                     {
@@ -458,7 +449,7 @@ namespace HD_Reporteria.Solicitud_Credito
 
                             });
 
-                            col1.Item().PaddingVertical(10).Table(tabla =>
+                            col1.Item().PaddingTop(10).PaddingBottom(4).Table(tabla =>
                             {
                                 tabla.ColumnsDefinition(Columns =>
                                 {
@@ -469,7 +460,6 @@ namespace HD_Reporteria.Solicitud_Credito
                                     Columns.RelativeColumn(1);
                                     Columns.RelativeColumn(1);
                                     Columns.RelativeColumn(1);
-
                                 });
 
                                 tabla.Header(header =>
@@ -586,10 +576,10 @@ namespace HD_Reporteria.Solicitud_Credito
                             });
 
                             //col1.Item().Text("Fecha de pedido:").Bold();
-                            col1.Item().Text("Condiciones para operacion de venta").FontSize(10).FontFamily(fontFamily);
+                            col1.Item().Text("Condiciones para operacion de venta:").Bold().FontSize(10).FontFamily(fontFamily);
                             col1.Item().Border(1).BorderColor("#afb69d").Padding(05).Text(mdl.condiciones?.condiciones).FontSize(8).FontFamily(fontFamily);
 
-                            col1.Item().PaddingTop(05).Text("Observaciones").FontSize(10).FontFamily(fontFamily);
+                            col1.Item().PaddingTop(05).Text("Observaciones:").Bold().FontSize(10).FontFamily(fontFamily);
                             col1.Item().Border(1).BorderColor("#afb69d").Padding(05).Text(mdl.condiciones?.observaciones).FontSize(8).FontFamily(fontFamily);
 
                             col1.Item().PaddingTop(05).Row(row1 =>
