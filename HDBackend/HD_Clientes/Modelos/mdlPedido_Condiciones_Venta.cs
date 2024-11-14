@@ -5,7 +5,7 @@ namespace HD.Clientes.Modelos
     public class mdlPedido_Condiciones_Venta
     {
         [Required(ErrorMessage = "El folio es un valor requerido")]
-        [RegularExpression(@"^[SC0-9]+$", ErrorMessage = "El campo folio debe estar formado solo por caracteres numericos e iniciales SC")]
+        [RegularExpression(@"^[RSC0-9]+$", ErrorMessage = "El campo folio debe estar formado solo por caracteres numericos e iniciales SC")]
         [StringLength(13, MinimumLength = 13, ErrorMessage = "El campo folio debe estar formado por 13 digitos")]
         public string? folio { get; set; }
 
