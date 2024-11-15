@@ -39,6 +39,17 @@ namespace HD.Endpoints.Controllers.GestionCobranza
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ImprimirExcelCarteraCliente(string adr, string sucursal, int responsable, string linea, string cartera, string convenio, string juridico)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Listado_Clientes_Gestionar_Prueba datos = new AD_Listado_Clientes_Gestionar_Prueba(CadenaConexion);
+            var result = await datos.Clientes(adr, sucursal, responsable, linea, cartera, convenio, juridico);
+            var docresult = await XLSCre_Listado_Cartera_Clientes.GenerarExcel(result);
+            return Ok(docresult);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> ImprimirPDF(string adr, string sucursal, int responsable, string linea, string cartera, string convenio, string juridico)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
@@ -48,6 +59,28 @@ namespace HD.Endpoints.Controllers.GestionCobranza
             try
             {
                 RPT_Result documento = RPT_Listado_Clientes_Gestionar_Prueba.GenerarPDF(result);
+
+                return Ok(documento);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error de servidor");
+
+            }
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ImprimirPDFCarteraClientes(string adr, string sucursal, int responsable, string linea, string cartera, string convenio, string juridico)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Listado_Clientes_Gestionar_Prueba datos = new AD_Listado_Clientes_Gestionar_Prueba(CadenaConexion);
+            var result = await datos.Clientes(adr, sucursal, responsable, linea, cartera, convenio, juridico);
+
+            try
+            {
+                RPT_Result documento = RPT_Listado_Cartera_Clientes.GenerarPDF(result);
 
                 return Ok(documento);
             }
