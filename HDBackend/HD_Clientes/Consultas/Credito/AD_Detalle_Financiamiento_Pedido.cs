@@ -4,22 +4,23 @@ using HD.Clientes.Modelos.Credito;
 
 namespace HD.Clientes.Consultas.Credito
 {
-    public class AD_Facturas_Diferencias_Vencimiento
+    public class AD_Detalle_Financiamiento_Pedido
     {
         private string CadenaConexion;
-        public AD_Facturas_Diferencias_Vencimiento(string _cadenaconexion)
+        public AD_Detalle_Financiamiento_Pedido(string _cadenaconexion)
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_Facturas_Diferencia_Vencimiento>> facturas()
+        public async Task<IEnumerable<mdl_Detalle_Financiamiento_Pedido>> detalle(string folio)
         {
             try
             {
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var parametros = new
                 {
+                    @folio = folio
                 };
-                IEnumerable<mdl_Facturas_Diferencia_Vencimiento> result = await factory.SQL.QueryAsync<mdl_Facturas_Diferencia_Vencimiento>("Credito.sp_Facturas_Diferencias_Fechas_Vencimiento_HD_EQUIP", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Detalle_Financiamiento_Pedido> result = await factory.SQL.QueryAsync<mdl_Detalle_Financiamiento_Pedido>("Credito.sp_Detalle_Financiamiento_Pedido_PorFolio", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
