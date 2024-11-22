@@ -6,7 +6,7 @@ using HD_Cobranza.GestionCobranza.Modelos;
 
 namespace HD_Reporteria.Cobranza
 {
-    public class RPT_Listado_Clientes_Gestionar_Prueba
+    public class RPT_Listado_Cartera_Clientes
     {
         public static string obtenernombre_mes(int numeromes)
         {
@@ -51,7 +51,7 @@ namespace HD_Reporteria.Cobranza
                 {
                     document.Page(page =>
                     {
-                        page.Size(PageSizes.A4.Landscape());
+                        //page.Size(PageSizes.A4.Landscape());
 
 
 
@@ -70,9 +70,9 @@ namespace HD_Reporteria.Cobranza
                                 byte[] imageData = System.IO.File.ReadAllBytes(rutaImagen);
                                 row.ConstantItem(120).Image(imageData);
 
-                                row.ConstantColumn(693).PaddingTop(35).Height(50).Background("#477c2c").Row(row2 =>
+                                row.ConstantColumn(450).PaddingTop(35).Height(50).Background("#477c2c").Row(row2 =>
                                 {
-                                    row2.RelativeItem().Padding(10).PaddingLeft(30).Text("CLIENTES A GESTIONAR").FontColor("#fff").FontSize(20).Bold().FontFamily(fontFamily);
+                                    row2.RelativeItem().Padding(10).PaddingLeft(30).Text("CARTERA DE CLIENTES").FontColor("#fff").FontSize(20).Bold().FontFamily(fontFamily);
                                     //+obtenernombre_mes(periodo) + " " + ejercicio
                                 });
                             });
@@ -107,12 +107,6 @@ namespace HD_Reporteria.Cobranza
                                     Columns.RelativeColumn(0.8f);
                                     Columns.RelativeColumn(0.8f);
                                     Columns.RelativeColumn(0.8f);
-                                    Columns.RelativeColumn(0.8f);
-                                    Columns.RelativeColumn(0.8f);
-                                    Columns.RelativeColumn(0.6f);
-                                    Columns.RelativeColumn(1);
-                                    Columns.RelativeColumn(1.8f);
-                                    Columns.RelativeColumn(1);
                                 });
 
                                 tabla.Header(header =>
@@ -129,18 +123,6 @@ namespace HD_Reporteria.Cobranza
                                     .Padding(1).Text("RECUPERADO").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                     .Padding(1).Text("FECHA RECUPERACION").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("FECHA CONTACTO").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("FECHA COMPROMISO").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("CONVENIO").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("OBJECION").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("OBSERVACIONES").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("RESPONSABLE").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
                                 });
 
                                 foreach (var det in detalle)
@@ -163,24 +145,6 @@ namespace HD_Reporteria.Cobranza
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
                                    .Text(det.fecha_recuperacion).FontSize(8).FontFamily(fontFamily);
-
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                   .Text(det.fecha_contacto).FontSize(8).FontFamily(fontFamily);
-
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                   .Text(det.fecha_compromiso).FontSize(8).FontFamily(fontFamily);
-
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                   .Text(det.convenio?.ToUpper()).FontSize(8).FontFamily(fontFamily);
-
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                   .Text(det.objecion?.ToUpper()).FontSize(8).FontFamily(fontFamily);
-
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                   .Text(det.observaciones?.ToUpper()).FontSize(8).FontFamily(fontFamily).Justify();
-
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                   .Text(det.nombre_responsable?.ToUpper()).FontSize(8).FontFamily(fontFamily);
                                 }
                             });
                         });
@@ -200,7 +164,7 @@ namespace HD_Reporteria.Cobranza
                 }).GeneratePdf();
                 RPT_Result result = new RPT_Result();
                 result.extension = "pdf";
-                result.nombredocumento = "CLIENTES A GESTIONAR";
+                result.nombredocumento = "CARTERA DE CLIENTES";
                 result.documento = Convert.ToBase64String(doc);
                 return result;
 
@@ -212,8 +176,6 @@ namespace HD_Reporteria.Cobranza
 
                 throw ex;
             }
-
-
         }
     }
 }

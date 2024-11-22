@@ -3,11 +3,14 @@ using HD.Clientes.Consultas.Especiales;
 using HD.Clientes.Modelos;
 using HD.Clientes.Modelos.Especiales;
 using HD.Security;
+using HD_Cobranza.GestionCobranza.Capturas;
+using HD_Cobranza.Reportes;
+using HD_Reporteria.Credito;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HD.Endpoints.Controllers.Credito
 {
-    public class ClientesEspecialesController:MyBase
+    public class ClientesEspecialesController : MyBase
     {
         private readonly IConfiguration Configuracion;
         private readonly ISesion Sesion;
@@ -36,7 +39,49 @@ namespace HD.Endpoints.Controllers.Credito
             ADClientesEspeciales datos = new ADClientesEspeciales(CadenaConexion);
             var result = await datos.Listado();
             return Ok(result);
+        } 
 
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> DropDownList()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADClientesEspeciales datos = new ADClientesEspeciales(CadenaConexion);
+            var result = await datos.DropDownList();
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> DropDownListTodos()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADClientesEspeciales datos = new ADClientesEspeciales(CadenaConexion);
+            var result = await datos.DropDownListTodos();
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerInfoCliente(int idCliente)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADClientesEspeciales datos = new ADClientesEspeciales(CadenaConexion);
+            var result = await datos.InfoCliente(idCliente);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ImprimirExcel()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADClientesEspeciales datos = new ADClientesEspeciales(CadenaConexion);
+            var result = await datos.Listado();
+            var docresult = await XLSCre_Listado_Clientes_Especiales.GenerarExcel(result);
+            return Ok(docresult);
         }
     }
 }

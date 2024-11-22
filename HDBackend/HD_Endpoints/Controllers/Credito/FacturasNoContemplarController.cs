@@ -36,5 +36,27 @@ namespace HD.Endpoints.Controllers.Credito
             return Ok(result);
 
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> Buscar(int documento)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADFacturasNoContemplar datos = new ADFacturasNoContemplar(CadenaConexion);
+            var result = await datos.Buscar(documento);
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> InfoFactura(int documento)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADFacturasNoContemplar datos = new ADFacturasNoContemplar(CadenaConexion);
+            var result = await datos.InfoFactura(documento);
+            return Ok(result);
+
+        }
     }
 }

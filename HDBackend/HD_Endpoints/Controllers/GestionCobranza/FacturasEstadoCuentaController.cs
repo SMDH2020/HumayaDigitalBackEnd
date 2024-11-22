@@ -1,6 +1,5 @@
 ﻿using HD.Security;
 using HD_Cobranza.GestionCobranza.Capturas;
-using HD_Cobranza.GestionCobranza.Modelos;
 using HD_Reporteria;
 using HD_Reporteria.GestionCobranza;
 using Microsoft.AspNetCore.Mvc;
