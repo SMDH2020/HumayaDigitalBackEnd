@@ -41,11 +41,11 @@ namespace HD.Endpoints.Controllers.Cobranza
         [HttpGet]
         [Route("/api/[controller]/[action]")]
 
-        public async Task<ActionResult> Listado(string adr, string sucursal)
+        public async Task<ActionResult> Listado(string adr, string sucursal, string estatus)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Clientes_Juridicos_Listado datos = new AD_Clientes_Juridicos_Listado(CadenaConexion);
-            var result = await datos.Listado(adr, sucursal);
+            var result = await datos.Listado(adr, sucursal, estatus);
             return Ok(result);
         }
 
@@ -70,11 +70,11 @@ namespace HD.Endpoints.Controllers.Cobranza
         [HttpGet]
         [Route("/api/[controller]/[action]")]
 
-        public async Task<ActionResult> ListadoEnviados(string adr, string sucursal)
+        public async Task<ActionResult> ListadoEnviados(string adr, string sucursal, string estatus)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Clientes_Enviados_Juridico_Listado datos = new AD_Clientes_Enviados_Juridico_Listado(CadenaConexion);
-            var result = await datos.Listado(adr, sucursal);
+            var result = await datos.Listado(adr, sucursal, estatus);
             return Ok(result);
         }
 

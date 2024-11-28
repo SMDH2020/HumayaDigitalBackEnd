@@ -17,14 +17,15 @@ namespace HD_Cobranza.Consultas.Juridico
             CadenaConexion = _cadenaconexion;
         }
 
-        public async Task<IEnumerable<mdl_Clientes_Juridico>> Listado(string adr, string sucursal)
+        public async Task<IEnumerable<mdl_Clientes_Juridico>> Listado(string adr, string sucursal, string estatus)
         {
             try
             {
                 var parametros = new
                 {
                     adr = adr,
-                    sucursal = sucursal
+                    sucursal = sucursal,
+                    estatus = estatus
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdl_Clientes_Juridico> result = await factory.SQL.QueryAsync<mdl_Clientes_Juridico>("Cartera_Clientes.Cobranza.sp_Obtener_Clientes_Enviar_a_Juridico", parametros, commandType: System.Data.CommandType.StoredProcedure);
