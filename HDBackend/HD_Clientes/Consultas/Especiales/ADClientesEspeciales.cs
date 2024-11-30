@@ -97,15 +97,16 @@ namespace HD.Clientes.Consultas.Especiales
             }
         }
 
-        public async Task<IEnumerable<mdldropdownlistClientesEspeciales>> DropDownList()
+        public async Task<IEnumerable<mdldropdownlistClientesEspeciales>> DropDownList(string tipo)
         {
             try
             {
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var parametros = new
                 {
+                    @tipo = tipo
                 };
-                var result = await factory.SQL.QueryAsync<mdldropdownlistClientesEspeciales>("Credito.sp_clientes_especiales_dropdownlist", commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryAsync<mdldropdownlistClientesEspeciales>("Credito.sp_clientes_especiales_dropdownlist", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
