@@ -65,11 +65,11 @@ namespace HD.Endpoints.Controllers.Credito
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> DropDownList()
+        public async Task<ActionResult> DropDownList(string tipo)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             ADClientesEspeciales datos = new ADClientesEspeciales(CadenaConexion);
-            var result = await datos.DropDownList();
+            var result = await datos.DropDownList(tipo);
             return Ok(result);
 
         }
