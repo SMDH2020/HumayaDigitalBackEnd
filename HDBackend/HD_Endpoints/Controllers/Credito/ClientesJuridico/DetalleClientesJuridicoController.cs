@@ -60,5 +60,25 @@ namespace HD.Endpoints.Controllers.Credito.ClientesJuridico
             var result = await datos.Guardar(mdl);
             return Ok(new { mensaje = "datos cargados con exito", listado = result });
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> TimelineCliente(int idregistro)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Detalle_Clientes_Juridico_Timeline datos = new AD_Detalle_Clientes_Juridico_Timeline(CadenaConexion);
+            var result = await datos.TimelineCliente(idregistro);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> TimelineDemanda(int idregistro)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Detalle_Clientes_Juridico_Timeline datos = new AD_Detalle_Clientes_Juridico_Timeline(CadenaConexion);
+            var result = await datos.TimelineDemanda(idregistro);
+            return Ok(result);
+        }
     }
 }
