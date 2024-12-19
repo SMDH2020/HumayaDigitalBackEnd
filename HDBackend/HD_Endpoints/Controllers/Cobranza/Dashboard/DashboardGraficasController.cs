@@ -29,5 +29,14 @@ namespace HD.Endpoints.Controllers.Cobranza.Dashboard
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerInfoGraficasRecuperacion(int ejercicio, int periodo)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Dashboard_Graficas datos = new AD_Dashboard_Graficas(CadenaConexion);
+            var result = await datos.ObtenerGraficasRecuperacion(ejercicio, periodo);
+            return Ok(result);
+        }
     }
 }
