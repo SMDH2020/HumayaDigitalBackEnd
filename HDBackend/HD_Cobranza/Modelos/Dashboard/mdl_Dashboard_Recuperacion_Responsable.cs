@@ -10,5 +10,6 @@
         public double total { get; set; }
         public double totalestado { get; set; }
         public double porcentaje { get; set; }
+        public double totalobjetivo { get; set; }
     }
 }
