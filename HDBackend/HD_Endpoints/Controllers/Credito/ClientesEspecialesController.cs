@@ -31,23 +31,45 @@ namespace HD.Endpoints.Controllers.Credito
 
         }
 
-        [HttpGet]
+
+        [HttpPost]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> Listado()
+        public async Task<ActionResult> GuardarDocumento(mdl_Clientes_Especiales_Documento mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             ADClientesEspeciales datos = new ADClientesEspeciales(CadenaConexion);
-            var result = await datos.Listado();
+            mdl.usuario = int.Parse(Sesion.usuario());
+            var result = await datos.GuardarDocumento(mdl);
+            return Ok(new { mensaje = "datos cargados con exito", listado = result });
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> Documento(string tipo)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADClientesEspeciales datos = new ADClientesEspeciales(CadenaConexion);
+            var result = await datos.Documento(tipo);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> Listado(string tipo)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADClientesEspeciales datos = new ADClientesEspeciales(CadenaConexion);
+            var result = await datos.Listado(tipo);
             return Ok(result);
         } 
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> DropDownList()
+        public async Task<ActionResult> DropDownList(string tipo)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             ADClientesEspeciales datos = new ADClientesEspeciales(CadenaConexion);
-            var result = await datos.DropDownList();
+            var result = await datos.DropDownList(tipo);
             return Ok(result);
 
         }
@@ -75,11 +97,11 @@ namespace HD.Endpoints.Controllers.Credito
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ImprimirExcel()
+        public async Task<ActionResult> ImprimirExcel(string tipo)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             ADClientesEspeciales datos = new ADClientesEspeciales(CadenaConexion);
-            var result = await datos.Listado();
+            var result = await datos.Listado(tipo);
             var docresult = await XLSCre_Listado_Clientes_Especiales.GenerarExcel(result);
             return Ok(docresult);
         }

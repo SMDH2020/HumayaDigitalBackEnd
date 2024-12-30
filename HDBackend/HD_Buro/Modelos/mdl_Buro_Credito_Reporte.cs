@@ -5,6 +5,7 @@
         public  string?  idcliente { get; set; }
         public  string?  razonsocial { get; set; }
         public  string?  rfc { get; set; }
+        public string? idclienteequip { get; set; }
         public int rev_fac_vencidas { get; set; }
         public double rev_vencido { get; set; }
         public double rev_porvencer { get; set; }
