@@ -28,7 +28,7 @@ namespace HD_Cobranza.Capturas.IndicadoresRecuperacion
                 IEnumerable<mdl_Indicadores_Recuperacion> result = await factory.SQL.QueryAsync<mdl_Indicadores_Recuperacion>("Cartera_Clientes.dbo.sp_Indicadores_Recuperacion_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 // Los 4 tipos fijos
-                var tiposFaltantes = new List<string> { "O", "R", "E", "J" };
+                var tiposFaltantes = new List<string> { "OV","OP", "RV","RP", "EV","EP", "JV","JP" };
 
                 // Asegurarse de que siempre haya un objeto por cada tipo de "tipo_cartera"
                 var resultConTiposCompletos = tiposFaltantes.Select(tipo => 
