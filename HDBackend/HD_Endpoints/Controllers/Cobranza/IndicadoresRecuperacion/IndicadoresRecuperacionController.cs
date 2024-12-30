@@ -1,8 +1,5 @@
-﻿using HD.Clientes.Consultas.AnalisisCredito.JDF;
-using HD.Clientes.Modelos.SC_Analisis.JDF;
-using HD.Security;
+﻿using HD.Security;
 using HD_Cobranza.Capturas.IndicadoresRecuperacion;
-using HD_Cobranza.Consultas.Juridico;
 using HD_Cobranza.Modelos.IndicadoresRecuperacion;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +16,7 @@ namespace HD.Endpoints.Controllers.Cobranza.IndicadoresRecuperacion
         }
 
         [HttpPost]
-        public async Task<ActionResult> Guardar(List <mdl_Indicadores_Recuperacion> mdl)
+        public async Task<ActionResult> Guardar(List<mdl_Indicadores_Recuperacion> mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Indicador_Recuperacion_Guardar datos = new AD_Indicador_Recuperacion_Guardar(CadenaConexion);
