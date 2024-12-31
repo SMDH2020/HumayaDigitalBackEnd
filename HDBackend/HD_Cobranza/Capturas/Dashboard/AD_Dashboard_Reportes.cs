@@ -60,7 +60,7 @@ namespace HD_Cobranza.Capturas.Dashboard
             }
         }
 
-        public async Task<IEnumerable<mdl_Dashboard_Reporte_Grafica_Total>> ReporteGraficaObjetivos(int ejercicio, int periodo, string tipo_grafica, string tipo_cartera, string estado_cartera, string responsable_cobranza, string categoria)
+        public async Task<IEnumerable<mdl_Dashboard_Reporte_Grafica_Total>> ReporteGraficaObjetivos(int ejercicio, int periodo, string tipo_grafica, string tipo_cartera, string estado_cartera, string responsable_cartera, string categoria)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace HD_Cobranza.Capturas.Dashboard
                     tipo_grafica = tipo_grafica,
                     tipo_cartera = tipo_cartera,
                     estado_cartera = estado_cartera,
-                    responsable_cartera = responsable_cobranza,
+                    responsable_cartera = responsable_cartera,
                     categoria = categoria
                 };
                 IEnumerable<mdl_Dashboard_Reporte_Grafica_Total> result = await factory.SQL.QueryAsync<mdl_Dashboard_Reporte_Grafica_Total>("Cartera_Clientes.Cobranza.Dashboard_Total_Clientes_Detalle", parametros, commandType: System.Data.CommandType.StoredProcedure, commandTimeout: 60);
