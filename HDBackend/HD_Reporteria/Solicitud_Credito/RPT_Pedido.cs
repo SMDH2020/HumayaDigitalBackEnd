@@ -459,7 +459,7 @@ namespace HD_Reporteria.Solicitud_Credito
 
                                 row1.ConstantItem(120).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
                                 {
-                                    txt1.Item().Height(15).Text(txt2 =>
+                                    txt1.Item().Height(40).Text(txt2 =>
                                     {
                                         txt2.Span(mdl.solicitante?.foliosanticipos).FontSize(10).FontFamily(fontFamily);
                                     });
