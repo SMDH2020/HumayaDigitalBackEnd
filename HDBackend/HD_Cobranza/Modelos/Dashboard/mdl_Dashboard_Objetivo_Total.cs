@@ -11,5 +11,6 @@
         public int clientes_conveniados { get; set; }
         public double pendiente { get; set; }
         public int clientes_pendientes { get; set; }
+        public double total_objetivo { get; set; }
     }
 }
