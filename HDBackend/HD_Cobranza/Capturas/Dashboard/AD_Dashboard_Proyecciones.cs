@@ -17,11 +17,15 @@ namespace HD_Cobranza.Capturas.Dashboard
             try
             {
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                var parametros = new
-                {
-                    ejercicio = ejercicio,
-                    periodo = periodo
-                };
+                //var parametros = new
+                //{
+                //    ejercicio,
+                //    periodo
+                //};
+
+                var parametros = new DynamicParameters();
+                parametros.Add("ejercicio11", ejercicio, System.Data.DbType.Int16);
+                parametros.Add("periodo11", periodo, System.Data.DbType.Int16);
 
                 var result = await factory.SQL.QueryMultipleAsync("Cartera_Clientes.Cobranza.sp_Dashboard_Proyecciones", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 var view = new mdlProyeccionRecuperarResult();
