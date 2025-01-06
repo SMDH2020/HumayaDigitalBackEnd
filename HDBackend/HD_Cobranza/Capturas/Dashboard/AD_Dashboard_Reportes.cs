@@ -12,55 +12,7 @@ namespace HD_Cobranza.Capturas.Dashboard
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_Dashboard_Reporte_Grafica_Total>> ReporteGraficaTotal(int ejercicio, int periodo, string tipo_grafica, string tipo_cartera, string estado_cartera, string responsable_cobranza)
-        {
-            try
-            {
-                FactoryConection factory = new FactoryConection(CadenaConexion);
-                var parametros = new
-                {
-                    ejercicio = ejercicio,
-                    periodo = periodo,
-                    tipo_grafica = tipo_grafica,
-                    tipo_cartera = tipo_cartera,
-                    estado_cartera = estado_cartera,
-                    responsable_cartera = responsable_cobranza
-                };
-                IEnumerable<mdl_Dashboard_Reporte_Grafica_Total> result = await factory.SQL.QueryAsync<mdl_Dashboard_Reporte_Grafica_Total>("Cartera_Clientes.Cobranza.Dashboard_Total_Detalle", parametros, commandType: System.Data.CommandType.StoredProcedure);
-                factory.SQL.Close();
-                return result;
-            }
-            catch (System.Exception ex)
-            {
-                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
-            }
-        }
-
-        public async Task<IEnumerable<mdl_Dashboard_Reporte_Grafica_Total>> ReporteGraficaRecuperacion(int ejercicio, int periodo, string tipo_grafica, string tipo_cartera, string estado_cartera, string responsable_cobranza)
-        {
-            try
-            {
-                FactoryConection factory = new FactoryConection(CadenaConexion);
-                var parametros = new
-                {
-                    ejercicio = ejercicio,
-                    periodo = periodo,
-                    tipo_grafica = tipo_grafica,
-                    tipo_cartera = tipo_cartera,
-                    estado_cartera = estado_cartera,
-                    responsable_cartera = responsable_cobranza
-                };
-                IEnumerable<mdl_Dashboard_Reporte_Grafica_Total> result = await factory.SQL.QueryAsync<mdl_Dashboard_Reporte_Grafica_Total>("Cartera_Clientes.Cobranza.Dashboard_Recuperacion_Detalle", parametros, commandType: System.Data.CommandType.StoredProcedure);
-                factory.SQL.Close();
-                return result;
-            }
-            catch (System.Exception ex)
-            {
-                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
-            }
-        }
-
-        public async Task<IEnumerable<mdl_Dashboard_Reporte_Grafica_Total>> ReporteGraficaObjetivos(int ejercicio, int periodo, string tipo_grafica, string tipo_cartera, string estado_cartera, string responsable_cartera, string categoria)
+        public async Task<IEnumerable<mdl_Dashboard_Reporte_Grafica_Total>> ReporteGraficaTotal(int ejercicio, int periodo, string tipo_grafica, string tipo_cartera, string estado_cartera, string responsable_cartera, string adr, string sucursales)
         {
             try
             {
@@ -73,7 +25,61 @@ namespace HD_Cobranza.Capturas.Dashboard
                     tipo_cartera = tipo_cartera,
                     estado_cartera = estado_cartera,
                     responsable_cartera = responsable_cartera,
-                    categoria = categoria
+                    adr = adr,
+                    sucursales = sucursales
+                };
+                IEnumerable<mdl_Dashboard_Reporte_Grafica_Total> result = await factory.SQL.QueryAsync<mdl_Dashboard_Reporte_Grafica_Total>("Cartera_Clientes.Cobranza.Dashboard_Total_Detalle", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<IEnumerable<mdl_Dashboard_Reporte_Grafica_Total>> ReporteGraficaRecuperacion(int ejercicio, int periodo, string tipo_grafica, string tipo_cartera, string estado_cartera, string responsable_cartera, string adr, string sucursales)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    ejercicio = ejercicio,
+                    periodo = periodo,
+                    tipo_grafica = tipo_grafica,
+                    tipo_cartera = tipo_cartera,
+                    estado_cartera = estado_cartera,
+                    responsable_cartera = responsable_cartera,
+                    adr = adr,
+                    sucursales = sucursales
+                };
+                IEnumerable<mdl_Dashboard_Reporte_Grafica_Total> result = await factory.SQL.QueryAsync<mdl_Dashboard_Reporte_Grafica_Total>("Cartera_Clientes.Cobranza.Dashboard_Recuperacion_Detalle", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<IEnumerable<mdl_Dashboard_Reporte_Grafica_Total>> ReporteGraficaObjetivos(int ejercicio, int periodo, string tipo_grafica, string tipo_cartera, string estado_cartera, string responsable_cartera, string categoria, string adr, string sucursales)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    ejercicio = ejercicio,
+                    periodo = periodo,
+                    tipo_grafica = tipo_grafica,
+                    tipo_cartera = tipo_cartera,
+                    estado_cartera = estado_cartera,
+                    responsable_cartera = responsable_cartera,
+                    categoria = categoria,
+                    adr = adr,
+                    sucursales = sucursales
                 };
                 IEnumerable<mdl_Dashboard_Reporte_Grafica_Total> result = await factory.SQL.QueryAsync<mdl_Dashboard_Reporte_Grafica_Total>("Cartera_Clientes.Cobranza.Dashboard_Total_Clientes_Detalle", parametros, commandType: System.Data.CommandType.StoredProcedure, commandTimeout: 60);
                 factory.SQL.Close();
