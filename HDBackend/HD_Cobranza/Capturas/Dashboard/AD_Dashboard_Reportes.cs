@@ -71,8 +71,8 @@ namespace HD_Cobranza.Capturas.Dashboard
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var parametros = new
                 {
-                    ejercicio = ejercicio,
-                    periodo = periodo,
+                    ejercicio11 = ejercicio,
+                    periodo11 = periodo,
                     tipo_grafica = tipo_grafica,
                     tipo_cartera = tipo_cartera,
                     estado_cartera = estado_cartera,

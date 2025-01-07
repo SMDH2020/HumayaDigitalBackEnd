@@ -43,11 +43,30 @@ namespace HD_Cobranza.Reportes
 
             }
         }
-        public static Task<DocResult> GenerarExcel(IEnumerable<mdl_Dashboard_Reporte_Grafica_Total> detalle, int ejercicio, int periodo)
+
+        public static string obtenerCartera(string cartera)
+        {
+            switch (cartera)
+            {
+                case "O":
+                    return "DE OPERACION";
+                case "R":
+                    return "REVOLVENTE";
+                case "E":
+                    return "ESPECIAL";
+                case "M":
+                    return "JURIDICA";
+                default:
+                    return "";
+
+            }
+        }
+
+        public static Task<DocResult> GenerarExcel(IEnumerable<mdl_Dashboard_Reporte_Grafica_Total> detalle, int ejercicio, int periodo, string tipo_cartera)
         {
             try
             {
-                string sheetname = "CONVENIOS REALIZADOS";
+                string sheetname = "REPORTE TOTAL DE CARTERA";
                 string ruta = $"C:\\SMDH\\Procesados\\{sheetname}.xlsx";
                 using (var workbook = new XLWorkbook())
                 {
@@ -55,7 +74,7 @@ namespace HD_Cobranza.Reportes
                     sheet.Style.Font.FontName = "Calibri";
                     sheet.Style.Font.FontSize = 10;
 
-                    int renglon = XLSEncabezado.Encabezado(ref sheet, $"REPORTE TOTAL DE CARTERA {obtenernombre_mes(periodo) + " " + ejercicio}", 5);
+                    int renglon = XLSEncabezado.Encabezado(ref sheet, $"REPORTE TOTAL DE CARTERA {obtenerCartera(tipo_cartera) + " " + obtenernombre_mes(periodo) + " " + ejercicio}", 5);
 
                     //renglon += 1;
 
