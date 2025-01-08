@@ -39,7 +39,7 @@ namespace HD.Endpoints.Controllers.Cobranza.Dashboard
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Dashboard_Reportes datos = new AD_Dashboard_Reportes(CadenaConexion);
             var result = await datos.ReporteGraficaTotal(ejercicio, periodo, tipo_grafica, tipo_cartera, estado_cartera, responsable_cobranza, adr, sucursales);
-            var docresult = await XLSCob_Dashboard_ReporteTotal.GenerarExcel(result, ejercicio, periodo, tipo_cartera);
+            var docresult = await XLSCob_Dashboard_ReporteTotal.GenerarExcel(result, ejercicio, periodo, tipo_cartera, tipo_grafica, estado_cartera, responsable_cobranza);
             return Ok(docresult);
         }
 
@@ -53,7 +53,7 @@ namespace HD.Endpoints.Controllers.Cobranza.Dashboard
 
             try
             {
-                RPT_Result documento = RPT_Dashboard_ReporteTotal.GenerarPDF(result, ejercicio, periodo, tipo_cartera);
+                RPT_Result documento = RPT_Dashboard_ReporteTotal.GenerarPDF(result, ejercicio, periodo, tipo_cartera,tipo_grafica, estado_cartera, responsable_cobranza);
 
                 return Ok(documento);
             }
@@ -73,6 +73,39 @@ namespace HD.Endpoints.Controllers.Cobranza.Dashboard
             AD_Dashboard_Reportes datos = new AD_Dashboard_Reportes(CadenaConexion);
             var result = await datos.ReporteGraficaRecuperacion(ejercicio, periodo, tipo_grafica, tipo_cartera, estado_cartera, responsable_cobranza, adr, sucursales);
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ImprimirExcelReporteRecuperacion(int ejercicio, int periodo, string tipo_grafica, string tipo_cartera, string estado_cartera, string responsable_cobranza, string adr, string sucursales)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Dashboard_Reportes datos = new AD_Dashboard_Reportes(CadenaConexion);
+            var result = await datos.ReporteGraficaRecuperacion(ejercicio, periodo, tipo_grafica, tipo_cartera, estado_cartera, responsable_cobranza, adr, sucursales);
+            var docresult = await XLSCob_Dashboard_ReporteRecuperacion.GenerarExcel(result, ejercicio, periodo, tipo_cartera, tipo_grafica, estado_cartera, responsable_cobranza);
+            return Ok(docresult);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ImprimirPDFReporteRecuperacion(int ejercicio, int periodo, string tipo_grafica, string tipo_cartera, string estado_cartera, string responsable_cobranza, string adr, string sucursales)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Dashboard_Reportes datos = new AD_Dashboard_Reportes(CadenaConexion);
+            var result = await datos.ReporteGraficaRecuperacion(ejercicio, periodo, tipo_grafica, tipo_cartera, estado_cartera, responsable_cobranza, adr, sucursales);
+
+            try
+            {
+                RPT_Result documento = RPT_Dashboard_ReporteRecuperacion.GenerarPDF(result, ejercicio, periodo, tipo_cartera, tipo_grafica, estado_cartera, responsable_cobranza);
+
+                return Ok(documento);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error de servidor");
+
+            }
+
         }
 
         [HttpGet]
