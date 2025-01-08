@@ -8,7 +8,7 @@ using HD_Cobranza.Modelos.Dashboard;
 
 namespace HD_Cobranza.Reportes
 {
-    public class XLSCob_Dashboard_ReporteTotal
+    public class XLSCob_Dashboard_ReporteRecuperacion
     {
         public static string obtenernombre_mes(int numeromes)
         {
@@ -100,16 +100,30 @@ namespace HD_Cobranza.Reportes
         {
             switch (tipo_grafica)
             {
-                case "T":
-                    return "REPORTE TOTAL DE CARTERA " + obtenerCartera(tipo_cartera) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
-                case "L":
-                    return "CARTERA " + obtenerCartera(tipo_cartera) + " " + obtenerEstado(estado) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
-                case "R":
-                    return "CARTERA " + " " + obtenerEstado(estado) + " DE " + obtenerResponsable(responsable) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
                 case "O":
-                    return "OBJETIVO DE CARTERA " + " " + obtenerCartera(tipo_cartera) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
+                    return "OBJETIVO DE CARTERA " + obtenerCartera(tipo_cartera) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
+                case "T":
+                    return "RECUPERACION DE CARTERA " + obtenerCartera(tipo_cartera) + " " + obtenerEstado(estado) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
+                case "R":
+                    return "RECUPERACION DE CARTERA " + " " + obtenerEstado(estado) + " DE " + obtenerResponsable(responsable) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
                 default:
                     return "";
+
+            }
+        }
+
+        public static int obtenerAncho(string tipo_grafica)
+        {
+            switch (tipo_grafica)
+            {
+                case "O":
+                    return 5;
+                case "T":
+                    return 6;
+                case "R":
+                    return 6;
+                default:
+                    return 0;
 
             }
         }
@@ -126,7 +140,7 @@ namespace HD_Cobranza.Reportes
                     sheet.Style.Font.FontName = "Calibri";
                     sheet.Style.Font.FontSize = 10;
 
-                    int renglon = XLSEncabezado.Encabezado(ref sheet, obtenerTitulo(tipo_grafica, tipo_cartera, estado, responsable, ejercicio, periodo), 5);
+                    int renglon = XLSEncabezado.Encabezado(ref sheet, obtenerTitulo(tipo_grafica, tipo_cartera, estado, responsable, ejercicio, periodo), obtenerAncho(tipo_grafica));
 
                     //renglon += 1;
 
@@ -151,10 +165,18 @@ namespace HD_Cobranza.Reportes
                     sheet.Cell(renglon, 2).Value = "CLIENTE";
                     sheet.Cell(renglon, 3).Value = "VENCIMIENTO";
                     sheet.Cell(renglon, 4).Value = "DIAS VENCIDO";
-                    sheet.Cell(renglon, 5).Value = "SALDO";
+                    if (tipo_grafica == "O")
+                    {
+                        sheet.Cell(renglon, 5).Value = "SALDO";
+                    }
+                    if (tipo_grafica == "T" || tipo_grafica == "R")
+                    {
+                        sheet.Cell(renglon, 5).Value = "RECUPERADO";
+                        sheet.Cell(renglon, 6).Value = "OBJETIVO";
+                    }
 
                     // Estilo para los encabezados de la tabla
-                    var rango = sheet.Range(renglon, 1, renglon, 5);
+                    var rango = sheet.Range(renglon, 1, renglon, obtenerAncho(tipo_grafica));
                     rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
                     rango.Style.Font.Bold = true;
                     rango.Style.Font.FontSize = 12;
@@ -170,7 +192,15 @@ namespace HD_Cobranza.Reportes
                         sheet.Cell(renglon, 2).Value = det.razon_social?.ToUpper();
                         sheet.Cell(renglon, 3).Value = DateTime.ParseExact(det.vencimiento, "MM/dd/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
                         sheet.Cell(renglon, 4).Value = det.dias_Vencido;
-                        sheet.Cell(renglon, 5).Value = det.saldo;
+                        if (tipo_grafica == "O")
+                        {
+                            sheet.Cell(renglon, 5).Value = det.saldo;
+                        }
+                        if (tipo_grafica == "T" || tipo_grafica == "R")
+                        {
+                            sheet.Cell(renglon, 5).Value = det.recuperado;
+                            sheet.Cell(renglon, 6).Value = det.objetivo;
+                        }
                         renglon++;
                     }
 
@@ -178,6 +208,7 @@ namespace HD_Cobranza.Reportes
                     sheet.Column(3).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                     sheet.Column(4).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                     sheet.Column(5).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(6).Style.NumberFormat.Format = "#,##0.00";
 
                     //sheet.Column(6).Style.NumberFormat.Format = "#,##0.00";
                     //sheet.Column(7).Style.NumberFormat.Format = "0.0 %";
