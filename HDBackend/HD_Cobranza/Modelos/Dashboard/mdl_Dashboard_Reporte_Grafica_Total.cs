@@ -10,6 +10,8 @@
         public string? razon_social { get; set; }
         public string? vencimiento { get; set; }
         public int dias_Vencido { get; set; }
+        public int recuperado { get; set; }
         public double saldo { get; set; }
+        public double objetivo { get; set; }
     }
 }

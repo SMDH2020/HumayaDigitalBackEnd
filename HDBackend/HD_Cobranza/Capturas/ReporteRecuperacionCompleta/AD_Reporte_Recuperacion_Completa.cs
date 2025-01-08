@@ -24,7 +24,7 @@ namespace HD_Cobranza.Capturas.ReporteRecuperacionCompleta
                     sucursales
                 };
 
-                var result = await factory.SQL.QueryMultipleAsync("Cartera_Clientes.Cobranza.sp_Recuperacion_Objetivo_Mensual_segmentacion", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("Cartera_Clientes.Cobranza.sp_Recuperacion_Objetivo_Mensual_segmentacion", parametros, commandType: System.Data.CommandType.StoredProcedure, commandTimeout: 60);
                 var view = new mdl_Recuperacion_Completa_View();
                 view.total = result.Read<mdl_Recuperacion_Completa>().ToList();
                 view.operacion = result.Read<mdl_Recuperacion_Completa>().ToList();
