@@ -7,6 +7,7 @@
         public int idsucursal { get; set; }
         public string? sucursal { get; set; }
         public int idcliente { get; set; }
+        public int idcliente_HD { get; set; }
         public string? razonsocial { get; set; }
         public double importe_factura {  get; set; }
         public double pagado { get; set; }
