@@ -36,5 +36,25 @@ namespace HD.Endpoints.Controllers.GestionCobranza
             }
 
         }
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> EstadoCuentaPorFechaPDF(string idcliente,string fecha)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Facturas_Estado_Cuenta datos = new AD_Facturas_Estado_Cuenta(CadenaConexion);
+            var result = await datos.GetPorFecha(idcliente,fecha);
+            try
+            {
+                RPT_Result documento = RPT_Estado_Cuenta.GenerarEstadoCuenta(result);
+
+                return Ok(documento);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error de servidor");
+
+            }
+
+        }
     }
 }
