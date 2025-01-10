@@ -7,7 +7,7 @@ using HD_Cobranza.Modelos.Dashboard;
 
 namespace HD_Reporteria.Cobranza
 {
-    public class RPT_Dashboard_ReporteRecuperacion
+    public class RPT_Dashboard_ReporteObjetivo
     {
         public static string obtenernombre_mes(int numeromes)
         {
@@ -48,13 +48,13 @@ namespace HD_Reporteria.Cobranza
             switch (cartera)
             {
                 case "O":
-                    return "DE OPERACION";
+                    return "DE OP.";
                 case "R":
-                    return "REVOLVENTE";
+                    return "REV.";
                 case "E":
-                    return "ESPECIAL";
+                    return "ESP.";
                 case "M":
-                    return "JURIDICA";
+                    return "JUR.";
                 default:
                     return "";
 
@@ -95,23 +95,41 @@ namespace HD_Reporteria.Cobranza
             }
         }
 
-        public static string obtenerTitulo(string tipo_grafica, string tipo_cartera, string estado, string responsable, int ejercicio, int periodo)
+        public static string obtenerCategoria(string categoria)
         {
-            switch (tipo_grafica)
+            switch (categoria)
             {
-                case "O":
-                    return "OBJETIVO DE CARTERA " + obtenerCartera(tipo_cartera) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
                 case "T":
-                    return "REC. CARTERA " + obtenerCartera(tipo_cartera) + " " + obtenerEstado(estado) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
+                    return "TOTAL";
                 case "R":
-                    return "REC. CARTERA " + " " + obtenerEstado(estado) + " DE " + obtenerResponsable(responsable) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
+                    return "REC.";
+                case "C":
+                    return "CON.";
+                case "P":
+                    return "SIN GESTION";
                 default:
                     return "";
 
             }
         }
 
-        public static RPT_Result GenerarPDF(IEnumerable<mdl_Dashboard_Reporte_Grafica_Total> detalle, int ejercicio, int periodo, string tipo_cartera, string tipo_grafica, string estado, string responsable)
+        public static string obtenerTitulo(string tipo_grafica, string tipo_cartera, string estado, string responsable, string categoria, int ejercicio, int periodo)
+        {
+            switch (tipo_grafica)
+            {
+                case "O":
+                    return "OBJ. DE CARTERA " + obtenerEstado(estado) + " " + obtenerCategoria(categoria) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
+                case "C":
+                    return "OBJ. DE CARTERA " + obtenerCartera(tipo_cartera) + " " + obtenerEstado(estado) + " " + obtenerCategoria(categoria) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
+                case "R":
+                    return "OBJ. DE " + obtenerResponsable(responsable) + " " + obtenerCategoria(categoria) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
+                default:
+                    return "";
+
+            }
+        }
+
+        public static RPT_Result GenerarPDF(IEnumerable<mdl_Dashboard_Reporte_Grafica_Total> detalle, int ejercicio, int periodo, string tipo_cartera, string tipo_grafica, string estado, string responsable, string categoria)
         {
             try
             {
@@ -141,7 +159,7 @@ namespace HD_Reporteria.Cobranza
 
                                 row.ConstantColumn(450).PaddingTop(30).Height(50).Background("#477c2c").Row(row2 =>
                                 {
-                                    row2.RelativeItem().Padding(5).PaddingTop(10).PaddingLeft(20).Text(obtenerTitulo(tipo_grafica, tipo_cartera, estado, responsable, ejercicio, periodo)).FontColor("#fff").FontSize(14).Bold().FontFamily(fontFamily);
+                                    row2.RelativeItem().Padding(5).PaddingTop(10).PaddingLeft(20).Text(obtenerTitulo(tipo_grafica, tipo_cartera, estado, responsable, categoria, ejercicio, periodo)).FontColor("#fff").FontSize(14).Bold().FontFamily(fontFamily);
                                     //+obtenernombre_mes(periodo) + " " + ejercicio
                                 });
                             });
@@ -176,10 +194,6 @@ namespace HD_Reporteria.Cobranza
                                     Columns.RelativeColumn(1);
                                     Columns.RelativeColumn(0.6f);
                                     Columns.RelativeColumn(1);
-                                    if (tipo_grafica != "O")
-                                    {
-                                        Columns.RelativeColumn(1);
-                                    }
                                 });
 
                                 tabla.Header(header =>
@@ -192,18 +206,8 @@ namespace HD_Reporteria.Cobranza
                                     .Padding(1).Text("VENCIMIENTO").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("DIAS VENCIDO").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    if (tipo_grafica == "O")
-                                    {
-                                        header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
-                                        .Padding(1).Text("SALDO").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    }
-                                    if (tipo_grafica == "T" || tipo_grafica == "R")
-                                    {
-                                        header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
-                                        .Padding(1).Text("RECUPERADO").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                        header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
-                                        .Padding(1).Text("OBJETIVO").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    }
+                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
+                                    .Padding(1).Text("SALDO").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
                                 });
 
                                 foreach (var det in detalle)
@@ -221,21 +225,10 @@ namespace HD_Reporteria.Cobranza
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignCenter().MaxHeight(60).AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
                                    .Text(det.dias_Vencido.ToString()).FontSize(9).FontFamily(fontFamily);
 
-                                    if (tipo_grafica == "O")
-                                    {
-                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().MaxHeight(60).AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                        .Text(det.saldo.ToString("N2")).FontSize(9).FontFamily(fontFamily);
-                                    }
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().MaxHeight(60).AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                   .Text(det.saldo.ToString("N2")).FontSize(9).FontFamily(fontFamily);
 
-                                    if (tipo_grafica == "T" || tipo_grafica == "R")
-                                    {
-                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().MaxHeight(60).AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                        .Text(det.recuperado.ToString("N2")).FontSize(9).FontFamily(fontFamily);
 
-                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().MaxHeight(60).AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.objetivo.ToString("N2")).FontSize(9).FontFamily(fontFamily);
-                                    }
-                                 
                                 }
                             });
                         });
@@ -256,7 +249,7 @@ namespace HD_Reporteria.Cobranza
                 }).GeneratePdf();
                 RPT_Result result = new RPT_Result();
                 result.extension = "pdf";
-                result.nombredocumento = "REPORTE DE RECUPERACION";
+                result.nombredocumento = "REPORTE OBJETIVO";
                 result.documento = Convert.ToBase64String(doc);
                 return result;
 

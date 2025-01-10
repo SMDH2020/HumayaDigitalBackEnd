@@ -120,6 +120,39 @@ namespace HD.Endpoints.Controllers.Cobranza.Dashboard
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ImprimirExcelReporteObjetivo(int ejercicio, int periodo, string tipo_grafica, string tipo_cartera, string estado_cartera, string responsable_cobranza, string categoria, string adr, string sucursales)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Dashboard_Reportes datos = new AD_Dashboard_Reportes(CadenaConexion);
+            var result = await datos.ReporteGraficaObjetivos(ejercicio, periodo, tipo_grafica, tipo_cartera, estado_cartera, responsable_cobranza, categoria, adr, sucursales);
+            var docresult = await XLSCob_Dashboard_ReporteObjetivo.GenerarExcel(result, ejercicio, periodo, tipo_cartera, tipo_grafica, estado_cartera, responsable_cobranza, categoria);
+            return Ok(docresult);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ImprimirPDFReporteObjetivo(int ejercicio, int periodo, string tipo_grafica, string tipo_cartera, string estado_cartera, string responsable_cobranza, string categoria, string adr, string sucursales)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Dashboard_Reportes datos = new AD_Dashboard_Reportes(CadenaConexion);
+            var result = await datos.ReporteGraficaObjetivos(ejercicio, periodo, tipo_grafica, tipo_cartera, estado_cartera, responsable_cobranza, categoria, adr, sucursales);
+
+            try
+            {
+                RPT_Result documento = RPT_Dashboard_ReporteObjetivo.GenerarPDF(result, ejercicio, periodo, tipo_cartera, tipo_grafica, estado_cartera, responsable_cobranza, categoria);
+
+                return Ok(documento);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error de servidor");
+
+            }
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> ReporteGraficaProyeccionTotal(int ejercicio, int periodo, string mes, string sucursales, string adr)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
@@ -130,12 +163,78 @@ namespace HD.Endpoints.Controllers.Cobranza.Dashboard
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ImprimirExcelReporteProyeccionTotal(int ejercicio, int periodo, string mes, string sucursales, string adr)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Dashboard_Reportes datos = new AD_Dashboard_Reportes(CadenaConexion);
+            var result = await datos.ReporteGraficaProyeccionTotal(ejercicio, periodo, mes, sucursales, adr);
+            var docresult = await XLSCob_Dashboard_ReporteProyeccionTotal.GenerarExcel(result, ejercicio, periodo, mes, sucursales, adr);
+            return Ok(docresult);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ImprimirPDFReporteProyeccionTotal(int ejercicio, int periodo, string mes, string sucursales, string adr)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Dashboard_Reportes datos = new AD_Dashboard_Reportes(CadenaConexion);
+            var result = await datos.ReporteGraficaProyeccionTotal(ejercicio, periodo, mes, sucursales, adr);
+
+            try
+            {
+                RPT_Result documento = RPT_Dashboard_ReporteProyeccionTotal.GenerarPDF(result, ejercicio, periodo, mes, sucursales, adr);
+
+                return Ok(documento);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error de servidor");
+
+            }
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> ReporteGraficaProyeccionMensual(int ejercicio, int periodo, string mes, string sucursales, string adr, string tipo_cartera)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Dashboard_Reportes datos = new AD_Dashboard_Reportes(CadenaConexion);
             var result = await datos.ReporteGraficaProyeccionMensual(ejercicio, periodo, mes, sucursales, adr, tipo_cartera);
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ImprimirExcelReporteProyeccionMensual(int ejercicio, int periodo, string mes, string sucursales, string adr, string tipo_cartera)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Dashboard_Reportes datos = new AD_Dashboard_Reportes(CadenaConexion);
+            var result = await datos.ReporteGraficaProyeccionMensual(ejercicio, periodo, mes, sucursales, adr, tipo_cartera);
+            var docresult = await XLSCob_Dashboard_ReporteProyeccionMensual.GenerarExcel(result, ejercicio, periodo, mes, sucursales, adr, tipo_cartera);
+            return Ok(docresult);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ImprimirPDFReporteProyeccionMensual(int ejercicio, int periodo, string mes, string sucursales, string adr, string tipo_cartera)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Dashboard_Reportes datos = new AD_Dashboard_Reportes(CadenaConexion);
+            var result = await datos.ReporteGraficaProyeccionMensual(ejercicio, periodo, mes, sucursales, adr, tipo_cartera);
+
+            try
+            {
+                RPT_Result documento = RPT_Dashboard_ReporteProyeccionMensual.GenerarPDF(result, ejercicio, periodo, mes, sucursales, adr, tipo_cartera);
+
+                return Ok(documento);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error de servidor");
+
+            }
+
         }
     }
 }
