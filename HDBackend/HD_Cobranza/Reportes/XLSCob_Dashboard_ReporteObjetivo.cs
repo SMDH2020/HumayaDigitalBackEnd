@@ -8,7 +8,7 @@ using HD_Cobranza.Modelos.Dashboard;
 
 namespace HD_Cobranza.Reportes
 {
-    public class XLSCob_Dashboard_ReporteRecuperacion
+    public class XLSCob_Dashboard_ReporteObjetivo
     {
         public static string obtenernombre_mes(int numeromes)
         {
@@ -96,43 +96,45 @@ namespace HD_Cobranza.Reportes
             }
         }
 
-        public static string obtenerTitulo(string tipo_grafica, string tipo_cartera, string estado, string responsable, int ejercicio, int periodo)
+        public static string obtenerCategoria(string categoria)
         {
-            switch (tipo_grafica)
+            switch (categoria)
             {
-                case "O":
-                    return "OBJETIVO DE CARTERA " + obtenerCartera(tipo_cartera) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
                 case "T":
-                    return "RECUPERACION DE CARTERA " + obtenerCartera(tipo_cartera) + " " + obtenerEstado(estado) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
+                    return "TOTAL";
                 case "R":
-                    return "RECUPERACION DE CARTERA " + " " + obtenerEstado(estado) + " DE " + obtenerResponsable(responsable) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
+                    return "RECUPERADO";
+                case "C":
+                    return "CONVENIADO";
+                case "P":
+                    return "SIN GESTION";
                 default:
                     return "";
 
             }
         }
 
-        public static int obtenerAncho(string tipo_grafica)
+        public static string obtenerTitulo(string tipo_grafica, string tipo_cartera, string estado, string responsable, string categoria, int ejercicio, int periodo)
         {
             switch (tipo_grafica)
             {
                 case "O":
-                    return 5;
-                case "T":
-                    return 6;
+                    return "OBJETIVO DE CARTERA " + obtenerEstado(estado) + " " + obtenerCategoria(categoria) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
+                case "C":
+                    return "OBJETIVO DE CARTERA " + obtenerCartera(tipo_cartera) + " " + obtenerEstado(estado) + " " + obtenerCategoria(categoria) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
                 case "R":
-                    return 6;
+                    return "OBJETIVO DE " + obtenerResponsable(responsable) + " " + obtenerCategoria(categoria) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
                 default:
-                    return 0;
+                    return "";
 
             }
         }
 
-        public static Task<DocResult> GenerarExcel(IEnumerable<mdl_Dashboard_Reporte_Grafica_Total> detalle, int ejercicio, int periodo, string tipo_cartera, string tipo_grafica, string estado, string responsable)
+        public static Task<DocResult> GenerarExcel(IEnumerable<mdl_Dashboard_Reporte_Grafica_Total> detalle, int ejercicio, int periodo, string tipo_cartera, string tipo_grafica, string estado, string responsable, string categoria)
         {
             try
             {
-                string sheetname = "REPORTE DE RECUPERACION";
+                string sheetname = "REPORTE OBJETIVO";
                 string ruta = $"C:\\SMDH\\Procesados\\{sheetname}.xlsx";
                 using (var workbook = new XLWorkbook())
                 {
@@ -140,7 +142,7 @@ namespace HD_Cobranza.Reportes
                     sheet.Style.Font.FontName = "Calibri";
                     sheet.Style.Font.FontSize = 10;
 
-                    int renglon = XLSEncabezado.Encabezado(ref sheet, obtenerTitulo(tipo_grafica, tipo_cartera, estado, responsable, ejercicio, periodo), obtenerAncho(tipo_grafica));
+                    int renglon = XLSEncabezado.Encabezado(ref sheet, obtenerTitulo(tipo_grafica, tipo_cartera, estado, responsable, categoria, ejercicio, periodo), 5);
 
                     //renglon += 1;
 
@@ -165,18 +167,10 @@ namespace HD_Cobranza.Reportes
                     sheet.Cell(renglon, 2).Value = "CLIENTE";
                     sheet.Cell(renglon, 3).Value = "VENCIMIENTO";
                     sheet.Cell(renglon, 4).Value = "DIAS VENCIDO";
-                    if (tipo_grafica == "O")
-                    {
-                        sheet.Cell(renglon, 5).Value = "SALDO";
-                    }
-                    if (tipo_grafica == "T" || tipo_grafica == "R")
-                    {
-                        sheet.Cell(renglon, 5).Value = "RECUPERADO";
-                        sheet.Cell(renglon, 6).Value = "OBJETIVO";
-                    }
+                    sheet.Cell(renglon, 5).Value = "SALDO";
 
                     // Estilo para los encabezados de la tabla
-                    var rango = sheet.Range(renglon, 1, renglon, obtenerAncho(tipo_grafica));
+                    var rango = sheet.Range(renglon, 1, renglon, 5);
                     rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
                     rango.Style.Font.Bold = true;
                     rango.Style.Font.FontSize = 12;
@@ -192,15 +186,7 @@ namespace HD_Cobranza.Reportes
                         sheet.Cell(renglon, 2).Value = det.razon_social?.ToUpper();
                         sheet.Cell(renglon, 3).Value = DateTime.ParseExact(det.vencimiento, "MM/dd/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
                         sheet.Cell(renglon, 4).Value = det.dias_Vencido;
-                        if (tipo_grafica == "O")
-                        {
-                            sheet.Cell(renglon, 5).Value = det.saldo;
-                        }
-                        if (tipo_grafica == "T" || tipo_grafica == "R")
-                        {
-                            sheet.Cell(renglon, 5).Value = det.recuperado;
-                            sheet.Cell(renglon, 6).Value = det.objetivo;
-                        }
+                        sheet.Cell(renglon, 5).Value = det.saldo;
                         renglon++;
                     }
 
@@ -208,7 +194,6 @@ namespace HD_Cobranza.Reportes
                     sheet.Column(3).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                     sheet.Column(4).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                     sheet.Column(5).Style.NumberFormat.Format = "#,##0.00";
-                    sheet.Column(6).Style.NumberFormat.Format = "#,##0.00";
 
                     //sheet.Column(6).Style.NumberFormat.Format = "#,##0.00";
                     //sheet.Column(7).Style.NumberFormat.Format = "0.0 %";
