@@ -17,6 +17,10 @@ namespace HD.Clientes.Modelos
         public string? svencimiento => vencimiento.ToString("dd-MM-yyyy");
         public string? dvencimiento => vencimiento.ToString("yyyy-MM-dd");
 
+        public DateTime inicio_interes { get; set; }
+        public string? sinicio_interes => inicio_interes.ToString("dd-MM-yyyy");
+        public string? dinicio_interes => inicio_interes.ToString("yyyy-MM-dd");
+
         [Required(ErrorMessage = "El campo dias es un valor requerido")]
         [Range(0, 2200, ErrorMessage = "El campo dias esta fuera de rango")]
         public short dias { get; set; }
