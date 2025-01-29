@@ -7,7 +7,7 @@ using HD_Cobranza.Modelos.Dashboard;
 
 namespace HD_Reporteria.Cobranza
 {
-    public class RPT_Dashboard_ReporteTotal
+    public class RPT_Dashboard_ReporteProyeccionTotal
     {
         public static string obtenernombre_mes(int numeromes)
         {
@@ -48,70 +48,33 @@ namespace HD_Reporteria.Cobranza
             switch (cartera)
             {
                 case "O":
-                    return "DE OPERACION";
+                    return "DE OP.";
                 case "R":
-                    return "REVOLVENTE";
+                    return "REV.";
                 case "E":
-                    return "ESPECIAL";
-                case "M":
-                    return "JURIDICA";
+                    return "ESP.";
                 default:
                     return "";
 
             }
         }
 
-        public static string obtenerEstado(string cartera)
+        public static string FormatearMesAnio(string mes)
         {
-            switch (cartera)
+            // Verifica que el formato sea correcto
+            if (DateTime.TryParseExact(mes, "yyyy-MM", null, System.Globalization.DateTimeStyles.None, out DateTime fecha))
             {
-                case "A":
-                    return "ACTIVA";
-                case "P":
-                    return "POR VENCER";
-                case "V":
-                    return "VENCIDA";
-                default:
-                    return "";
-
+                string nombreMes = obtenernombre_mes(fecha.Month);
+                string anio = fecha.Year.ToString();
+                return $"{nombreMes} {anio}";
+            }
+            else
+            {
+                throw new ArgumentException("El formato de la variable mes no es válido. Debe ser 'yyyy-MM'.");
             }
         }
 
-        public static string obtenerResponsable(string responsable)
-        {
-            switch (responsable)
-            {
-                case "EC":
-                    return "EJECUTIVO COBRANZA";
-                case "CS":
-                    return "COBRANZA SINALOA";
-                case "CN":
-                    return "COBRANZA NAYARIT";
-                case "GC":
-                    return "GERENCIA DE COBRANZA";
-                default:
-                    return "";
-
-            }
-        }
-
-        public static string obtenerTitulo(string tipo_grafica, string tipo_cartera, string estado, string responsable, int ejercicio, int periodo)
-        {
-            switch (tipo_grafica)
-            {
-                case "T":
-                    return "REPORTE TOTAL DE CARTERA " + obtenerCartera(tipo_cartera) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
-                case "L":
-                    return "CARTERA " + obtenerCartera(tipo_cartera) + " " + obtenerEstado(estado) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
-                case "R":
-                    return "CARTERA " + " " + obtenerEstado(estado) + " DE " + obtenerResponsable(responsable) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
-                default:
-                    return "";
-
-            }
-        }
-
-        public static RPT_Result GenerarPDF(IEnumerable<mdl_Dashboard_Reporte_Grafica_Total> detalle, int ejercicio, int periodo, string tipo_cartera, string tipo_grafica, string estado, string responsable)
+        public static RPT_Result GenerarPDF(IEnumerable<mdl_Dashboard_Recuperacion_Mensual_Detalle> detalle, int ejercicio, int periodo, string mes, string sucursales, string adr)
         {
             try
             {
@@ -141,7 +104,7 @@ namespace HD_Reporteria.Cobranza
 
                                 row.ConstantColumn(450).PaddingTop(30).Height(50).Background("#477c2c").Row(row2 =>
                                 {
-                                    row2.RelativeItem().Padding(5).PaddingTop(10).PaddingLeft(20).Text(obtenerTitulo(tipo_grafica, tipo_cartera, estado, responsable, ejercicio, periodo)).FontColor("#fff").FontSize(14).Bold().FontFamily(fontFamily);
+                                    row2.RelativeItem().Padding(5).PaddingTop(10).PaddingLeft(20).Text("PROYECCION DE RECUPERACION TOTAL " + FormatearMesAnio(mes)).FontColor("#fff").FontSize(14).Bold().FontFamily(fontFamily);
                                     //+obtenernombre_mes(periodo) + " " + ejercicio
                                 });
                             });
@@ -185,9 +148,9 @@ namespace HD_Reporteria.Cobranza
                                     header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("CLIENTE").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
-                                    .Padding(1).Text("VENCIMIENTO").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    .Padding(1).Text("IMP. FACTURA").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
-                                    .Padding(1).Text("DIAS VENCIDO").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    .Padding(1).Text("PAGADO").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("SALDO").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
                                 });
@@ -199,18 +162,16 @@ namespace HD_Reporteria.Cobranza
                                     .Text(det.sucursal?.ToUpper()).FontSize(9).FontFamily(fontFamily);
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignLeft().MaxHeight(60).AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                   .Text(det.razon_social?.ToUpper()).FontSize(9).FontFamily(fontFamily);
+                                   .Text(det.razonsocial?.ToUpper()).FontSize(9).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignCenter().MaxHeight(60).AlignMiddle().PaddingLeft(4).PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                    .Text(DateTime.ParseExact(det.vencimiento, "MM/dd/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy", new System.Globalization.CultureInfo("es-ES"))).FontSize(9).FontFamily(fontFamily);
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().MaxHeight(60).AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                   .Text(det.importe_factura.ToString("N2")).FontSize(9).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignCenter().MaxHeight(60).AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                   .Text(det.dias_Vencido.ToString()).FontSize(9).FontFamily(fontFamily);
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().MaxHeight(60).AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                   .Text(det.pagado.ToString("N2")).FontSize(9).FontFamily(fontFamily);
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().MaxHeight(60).AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
                                    .Text(det.saldo.ToString("N2")).FontSize(9).FontFamily(fontFamily);
-
-                                   
                                 }
                             });
                         });
@@ -231,7 +192,7 @@ namespace HD_Reporteria.Cobranza
                 }).GeneratePdf();
                 RPT_Result result = new RPT_Result();
                 result.extension = "pdf";
-                result.nombredocumento = "REPORTE TOTAL";
+                result.nombredocumento = "REPORTE PROYECCION TOTAL";
                 result.documento = Convert.ToBase64String(doc);
                 return result;
 

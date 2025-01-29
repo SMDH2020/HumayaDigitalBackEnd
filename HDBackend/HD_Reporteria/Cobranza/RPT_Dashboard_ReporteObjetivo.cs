@@ -7,7 +7,7 @@ using HD_Cobranza.Modelos.Dashboard;
 
 namespace HD_Reporteria.Cobranza
 {
-    public class RPT_Dashboard_ReporteTotal
+    public class RPT_Dashboard_ReporteObjetivo
     {
         public static string obtenernombre_mes(int numeromes)
         {
@@ -48,13 +48,13 @@ namespace HD_Reporteria.Cobranza
             switch (cartera)
             {
                 case "O":
-                    return "DE OPERACION";
+                    return "DE OP.";
                 case "R":
-                    return "REVOLVENTE";
+                    return "REV.";
                 case "E":
-                    return "ESPECIAL";
+                    return "ESP.";
                 case "M":
-                    return "JURIDICA";
+                    return "JUR.";
                 default:
                     return "";
 
@@ -82,36 +82,54 @@ namespace HD_Reporteria.Cobranza
             switch (responsable)
             {
                 case "EC":
-                    return "EJECUTIVO COBRANZA";
+                    return "EJECUTIVO COB.";
                 case "CS":
-                    return "COBRANZA SINALOA";
+                    return "COB. SINALOA";
                 case "CN":
-                    return "COBRANZA NAYARIT";
+                    return "COB. NAYARIT";
                 case "GC":
-                    return "GERENCIA DE COBRANZA";
+                    return "GERENCIA DE COB.";
                 default:
                     return "";
 
             }
         }
 
-        public static string obtenerTitulo(string tipo_grafica, string tipo_cartera, string estado, string responsable, int ejercicio, int periodo)
+        public static string obtenerCategoria(string categoria)
+        {
+            switch (categoria)
+            {
+                case "T":
+                    return "TOTAL";
+                case "R":
+                    return "REC.";
+                case "C":
+                    return "CON.";
+                case "P":
+                    return "SIN GESTION";
+                default:
+                    return "";
+
+            }
+        }
+
+        public static string obtenerTitulo(string tipo_grafica, string tipo_cartera, string estado, string responsable, string categoria, int ejercicio, int periodo)
         {
             switch (tipo_grafica)
             {
-                case "T":
-                    return "REPORTE TOTAL DE CARTERA " + obtenerCartera(tipo_cartera) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
-                case "L":
-                    return "CARTERA " + obtenerCartera(tipo_cartera) + " " + obtenerEstado(estado) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
+                case "O":
+                    return "OBJ. DE CARTERA " + obtenerEstado(estado) + " " + obtenerCategoria(categoria) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
+                case "C":
+                    return "OBJ. DE CARTERA " + obtenerCartera(tipo_cartera) + " " + obtenerEstado(estado) + " " + obtenerCategoria(categoria) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
                 case "R":
-                    return "CARTERA " + " " + obtenerEstado(estado) + " DE " + obtenerResponsable(responsable) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
+                    return "OBJ. DE " + obtenerResponsable(responsable) + " " + obtenerCategoria(categoria) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
                 default:
                     return "";
 
             }
         }
 
-        public static RPT_Result GenerarPDF(IEnumerable<mdl_Dashboard_Reporte_Grafica_Total> detalle, int ejercicio, int periodo, string tipo_cartera, string tipo_grafica, string estado, string responsable)
+        public static RPT_Result GenerarPDF(IEnumerable<mdl_Dashboard_Reporte_Grafica_Total> detalle, int ejercicio, int periodo, string tipo_cartera, string tipo_grafica, string estado, string responsable, string categoria)
         {
             try
             {
@@ -141,7 +159,7 @@ namespace HD_Reporteria.Cobranza
 
                                 row.ConstantColumn(450).PaddingTop(30).Height(50).Background("#477c2c").Row(row2 =>
                                 {
-                                    row2.RelativeItem().Padding(5).PaddingTop(10).PaddingLeft(20).Text(obtenerTitulo(tipo_grafica, tipo_cartera, estado, responsable, ejercicio, periodo)).FontColor("#fff").FontSize(14).Bold().FontFamily(fontFamily);
+                                    row2.RelativeItem().Padding(5).PaddingTop(10).PaddingLeft(20).Text(obtenerTitulo(tipo_grafica, tipo_cartera, estado, responsable, categoria, ejercicio, periodo)).FontColor("#fff").FontSize(14).Bold().FontFamily(fontFamily);
                                     //+obtenernombre_mes(periodo) + " " + ejercicio
                                 });
                             });
@@ -210,7 +228,7 @@ namespace HD_Reporteria.Cobranza
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().MaxHeight(60).AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
                                    .Text(det.saldo.ToString("N2")).FontSize(9).FontFamily(fontFamily);
 
-                                   
+
                                 }
                             });
                         });
@@ -231,7 +249,7 @@ namespace HD_Reporteria.Cobranza
                 }).GeneratePdf();
                 RPT_Result result = new RPT_Result();
                 result.extension = "pdf";
-                result.nombredocumento = "REPORTE TOTAL";
+                result.nombredocumento = "REPORTE OBJETIVO";
                 result.documento = Convert.ToBase64String(doc);
                 return result;
 

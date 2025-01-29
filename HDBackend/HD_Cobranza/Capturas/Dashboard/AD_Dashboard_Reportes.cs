@@ -69,18 +69,28 @@ namespace HD_Cobranza.Capturas.Dashboard
             try
             {
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                var parametros = new
-                {
-                    ejercicio11 = ejercicio,
-                    periodo11 = periodo,
-                    tipo_grafica = tipo_grafica,
-                    tipo_cartera = tipo_cartera,
-                    estado_cartera = estado_cartera,
-                    responsable_cartera = responsable_cartera,
-                    categoria = categoria,
-                    adr = adr,
-                    sucursales = sucursales
-                };
+                //var parametros = new
+                //{
+                //    ejercicio11 = ejercicio,
+                //    periodo11 = periodo,
+                //    tipo_grafica = tipo_grafica,
+                //    tipo_cartera = tipo_cartera,
+                //    estado_cartera = estado_cartera,
+                //    responsable_cartera = responsable_cartera,
+                //    categoria = categoria,
+                //    adr = adr,
+                //    sucursales = sucursales
+                //};
+                var parametros = new DynamicParameters();
+                parametros.Add("ejercicio11", ejercicio, System.Data.DbType.Int16);
+                parametros.Add("periodo11", periodo, System.Data.DbType.Int16);
+                parametros.Add("tipo_grafica", tipo_grafica, System.Data.DbType.String);
+                parametros.Add("tipo_cartera", tipo_cartera, System.Data.DbType.String);
+                parametros.Add("estado_cartera", estado_cartera, System.Data.DbType.String);
+                parametros.Add("responsable_cartera", responsable_cartera, System.Data.DbType.String);
+                parametros.Add("categoria", categoria, System.Data.DbType.String);
+                parametros.Add("adr", adr, System.Data.DbType.String);
+                parametros.Add("sucursales", sucursales, System.Data.DbType.String);
                 IEnumerable<mdl_Dashboard_Reporte_Grafica_Total> result = await factory.SQL.QueryAsync<mdl_Dashboard_Reporte_Grafica_Total>("Cartera_Clientes.Cobranza.Dashboard_Total_Clientes_Detalle", parametros, commandType: System.Data.CommandType.StoredProcedure, commandTimeout: 60);
                 factory.SQL.Close();
                 return result;

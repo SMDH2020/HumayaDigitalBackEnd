@@ -8,7 +8,7 @@ using HD_Cobranza.Modelos.Dashboard;
 
 namespace HD_Cobranza.Reportes
 {
-    public class XLSCob_Dashboard_ReporteTotal
+    public class XLSCob_Dashboard_ReporteObjetivo
     {
         public static string obtenernombre_mes(int numeromes)
         {
@@ -96,29 +96,45 @@ namespace HD_Cobranza.Reportes
             }
         }
 
-        public static string obtenerTitulo(string tipo_grafica, string tipo_cartera, string estado, string responsable, int ejercicio, int periodo)
+        public static string obtenerCategoria(string categoria)
         {
-            switch (tipo_grafica)
+            switch (categoria)
             {
                 case "T":
-                    return "REPORTE TOTAL DE CARTERA " + obtenerCartera(tipo_cartera) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
-                case "L":
-                    return "CARTERA " + obtenerCartera(tipo_cartera) + " " + obtenerEstado(estado) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
+                    return "TOTAL";
                 case "R":
-                    return "CARTERA " + " " + obtenerEstado(estado) + " DE " + obtenerResponsable(responsable) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
-                case "O":
-                    return "OBJETIVO DE CARTERA " + " " + obtenerCartera(tipo_cartera) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
+                    return "RECUPERADO";
+                case "C":
+                    return "CONVENIADO";
+                case "P":
+                    return "SIN GESTION";
                 default:
                     return "";
 
             }
         }
 
-        public static Task<DocResult> GenerarExcel(IEnumerable<mdl_Dashboard_Reporte_Grafica_Total> detalle, int ejercicio, int periodo, string tipo_cartera, string tipo_grafica, string estado, string responsable)
+        public static string obtenerTitulo(string tipo_grafica, string tipo_cartera, string estado, string responsable, string categoria, int ejercicio, int periodo)
+        {
+            switch (tipo_grafica)
+            {
+                case "O":
+                    return "OBJETIVO DE CARTERA " + obtenerEstado(estado) + " " + obtenerCategoria(categoria) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
+                case "C":
+                    return "OBJETIVO DE CARTERA " + obtenerCartera(tipo_cartera) + " " + obtenerEstado(estado) + " " + obtenerCategoria(categoria) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
+                case "R":
+                    return "OBJETIVO DE " + obtenerResponsable(responsable) + " " + obtenerCategoria(categoria) + " " + obtenernombre_mes(periodo) + " " + ejercicio;
+                default:
+                    return "";
+
+            }
+        }
+
+        public static Task<DocResult> GenerarExcel(IEnumerable<mdl_Dashboard_Reporte_Grafica_Total> detalle, int ejercicio, int periodo, string tipo_cartera, string tipo_grafica, string estado, string responsable, string categoria)
         {
             try
             {
-                string sheetname = "REPORTE TOTAL DE CARTERA";
+                string sheetname = "REPORTE OBJETIVO";
                 string ruta = $"C:\\SMDH\\Procesados\\{sheetname}.xlsx";
                 using (var workbook = new XLWorkbook())
                 {
@@ -126,7 +142,7 @@ namespace HD_Cobranza.Reportes
                     sheet.Style.Font.FontName = "Calibri";
                     sheet.Style.Font.FontSize = 10;
 
-                    int renglon = XLSEncabezado.Encabezado(ref sheet, obtenerTitulo(tipo_grafica, tipo_cartera, estado, responsable, ejercicio, periodo), 5);
+                    int renglon = XLSEncabezado.Encabezado(ref sheet, obtenerTitulo(tipo_grafica, tipo_cartera, estado, responsable, categoria, ejercicio, periodo), 5);
 
                     //renglon += 1;
 
