@@ -1,4 +1,5 @@
 ﻿using HD.Clientes.Consultas.AnalisisCredito;
+using HD.Clientes.Modelos;
 using HD.Clientes.Modelos.SC_Analisis;
 using HD.Notifications.Analisis;
 using HD.Security;
@@ -73,10 +74,24 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             }
             if (result.mdldatos.noificar == true) await NotificacionComentarios.Enviar_Mhusa(result);
+            if (result.mdldatos.noificar != true)
+            {
+                // Crear un solo objeto mdlSolicitud con idusuario igual a 0
+                result.mdlSolicitud = new List<mdlSolicitudCredito_Enviar>
+                      {
+                        new mdlSolicitudCredito_Enviar {
+                            idempleado = 0,
+                            nombre = "",
+                            correo = ""
+                        }
+
+                      };
+            }
             return Ok(new
             {
                 documentacion = result.documentacion,
-                estado = result.estado
+                estado = result.estado,
+                socket = result.mdlSolicitud
             });
 
             //ADAnalisisNotificacion notificacion = new ADAnalisisNotificacion(CadenaConexion);
@@ -149,10 +164,24 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             }
             await NotificacionComentarios.Enviar_Mhusa(result);
+            if (result.mdldatos.noificar != true)
+            {
+                // Crear un solo objeto mdlSolicitud con idusuario igual a 0
+                result.mdlSolicitud = new List<mdlSolicitudCredito_Enviar>
+                {
+                        new mdlSolicitudCredito_Enviar {
+                            idempleado = 0,
+                            nombre = "",
+                            correo = ""
+                        }
+
+                };
+            }
             return Ok(new
             {
                 documentacion = result.documentacion,
-                estado = result.estado
+                estado = result.estado,
+                socket = result.mdlSolicitud
             });
 
             //ADAnalisisNotificacion notificacion = new ADAnalisisNotificacion(CadenaConexion);

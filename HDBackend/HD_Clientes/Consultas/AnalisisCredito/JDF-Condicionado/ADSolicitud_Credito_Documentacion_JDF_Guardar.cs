@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
 using HD.Clientes.Modelos;
+using HD.Clientes.Modelos.SC_Analisis.Credito_Condicionados;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace HD.Clientes.Consultas.AnalisisCredito.JDF_Condicionado
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlSolicitudCredito_Documentacion>> Guardar(mdlSolicitudCredito_Documentacion_View view)
+        public async Task<mdlSolicitud_CRedito_Documentacion_Email> Guardar(mdlSolicitudCredito_Documentacion_View view)
         {
             try
             {
@@ -31,9 +32,30 @@ namespace HD.Clientes.Consultas.AnalisisCredito.JDF_Condicionado
                     vigencia = view.vigencia,
                     usuario = view.usuario,
                 };
-                IEnumerable<mdlSolicitudCredito_Documentacion> result = await factory.SQL.QueryAsync<mdlSolicitudCredito_Documentacion>("Credito.sp_Solicitud_Credito_Documentacion_JDF_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Solicitud_Credito_Documentacion_JDF_Guardar_Email", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlSolicitud_CRedito_Documentacion_Email documentocargados = new mdlSolicitud_CRedito_Documentacion_Email();
+                documentocargados.documentacion = result.Read<mdlSolicitudCredito_Documentacion>().ToList();
+                documentocargados.notificar = result.Read<mdl_Notificar>().FirstOrDefault();
+                documentocargados.mdlSolicitud = result.Read<mdlSolicitudCredito_Enviar>().ToList();
+
+
+                // Verificar si notificar es 0
+                if (documentocargados.notificar != null && documentocargados.notificar.notificar == 0)
+                {
+                    // Crear un solo objeto mdlSolicitud con idusuario igual a 0
+                    documentocargados.mdlSolicitud = new List<mdlSolicitudCredito_Enviar> 
+            {
+                        new mdlSolicitudCredito_Enviar { 
+                            idempleado = 0,
+                            nombre = "",
+                            correo = ""
+                        }
+
+            };
+                }
+
                 factory.SQL.Close();
-                return result;
+                return documentocargados;
             }
             catch (System.Exception ex)
             {

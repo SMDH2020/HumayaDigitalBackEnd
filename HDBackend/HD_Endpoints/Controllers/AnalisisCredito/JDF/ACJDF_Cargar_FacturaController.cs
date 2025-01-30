@@ -43,10 +43,12 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
             {
                 await datos.Guardar_detalle(mdl.folio, mdl.registro, fac.orden, fac.documento,mdl.usuario, fac.docto_financiamiento);
             }
+            AD_Conseguir_Correos_Notificacion correos = new AD_Conseguir_Correos_Notificacion(CadenaConexion);
+            var socket =  await correos.ObtenerCorreos(mdl.folio, mdl.usuario, mdl.comentarios);
             //ADNotificacionFinalizacionProceso notificacion = new ADNotificacionFinalizacionProceso(CadenaConexion);
             //var body = await notificacion.GetBody(mdl.folio);
             //await NotificacionComentarios.EnviarProcesoFinalizado(body, mdl.folio);
-            return Ok(new {mensaje="Datos Cargados cone exito"});
+            return Ok(new {socket=socket});
         }
 
         [HttpPost]
