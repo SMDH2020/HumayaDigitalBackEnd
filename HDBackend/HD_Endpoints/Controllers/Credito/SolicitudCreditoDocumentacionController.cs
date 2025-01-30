@@ -334,6 +334,19 @@ namespace HD.Endpoints.Controllers.Credito
             {
                 await NotificacionComentarios.EnviarCargaDocumentosAprobadosCondicionado(result);
             }
+            if (result.completado.completado == 0)
+            {
+                // Crear un solo objeto mdlSolicitud con idusuario igual a 0
+                result.mdlSolicitud = new List<mdlSolicitudCredito_Enviar>
+                      {
+                        new mdlSolicitudCredito_Enviar {
+                            idempleado = 0,
+                            nombre = "",
+                            correo = ""
+                        }
+
+                      };
+            }
             return Ok(result);
 
         }

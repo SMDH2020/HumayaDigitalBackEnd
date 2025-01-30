@@ -37,7 +37,11 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
             };
             var body = await notificacion.GetBody(not);
             //await NotificacionComentarios.Enviar(body);
-            return Ok(result);
+            return Ok(new
+            {
+                documentacion = result.documento,
+                socket = result.mdlSolicitud
+            });
 
         }
     }

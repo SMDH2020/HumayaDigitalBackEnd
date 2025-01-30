@@ -60,7 +60,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Credito_Condicionado
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             }
             await NotificacionComentarios.EnviarOperacionCondicionada(result);
-            return Ok(new { mensaje="Datos cargados con exito"});
+            return Ok(new { socket=result.mdlSolicitud});
 
         }
 

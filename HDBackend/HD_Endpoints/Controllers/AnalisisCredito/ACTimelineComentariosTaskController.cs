@@ -100,6 +100,45 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             //return Ok(result);
         }
 
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> EnviarAnalisisDocumentacionCondicionada(mdl_Analisis_Documentacion mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADAnalisiCreditoMhusa datos = new ADAnalisiCreditoMhusa(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.GuardarAnalisisCondicionado(mdl);
+            if (result.mdldatos is null)
+            {
+                return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
+            }
+            if (result.mdldatos.noificar == true) await NotificacionComentarios.Enviar_Mhusa(result);
+            if (result.mdldatos.noificar != true)
+            {
+                // Crear un solo objeto mdlSolicitud con idusuario igual a 0
+                result.mdlSolicitud = new List<mdlSolicitudCredito_Enviar>
+                      {
+                        new mdlSolicitudCredito_Enviar {
+                            idempleado = 0,
+                            nombre = "",
+                            correo = ""
+                        }
+
+                      };
+            }
+            return Ok(new
+            {
+                documentacion = result.documentacion,
+                estado = result.estado,
+                socket = result.mdlSolicitud
+            });
+
+            //ADAnalisisNotificacion notificacion = new ADAnalisisNotificacion(CadenaConexion);
+            //var body = await notificacion.GetBody(mdl);
+            //await NotificacionComentarios.Enviar(body);
+            //return Ok(result);
+        }
+
 
         [HttpPost]
         [Route("/api/[controller]/[action]")]
@@ -224,6 +263,19 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             if(result.completado.modificacion == 1 || result.completado.completado == 1)
             {
                 await NotificacionComentarios.EnviarModificacionDocumentosAprobadosCondicionado(result);
+            }
+            if (result.completado.completado == 0)
+            {
+                // Crear un solo objeto mdlSolicitud con idusuario igual a 0
+                result.mdlSolicitud = new List<mdlSolicitudCredito_Enviar>
+                      {
+                        new mdlSolicitudCredito_Enviar {
+                            idempleado = 0,
+                            nombre = "",
+                            correo = ""
+                        }
+
+                      };
             }
             return Ok(result);
         }
