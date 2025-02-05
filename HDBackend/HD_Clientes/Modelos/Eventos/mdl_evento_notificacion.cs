@@ -12,5 +12,9 @@ namespace HD.Clientes.Modelos.Eventos
         public string? titulo { get; set; }
         public string? subtitulo { get; set; }
         public string? comentario { get; set; }
+        public string? parametro { get; set; }
+        public string? estado { get; set; }
+        public string? cliente { get; set; }
+
     }
 }
