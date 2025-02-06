@@ -1,12 +1,6 @@
 ﻿using HD_Finanzas.Modelos.Estado_Resultados;
-using HD_Finanzas.Modelos.Gastos_Proyeccion;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HD_Reporteria.Finanzas
 {
@@ -155,6 +149,7 @@ namespace HD_Reporteria.Finanzas
                                     Columns.RelativeColumn(0.4f);
 
                                 });
+
 
                                 tabla.Header(header =>
                                 {

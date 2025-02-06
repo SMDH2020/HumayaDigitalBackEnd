@@ -1,5 +1,6 @@
 ﻿using HD.Generales.Autenticate;
 using HD.Generales.Consultas;
+using HD.Notifications.Autentication;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,7 +35,7 @@ namespace HD.Endpoints.Controllers.Authenticate
 
                 if (email == null) email = string.Empty;
                 if (codigoautenticacion == null) codigoautenticacion = string.Empty;
-                //await NE_Auth_CodigoSeguridad.enviar(email , codigoautenticacion);
+                await NE_Auth_CodigoSeguridad.enviar(email, codigoautenticacion);
 
                 string iussuer = Configuracion["Jwt:Issuer"];
                 string audience = Configuracion["Jwt:Audience"];
