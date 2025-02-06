@@ -7,7 +7,7 @@ namespace HD_Reporteria.GestionCobranza
 {
     public class RPT_Estado_Cuenta
     {
-        public static RPT_Result GenerarEstadoCuenta(IEnumerable<mdl_Facturas_Estado_Cuenta> mdl)
+        public static RPT_Result GenerarEstadoCuenta(IEnumerable<mdl_Facturas_Estado_Cuenta> mdl, string fechaposterior)
         {
             try
             {
@@ -23,6 +23,23 @@ namespace HD_Reporteria.GestionCobranza
                 DateTime fecha = DateTime.Now;
                 DateTime fechaanterior = fecha.AddDays(-1);
                 string fechaActual = fechaanterior.ToString("dd/MM/yyyy", new System.Globalization.CultureInfo("es-ES"));
+                static string CambiarFormato(string fecha)
+                {
+                    // Dividir la cadena en partes usando el guion como separador
+                    string[] partes = fecha.Split('-');
+
+                    // Verificar que la cadena tenga exactamente 3 partes
+                    if (partes.Length == 3)
+                    {
+                        // Reorganizar las partes en el nuevo formato "dd/MM/yyyy"
+                        return $"{partes[2]}/{partes[1]}/{partes[0]}"; // dd/MM/yyyy
+                    }
+                    else
+                    {
+                        throw new FormatException("El formato de la fecha no es válido.");
+                    }
+                }
+                string fechaFormateada = CambiarFormato(fechaposterior);
                 string fontFamily = "Calibri";
                 var rutaImagenQR = mdl.FirstOrDefault().ADR == 2
                 ? Path.Combine("C:\\Nube\\HumayaDigital\\HumayaDigitalBackEnd\\HDBackend\\HD_Reporteria\\Imagenes\\QRNayarit.png")
@@ -117,7 +134,7 @@ namespace HD_Reporteria.GestionCobranza
                                     row.RelativeItem().AlignLeft().Text(txt =>
                                     {
                                         txt.Span("Información al: ").Bold().FontSize(10);
-                                        txt.Span(fechaActual).FontSize(10);
+                                        txt.Span(fechaFormateada).FontSize(10);
                                     });
 
                                     //row.RelativeItem().AlignRight().Text(txt =>
@@ -529,7 +546,7 @@ namespace HD_Reporteria.GestionCobranza
                                         row.RelativeItem().AlignLeft().Text(txt =>
                                         {
                                             txt.Span("Información al: ").Bold().FontSize(10);
-                                            txt.Span(fechaActual).FontSize(10);
+                                            txt.Span(fechaFormateada).FontSize(10);
                                         });
 
                                         //row.RelativeItem().AlignRight().Text(txt =>
@@ -941,7 +958,7 @@ namespace HD_Reporteria.GestionCobranza
                                     row.RelativeItem().AlignLeft().Text(txt =>
                                     {
                                         txt.Span("Información al: ").Bold().FontSize(10);
-                                        txt.Span(fechaActual).FontSize(10);
+                                        txt.Span(fechaFormateada).FontSize(10);
                                     });
 
                                     //row.RelativeItem().AlignRight().Text(txt =>
@@ -1290,7 +1307,7 @@ namespace HD_Reporteria.GestionCobranza
                                     tablaDatos.Cell().BorderLeft(1).BorderBottom(1).BorderColor("#D3D3D3").Background("#f0f0f0").Padding(1).AlignCenter().Text("HSBC").FontSize(10).FontFamily(fontFamily);
                                     tablaDatos.Cell().BorderBottom(1).BorderColor("#D3D3D3").Background("#f0f0f0").Padding(1).AlignCenter().Text("4068669746").FontSize(10).FontFamily(fontFamily);
                                     tablaDatos.Cell().BorderBottom(1).BorderColor("#D3D3D3").Background("#f0f0f0").Padding(1).AlignCenter().Text("").FontSize(10).FontFamily(fontFamily);
-                                    tablaDatos.Cell().BorderRight(1).BorderBottom(1).BorderColor("#D3D3D3").Background("#f0f0f0").Padding(1).AlignCenter().Text("021730040686697453").FontSize(10).FontFamily(fontFamily);
+                                    tablaDatos.Cell().BorderRight(1).BorderBottom(1).BorderColor("#D3D3D3").Background("#f0f0f0").Padding(1).AlignCenter().Text("021730040686697463").FontSize(10).FontFamily(fontFamily);
 
                                     tablaDatos.Cell().BorderLeft(1).BorderBottom(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("BANCOPPEL").FontSize(10).FontFamily(fontFamily);
                                     tablaDatos.Cell().BorderBottom(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("12000010160").FontSize(10).FontFamily(fontFamily);

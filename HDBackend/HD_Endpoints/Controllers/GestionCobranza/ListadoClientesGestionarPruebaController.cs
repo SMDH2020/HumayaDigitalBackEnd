@@ -28,6 +28,16 @@ namespace HD.Endpoints.Controllers.GestionCobranza
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ListadoClientes2(string adr, string sucursal, string responsable, string linea, string cartera, string gestion, int ejercicio, int periodo)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Listado_Clientes_Gestionar_2 datos = new AD_Listado_Clientes_Gestionar_2(CadenaConexion);
+            var result = await datos.Clientes(adr, sucursal, responsable, linea, cartera, gestion, ejercicio, periodo);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> ImprimirExcel(string adr, string sucursal, int responsable, string linea, string cartera, string convenio, string juridico)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
