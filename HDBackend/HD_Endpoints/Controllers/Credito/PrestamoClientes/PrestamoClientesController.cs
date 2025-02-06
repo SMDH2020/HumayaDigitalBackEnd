@@ -40,7 +40,11 @@ namespace HD.Endpoints.Controllers.Credito.PrestamoClientes
             AD_Prestamo_Clientes_Guardar datos = new AD_Prestamo_Clientes_Guardar(CadenaConexion);
             mdl.usuario = int.Parse(Sesion.usuario());
             var result = await datos.Crear_Timeline(mdl);
-            return Ok(result);
+            var response = new mdlAnalisis_Mhusa_Resultado
+            {
+                socket = result
+            };
+            return Ok(response);
 
         }
 
