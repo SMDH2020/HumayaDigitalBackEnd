@@ -67,7 +67,13 @@ namespace HD.Endpoints.Controllers.Credito.ReestructurarCredito
             {
                 await NSolicitud_Enviar.Enviar(result);
             }
-            return Ok(new { mensaje });
+
+            var response = new mdlAnalisis_Mhusa_Resultado
+            {
+                socket = result.mdlSolicitud
+            };
+
+            return Ok(response);
 
         }
 
