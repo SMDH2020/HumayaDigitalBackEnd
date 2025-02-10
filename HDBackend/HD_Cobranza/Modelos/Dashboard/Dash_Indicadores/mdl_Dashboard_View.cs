@@ -6,6 +6,8 @@ namespace HD_Cobranza.Modelos.Dashboard.Dash_Indicadores
     {
         public IEnumerable<mdl_Dashboard_Header> header { get; set; }
         public IEnumerable<mdl_Dashboard_TotalCartera> total { get; set; }
+        public IEnumerable<mdl_Dashboard_Total_Cartera_Tabla> tablatotal { get; set; }
+        public IEnumerable<mdl_Dashboard_Total_Cartera_Tabla> tabla { get; set; }
         public IEnumerable<mdl_Dashboard_RecuperacionCartera> recuperacion { get; set; }
         public IEnumerable<mdl_Dashboard_GestionCobranza> gestion { get; set; }
         public IEnumerable<mdl_Dashboard_PedidosFacturados> pedidos { get; set; }
