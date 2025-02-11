@@ -7,4 +7,11 @@
         public float porcentaje { get; set; }
         public int clientes { get; set; }
     }
+    public class mdl_Dashboard_TotalCartera_Estados
+    {
+        public string tipo_cartera { get; set; }
+        public string estado { get; set; }
+        public float importe { get; set; }
+        public int clientes { get; set; }
+    }
 }
