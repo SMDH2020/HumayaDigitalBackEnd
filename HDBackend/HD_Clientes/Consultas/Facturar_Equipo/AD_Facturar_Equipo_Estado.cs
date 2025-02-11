@@ -39,6 +39,35 @@ namespace HD.Clientes.Consultas.Facturar_Equipo
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<mdl_Refacturacion_Datos_View> informacion_Refacturacion(string folio, int usuario)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    folio,
+                    usuario
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Datos_Refacturacion_View", parametros, commandType: System.Data.CommandType.StoredProcedure);
+
+                mdl_Refacturacion_Datos_View data = new mdl_Refacturacion_Datos_View();
+                data.datos_pedido = result.Read<mdl_datos_pedido>().FirstOrDefault();
+                data.informacion = result.Read<mdlSCAnalisis_Pedido_Estado>().FirstOrDefault();
+                data.unidades = result.Read<mdlFacturaUnidadesSolicitadas>().ToList();
+                data.financiamiento = result.Read<mdlPEdidoFinanciamiento>().ToList();
+                data.documentos = result.Read< mdl_documentos_facturados_EQUIP>().ToList();
+                factory.SQL.Close();
+
+                return data;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
         public async Task<mdl_datos_factura_unidad> informacion(string folio,int registro, int usuario)
         {
             try

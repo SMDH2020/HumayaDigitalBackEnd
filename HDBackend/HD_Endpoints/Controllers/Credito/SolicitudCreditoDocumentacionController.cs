@@ -372,7 +372,7 @@ namespace HD.Endpoints.Controllers.Credito
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             ADSolicitud_Credito_Documentacion_JDF_Guardar datos = new ADSolicitud_Credito_Documentacion_JDF_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
-            var result = await datos.GuardarDocumentoReestructuracion(mdl);
+            var result = await datos.GuardarDocumentoReestructuracionNotificar(mdl);
             return Ok(result);
 
         }

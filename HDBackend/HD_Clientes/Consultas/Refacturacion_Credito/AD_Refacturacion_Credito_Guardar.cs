@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
+using HD.Clientes.Modelos;
 using HD.Clientes.Modelos.SC_Analisis.JDF;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace HD.Clientes.Consultas.Refacturacion_Credito
             CadenaConexion = _cadenaconexion;
         }
 
-        public async Task<mdlJDFAnalisis_Datos_Facturacion> Guardar(mdlJDFAnalisis_Datos_Facturacion_Guardar mdl)
+        public async Task<mdlJDFAnalisis_Datos_Facturacion_Notificacion_View> Guardar(mdlJDFAnalisis_Datos_Facturacion_Guardar mdl)
         {
             try
             {
@@ -36,10 +37,14 @@ namespace HD.Clientes.Consultas.Refacturacion_Credito
                     documento = mdl.documento,
                     usuario = mdl.usuario
                 };
-                var result = await factory.SQL.QueryFirstOrDefaultAsync<mdlJDFAnalisis_Datos_Facturacion>("Credito.sp_Refacturar_Credito_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Refacturar_Credito_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlJDFAnalisis_Datos_Facturacion_Notificacion_View mhusa = new mdlJDFAnalisis_Datos_Facturacion_Notificacion_View();
+                mhusa.datos_facturacion = result.Read<mdlJDFAnalisis_Datos_Facturacion>().FirstOrDefault();
+                mhusa.mdlSolicitud = result.Read<mdlSolicitudCredito_Enviar>().ToList();
+
                 factory.SQL.Close();
-                if (result == null) { result = new mdlJDFAnalisis_Datos_Facturacion(); }
-                return result;
+
+                return mhusa;
             }
             catch (System.Exception ex)
             {
