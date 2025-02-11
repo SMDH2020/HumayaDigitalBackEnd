@@ -31,11 +31,9 @@ namespace HD_Cobranza.Capturas.Dashboard.Dash_Indicadores
 
                 var result = await factory.SQL.QueryMultipleAsync("Cartera_Clientes.Cobranza.sp_Dashboard_Indicadores", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 var view = new mdl_Dashboard_View();
-                //var view2 = new mdl_Dashboard_ProyeccionRecuperar_View();
                 view.header = result.Read<mdl_Dashboard_Header>().ToList();
                 view.total = result.Read<mdl_Dashboard_TotalCartera>().ToList();
-                //view.tablatotal = result.Read<mdl_Dashboard_Total_Cartera_Tabla>().ToList();
-                //view.tabla = result.Read<mdl_Dashboard_Total_Cartera_Tabla>().ToList();
+                view.total_estados = result.Read<mdl_Dashboard_TotalCartera_Estados>().ToList();
                 view.recuperacion = result.Read<mdl_Dashboard_RecuperacionCartera>().ToList();
                 view.gestion = result.Read<mdl_Dashboard_GestionCobranza>().ToList();
                 view.pedidos = result.Read<mdl_Dashboard_PedidosFacturados>().ToList();
