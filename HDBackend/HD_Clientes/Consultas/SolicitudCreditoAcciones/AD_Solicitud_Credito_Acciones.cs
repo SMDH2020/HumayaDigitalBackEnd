@@ -1,5 +1,7 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
+using HD.Clientes.Modelos;
+using HD.Clientes.Modelos.SC_Analisis;
 using HD.Clientes.Modelos.Solicitud_Credito_Acciones;
 using System;
 using System.Collections.Generic;
@@ -16,7 +18,7 @@ namespace HD.Clientes.Consultas.SolicitudCreditoAcciones
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<bool> Guardar(mdlSolicitud_Credito_Acciones mdl)
+        public async Task<IEnumerable<mdlSolicitudCredito_Enviar>> Guardar(mdlSolicitud_Credito_Acciones mdl)
         {
             try
             {
@@ -28,9 +30,9 @@ namespace HD.Clientes.Consultas.SolicitudCreditoAcciones
                     comentarios = mdl.comentarios,
                     usuario = mdl.usuario
                 };
-                await factory.SQL.QueryAsync<mdlSolicitud_Credito_Acciones>("Credito.sp_Solicitud_Credito_Accion", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdlSolicitudCredito_Enviar> result = await factory.SQL.QueryAsync<mdlSolicitudCredito_Enviar>("Credito.sp_Solicitud_Credito_Accion_Notificar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
-                return true;
+                return result;
             }
             catch (System.Exception ex)
             {

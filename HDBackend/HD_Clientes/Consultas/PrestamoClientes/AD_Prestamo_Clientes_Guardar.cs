@@ -41,7 +41,7 @@ namespace HD.Clientes.Consultas.PrestamoClientes
             }
         }
 
-        public async Task<object> Crear_Timeline(mdlPrestamoClientesView mdl)
+        public async Task<IEnumerable<mdlSolicitudCredito_Enviar>> Crear_Timeline(mdlPrestamoClientesView mdl)
         {
             try
             {
@@ -52,9 +52,9 @@ namespace HD.Clientes.Consultas.PrestamoClientes
                     folio_prestamo = mdl.folio_prestamo,
                     usuario = mdl.usuario
                 };
-                await factory.SQL.QueryMultipleAsync("Credito.sp_Timeline_PrestamoClientes", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdlSolicitudCredito_Enviar> result = await factory.SQL.QueryAsync<mdlSolicitudCredito_Enviar>("Credito.sp_Timeline_PrestamoClientes_Enviar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
-                return new { };
+                return result;
             }
             catch (System.Exception ex)
             {

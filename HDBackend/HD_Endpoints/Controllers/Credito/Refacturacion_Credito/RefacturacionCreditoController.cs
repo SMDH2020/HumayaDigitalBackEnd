@@ -26,6 +26,11 @@ namespace HD.Endpoints.Controllers.Credito.Refacturacion_Credito
             AD_Refacturacion_Credito_Guardar datos = new AD_Refacturacion_Credito_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.Guardar(mdl);
+            ADJDF_Analisis_Cargar_Factura datos_documentos = new ADJDF_Analisis_Cargar_Factura(CadenaConexion);
+            foreach (mdl_documentos_facturados_EQUIP fac in mdl.documentos)
+            {
+                await datos_documentos.Guardar_detalle_Refacturacion(mdl.folio, mdl.registro, fac.orden, fac.documento, mdl.usuario, fac.docto_financiamiento);
+            }
             return Ok(result);
         }
 

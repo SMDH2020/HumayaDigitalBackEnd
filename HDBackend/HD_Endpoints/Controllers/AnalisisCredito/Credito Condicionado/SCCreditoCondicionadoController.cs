@@ -49,7 +49,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Credito_Condicionado
             AD_Credito_Condicionado_Enviar datos = new AD_Credito_Condicionado_Enviar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.Cancelar(mdl);
-            return Ok(result);
+            return Ok(new { socket = result } );
         }
 
         [HttpPost]

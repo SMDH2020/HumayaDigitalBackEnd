@@ -34,7 +34,7 @@ namespace HD.Clientes.Consultas.AnalisisCredito.JDF
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
-        public async Task<mdlJDFAnalisis_Datos_Facturacion> Guardar(mdlJDFAnalisis_Datos_Facturacion_Guardar mdl)
+        public async Task<mdl_Facturacion_Evento_View> Guardar(mdlJDFAnalisis_Datos_Facturacion_Guardar mdl)
         {
             try
             {
@@ -53,9 +53,11 @@ namespace HD.Clientes.Consultas.AnalisisCredito.JDF
                     documento = mdl.documento,
                     usuario = mdl.usuario
                 };
-                var result = await factory.SQL.QueryFirstOrDefaultAsync<mdlJDFAnalisis_Datos_Facturacion>("Credito.sp_Analisis_JDF_Datos_Facturacion_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var retorno = await factory.SQL.QueryMultipleAsync("Credito.sp_Analisis_JDF_Datos_Facturacion_Guardar_Evento", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdl_Facturacion_Evento_View result = new mdl_Facturacion_Evento_View();
+                result.documento = retorno.Read<mdlJDFAnalisis_Datos_Facturacion>().FirstOrDefault();
+                result.mdlSolicitud = retorno.Read<mdlSolicitudCredito_Enviar>().ToList();
                 factory.SQL.Close();
-                if (result == null) { result = new mdlJDFAnalisis_Datos_Facturacion(); }
                 return result;
             }
             catch (System.Exception ex)
@@ -112,6 +114,31 @@ namespace HD.Clientes.Consultas.AnalisisCredito.JDF
                     docto_financiamiento
                 };
                 var result = await factory.SQL.QueryFirstOrDefaultAsync<mdlJDFAnalisis_Datos_Facturacion>("Credito.sp_Pedido_Detalle_Financiamiento_EQUIP", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                if (result == null) { result = new mdlJDFAnalisis_Datos_Facturacion(); }
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<mdlJDFAnalisis_Datos_Facturacion> Guardar_detalle_Refacturacion(string folio, int registro, int orden, string documento, string usuario, string docto_financiamiento)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    folio,
+                    registro,
+                    orden,
+                    documento,
+                    usuario,
+                    docto_financiamiento
+                };
+                var result = await factory.SQL.QueryFirstOrDefaultAsync<mdlJDFAnalisis_Datos_Facturacion>("Credito.sp_Pedido_Detalle_Financiamiento_EQUIP_Refacturacion", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 if (result == null) { result = new mdlJDFAnalisis_Datos_Facturacion(); }
                 return result;

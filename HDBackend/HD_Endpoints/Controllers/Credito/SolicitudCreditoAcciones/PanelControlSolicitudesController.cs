@@ -23,8 +23,13 @@ namespace HD.Endpoints.Controllers.Credito.SolicitudCreditoAcciones
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Solicitud_Credito_Acciones datos = new AD_Solicitud_Credito_Acciones(CadenaConexion);
             mdl.usuario = Sesion.usuario();
-            await datos.Guardar(mdl);
-            return Ok(new { mensaje = "datos cargados con exito" });
+            var result = await datos.Guardar(mdl);
+            return Ok(new
+                {
+                    mensaje = "datos cargados con exito",
+                    socket = result
+                }
+            );
         }
 
         [HttpGet]

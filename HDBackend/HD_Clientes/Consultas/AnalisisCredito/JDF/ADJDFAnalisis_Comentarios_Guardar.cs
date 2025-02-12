@@ -1,6 +1,8 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
+using HD.Clientes.Modelos;
 using HD.Clientes.Modelos.SC_Analisis.JDF;
+using HD.Clientes.Modelos.SC_Analisis.Modal;
 
 namespace HD.Clientes.Consultas.AnalisisCredito.JDF
 {
@@ -11,7 +13,7 @@ namespace HD.Clientes.Consultas.AnalisisCredito.JDF
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<mdlJDFAnalisis_Decicion_un_documento> Guardar(mdlJDFAnalisiComentarios_Guardar_View comentario)
+        public async Task<mdl_Analisis_Un_Documento_View> Guardar(mdlJDFAnalisiComentarios_Guardar_View comentario)
         {
             try
             {
@@ -27,7 +29,10 @@ namespace HD.Clientes.Consultas.AnalisisCredito.JDF
                     estatus = comentario.estatus,
                     usuario = comentario.usuario
                 };
-                mdlJDFAnalisis_Decicion_un_documento result = await factory.SQL.QueryFirstOrDefaultAsync<mdlJDFAnalisis_Decicion_un_documento>("Credito.SP_Solicitud_Credito_JDF_Comentarios_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var retorno = await factory.SQL.QueryMultipleAsync("Credito.SP_Solicitud_Credito_JDF_Comentarios_Guardar_Evento", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdl_Analisis_Un_Documento_View result = new mdl_Analisis_Un_Documento_View();
+                result.documento = retorno.Read<mdlJDFAnalisis_Decicion_un_documento>().FirstOrDefault();
+                result.mdlSolicitud = retorno.Read<mdlSolicitudCredito_Enviar>().ToList();
                 factory.SQL.Close();
                 return result;
             }
