@@ -23,9 +23,11 @@ namespace HD.Endpoints.Controllers.GestionCobranza
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Facturas_Estado_Cuenta datos = new AD_Facturas_Estado_Cuenta(CadenaConexion);
             var result = await datos.Get(idcliente);
+            DateTime fecha = DateTime.Now;
+            string fechaActual = fecha.ToString("dd/MM/yyyy", new System.Globalization.CultureInfo("es-ES"));
             try
             {
-                RPT_Result documento = RPT_Estado_Cuenta.GenerarEstadoCuenta(result);
+                RPT_Result documento = RPT_Estado_Cuenta.GenerarEstadoCuenta(result, fechaActual);
 
                 return Ok(documento);
             }
@@ -36,6 +38,7 @@ namespace HD.Endpoints.Controllers.GestionCobranza
             }
 
         }
+
         [HttpGet]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> EstadoCuentaPorFechaPDF(string idcliente,string fecha)
@@ -45,7 +48,28 @@ namespace HD.Endpoints.Controllers.GestionCobranza
             var result = await datos.GetPorFecha(idcliente,fecha);
             try
             {
-                RPT_Result documento = RPT_Estado_Cuenta.GenerarEstadoCuenta(result);
+                RPT_Result documento = RPT_Estado_Cuenta.GenerarEstadoCuenta(result, fecha);
+
+                return Ok(documento);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error de servidor");
+
+            }
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> EstadoCuentaFechaPDF(string idcliente, string fecha)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Facturas_Estado_Cuenta datos = new AD_Facturas_Estado_Cuenta(CadenaConexion);
+            var result = await datos.GetPorFecha(idcliente, fecha);
+            try
+            {
+                RPT_Result documento = RPT_Estado_Cuenta.GenerarEstadoCuenta(result, fecha);
 
                 return Ok(documento);
             }
