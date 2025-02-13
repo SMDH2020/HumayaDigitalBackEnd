@@ -28,7 +28,7 @@ namespace HD.Clientes.Consultas.Credito_Condicionado
                     folio = mdl.folio,
                     usuario = mdl.usuario,
                 };
-                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Cancelar_Solicitud_Credito_Condicionado", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Crear_Solicitud_Credito_Condicionado_Enviar", parametros, commandType: System.Data.CommandType.StoredProcedure);
 
                 mdlSCTimeline_Condicionado_View view = new mdlSCTimeline_Condicionado_View();
                 //view.responsables = result.Read<mdlSCCredito_Responsables>().FirstOrDefault();

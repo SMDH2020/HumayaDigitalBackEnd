@@ -4,5 +4,7 @@
     {
         public mdlSCTimeline_estado? estado { get; set; }
         public IEnumerable<mdlSCTimeline_detalle>? detalle { get; set; }
+        public IEnumerable<mdlSolicitudCredito_Enviar>? mdlSolicitud { get; set; }
+
     }
 }

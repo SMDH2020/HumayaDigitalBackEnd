@@ -29,7 +29,11 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
             //{
             //    await datos.Guardar_detalle(mdl.folio, mdl.registro, fac.orden, fac.documento, mdl.usuario, fac.docto_financiamiento);
             //}
-            return Ok(result);
+            return Ok(new
+            {
+                documentacion = result.documento,
+                socket = result.mdlSolicitud
+            });
         }
 
         [HttpPost]
@@ -43,10 +47,12 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
             {
                 await datos.Guardar_detalle(mdl.folio, mdl.registro, fac.orden, fac.documento,mdl.usuario, fac.docto_financiamiento);
             }
+            AD_Conseguir_Correos_Notificacion correos = new AD_Conseguir_Correos_Notificacion(CadenaConexion);
+            var socket =  await correos.ObtenerCorreos(mdl.folio, mdl.usuario, mdl.comentarios);
             //ADNotificacionFinalizacionProceso notificacion = new ADNotificacionFinalizacionProceso(CadenaConexion);
             //var body = await notificacion.GetBody(mdl.folio);
             //await NotificacionComentarios.EnviarProcesoFinalizado(body, mdl.folio);
-            return Ok(new {mensaje="Datos Cargados cone exito"});
+            return Ok(new {socket=socket});
         }
 
         [HttpPost]
@@ -88,7 +94,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             }
             await NotificacionComentarios.EnviarNotificacionOperacionCondicionada(resultado);
-            return Ok(new { mensaje = "Datos Cargados cone exito" });
+            return Ok(new { socket = resultado.mdlSolicitud });
         }
 
         [HttpPost]

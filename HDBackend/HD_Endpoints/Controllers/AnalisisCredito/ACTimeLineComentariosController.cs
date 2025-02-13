@@ -76,7 +76,12 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             }
 
             await NotificacionComentarios.Enviar_Mhusa(result);
-            return Ok(result.estado);
+            return Ok(new
+                {
+                    estado = result.estado,
+                    socket = result.mdlSolicitud
+                }
+            );
         }
 
         [HttpPost]
@@ -98,7 +103,12 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
                     return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
                 }
                 await NotificacionComentarios.Enviar_Mhusa(result);
-                return Ok(result.estado);
+                return Ok(new
+                {
+                    estado = result.estado,
+                    socket = result.mdlSolicitud
+                }
+ );
             }
         }
 
