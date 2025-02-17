@@ -27,5 +27,6 @@ namespace Usados.Consultas.Usados
         public string? estatus { get; set; }
         public string? promocion { get; set; }
         public string? vigencia { get; set; }
+        public string? tiene_promocion { get; set; }
     }
 }

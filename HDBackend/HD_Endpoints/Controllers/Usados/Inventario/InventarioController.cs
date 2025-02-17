@@ -1,7 +1,10 @@
 ﻿using HD.Clientes.Consultas.ClientesCultivo;
+using HD.Clientes.Consultas.Cultivos;
 using HD.Clientes.Modelos;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
+using Usados.Consultas.Inventario;
+using Usados.Modelos.Inventario;
 using Usados.Modelos.Usados;
 
 namespace HD.Endpoints.Controllers.Usados.Inventario
@@ -14,6 +17,19 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
         {
             Configuracion = configuration;
             Sesion = sesion;
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ActualizarPrecio(mdl_Listado_Precio mdl)
+        {
+
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Listado_Precio_Guardar datos = new AD_Listado_Precio_Guardar(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            await datos.ActualizarPrecio(mdl);
+            return Ok(new { mensaje = "datos cargados con exito" });
+
         }
 
         [HttpGet]
@@ -34,6 +50,42 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Inventario_Listado datos = new AD_Inventario_Listado(CadenaConexion);
             var result = await datos.ListadoFiltro();
+            return Ok(result);
+
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarPromocion(mdl_promocion mdl)
+        {
+
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Listado_Precio_Guardar datos = new AD_Listado_Precio_Guardar(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            await datos.GuardarPromocion(mdl);
+            return Ok(new { mensaje = "datos cargados con exito" });
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerPromocion( int idinventario)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Listado_Precio_Obtener_Promocion datos = new AD_Listado_Precio_Obtener_Promocion(CadenaConexion);
+            var result = await datos.BuscarID(idinventario);
+            return Ok(result);
+
+        }
+
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> BorrarPromocion(int idpromocion)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Listado_Precio_Promocion_Borrar datos = new AD_Listado_Precio_Promocion_Borrar(CadenaConexion);
+            var result = await datos.Borrar(idpromocion);
             return Ok(result);
 
         }
