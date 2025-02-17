@@ -39,6 +39,29 @@ namespace Usados.Modelos.Inventario
             }
         }
 
+        public async Task<bool> ActualizarTodosPrecio(int idinventario, double utilidad, double margen, double precio_lista, string usuario)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    idinventario = idinventario,
+                    utilidad = utilidad,
+                    margen = margen,
+                    precio_lista = precio_lista,
+                    usuario = usuario
+                };
+                await factory.SQL.QueryAsync("Usados.sp_Listado_Precio_Por_Unidad_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
         public async Task<bool> GuardarPromocion(mdl_promocion mdl)
         {
             try
