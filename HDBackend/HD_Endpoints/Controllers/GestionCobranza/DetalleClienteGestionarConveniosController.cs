@@ -86,7 +86,6 @@ namespace HD.Endpoints.Controllers.GestionCobranza
             mdl.usuario = Sesion.usuario();
             var result = await datos.Guardar(mdl);
             return Ok(new { mensaje = "datos cargados con exito", listado = result });
-
         }
 
         [HttpGet]
