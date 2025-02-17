@@ -1,6 +1,9 @@
-﻿using HD.Clientes.Consultas.ClientesCultivo;
+﻿using HD.Clientes.Consultas.AnalisisCredito.JDF;
+using HD.Clientes.Consultas.ClientesCultivo;
 using HD.Clientes.Consultas.Cultivos;
+using HD.Clientes.Consultas.Refacturacion_Credito;
 using HD.Clientes.Modelos;
+using HD.Clientes.Modelos.SC_Analisis.JDF;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
 using Usados.Consultas.Inventario;
@@ -30,6 +33,25 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
             await datos.ActualizarPrecio(mdl);
             return Ok(new { mensaje = "datos cargados con exito" });
 
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ActualizarTodosPrecio(mdl_datosActualizados mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            var usuario = Sesion.usuario();
+            AD_Listado_Precio_Guardar datos_documentos = new AD_Listado_Precio_Guardar(CadenaConexion);
+            foreach (mdl_Listado_Precio data in mdl.datosActualizados)
+            {
+                await datos_documentos.ActualizarTodosPrecio(data.idinventario, data.utilidad, data.margen, data.precio_lista, data.usuario);
+            }
+
+            return Ok(new
+            {
+                mensaje = "Guardado Correctamente",
+            }
+            );
         }
 
         [HttpGet]
