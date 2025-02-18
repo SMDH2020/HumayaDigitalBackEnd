@@ -16,6 +16,7 @@ namespace Usados.Consultas.Usados
         public int ejercicio { get; set; }
         public int HP { get; set; }
         public int sucursal { get; set; }
+        public string? nombre_sucursal {  get; set; }
         public string? serie { get; set; }
         public double horas { get; set; }
         public double precio { get; set; }
