@@ -18,6 +18,7 @@
     <ProjectReference Include="..\HD_Cobranza\HD_Cobranza.csproj" />
     <ProjectReference Include="..\HD_Finanzas\HD_Finanzas.csproj" />
     <ProjectReference Include="..\HD_Ventas\HD_Ventas.csproj" />
+    <ProjectReference Include="..\Usados\Usados.csproj" />
   </ItemGroup>
 
 </Project>

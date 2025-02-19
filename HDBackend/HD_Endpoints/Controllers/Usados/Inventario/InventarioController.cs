@@ -5,6 +5,10 @@ using HD.Clientes.Consultas.Refacturacion_Credito;
 using HD.Clientes.Modelos;
 using HD.Clientes.Modelos.SC_Analisis.JDF;
 using HD.Security;
+using HD_Cobranza.GestionCobranza.Capturas;
+using HD_Reporteria;
+using HD_Reporteria.Cobranza;
+using HD_Reporteria.Usados;
 using Microsoft.AspNetCore.Mvc;
 using Usados.Consultas.Inventario;
 using Usados.Modelos.Inventario;
@@ -73,6 +77,27 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
             AD_Inventario_Listado datos = new AD_Inventario_Listado(CadenaConexion);
             var result = await datos.ListadoFiltro();
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ImprimirPDF()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Inventario_Listado datos = new AD_Inventario_Listado(CadenaConexion);
+            var result = await datos.ListadoFiltro();
+
+            try
+            {
+                RPT_Result documento = RPT_Listado_Precios.GenerarPDF(result);
+
+                return Ok(documento);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error de servidor");
+
+            }
 
         }
 
