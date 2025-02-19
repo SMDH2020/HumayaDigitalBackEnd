@@ -22,11 +22,11 @@ namespace HD.Endpoints.Controllers.Cobranza.Dashboard.Dashboard_Indicadores
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ObtenerInfoGraficas(int ejercicio, int periodo, string adr, string sucursales)
+        public async Task<ActionResult> ObtenerInfoGraficas(int ejercicio, int periodo, string adr, string sucursales, string responsable)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Dashboard_Indicadores_Graficas datos = new AD_Dashboard_Indicadores_Graficas(CadenaConexion);
-            var result = await datos.ObtenerGraficas(ejercicio, periodo, adr, sucursales);
+            var result = await datos.ObtenerGraficas(ejercicio, periodo, adr, sucursales, responsable);
             return Ok(result);
         }
     }

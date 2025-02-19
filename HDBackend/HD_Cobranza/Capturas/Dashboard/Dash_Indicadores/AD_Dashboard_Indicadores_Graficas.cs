@@ -13,7 +13,7 @@ namespace HD_Cobranza.Capturas.Dashboard.Dash_Indicadores
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<mdl_Dashboard_View> ObtenerGraficas(int ejercicio, int periodo, string adr, string sucursales)
+        public async Task<mdl_Dashboard_View> ObtenerGraficas(int ejercicio, int periodo, string adr, string sucursales, string responsable)
         {
             try
             {
@@ -28,6 +28,7 @@ namespace HD_Cobranza.Capturas.Dashboard.Dash_Indicadores
                 parametros.Add("periodo", periodo, System.Data.DbType.Int16);
                 parametros.Add("adr", adr, System.Data.DbType.String);
                 parametros.Add("sucursal", sucursales, System.Data.DbType.String);
+                parametros.Add("responsable", responsable, System.Data.DbType.String);
 
                 var result = await factory.SQL.QueryMultipleAsync("Cartera_Clientes.Cobranza.sp_Dashboard_Indicadores", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 var view = new mdl_Dashboard_View();
