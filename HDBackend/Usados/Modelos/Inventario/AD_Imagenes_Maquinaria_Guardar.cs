@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
 using Usados.Consultas.Inventario;
+using Usados.Consultas.Usados;
 
 namespace Usados.Modelos.Inventario
 {
@@ -31,6 +32,43 @@ namespace Usados.Modelos.Inventario
             catch (Exception ex)
             {
                 factory.SQL.Close();
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<IEnumerable<mdl_Imagenes_Maquinaria>> Buscar(int idinventario)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    idinventario = idinventario,
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Imagenes_Maquinaria> result = await factory.SQL.QueryAsync<mdl_Imagenes_Maquinaria>("Usados.sp_Obtener_Imagen_Maquinaria", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+        public async Task<IEnumerable<mdl_Imagenes_Maquinaria>> Eliminar(int id_imagen)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    id_imagen = id_imagen,
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Imagenes_Maquinaria> result = await factory.SQL.QueryAsync<mdl_Imagenes_Maquinaria>("Usados.sp_Eliminar_Imagen_Maquinaria", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
