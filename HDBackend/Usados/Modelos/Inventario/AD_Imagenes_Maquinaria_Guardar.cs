@@ -12,7 +12,7 @@ namespace Usados.Modelos.Inventario
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<bool> Guardar(mdl_Imagenes_Maquinaria mdl)
+        public async Task<IEnumerable<mdl_Imagenes_Maquinaria>> Guardar(mdl_Imagenes_Maquinaria mdl)
         {
             FactoryConection factory = new FactoryConection(CadenaConexion);
             try
@@ -25,9 +25,9 @@ namespace Usados.Modelos.Inventario
                     extension = mdl.extension,
                     usuario = mdl.usuario
                 };
-                await factory.SQL.QueryAsync("Usados.sp_Guardar_Imagen_Maquinaria", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Imagenes_Maquinaria> result = await factory.SQL.QueryAsync<mdl_Imagenes_Maquinaria>("Usados.sp_Guardar_Imagen_Maquinaria", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
-                return true;
+                return result;
             }
             catch (Exception ex)
             {

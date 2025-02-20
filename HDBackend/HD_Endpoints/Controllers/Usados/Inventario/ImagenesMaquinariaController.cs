@@ -25,7 +25,7 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
             AD_Imagenes_Maquinaria_Guardar datos = new AD_Imagenes_Maquinaria_Guardar(CadenaConexion);
             mdl.usuario = int.Parse(Sesion.usuario());
             var result = await datos.Guardar(mdl);
-            return Ok(new { mensaje = "datos cargados con exito", listado = result });
+            return Ok(result);
         }
 
         [HttpGet]
