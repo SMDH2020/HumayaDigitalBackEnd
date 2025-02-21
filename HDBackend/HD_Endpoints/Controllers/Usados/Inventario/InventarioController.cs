@@ -11,6 +11,7 @@ using HD_Reporteria.Cobranza;
 using HD_Reporteria.Usados;
 using Microsoft.AspNetCore.Mvc;
 using Usados.Consultas.Inventario;
+using Usados.Consultas.Usados;
 using Usados.Modelos.Inventario;
 using Usados.Modelos.Usados;
 
@@ -79,9 +80,9 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
             return Ok(result);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ImprimirPDF()
+        public async Task<ActionResult> ImprimirPDF(IEnumerable<mdl_Inventario> mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Inventario_Listado datos = new AD_Inventario_Listado(CadenaConexion);
@@ -89,7 +90,7 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
 
             try
             {
-                RPT_Result documento = RPT_Listado_Precios.GenerarPDF(result);
+                RPT_Result documento = RPT_Listado_Precios.GenerarPDF(mdl);
 
                 return Ok(documento);
             }
