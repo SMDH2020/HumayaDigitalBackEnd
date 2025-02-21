@@ -34,9 +34,6 @@ namespace HD.Endpoints.Controllers.Cobranza
             var result = await datos.Guardar(mdl);
             try
             {
-
-
-                //IEnumerable<mdlFacturasSeleccionadas> factura = JsonConvert.DeserializeObject<IEnumerable<mdlFacturasSeleccionadas>>(mdl.detalle);
                 RPT_Result documento = RPT_ConvenioPago.Generar(mdl, result);
 
                 return Ok(documento);

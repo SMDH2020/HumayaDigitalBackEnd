@@ -35,5 +35,16 @@ namespace HD.Endpoints.Controllers.Credito.AnalisisCredito
             return Ok(result);
 
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetTableroCompleto()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_SCAnalisis_Tablero_Completo datos = new AD_SCAnalisis_Tablero_Completo(CadenaConexion);
+            var result = await datos.Get(Sesion.usuario());
+            return Ok(result);
+
+        }
     }
 }

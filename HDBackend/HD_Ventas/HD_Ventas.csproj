@@ -7,11 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.102.1" />
     <PackageReference Include="Dapper" Version="2.1.35" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\HD_AccesoDatos\HD_AccesoDatos.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Modelos\Usados\Inventario\" />
   </ItemGroup>
 
 </Project>

@@ -29,6 +29,7 @@ namespace HD.Clientes.Consultas.InteresMensual
                     ejercicio = mdl.ejercicio,
                     periodo = mdl.periodo,
                     interes = mdl.interes,
+                    interes2 = mdl.interes2,
                     documento = mdl.documento,
                     extension = mdl.extension,
                     estatus = mdl.estatus,

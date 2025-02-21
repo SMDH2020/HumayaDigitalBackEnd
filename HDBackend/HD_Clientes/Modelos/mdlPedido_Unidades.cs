@@ -16,7 +16,7 @@ namespace HD.Clientes.Modelos
         public int idmodelo { get; set; }
 
         [Required(ErrorMessage = "El campo linea de crédito es un valor requerido")]
-        [RegularExpression(@"^[MA|MQ|UM|MW|GE|PM]+$", ErrorMessage = "El campo linea de crédito tiene valores no permitidos")]
+        [RegularExpression(@"^[MA|MQ|UM|MW|GE|PM|SI]+$", ErrorMessage = "El campo linea de crédito tiene valores no permitidos")]
         public string? nuevo { get; set; }
 
         [Required(ErrorMessage = "El modelo es un valor requerido")]

@@ -24,20 +24,32 @@ namespace HD.Endpoints.Controllers.BuroCredito
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Carga_Reporte_Buro datos = new AD_Carga_Reporte_Buro(CadenaConexion);
             int usuario = int.Parse(Sesion.usuario());
-            var result = await datos.reporte(view);
+            var result = await datos.reporte_Listado(view);
             return Ok(result);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> GenerarExcel(mdlFiltrosView view)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Carga_Reporte_Buro datos = new AD_Carga_Reporte_Buro(CadenaConexion);
-            var result = await datos.reporte(view);
-            var docResult = 0;// await XLS_Reporte_Buro.CrearExcel(result);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.reporte_Listado(view);
+            var docResult = await XLS_Reporte_Buro_Credito.CrearExcel(result, nombre_mes(view.periodo), view.ejercicio);
             return Ok(docResult);
         }
+
+        //[HttpGet]
+        //[Route("/api/[controller]/[action]")]
+        //public async Task<ActionResult> GenerarExcel(mdlFiltrosView view)
+        //{
+        //    string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+        //    AD_Carga_Reporte_Buro datos = new AD_Carga_Reporte_Buro(CadenaConexion);
+        //    var result = await datos.reporte(view);
+        //    var docResult = 0;// await XLS_Reporte_Buro.CrearExcel(result);
+        //    return Ok(docResult);
+        //}
 
         [HttpPost]
         [Route("/api/[controller]/[action]")]

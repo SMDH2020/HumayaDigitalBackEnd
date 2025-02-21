@@ -23,5 +23,16 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             return Ok(result);
 
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ListadoCondicionado(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADAnalisis_Timeline_Condicionado datos = new ADAnalisis_Timeline_Condicionado(CadenaConexion);
+            var result = await datos.BuscarFolio(folio, Sesion.usuario());
+            return Ok(result);
+
+        }
     }
 }

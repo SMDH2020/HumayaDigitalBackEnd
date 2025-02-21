@@ -32,7 +32,7 @@ namespace HD.Clientes.Consultas.PedidoCondicionesCredito
                     moneda = mdl.moneda,
                     usuario = mdl.usuario
                 };
-                 await factory.SQL.QueryAsync("Credito.sp_Pedido_Condiciones_Venta_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                 await factory.SQL.QueryAsync("Credito.sp_Pedido_Condiciones_Venta_Guardar_Nuevo", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return true;
             }

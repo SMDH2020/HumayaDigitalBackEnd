@@ -1,5 +1,6 @@
 ﻿using HD.Clientes.Consultas.AnalisisCredito;
 using HD.Clientes.Consultas.AnalisisCredito.JDF;
+using HD.Clientes.Consultas.Credito_Condicionado;
 using HD.Clientes.Modelos.SC_Analisis.JDF;
 using HD.Notifications.Analisis;
 using HD.Security;
@@ -24,14 +25,18 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
             ADJDF_Analisis_Cargar_Factura datos = new ADJDF_Analisis_Cargar_Factura(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.Guardar(mdl);
-            foreach (mdl_documentos_facturados_EQUIP fac in mdl.documentos)
+            //foreach (mdl_documentos_facturados_EQUIP fac in mdl.documentos)
+            //{
+            //    await datos.Guardar_detalle(mdl.folio, mdl.registro, fac.orden, fac.documento, mdl.usuario, fac.docto_financiamiento);
+            //}
+            return Ok(new
             {
-                await datos.Guardar_detalle(mdl.folio, mdl.registro, fac.orden, fac.documento, mdl.usuario, fac.docto_financiamiento);
-            }
-            return Ok(result);
+                documentacion = result.documento,
+                socket = result.mdlSolicitud
+            });
         }
-        [HttpPost]
 
+        [HttpPost]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> GuardarMhusaDetalle(mdlJDFAnalisis_Datos_Facturacion_Guardar mdl)
         {
@@ -42,11 +47,56 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
             {
                 await datos.Guardar_detalle(mdl.folio, mdl.registro, fac.orden, fac.documento,mdl.usuario, fac.docto_financiamiento);
             }
+            AD_Conseguir_Correos_Notificacion correos = new AD_Conseguir_Correos_Notificacion(CadenaConexion);
+            var socket =  await correos.ObtenerCorreos(mdl.folio, mdl.usuario, mdl.comentarios);
             //ADNotificacionFinalizacionProceso notificacion = new ADNotificacionFinalizacionProceso(CadenaConexion);
             //var body = await notificacion.GetBody(mdl.folio);
             //await NotificacionComentarios.EnviarProcesoFinalizado(body, mdl.folio);
-            return Ok(new {mensaje="Datos Cargados cone exito"});
+            return Ok(new {socket=socket});
         }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarMhusaDetalleCondicionado(mdlJDFAnalisis_Datos_Facturacion_Guardar mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADJDF_Analisis_Cargar_Factura datos = new ADJDF_Analisis_Cargar_Factura(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            foreach (mdl_documentos_facturados_EQUIP fac in mdl.documentos)
+            {
+                await datos.Guardar_detalle_Condicionado(mdl.folio, mdl.registro, fac.orden, fac.documento, mdl.usuario, fac.docto_financiamiento);
+            }
+            AD_Credito_Condicionado_Notificacion_Correo correo = new AD_Credito_Condicionado_Notificacion_Correo(CadenaConexion);
+            var resultado = await correo.Notificacion(mdl.folio, mdl.usuario, mdl.comentarios, 250);
+            if (resultado.mdldatos is null)
+            {
+                return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
+            }
+            await NotificacionComentarios.EnviarNotificacionOperacionCondicionada(resultado);
+            return Ok(new { mensaje = "Datos Cargados cone exito" });
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarMhusaDetalleCondicionadoMhusa(mdlJDFAnalisis_Datos_Facturacion_Guardar mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADJDF_Analisis_Cargar_Factura datos = new ADJDF_Analisis_Cargar_Factura(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            foreach (mdl_documentos_facturados_EQUIP fac in mdl.documentos)
+            {
+                await datos.Guardar_detalle_Condicionado_Mhusa(mdl.folio, mdl.registro, fac.orden, fac.documento, mdl.usuario, fac.docto_financiamiento);
+            }
+            AD_Credito_Condicionado_Notificacion_Correo correo = new AD_Credito_Condicionado_Notificacion_Correo(CadenaConexion);
+            var resultado = await correo.Notificacion(mdl.folio, mdl.usuario, mdl.comentarios, 250);
+            if (resultado.mdldatos is null)
+            {
+                return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
+            }
+            await NotificacionComentarios.EnviarNotificacionOperacionCondicionada(resultado);
+            return Ok(new { socket = resultado.mdlSolicitud });
+        }
+
         [HttpPost]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> GuardarMhusa(mdlJDFAnalisis_Datos_Facturacion_Guardar mdl)

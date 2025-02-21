@@ -2,11 +2,12 @@
 {
     public class mdlClientes_Datos_Contacto_Editar
     {
+        public int idmedio { get; set; }
         public int idcliente { get; set; }
         public string medio_contacto { get; set; }
-        public int orden { get; set; }
-        public string valor { get; set; }
+        public string medio { get; set; }
         public string comentarios { get; set; }
         public int usuario { get; set; }
+        public int utilizado { get; set; }
     }
 }

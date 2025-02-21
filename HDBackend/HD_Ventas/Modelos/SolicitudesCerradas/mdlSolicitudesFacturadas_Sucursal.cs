@@ -8,6 +8,7 @@
         public int total_solicitudes { get; set; }
         public int cerradas { get; set; }
         public int jdf { get; set; }
+        public int prestamos_clientes { get; set; }
         public int mhusa { get; set; }
         public int contado { get; set; }
         public int pendientes { get; set; }

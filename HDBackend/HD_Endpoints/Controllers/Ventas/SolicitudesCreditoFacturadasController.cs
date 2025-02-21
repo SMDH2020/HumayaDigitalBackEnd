@@ -21,7 +21,7 @@ namespace HD.Endpoints.Controllers.Ventas
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Solicitudes_Facturadas datos = new AD_Solicitudes_Facturadas(CadenaConexion);
             var result = await datos.GetSolicitudes(ejercicio, periodo, linea);
-            result.resumen.titulo = $"RESULTADO DE OPERACIONES {nombre_mes(periodo)} -{ejercicio}";
+            result.resumen.titulo = $"RESULTADO DE OPERACIONES {nombre_mes(periodo)} - {ejercicio}";
             return Ok(result);
         }
         [HttpGet]
@@ -33,6 +33,15 @@ namespace HD.Endpoints.Controllers.Ventas
             var result = await datos.GetSolicitudesDetalle(ejercicio, periodo,idsucursal, linea);
             return Ok(result);
         }
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> SolicitudesFacturadasCardDetalle(int ejercicio, int periodo, int idsucursal, string linea,string card)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Solicitudes_Facturadas datos = new AD_Solicitudes_Facturadas(CadenaConexion);
+            var result = await datos.GetSolicitudesDetalle(ejercicio, periodo, idsucursal, linea,card);
+            return Ok(result);
+        }
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
@@ -41,7 +50,7 @@ namespace HD.Endpoints.Controllers.Ventas
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Solicitudes_Facturadas_Excel datos = new AD_Solicitudes_Facturadas_Excel(CadenaConexion);
             var result = await datos.Listado(ejercicio, periodo, linea);
-            var docresult = await XLS_Solicitudes_Facturadas.CrearExcel(result);
+            var docresult = await XLS_Solicitudes_Facturadas.CrearExcel(result, "TODO", periodo, ejercicio);
             return Ok(docresult);
         }
 

@@ -31,7 +31,7 @@ namespace HD.Clientes.Consultas.AnalisisCredito
                 };
                 var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Analisis_Notificacion", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 mdlAnalisis_Email_View view = new mdlAnalisis_Email_View();
-                view.notificacion = result.Read<mdlCorreo_Notificacion>().ToList();
+                //view.notificacion = result.Read<mdlCorreo_Notificacion>().ToList();
                 view.detalle = result.Read<mdlAnalisis_Email>().FirstOrDefault();
                 factory.SQL.Close();
                 if (view.detalle == null) view.detalle = new mdlAnalisis_Email();

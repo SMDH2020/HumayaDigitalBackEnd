@@ -26,10 +26,11 @@ namespace HD_Cobranza.Capturas.ConvenioPago
                     @valor = mdl.valor,
                     @comentarios = mdl.comentarios,
                     @usuario = mdl.usuario,
+                    @utilizado = mdl.utilizado,
                 };
 
                 var result = await
-                factory.SQL.QueryAsync<mdlClientes_Datos_Contacto_Guardar>("Credito.Clientes_Datos_Contacto_Cobranza_Guardar",
+                factory.SQL.QueryAsync<mdlClientes_Datos_Contacto_Guardar>("Cobranza.Clientes_Datos_Contacto_Guardar",
                 parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;

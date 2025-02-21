@@ -11,75 +11,121 @@ namespace HD_Finanzas.AccesoDatos.BalanceGeneral.Complementos
 {
     public static class DocBalanceGeneral
     {
+        static int contador = 1;
         public static Task<DocResult> CrearExel(IEnumerable<Fmdl_BalanceGeneral> balance)
         {
             try
             {
-                if (balance.Count() > 0)
+                string ruta = $"C:\\SMDH\\Procesados\\BalanceGeneral.xlsx";
+                using (var workbook = new XLWorkbook())
                 {
-                    string ruta = $"C:\\SMDH\\Procesados\\BalanceGeneral.xlsx";
-                    using (var worbook = new XLWorkbook())
+                    var sheet = workbook.Worksheets.Add("Balance General");
+
+                    // Título principal
+                    var titulo = sheet.Range(1, 1, 1, 10);
+                    titulo.Value = "Balance General".ToUpper();
+                    titulo.Style.Font.Bold = true;
+                    titulo.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    titulo.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+                    titulo.Style.Font.FontSize = 20;
+                    titulo.Style.Fill.BackgroundColor = XLColor.Green; // Fondo verde
+                    titulo.Style.Font.FontColor = XLColor.Yellow; // Letra amarilla
+                    titulo.Merge();
+
+                    // Comenzamos desde la fila 3
+                    int renglon = 3;
+
+                    // Agrupamos por Nivel 2 y luego por Nivel 3
+                    var groupedByNivel2 = balance
+                        .GroupBy(b => b.nivel2)
+                        .OrderBy(g => g.Key);
+
+                    foreach (var groupNivel2 in groupedByNivel2)
                     {
-                        var sheet = worbook.Worksheets.Add("Balance General");
-                        sheet.Cell(1, 3).Value = "MEs";
-                        sheet.Cell(1, 4).Value = "%";
-                        sheet.Cell(1, 5).Value = "MEs";
-                        sheet.Cell(1, 6).Value = "%";
-                        sheet.Cell(1, 7).Value = "Variacion";
-                        sheet.Cell(1, 8).Value = "%";
-                        int renglon = 2;
+                        // Encabezado para Nivel 2
+                        var nivel2Header = sheet.Range(renglon, 1, renglon, 10);
+                        nivel2Header.Value = groupNivel2.Key;
+                        nivel2Header.Style.Font.Bold = true;
+                        nivel2Header.Style.Font.FontSize = 14;
+                        nivel2Header.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                        nivel2Header.Style.Fill.BackgroundColor = XLColor.FromArgb(0, 102, 0); // Fondo verde oscuro
+                        nivel2Header.Style.Font.FontColor = XLColor.FromArgb(255, 192, 0); // Letra amarilla dorada
+                        nivel2Header.Merge();
+                        renglon++;
 
-                        var groupnivel1 = balance.GroupBy(x => x.nivel1).ToList();
-                        foreach (Fmdl_BalanceGeneral nivel1 in groupnivel1)
+                        // Agrupamos por Nivel 3 dentro de cada grupo de Nivel 2
+                        var groupedByNivel3 = groupNivel2
+                            .GroupBy(b => b.nivel3)
+                            .OrderBy(g => g.Key);
+
+                        foreach (var groupNivel3 in groupedByNivel3)
                         {
+                            // Encabezado para Nivel 3
+                            var nivel3Header = sheet.Range(renglon, 1, renglon, 10);
+                            nivel3Header.Value = groupNivel3.Key;
+                            nivel3Header.Style.Font.Bold = true;
+                            nivel3Header.Style.Font.FontSize = 12;
+                            nivel3Header.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                            nivel3Header.Style.Fill.BackgroundColor = XLColor.FromArgb(227, 220, 165); // Fondo color arena
+                            nivel3Header.Style.Font.FontColor = XLColor.Black; // Letra negra
+                            nivel3Header.Merge();
+                            renglon++;
 
-                        }
-
-                        foreach (Fmdl_BalanceGeneral bl in balance)
-                        {
-                            sheet.Cell(renglon, 1).Value = bl.nivel1;
-                            sheet.Cell(renglon, 2).Value = bl.nivel2;
-                            sheet.Cell(renglon, 3).Value = bl.nivel3;
-                            sheet.Cell(renglon, 4).Value = bl.nivel4;
-                            sheet.Cell(renglon, 5).Value = bl.total;
-                            sheet.Cell(renglon, 5).Style.NumberFormat.Format = "#,##0";
-                            sheet.Cell(renglon, 6).Value = bl.mrgtotal;
-                            sheet.Cell(renglon, 6).Style.NumberFormat.Format = "#,##0.0";
-                            sheet.Cell(renglon, 7).Value = bl.totalanterior;
-                            sheet.Cell(renglon, 7).Style.NumberFormat.Format = "#,##0";
-                            sheet.Cell(renglon, 8).Value = bl.mrgtotalanterior;
-                            sheet.Cell(renglon, 8).Style.NumberFormat.Format = "#,##0.0";
-                            sheet.Cell(renglon, 9).Value = bl.variacion;
-                            sheet.Cell(renglon, 9).Style.NumberFormat.Format = "#,##0";
-                            sheet.Cell(renglon, 10).Value = bl.mrgvariacion;
-                            sheet.Cell(renglon, 10).Style.NumberFormat.Format = "#,##0.0";
-                            renglon += 1;
-                        }
-                        sheet.Columns(1, 10).AdjustToContents();
-                        worbook.SaveAs(ruta);
-                        if (System.IO.File.Exists(ruta))
-                        {
-                            byte[] docbytes = System.IO.File.ReadAllBytes(ruta);
-                            string docBase64 = Convert.ToBase64String(docbytes);
-                            System.IO.File.Delete(ruta);
-
-                            DocResult doc = new DocResult
+                            // Datos de Nivel 4
+                            foreach (var bl in groupNivel3)
                             {
-                                documento = docBase64,
-                                filename = "BalanceGeneral"
-                            };
+                                sheet.Cell(renglon, 2).Value = bl.nivel4;
+                                sheet.Cell(renglon, 5).Value = bl.total;
+                                sheet.Cell(renglon, 6).Value = bl.mrgtotal;
+                                sheet.Cell(renglon, 7).Value = bl.totalanterior;
+                                sheet.Cell(renglon, 8).Value = bl.mrgtotalanterior;
+                                sheet.Cell(renglon, 9).Value = bl.variacion;
+                                sheet.Cell(renglon, 10).Value = bl.mrgvariacion;
 
-                            return Task.FromResult(doc);
+                                // Aplicar formato de número para celdas numéricas
+                                var dataRow = sheet.Row(renglon);
+                                dataRow.Cells(5, 10).Style.NumberFormat.Format = "#,##0.00";
+                                dataRow.Cells(5, 10).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
 
+                                // Eliminar bordes de las filas de datos
+                                dataRow.Cells(2, 10).Style.Border.OutsideBorder = XLBorderStyleValues.None;
+
+                                renglon++;
+                            }
+
+                            // Dejar una fila en blanco entre cada grupo de Nivel 3
+                            renglon++;
                         }
-                        throw new Exception("ERROR EN LA GENERACION DEL ARCHIVO, FAVOR DE COMUNICARSE CON EL ADMINISTRADOR DEL SISTEMA");
+
+                        // Dejar una fila en blanco entre cada grupo de Nivel 2
+                        renglon++;
                     }
+
+                    // Ajustar el ancho de las columnas a su contenido
+                    sheet.Columns(1, 10).AdjustToContents();
+                    sheet.Column(1).Width = 3;
+
+                    // Guardar el archivo
+                    workbook.SaveAs(ruta);
+
+                    if (System.IO.File.Exists(ruta))
+                    {
+                        byte[] docbytes = System.IO.File.ReadAllBytes(ruta);
+                        string docBase64 = Convert.ToBase64String(docbytes);
+                        System.IO.File.Delete(ruta);
+
+                        return Task.FromResult(new DocResult
+                        {
+                            documento = docBase64,
+                            filename = "BalanceGeneral"
+                        });
+                    }
+                    throw new Exception("ERROR EN LA GENERACIÓN DEL ARCHIVO, FAVOR DE COMUNICARSE CON EL ADMINISTRADOR DEL SISTEMA");
                 }
-                throw new Exception("No existe informacion para mostrar");
             }
             catch (Exception ex)
             {
-                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { errores = ex.Message });
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 

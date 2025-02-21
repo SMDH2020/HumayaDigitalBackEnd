@@ -45,7 +45,7 @@ namespace HD.Clientes.Consultas.SolicitudCredito
                     folio,
                     usuario
                 };
-                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Pedido_Enviar_Condiciones_Operacion", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Pedido_Enviar_Solicitud_Revision", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 mdlSolicitudCredito_Enviar_View view = new mdlSolicitudCredito_Enviar_View();
                 view.mdlSolicitud = result.Read<mdlSolicitudCredito_Enviar>().ToList();
                 view.detail = result.Read<mdlSolicitudCredito_Enviar_Details>().FirstOrDefault();
