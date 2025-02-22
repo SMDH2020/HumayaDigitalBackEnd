@@ -104,10 +104,10 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
 
         [HttpPost]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ImprimirListadoPDF(mdl_datosActualizados mdl)
+        public async Task<ActionResult> ImprimirListadoPDF(IEnumerable<mdl_Inventario> mdl)
         {
             // Concatenar todos los idinventario en una cadena separada por comas
-            string idinventario = string.Join(",", mdl.datosActualizados.Select(r => r.idinventario.ToString()));
+            //string idinventario = string.Join(",", mdl.datosActualizados.Select(r => r.idinventario.ToString()));
 
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Inventario_Listado datos = new AD_Inventario_Listado(CadenaConexion);
@@ -115,7 +115,7 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
 
             try
             {
-                RPT_Result documento = RPT_Listado_Precios.GenerarPDF(result);
+                RPT_Result documento = RPT_Listado_Precios_Corto.GenerarPDF(mdl);
 
                 return Ok(documento);
             }
