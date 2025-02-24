@@ -39,7 +39,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HD_Helpers", "HD_Helpers\HD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Teletrabajo", "Teletrabajo\Teletrabajo.csproj", "{B12997B0-61C3-41BE-9135-AC290B9CFBCA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Usados", "Usados\Usados.csproj", "{5D9ABCC2-B3E5-476D-A671-742D6D864C6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Usados", "Usados\Usados.csproj", "{5D9ABCC2-B3E5-476D-A671-742D6D864C6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductoAliado", "ProductoAliado\ProductoAliado.csproj", "{22F7592F-FB5E-45C4-808B-3D08C9ED437C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -123,6 +125,10 @@ Global
 		{5D9ABCC2-B3E5-476D-A671-742D6D864C6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D9ABCC2-B3E5-476D-A671-742D6D864C6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D9ABCC2-B3E5-476D-A671-742D6D864C6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22F7592F-FB5E-45C4-808B-3D08C9ED437C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22F7592F-FB5E-45C4-808B-3D08C9ED437C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22F7592F-FB5E-45C4-808B-3D08C9ED437C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22F7592F-FB5E-45C4-808B-3D08C9ED437C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

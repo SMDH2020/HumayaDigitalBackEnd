@@ -1,27 +1,17 @@
-﻿using HD.Clientes.Consultas.AnalisisCredito.JDF;
-using HD.Clientes.Consultas.ClientesCultivo;
-using HD.Clientes.Consultas.Cultivos;
-using HD.Clientes.Consultas.Refacturacion_Credito;
-using HD.Clientes.Modelos;
-using HD.Clientes.Modelos.SC_Analisis.JDF;
-using HD.Security;
-using HD_Cobranza.GestionCobranza.Capturas;
+﻿using HD.Security;
 using HD_Reporteria;
-using HD_Reporteria.Cobranza;
-using HD_Reporteria.Usados;
+using HD_Reporteria.ProductoAliado;
 using Microsoft.AspNetCore.Mvc;
-using Usados.Consultas.Inventario;
-using Usados.Consultas.Usados;
-using Usados.Modelos.Inventario;
-using Usados.Modelos.Usados;
+using ProductoAliado.Consultas.Inventario;
+using ProductoAliado.Modelos.Inventario;
 
-namespace HD.Endpoints.Controllers.Usados.Inventario
+namespace HD.Endpoints.Controllers.ProductoAliado.Inventario
 {
-    public class InventarioController : MyBase
+    public class ListadoPreciosProductoAliadoController : MyBase
     {
         private readonly IConfiguration Configuracion;
         private readonly ISesion Sesion;
-        public InventarioController(IConfiguration configuration, ISesion sesion)
+        public ListadoPreciosProductoAliadoController(IConfiguration configuration, ISesion sesion)
         {
             Configuracion = configuration;
             Sesion = sesion;
@@ -29,11 +19,11 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
 
         [HttpPost]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ActualizarPrecio(mdl_Listado_Precio mdl)
+        public async Task<ActionResult> ActualizarPrecio(mdl_Listado_Precio_Producto_Aliado mdl)
         {
 
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-            AD_Listado_Precio_Guardar datos = new AD_Listado_Precio_Guardar(CadenaConexion);
+            AD_Listado_Precio_Producto_Aliado_Guardar datos = new AD_Listado_Precio_Producto_Aliado_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             await datos.ActualizarPrecio(mdl);
             return Ok(new { mensaje = "datos cargados con exito" });
@@ -42,12 +32,12 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
 
         [HttpPost]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ActualizarTodosPrecio(mdl_datosActualizados mdl)
+        public async Task<ActionResult> ActualizarTodosPrecio(mdl_datosActualizadosProductoAliado mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             var usuario = Sesion.usuario();
-            AD_Listado_Precio_Guardar datos_documentos = new AD_Listado_Precio_Guardar(CadenaConexion);
-            foreach (mdl_Listado_Precio data in mdl.datosActualizados)
+            AD_Listado_Precio_Producto_Aliado_Guardar datos_documentos = new AD_Listado_Precio_Producto_Aliado_Guardar(CadenaConexion);
+            foreach (mdl_Listado_Precio_Producto_Aliado data in mdl.datosActualizados)
             {
                 await datos_documentos.ActualizarTodosPrecio(data.idinventario, data.utilidad, data.margen, data.precio_lista, data.usuario);
             }
@@ -82,7 +72,7 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
 
         [HttpPost]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ImprimirPDF(IEnumerable<mdl_Inventario> mdl)
+        public async Task<ActionResult> ImprimirPDF(IEnumerable<mdl_Inventario_Producto_Aliado> mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Inventario_Listado datos = new AD_Inventario_Listado(CadenaConexion);
@@ -104,7 +94,7 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
 
         [HttpPost]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ImprimirListadoPDF(IEnumerable<mdl_Inventario> mdl)
+        public async Task<ActionResult> ImprimirListadoPDF(IEnumerable<mdl_Inventario_Producto_Aliado> mdl)
         {
             // Concatenar todos los idinventario en una cadena separada por comas
             //string idinventario = string.Join(",", mdl.datosActualizados.Select(r => r.idinventario.ToString()));
@@ -128,11 +118,11 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
 
         [HttpPost]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> GuardarPromocion(mdl_promocion mdl)
+        public async Task<ActionResult> GuardarPromocion(mdl_promocion_Producto_Aliado mdl)
         {
 
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-            AD_Listado_Precio_Guardar datos = new AD_Listado_Precio_Guardar(CadenaConexion);
+            AD_Listado_Precio_Producto_Aliado_Guardar datos = new AD_Listado_Precio_Producto_Aliado_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             await datos.GuardarPromocion(mdl);
             return Ok(new { mensaje = "datos cargados con exito" });
@@ -141,7 +131,7 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ObtenerPromocion( int idinventario)
+        public async Task<ActionResult> ObtenerPromocion(int idinventario)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Listado_Precio_Obtener_Promocion datos = new AD_Listado_Precio_Obtener_Promocion(CadenaConexion);

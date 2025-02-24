@@ -1,16 +1,19 @@
-﻿using QuestPDF.Fluent;
+﻿using HD_Reporteria.Cobranza;
+using ProductoAliado.Modelos.Inventario;
+using QuestPDF.Fluent;
 using QuestPDF.Helpers;
-using ClosedXML.Excel;
-using Usados.Consultas.Usados;
-using HD_Reporteria.Cobranza;
-using static ClosedXML.Excel.XLPredefinedFormat;
 using SkiaSharp;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace HD_Reporteria.Usados
+namespace HD_Reporteria.ProductoAliado
 {
     public class RPT_Listado_Precios
     {
-        public static RPT_Result GenerarPDF(IEnumerable<mdl_Inventario> detalle)
+        public static RPT_Result GenerarPDF(IEnumerable<mdl_Inventario_Producto_Aliado> detalle)
         {
             try
             {
@@ -165,8 +168,8 @@ namespace HD_Reporteria.Usados
                                         };
 
                                         // Dibujar círculos
-                                            // Dibujar un solo círculo
-                                            canvas.DrawCircle(size.Width / 2, size.Height / 2, circleRadius, paint);
+                                        // Dibujar un solo círculo
+                                        canvas.DrawCircle(size.Width / 2, size.Height / 2, circleRadius, paint);
                                     });
 
                                     tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingLeft(4).PaddingRight(3).PaddingVertical(3).ShowEntire()
@@ -195,7 +198,7 @@ namespace HD_Reporteria.Usados
 
                                     tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
                                    .Text(det.fecha_recepcion).FontSize(7).FontFamily(fontFamily);
-                                    
+
                                     tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
                                    .Text(det.precio.ToString("N2")).FontSize(7).FontFamily(fontFamily);
 

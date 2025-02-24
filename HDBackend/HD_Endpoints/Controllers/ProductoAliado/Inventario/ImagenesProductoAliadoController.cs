@@ -1,28 +1,28 @@
 ﻿using HD.Security;
 using Microsoft.AspNetCore.Mvc;
-using Usados.Consultas.Inventario;
-using Usados.Modelos.Inventario;
-using Usados.Modelos.Usados;
+using ProductoAliado.Consultas.Inventario;
+using ProductoAliado.Modelos.Inventario;
 
-namespace HD.Endpoints.Controllers.Usados.Inventario
+namespace HD.Endpoints.Controllers.ProductoAliado.Inventario
 {
-    public class ImagenesMaquinariaController : MyBase
+    public class ImagenesProductoAliadoController : MyBase
     {
         private readonly IConfiguration Configuracion;
         private readonly ISesion Sesion;
-        public ImagenesMaquinariaController(IConfiguration configuration, ISesion sesion)
+        public ImagenesProductoAliadoController(IConfiguration configuration, ISesion sesion)
         {
             Configuracion = configuration;
             Sesion = sesion;
         }
 
+
         [HttpPost]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> GuardarImagenes(mdl_Imagenes_Maquinaria mdl)
+        public async Task<ActionResult> GuardarImagenes(mdl_Imagenes_Producto_Aliado mdl)
         {
 
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-            AD_Imagenes_Maquinaria_Guardar datos = new AD_Imagenes_Maquinaria_Guardar(CadenaConexion);
+            AD_Imagenes_Producto_Aliado_Guardar datos = new AD_Imagenes_Producto_Aliado_Guardar(CadenaConexion);
             mdl.usuario = int.Parse(Sesion.usuario());
             var result = await datos.Guardar(mdl);
             return Ok(result);
@@ -33,7 +33,7 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
         public async Task<ActionResult> BuscarImagenes(int idinventario)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-            AD_Imagenes_Maquinaria_Guardar datos = new AD_Imagenes_Maquinaria_Guardar(CadenaConexion);
+            AD_Imagenes_Producto_Aliado_Guardar datos = new AD_Imagenes_Producto_Aliado_Guardar(CadenaConexion);
             var result = await datos.Buscar(idinventario);
             return Ok(result);
 
@@ -44,7 +44,7 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
         public async Task<ActionResult> EliminarImagenes(int id_imagen)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-            AD_Imagenes_Maquinaria_Guardar datos = new AD_Imagenes_Maquinaria_Guardar(CadenaConexion);
+            AD_Imagenes_Producto_Aliado_Guardar datos = new AD_Imagenes_Producto_Aliado_Guardar(CadenaConexion);
             var result = await datos.Eliminar(id_imagen);
             return Ok(result);
 
