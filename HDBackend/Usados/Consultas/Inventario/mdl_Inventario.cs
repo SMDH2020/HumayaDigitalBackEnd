@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Usados.Consultas.Usados
+﻿namespace Usados.Consultas.Usados
 {
     public class mdl_Inventario
     {
@@ -12,11 +6,12 @@ namespace Usados.Consultas.Usados
         public string? NE { get; set; }
         public string? Marca { get; set; }
         public string? modelo { get; set; }
+        public string? modelo_descripcion { get; set; }
         public string? fecha_recepcion { get; set; }
         public int ejercicio { get; set; }
         public int HP { get; set; }
         public int sucursal { get; set; }
-        public string? nombre_sucursal {  get; set; }
+        public string? nombre_sucursal { get; set; }
         public string? serie { get; set; }
         public double horas { get; set; }
         public double precio { get; set; }
