@@ -29,7 +29,7 @@ namespace ProductoAliado.Consultas.Inventario
                     extension = mdl.extension,
                     usuario = mdl.usuario
                 };
-                IEnumerable<mdl_Imagenes_Producto_Aliado> result = await factory.SQL.QueryAsync<mdl_Imagenes_Producto_Aliado>("ProductoAliado.sp_Guardar_Imagen_Maquinaria", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Imagenes_Producto_Aliado> result = await factory.SQL.QueryAsync<mdl_Imagenes_Producto_Aliado>("ProductoAliado.sp_Guardar_Imagen_Producto", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
@@ -49,7 +49,7 @@ namespace ProductoAliado.Consultas.Inventario
                     idinventario = idinventario,
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_Imagenes_Producto_Aliado> result = await factory.SQL.QueryAsync<mdl_Imagenes_Producto_Aliado>("ProductoAliado.sp_Obtener_Imagen_Maquinaria", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Imagenes_Producto_Aliado> result = await factory.SQL.QueryAsync<mdl_Imagenes_Producto_Aliado>("ProductoAliado.sp_Listado_Precios_Obtener_Imagenes", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
@@ -67,7 +67,7 @@ namespace ProductoAliado.Consultas.Inventario
                     id_imagen = id_imagen,
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_Imagenes_Producto_Aliado> result = await factory.SQL.QueryAsync<mdl_Imagenes_Producto_Aliado>("ProductoAliado.sp_Eliminar_Imagen_Maquinaria", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Imagenes_Producto_Aliado> result = await factory.SQL.QueryAsync<mdl_Imagenes_Producto_Aliado>("ProductoAliado.sp_Eliminar_Imagen_Producto", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
