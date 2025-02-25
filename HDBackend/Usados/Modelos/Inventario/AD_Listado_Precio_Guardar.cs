@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Usados.Consultas.Inventario;
+using Usados.Consultas.Usados;
 
 namespace Usados.Modelos.Inventario
 {
@@ -80,6 +81,25 @@ namespace Usados.Modelos.Inventario
                 return true;
             }
             catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<IEnumerable<mdl_Inventario>> CambioEstado(int idinventario)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    idinventario = idinventario
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Inventario> result = await factory.SQL.QueryAsync<mdl_Inventario>("Usados.sp_Cambio_Estatus", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
             {
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }

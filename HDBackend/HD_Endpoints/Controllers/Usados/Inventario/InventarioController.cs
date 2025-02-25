@@ -161,5 +161,17 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
             return Ok(result);
 
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> CambioEstado(int idinventario)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Listado_Precio_Guardar datos = new AD_Listado_Precio_Guardar(CadenaConexion);
+            var result = await datos.CambioEstado(idinventario);
+            return Ok(result);
+
+        }
+
     }
 }
