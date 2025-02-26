@@ -77,13 +77,13 @@ namespace HD_Reporteria.Usados
                                     Columns.RelativeColumn(0.9f);
                                     Columns.RelativeColumn(0.9f);
                                     Columns.RelativeColumn(0.5f);
-                                    Columns.RelativeColumn(0.5f);
-                                    Columns.RelativeColumn(0.8f);
                                     Columns.RelativeColumn(0.6f);
                                     Columns.RelativeColumn(0.8f);
                                     Columns.RelativeColumn(0.6f);
                                     Columns.RelativeColumn(1.6f);
-                                    Columns.RelativeColumn(0.6f);
+                                    Columns.RelativeColumn(0.5f);
+                                    Columns.RelativeColumn(0.8f);
+
                                 });
 
                                 tabla.Header(header =>
@@ -99,17 +99,15 @@ namespace HD_Reporteria.Usados
                                     header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                     .Padding(1).Text("HP").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("SUCURSAL").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("N. E.").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                     .Padding(1).Text("HORAS").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                     .Padding(1).Text("PRECIO").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                     .Padding(1).Text("PROMOCIÓN").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("VIGENCIA").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    .Padding(1).Text("SUCURSAL").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                    .Padding(1).Text("N. E.").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                 });
 
                                 int index = 0;
@@ -164,12 +162,6 @@ namespace HD_Reporteria.Usados
                                     tabla.Cell().Background(rowBackground).BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
                                   .Text(det.HP.ToString()).FontSize(7).FontFamily(fontFamily);
 
-                                    tabla.Cell().Background(rowBackground).BorderBottom(0.5f).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingLeft(4).PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                    .Text(det.nombre_sucursal?.ToUpper()).FontSize(7).FontFamily(fontFamily);
-
-                                    tabla.Cell().Background(rowBackground).BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                   .Text(det.NE).FontSize(7).FontFamily(fontFamily);
-
                                     tabla.Cell().Background(rowBackground).BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
                                    .Text(det.horas.ToString()).FontSize(7).FontFamily(fontFamily);
 
@@ -177,10 +169,16 @@ namespace HD_Reporteria.Usados
                                    .Text(det.precio_lista.ToString("N2")).FontSize(7).FontFamily(fontFamily);
 
                                     tabla.Cell().Background(rowBackground).BorderBottom(0.5f).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                   .Text(det.promocion).FontSize(7).FontFamily(fontFamily);
+                                   .Text(det.promocion + "\n" + det.vigencia).FontSize(7).FontFamily(fontFamily);
 
-                                    tabla.Cell().Background(rowBackground).BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                   .Text(det.vigencia).FontSize(7).FontFamily(fontFamily);
+                                   // tabla.Cell().Background(rowBackground).BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
+                                   //.Text(det.vigencia).FontSize(7).FontFamily(fontFamily);
+
+                                    tabla.Cell().Background(rowBackground).BorderBottom(0.5f).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingLeft(4).PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                   .Text(det.nombre_sucursal?.ToUpper()).FontSize(7).FontFamily(fontFamily);
+
+                                    tabla.Cell().Background(rowBackground).BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                   .Text(det.NE).FontSize(7).FontFamily(fontFamily);
 
                                     index++;
                                 }
