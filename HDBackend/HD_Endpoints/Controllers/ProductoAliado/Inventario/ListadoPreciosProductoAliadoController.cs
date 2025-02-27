@@ -129,6 +129,25 @@ namespace HD.Endpoints.Controllers.ProductoAliado.Inventario
 
         }
 
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ActualizarTodasPromociones(mdl_PromocionesActualizadasProductoAliado mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Listado_Precio_Producto_Aliado_Guardar datos_documentos = new AD_Listado_Precio_Producto_Aliado_Guardar(CadenaConexion);
+            foreach (mdl_promocion_Producto_Aliado data in mdl.promoActualizadas)
+            {
+                data.usuario = Sesion.usuario();
+                await datos_documentos.GuardarPromocion(data);
+            }
+
+            return Ok(new
+            {
+                mensaje = "Guardado Correctamente",
+            }
+            );
+        }
+
         [HttpGet]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> ObtenerPromocion(int idinventario)
@@ -148,6 +167,17 @@ namespace HD.Endpoints.Controllers.ProductoAliado.Inventario
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Listado_Precio_Promocion_Borrar datos = new AD_Listado_Precio_Promocion_Borrar(CadenaConexion);
             var result = await datos.Borrar(idpromocion);
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> CambioEstado(int idinventario)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Listado_Precio_Producto_Aliado_Guardar datos = new AD_Listado_Precio_Producto_Aliado_Guardar(CadenaConexion);
+            var result = await datos.CambioEstado(idinventario);
             return Ok(result);
 
         }

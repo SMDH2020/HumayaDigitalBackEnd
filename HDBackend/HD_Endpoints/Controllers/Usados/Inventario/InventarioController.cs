@@ -139,6 +139,25 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
 
         }
 
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ActualizarTodasPromociones(mdl_promoActualizadas mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Listado_Precio_Guardar datos_documentos = new AD_Listado_Precio_Guardar(CadenaConexion);
+            foreach (mdl_promocion data in mdl.promoActualizadas)
+            {
+                data.usuario = Sesion.usuario();
+                await datos_documentos.GuardarPromocion(data);
+            }
+
+            return Ok(new
+            {
+                mensaje = "Guardado Correctamente",
+            }
+            );
+        }
+
         [HttpGet]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> ObtenerPromocion( int idinventario)
@@ -161,5 +180,17 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
             return Ok(result);
 
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> CambioEstado(int idinventario)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Listado_Precio_Guardar datos = new AD_Listado_Precio_Guardar(CadenaConexion);
+            var result = await datos.CambioEstado(idinventario);
+            return Ok(result);
+
+        }
+
     }
 }
