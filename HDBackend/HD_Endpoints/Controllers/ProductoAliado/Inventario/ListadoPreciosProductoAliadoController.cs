@@ -32,7 +32,7 @@ namespace HD.Endpoints.Controllers.ProductoAliado.Inventario
 
         [HttpPost]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ActualizarTodosPrecio(mdl_datosActualizadosProductoAliado mdl)
+        public async Task<ActionResult> ActualizarTodosPrecio( mdl_datosActualizadosProductoAliado mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             var usuario = Sesion.usuario();
@@ -40,6 +40,25 @@ namespace HD.Endpoints.Controllers.ProductoAliado.Inventario
             foreach (mdl_Listado_Precio_Producto_Aliado data in mdl.datosActualizados)
             {
                 await datos_documentos.ActualizarTodosPrecio(data.idinventario, data.utilidad, data.margen, data.precio_lista, data.usuario);
+            }
+
+            return Ok(new
+            {
+                mensaje = "Guardado Correctamente",
+            }
+            );
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ActualizarListadoPrecio(IEnumerable<mdl_Inventario_Producto_Aliado> mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            var usuario = Sesion.usuario();
+            AD_Listado_Precio_Producto_Aliado_Guardar datos = new AD_Listado_Precio_Producto_Aliado_Guardar(CadenaConexion);
+            foreach (mdl_Inventario_Producto_Aliado data in mdl)
+            {
+                await datos.ActualizarListado(data);
             }
 
             return Ok(new
