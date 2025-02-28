@@ -17,6 +17,7 @@
         public double precio { get; set; }
         public double Costo { get; set; }
         public double OT { get; set; }
+        public double costo_total { get; set; }
         public double utilidad { get; set; }
         public double margen { get; set; }
         public double precio_lista { get; set; }
