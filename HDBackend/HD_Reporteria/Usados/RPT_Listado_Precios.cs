@@ -24,11 +24,10 @@ namespace HD_Reporteria.Usados
                     document.Page(page =>
                     {
                         page.Size(PageSizes.A4.Landscape());
-                        var registrosListos = detalle.Where(x => x.estatus.Contains("L"));
-                        var registrosAcondicionando = detalle.Where(x => x.estatus.Contains("A"));
+                        var registrosListos = detalleOrdenado.Where(x => x.estatus.Contains("L"));
+                        var registrosAcondicionando = detalleOrdenado.Where(x => x.estatus.Contains("A"));
 
                         bool cambioTitulo = false;
-
 
                         page.Header().Height(120).Row(row =>
                         {
