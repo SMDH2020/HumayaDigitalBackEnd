@@ -13,6 +13,7 @@ namespace ProductoAliado.Modelos.Inventario
         public string? Marca { get; set; }
         public string? modelo { get; set; }
         public string? modelo_descripcion { get; set; }
+        public int antiguedad {  get; set; }
         public string? fecha_recepcion { get; set; }
         public int ejercicio { get; set; }
         public int HP { get; set; }
@@ -33,5 +34,6 @@ namespace ProductoAliado.Modelos.Inventario
         public string? vigencia { get; set; }
         public string? tiene_promocion { get; set; }
         public string? tiene_imagen { get; set; }
+        public int usuario {  get; set; }
     }
 }
