@@ -89,6 +89,16 @@ namespace HD.Endpoints.Controllers.ProductoAliado.Inventario
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ListadoPrecioActual()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Inventario_Listado datos = new AD_Inventario_Listado(CadenaConexion);
+            var result = await datos.ListadoPrecioActual();
+            return Ok(result);
+        }
+
         [HttpPost]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> ImprimirPDF(IEnumerable<mdl_Inventario_Producto_Aliado> mdl)
