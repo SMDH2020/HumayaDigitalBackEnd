@@ -136,7 +136,7 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> ImprimirListadoPDFMovil()
         {
