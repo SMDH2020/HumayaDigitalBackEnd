@@ -57,7 +57,7 @@ namespace HD_Ventas.Reportes
 
                     //renglon += 1;
 
-                    sheet.Range(renglon, 1, renglon, 13).Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
+                    sheet.Range(renglon, 1, renglon, 7).Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
 
                     sheet.Range(renglon, 2, renglon, 4).Merge().Value = obtenernombre_mes(mes_actual);
                     sheet.Range(renglon, 2, renglon, 4).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
