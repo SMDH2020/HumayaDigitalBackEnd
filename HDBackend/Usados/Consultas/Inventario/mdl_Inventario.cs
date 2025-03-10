@@ -27,6 +27,7 @@
         public string? vigencia { get; set; }
         public string? tiene_promocion { get; set; }
         public string? tiene_imagen { get; set; }
+        public string? imagen { get; set; }
 
     }
 }
