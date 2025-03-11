@@ -11,5 +11,7 @@
         public float utilidad_bruta {  get; set; }
         public float gasto_Departamento { get; set; }
         public float utilidad_operacion {  get; set; }
+        public float nomina { get; set; }
+        public float porc_nomina { get; set; }
     }
 }

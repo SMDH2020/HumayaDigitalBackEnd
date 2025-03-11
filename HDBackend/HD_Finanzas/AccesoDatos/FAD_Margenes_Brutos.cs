@@ -11,7 +11,7 @@ namespace HD_Finanzas.AccesoDatos
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_Margenes_Brutos>> GetMargenesBrutos(int ejercicio, string periodo)
+        public async Task<mdl_Margenes_Brutos_View> GetMargenesBrutos(int ejercicio, string periodo)
         {
             try
             {
@@ -21,9 +21,12 @@ namespace HD_Finanzas.AccesoDatos
                     ejercicio = ejercicio,
                     periodo = periodo
                 };
-                IEnumerable<mdl_Margenes_Brutos> gastosvs = await factory.SQL.QueryAsync<mdl_Margenes_Brutos>("PixelCode.dbo.sp_Get_MArgenes_Semaforo", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("PixelCode.dbo.sp_Get_MArgenes_Semaforo", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var view = new mdl_Margenes_Brutos_View();
+                view.margenes = result.Read<mdl_Margenes_Brutos>().ToList();
+                view.guias = result.Read<mdl_Margenes_Brutos_Guias>().ToList();
                 factory.SQL.Close();
-                return gastosvs;
+                return view;
             }
             catch (Exception ex)
             {
