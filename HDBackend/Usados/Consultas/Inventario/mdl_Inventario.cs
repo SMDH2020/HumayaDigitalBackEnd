@@ -28,5 +28,7 @@
         public string? tiene_promocion { get; set; }
         public string? tiene_imagen { get; set; }
         public int usuario { get; set; }
+        public string? imagen { get; set; }
+
     }
 }
