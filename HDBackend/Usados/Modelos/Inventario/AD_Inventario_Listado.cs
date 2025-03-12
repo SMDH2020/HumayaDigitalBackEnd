@@ -1,4 +1,4 @@
-﻿using Dapper;
+using Dapper;
 using HD.AccesoDatos;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Usados.Consultas.Usados;
-
+ 
 namespace Usados.Modelos.Usados
 {
     public class AD_Inventario_Listado
@@ -39,7 +39,7 @@ namespace Usados.Modelos.Usados
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
-
+ 
         public async Task<IEnumerable<mdl_Inventario>> ListadoFiltro()
         {
             try
@@ -57,7 +57,7 @@ namespace Usados.Modelos.Usados
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
-
+ 
         public async Task<IEnumerable<mdl_Inventario>> ListadoFiltroMovil()
         {
             try

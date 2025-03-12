@@ -63,6 +63,44 @@ namespace Usados.Modelos.Inventario
             }
         }
 
+        public async Task<bool> ActualizarListado(mdl_Inventario mdl)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    idinventario = mdl.idinventario,
+                    NE = mdl.NE,
+                    Marca = mdl.Marca,
+                    modelo = mdl.modelo,
+                    fecha_recepcion = mdl.fecha_recepcion,
+                    ejercicio = mdl.ejercicio,
+                    HP = mdl.HP,
+                    sucursal = mdl.sucursal,
+                    serie = mdl.serie,
+                    horas = mdl.horas,
+                    precio = mdl.precio,
+                    Costo = mdl.Costo,
+                    OT = mdl.OT,
+                    utilidad = mdl.utilidad,
+                    margen = mdl.margen,
+                    precio_lista = mdl.precio_lista,
+                    estatus = mdl.estatus,
+                    modelo_descripcion = mdl.modelo_descripcion,
+                    usuario = mdl.usuario,
+
+                };
+                await factory.SQL.QueryAsync("Usados.sp_Listado_Precio_Actualizar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
         public async Task<bool> GuardarPromocion(mdl_promocion mdl)
         {
             try

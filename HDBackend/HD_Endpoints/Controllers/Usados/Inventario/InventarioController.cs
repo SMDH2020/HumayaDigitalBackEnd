@@ -59,6 +59,25 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
             );
         }
 
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ActualizarListadoPrecio(IEnumerable<mdl_Inventario> mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            var usuario = Sesion.usuario();
+            AD_Listado_Precio_Guardar datos = new AD_Listado_Precio_Guardar(CadenaConexion);
+            foreach (mdl_Inventario data in mdl)
+            {
+                await datos.ActualizarListado(data);
+            }
+
+            return Ok(new
+            {
+                mensaje = "Guardado Correctamente",
+            }
+            );
+        }
+
         [HttpGet]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> Listado(string Modelo, int ejercicio, string HP, string Sucursal, string Promocion, string Estatus)
@@ -82,6 +101,12 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ListadoActual()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Inventario_Listado datos = new AD_Inventario_Listado(CadenaConexion);
+            var result = await datos.ListadoActual();
+        }
         public async Task<ActionResult> ListadoFiltroMovil()
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
