@@ -16,6 +16,40 @@ namespace Usados.Modelos.Usados
         {
             CadenaConexion = _cadenaconexion;
         }
+        public async Task<IEnumerable<mdl_Inventario>> ListadoActual()
+
+        {
+
+            try
+
+            {
+
+                var parametros = new
+
+                {
+
+                };
+
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+
+                IEnumerable<mdl_Inventario> result = await factory.SQL.QueryAsync<mdl_Inventario>("Usados.sp_Inventario_Listado_Precio_Actual", parametros, commandType: System.Data.CommandType.StoredProcedure);
+
+                factory.SQL.Close();
+
+                return result;
+
+            }
+
+            catch (System.Exception ex)
+
+            {
+
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+
+            }
+
+        }
+
         public async Task<IEnumerable<mdl_Inventario>> Listado(string Modelo, int ejercicio, string HP, string Sucursal, string Promocion, string Estatus)
         {
             try
