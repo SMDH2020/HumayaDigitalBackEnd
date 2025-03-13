@@ -26,7 +26,7 @@ namespace HD_Reporteria.ProductoAliado
                 {
                     document.Page(page =>
                     {
-                        page.Size(PageSizes.A4.Landscape());
+                        page.Size(PageSizes.Letter.Portrait());
                         var registrosListos = detalleOrdenado.Where(x => x.estatus.Contains("L"));
                         var registrosAcondicionando = detalleOrdenado.Where(x => x.estatus.Contains("A"));
 
@@ -46,7 +46,7 @@ namespace HD_Reporteria.ProductoAliado
                                 byte[] imageData = System.IO.File.ReadAllBytes(rutaImagen);
                                 row.ConstantItem(120).Image(imageData);
 
-                                row.ConstantColumn(693).PaddingTop(35).Height(50).Background("#477c2c").Row(row2 =>
+                                row.ConstantColumn(450).PaddingTop(35).Height(50).Background("#477c2c").Row(row2 =>
                                 {
                                     row2.RelativeItem().Padding(10).PaddingLeft(30).Text("LISTADO DE PRECIOS DE PRODUCTO ALIADO").FontColor("#fff").FontSize(20).Bold().FontFamily(fontFamily);
                                     //+obtenernombre_mes(periodo) + " " + ejercicio

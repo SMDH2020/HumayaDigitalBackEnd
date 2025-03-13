@@ -1,10 +1,4 @@
-﻿using HD.Clientes.Consultas.AnalisisCredito.JDF;
-using HD.Clientes.Consultas.ClientesCultivo;
-using HD.Clientes.Consultas.Cultivos;
-using HD.Clientes.Consultas.Refacturacion_Credito;
-using HD.Clientes.Modelos;
-using HD.Clientes.Modelos.SC_Analisis.JDF;
-using HD.Security;
+﻿using HD.Security;
 using HD_Cobranza.GestionCobranza.Capturas;
 using HD_Reporteria;
 using HD_Reporteria.Cobranza;
