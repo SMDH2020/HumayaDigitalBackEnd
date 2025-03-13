@@ -15,18 +15,26 @@ namespace HD_Reporteria.Usados
             try
             {
                 var detalleOrdenado = detalle
-                    .OrderBy(det => det.estatus == "L" ? 0 : det.estatus == "A" ? 1 : 2)
-                    .ThenBy(det => det.sucursal)
-                    .ToList();
+                .OrderBy(det => det.estatus == "L" ? 0 : det.estatus == "A" ? 1 : 2) 
+                .ThenBy(det => det.sucursal)
+                .ToList();
                 string fontFamily = "Calibri";
                 byte[] doc = Document.Create(document =>
                 {
                     document.Page(page =>
                     {
-                        page.Size(PageSizes.A4.Landscape());
+                        page.Size(PageSizes.Letter.Portrait());
 
                         var registrosListos = detalleOrdenado.Where(x => x.estatus.Contains("L"));
                         var registrosAcondicionando = detalleOrdenado.Where(x => x.estatus.Contains("A"));
+                        var registrosTrilladoras = detalleOrdenado
+                            .Where(x => x.modelo_descripcion.Contains("trilladora", StringComparison.OrdinalIgnoreCase)
+                                     || x.modelo_descripcion.Contains("cabezal", StringComparison.OrdinalIgnoreCase)
+                                     || x.modelo_descripcion.Contains("combinada", StringComparison.OrdinalIgnoreCase));
+                        var registrosTractores = detalleOrdenado
+                            .Where(x => !x.modelo_descripcion.Contains("trilladora", StringComparison.OrdinalIgnoreCase)
+                                     && !x.modelo_descripcion.Contains("cabezal", StringComparison.OrdinalIgnoreCase)
+                                     && !x.modelo_descripcion.Contains("combinada", StringComparison.OrdinalIgnoreCase));
 
                         page.Header().Height(120).Row(row =>
                         {
@@ -43,7 +51,7 @@ namespace HD_Reporteria.Usados
                                 byte[] imageData = System.IO.File.ReadAllBytes(rutaImagen);
                                 row.ConstantItem(120).Image(imageData);
 
-                                row.ConstantColumn(693).PaddingTop(35).Height(50).Background("#477c2c").Row(row2 =>
+                                row.ConstantColumn(450).PaddingTop(35).Height(50).Background("#477c2c").Row(row2 =>
                                 {
 
                                     //string titulo;
@@ -57,7 +65,7 @@ namespace HD_Reporteria.Usados
                                     //{
                                     //    titulo = "LISTADO DE PRECIOS DE PRODUCTO ALIADO";
                                     //}
-                                    row2.RelativeItem().Padding(10).PaddingLeft(30).Text("LISTADO DE PRECIOS DE MAQUINARIA USADA").FontColor("#fff").FontSize(20).Bold().FontFamily(fontFamily);
+                                    row2.RelativeItem().Padding(10).PaddingLeft(20).Text("LISTADO DE PRECIOS DE MAQUINARIA USADA").FontColor("#fff").FontSize(20).Bold().FontFamily(fontFamily);
                                     //+obtenernombre_mes(periodo) + " " + ejercicio
                                 });
                             });
@@ -65,7 +73,7 @@ namespace HD_Reporteria.Usados
 
                         });
 
-                        page.Content().PaddingTop(10).PaddingLeft(30).PaddingRight(30).Column(col1 =>
+                        page.Content().PaddingTop(10).PaddingLeft(10).PaddingRight(10).Column(col1 =>
                         {
 
                             //col1.Item().LineHorizontal(0.5f);
@@ -73,7 +81,7 @@ namespace HD_Reporteria.Usados
                             System.DateTime fecha = System.DateTime.Now;
                             string fechaActual = fecha.ToString("dd/MM/yyyy", new System.Globalization.CultureInfo("es-ES"));
 
-                            if (registrosListos.Any())
+                            if (registrosTractores.Any())
                             {
                                 col1.Item().Row(row =>
                                 {
@@ -89,15 +97,15 @@ namespace HD_Reporteria.Usados
                                     tabla.ColumnsDefinition(Columns =>
                                     {
                                         Columns.RelativeColumn(0.4f);
-                                        Columns.RelativeColumn(0.9f);
-                                        Columns.RelativeColumn(0.9f);
-                                        Columns.RelativeColumn(0.5f);
-                                        Columns.RelativeColumn(0.6f);
                                         Columns.RelativeColumn(0.8f);
-                                        Columns.RelativeColumn(0.6f);
-                                        Columns.RelativeColumn(1.6f);
-                                        Columns.RelativeColumn(0.5f);
                                         Columns.RelativeColumn(0.8f);
+                                        Columns.RelativeColumn(0.4f);
+                                        Columns.RelativeColumn(0.5f);
+                                        Columns.RelativeColumn(0.7f);
+                                        Columns.RelativeColumn(0.5f);
+                                        Columns.RelativeColumn(1);
+                                        Columns.RelativeColumn(0.6f);
+                                        Columns.RelativeColumn(0.7f);
 
                                     });
 
@@ -106,7 +114,7 @@ namespace HD_Reporteria.Usados
                                         header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
-                                        .Padding(1).Text("TRACTOR").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        .Padding(1).Text("TRILLADORA").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("MARCA").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
@@ -127,11 +135,11 @@ namespace HD_Reporteria.Usados
 
                                     int index = 0;
 
-                                    foreach (var det in registrosListos)
+                                    foreach (var det in registrosTractores)
                                     {
                                         string rowBackground = (index % 2 == 0) ? "#FFFFFF" : "#F0F0F0";
 
-                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignCenter().AlignMiddle().Height(24).Padding(0)
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignCenter().AlignMiddle().Height(32).Padding(0)
                                         .Background(rowBackground)
                                         .SkiaSharpCanvas((canvas, size) =>
                                         {
@@ -166,7 +174,7 @@ namespace HD_Reporteria.Usados
                                         });
 
                                         tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.modelo).FontSize(7).FontFamily(fontFamily);
+                                       .Text(det.modelo_descripcion).FontSize(7).FontFamily(fontFamily);
 
                                         tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
                                        .Text(det.Marca).FontSize(7).FontFamily(fontFamily);
@@ -200,12 +208,12 @@ namespace HD_Reporteria.Usados
                                 });
                             }
 
-                            if (registrosListos.Any() && registrosAcondicionando.Any())
+                            if (registrosTractores.Any() && registrosTrilladoras.Any())
                             {
                                 col1.Item().PageBreak();
                             }
 
-                            if (registrosAcondicionando.Any())
+                            if (registrosTrilladoras.Any())
                             {
                                 col1.Item().Row(row =>
                                 {
@@ -221,15 +229,15 @@ namespace HD_Reporteria.Usados
                                     tabla.ColumnsDefinition(Columns =>
                                     {
                                         Columns.RelativeColumn(0.4f);
-                                        Columns.RelativeColumn(0.9f);
-                                        Columns.RelativeColumn(0.9f);
-                                        Columns.RelativeColumn(0.5f);
-                                        Columns.RelativeColumn(0.6f);
                                         Columns.RelativeColumn(0.8f);
-                                        Columns.RelativeColumn(0.6f);
-                                        Columns.RelativeColumn(1.6f);
-                                        Columns.RelativeColumn(0.5f);
                                         Columns.RelativeColumn(0.8f);
+                                        Columns.RelativeColumn(0.4f);
+                                        Columns.RelativeColumn(0.5f);
+                                        Columns.RelativeColumn(0.7f);
+                                        Columns.RelativeColumn(0.5f);
+                                        Columns.RelativeColumn(1);
+                                        Columns.RelativeColumn(0.6f);
+                                        Columns.RelativeColumn(0.7f);
 
                                     });
 
@@ -238,7 +246,7 @@ namespace HD_Reporteria.Usados
                                         header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
-                                        .Padding(1).Text("TRACTOR").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        .Padding(1).Text("TRILLADORA").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("MARCA").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
@@ -259,11 +267,11 @@ namespace HD_Reporteria.Usados
 
                                     int index = 0;
 
-                                    foreach (var det in registrosAcondicionando)
+                                    foreach (var det in registrosTrilladoras)
                                     {
                                         string rowBackground = (index % 2 == 0) ? "#FFFFFF" : "#F0F0F0";
 
-                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignCenter().AlignMiddle().Height(24).Padding(0)
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignCenter().AlignMiddle().Height(32).Padding(0)
                                         .Background(rowBackground)
                                         .SkiaSharpCanvas((canvas, size) =>
                                         {
@@ -298,7 +306,7 @@ namespace HD_Reporteria.Usados
                                         });
 
                                         tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.modelo).FontSize(7).FontFamily(fontFamily);
+                                       .Text(det.modelo_descripcion).FontSize(7).FontFamily(fontFamily);
 
                                         tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
                                        .Text(det.Marca).FontSize(7).FontFamily(fontFamily);
