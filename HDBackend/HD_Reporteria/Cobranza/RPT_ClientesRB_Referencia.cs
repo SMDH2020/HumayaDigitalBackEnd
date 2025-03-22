@@ -220,7 +220,7 @@ namespace HD_Reporteria.Cobranza
                 }).GeneratePdf();
                 RPT_Result result = new RPT_Result();
                 result.extension = "pdf";
-                result.nombredocumento = "ESTADO DE CUENTA";
+                result.nombredocumento = "REFERENCIAS BANCARIAS";
                 result.documento = Convert.ToBase64String(doc);
                 return result;
 

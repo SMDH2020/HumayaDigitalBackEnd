@@ -99,6 +99,16 @@ namespace HD.Endpoints.Controllers.ProductoAliado.Inventario
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ListadoPrecioActualMovil()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Inventario_Listado datos = new AD_Inventario_Listado(CadenaConexion);
+            var result = await datos.ListadoPrecioActualMovil();
+            return Ok(result);
+        }
+
         [HttpPost]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> ImprimirPDF(IEnumerable<mdl_Inventario_Producto_Aliado> mdl)
@@ -135,6 +145,30 @@ namespace HD.Endpoints.Controllers.ProductoAliado.Inventario
             try
             {
                 RPT_Result documento = RPT_Listado_Precios_Corto.GenerarPDF(mdl);
+
+                return Ok(documento);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error de servidor");
+
+            }
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ImprimirListadoPDFMovil()
+        {
+            // Concatenar todos los idinventario en una cadena separada por comas
+            //string idinventario = string.Join(",", mdl.datosActualizados.Select(r => r.idinventario.ToString()));
+
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Inventario_Listado datos = new AD_Inventario_Listado(CadenaConexion);
+            var result = await datos.ListadoPrecioActualMovil();
+
+            try
+            {
+                RPT_Result documento = RPT_Listado_Precios_Corto.GenerarPDF(result);
 
                 return Ok(documento);
             }
