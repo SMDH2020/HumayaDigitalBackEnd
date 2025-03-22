@@ -22,7 +22,6 @@ namespace ProductoAliado.Consultas.Cotizacion
             {
                 var parametros = new
                 {
-                    idinventario = idinventario,
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdl_Inventario_Producto_Aliado> result = await factory.SQL.QueryAsync<mdl_Inventario_Producto_Aliado>("ProductoAliado.sp_Listado_Precio_Actual_Movil", parametros, commandType: System.Data.CommandType.StoredProcedure);
