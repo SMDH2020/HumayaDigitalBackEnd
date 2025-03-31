@@ -100,7 +100,11 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Inventario_Listado datos = new AD_Inventario_Listado(CadenaConexion);
             var result = await datos.ListadoActual();
+            return Ok(result);
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> ListadoFiltroMovil()
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];

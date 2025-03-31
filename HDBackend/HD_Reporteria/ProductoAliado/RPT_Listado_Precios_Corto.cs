@@ -66,33 +66,45 @@ namespace HD_Reporteria.ProductoAliado
 
                             if (registrosListos.Any())
                             {
-                                col1.Item().Row(row =>
-                                {
-                                    row.RelativeItem().AlignRight().Text(txt =>
-                                    {
-                                        txt.Span("INFORMACION AL: ").Bold().FontSize(8);
-                                        txt.Span(fechaActual).FontSize(8);
-                                    });
-                                });
+                                //col1.Item().Row(row =>
+                                //{
+                                //    row.RelativeItem().AlignRight().Text(txt =>
+                                //    {
+                                //        txt.Span("INFORMACION AL: ").Bold().FontSize(8);
+                                //        txt.Span(fechaActual).FontSize(8);
+                                //    });
+                                //});
 
-                                col1.Item().PaddingVertical(10).Border(0.5f).BorderColor("#477c2c").Table(tabla =>
+                                var productosPorPromocion = registrosListos
+                                .GroupBy(p => new { p.promocion, p.vigencia })
+                                .OrderBy(g => g.Key.promocion)
+                                .ToList();
+
+                                foreach (var grupo in productosPorPromocion)
+                                {
+
+                                    col1.Item().PaddingTop(10).Row(row =>
+                                    {
+                                        row.RelativeItem().PaddingLeft(40).AlignLeft()
+                                            .Text(string.IsNullOrEmpty(grupo.Key.promocion) ? "Sin promoción" : grupo.Key.promocion)
+                                            .FontSize(12).Bold().FontFamily(fontFamily);
+
+                                        row.RelativeItem().PaddingRight(40).AlignRight()
+                                            .Text("Vigencia: " + (string.IsNullOrEmpty(grupo.Key.vigencia) ? "-" : grupo.Key.vigencia))
+                                            .FontSize(12).Bold().FontFamily(fontFamily);
+                                    });
+
+                                    col1.Item().PaddingVertical(10).PaddingHorizontal(40).Border(0.5f).BorderColor("#477c2c").Table(tabla =>
                                 {
                                     tabla.ColumnsDefinition(Columns =>
                                     {
                                         Columns.RelativeColumn(0.4f);
-                                        Columns.RelativeColumn(0.9f);
-
-                                        Columns.RelativeColumn(0.9f);
-                                        Columns.RelativeColumn(0.6f);
-
+                                        Columns.RelativeColumn(1.4f);
                                         Columns.RelativeColumn(0.8f);
-                                        //Columns.RelativeColumn(0.5f);
-                                        //Columns.RelativeColumn(0.6f);
-                                        //Columns.RelativeColumn(0.8f);
                                         Columns.RelativeColumn(0.6f);
-
                                         Columns.RelativeColumn(0.8f);
-                                        Columns.RelativeColumn(1.6f);
+                                        Columns.RelativeColumn(0.5f);
+                                        Columns.RelativeColumn(0.8f);
 
                                     });
 
@@ -113,14 +125,12 @@ namespace HD_Reporteria.ProductoAliado
                                         .Padding(1).Text("PRECIO").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("ESTATUS").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                        header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
-                                        .Padding(1).Text("PROMOCIÓN").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
 
                                     });
 
                                     int index = 0;
 
-                                    foreach (var det in registrosListos)
+                                    foreach (var det in grupo)
                                     {
                                         string estatusText = det.estatus == "L" ? "LISTO PARA VENTA" : "ACONDICIONANDO";
                                         string rowBackground = (index % 2 == 0) ? "#FFFFFF" : "#F0F0F0";
@@ -162,7 +172,7 @@ namespace HD_Reporteria.ProductoAliado
                                         });
 
                                         tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.modelo).FontSize(7).FontFamily(fontFamily);
+                                       .Text(det.modelo_descripcion).FontSize(7).FontFamily(fontFamily);
 
                                         tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
                                        .Text(det.Marca).FontSize(7).FontFamily(fontFamily);
@@ -180,8 +190,8 @@ namespace HD_Reporteria.ProductoAliado
                                         tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
                                        .Text(estatusText).FontSize(7).FontFamily(fontFamily);
 
-                                        tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.promocion + "\n" + det.vigencia).FontSize(7).FontFamily(fontFamily);
+                                        // tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
+                                        //.Text(det.promocion + "\n" + det.vigencia).FontSize(7).FontFamily(fontFamily);
 
                                         // tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
                                         //.Text(det.vigencia).FontSize(7).FontFamily(fontFamily);
@@ -190,6 +200,7 @@ namespace HD_Reporteria.ProductoAliado
                                         index++;
                                     }
                                 });
+                                }
                             }
 
                             if (registrosListos.Any() && registrosAcondicionando.Any())
@@ -199,27 +210,45 @@ namespace HD_Reporteria.ProductoAliado
 
                             if (registrosAcondicionando.Any())
                             {
-                                col1.Item().Row(row =>
-                                {
-                                    row.RelativeItem().AlignRight().Text(txt =>
-                                    {
-                                        txt.Span("INFORMACION AL: ").Bold().FontSize(8);
-                                        txt.Span(fechaActual).FontSize(8);
-                                    });
-                                });
+                                //col1.Item().Row(row =>
+                                //{
+                                //    row.RelativeItem().AlignRight().Text(txt =>
+                                //    {
+                                //        txt.Span("INFORMACION AL: ").Bold().FontSize(8);
+                                //        txt.Span(fechaActual).FontSize(8);
+                                //    });
+                                //});
 
-                                col1.Item().PaddingVertical(10).Border(0.5f).BorderColor("#477c2c").Table(tabla =>
+                                var productosPorPromocion = registrosAcondicionando
+                                .GroupBy(p => new { p.promocion, p.vigencia })
+                                .OrderBy(g => g.Key.promocion)
+                                .ToList();
+
+                                foreach (var grupo in productosPorPromocion)
+                                {
+
+                                    col1.Item().PaddingTop(10).Row(row =>
+                                    {
+                                        row.RelativeItem().PaddingLeft(40).AlignLeft()
+                                            .Text(string.IsNullOrEmpty(grupo.Key.promocion) ? "Sin promoción" : grupo.Key.promocion)
+                                            .FontSize(12).Bold().FontFamily(fontFamily);
+
+                                        row.RelativeItem().PaddingRight(40).AlignRight()
+                                            .Text("Vigencia: " + (string.IsNullOrEmpty(grupo.Key.vigencia) ? "-" : grupo.Key.vigencia))
+                                            .FontSize(12).Bold().FontFamily(fontFamily);
+                                    });
+
+                                    col1.Item().PaddingVertical(10).PaddingHorizontal(40).Border(0.5f).BorderColor("#477c2c").Table(tabla =>
                                 {
                                     tabla.ColumnsDefinition(Columns =>
                                     {
                                         Columns.RelativeColumn(0.4f);
-                                        Columns.RelativeColumn(0.9f);
-                                        Columns.RelativeColumn(0.9f);
-                                        Columns.RelativeColumn(0.6f);
+                                        Columns.RelativeColumn(1.4f);
                                         Columns.RelativeColumn(0.8f);
                                         Columns.RelativeColumn(0.6f);
                                         Columns.RelativeColumn(0.8f);
-                                        Columns.RelativeColumn(1.6f);
+                                        Columns.RelativeColumn(0.5f);
+                                        Columns.RelativeColumn(0.8f);
 
                                     });
 
@@ -239,14 +268,12 @@ namespace HD_Reporteria.ProductoAliado
                                         .Padding(1).Text("PRECIO").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("ESTATUS").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                        header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
-                                        .Padding(1).Text("PROMOCIÓN").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                       
+
                                     });
 
                                     int index = 0;
 
-                                    foreach (var det in registrosAcondicionando)
+                                    foreach (var det in grupo)
                                     {
                                         string estatusText = det.estatus = true ? "LISTO PARA VENTA" : "ACONDICIONANDO";
                                         string rowBackground = (index % 2 == 0) ? "#FFFFFF" : "#F0F0F0";
@@ -286,7 +313,7 @@ namespace HD_Reporteria.ProductoAliado
                                         });
 
                                         tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.modelo).FontSize(7).FontFamily(fontFamily);
+                                       .Text(det.modelo_descripcion).FontSize(7).FontFamily(fontFamily);
 
                                         tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
                                        .Text(det.Marca).FontSize(7).FontFamily(fontFamily);
@@ -303,19 +330,10 @@ namespace HD_Reporteria.ProductoAliado
                                         tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
                                        .Text(det.estatus).FontSize(7).FontFamily(fontFamily);
 
-                                        tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.promocion + "\n" + det.vigencia).FontSize(7).FontFamily(fontFamily);
-
-                                        // tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                        //.Text(det.vigencia).FontSize(7).FontFamily(fontFamily);
-
-                                        
-
-                                        
-
                                         index++;
                                     }
                                 });
+                                }
                             }
                         });
 
