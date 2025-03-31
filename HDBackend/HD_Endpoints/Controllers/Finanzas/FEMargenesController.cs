@@ -6,6 +6,8 @@ using HD_Finanzas.Modelos.Margenes;
 using Enlace.Dapper.Reportes;
 using DocumentFormat.OpenXml.EMMA;
 using HD_Cobranza.Consultas.Juridico;
+using HD_Ventas.Reportes;
+using HD_Reporteria.Finanzas.Excel;
 
 namespace HD.Endpoints.Controllers.Finanzas
 {
@@ -38,6 +40,17 @@ namespace HD.Endpoints.Controllers.Finanzas
             FAD_Margenes_Brutos datos = new FAD_Margenes_Brutos(CadenaConexion);
             var result = await datos.GetMargenesBrutos(ejercicio, periodo);
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> MargenesBrutosExcel(int ejercicio, string periodo)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            FAD_Margenes_Brutos datos = new FAD_Margenes_Brutos(CadenaConexion);
+            var result = await datos.GetMargenesBrutos(ejercicio, periodo);
+            var docresult = await XLS_Margenes_Brutos.GenerarExcel(result, ejercicio, periodo);
+            return Ok(docresult);
         }
 
         [HttpPost]

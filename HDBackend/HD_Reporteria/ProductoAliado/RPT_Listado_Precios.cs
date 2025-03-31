@@ -26,7 +26,7 @@ namespace HD_Reporteria.ProductoAliado
                 {
                     document.Page(page =>
                     {
-                        page.Size(PageSizes.A4.Landscape());
+                        page.Size(PageSizes.Letter.Portrait());
                         var registrosListos = detalleOrdenado.Where(x => x.estatus.Contains("L"));
                         var registrosAcondicionando = detalleOrdenado.Where(x => x.estatus.Contains("A"));
 
@@ -46,7 +46,7 @@ namespace HD_Reporteria.ProductoAliado
                                 byte[] imageData = System.IO.File.ReadAllBytes(rutaImagen);
                                 row.ConstantItem(120).Image(imageData);
 
-                                row.ConstantColumn(693).PaddingTop(35).Height(50).Background("#477c2c").Row(row2 =>
+                                row.ConstantColumn(450).PaddingTop(35).Height(50).Background("#477c2c").Row(row2 =>
                                 {
                                     row2.RelativeItem().Padding(10).PaddingLeft(30).Text("INVENTARIO DE PRODUCTO ALIADO").FontColor("#fff").FontSize(20).Bold().FontFamily(fontFamily);
                                     //+obtenernombre_mes(periodo) + " " + ejercicio
@@ -65,25 +65,44 @@ namespace HD_Reporteria.ProductoAliado
                         string fechaActual = fecha.ToString("dd/MM/yyyy", new System.Globalization.CultureInfo("es-ES"));
                             if (registrosListos.Any())
                             {
-                                col1.Item().Row(row =>
-                                {
-                                    row.RelativeItem().AlignRight().Text(txt =>
-                                    {
-                                        txt.Span("INFORMACION AL: ").Bold().FontSize(8);
-                                        txt.Span(fechaActual).FontSize(8);
-                                    });
-                                });
+                                //col1.Item().Row(row =>
+                                //{
+                                //    row.RelativeItem().AlignRight().Text(txt =>
+                                //    {
+                                //        txt.Span("INFORMACION AL: ").Bold().FontSize(8);
+                                //        txt.Span(fechaActual).FontSize(8);
+                                //    });
+                                //});
 
-                                col1.Item().PaddingVertical(10).Border(0.5f).BorderColor("#477c2c").Table(tabla =>
+                                var productosPorPromocion = registrosListos
+                                .GroupBy(p => new { p.promocion, p.vigencia })
+                                .OrderBy(g => g.Key.promocion)
+                                .ToList();
+
+                                foreach (var grupo in productosPorPromocion)
+                                {
+                                    // **Agregar título con el nombre de la promoción antes de la tabla**
+                                    col1.Item().PaddingTop(10).Row(row =>
+                                    {
+                                        row.RelativeItem().AlignLeft()
+                                            .Text(string.IsNullOrEmpty(grupo.Key.promocion) ? "Sin promoción" : grupo.Key.promocion)
+                                            .FontSize(12).Bold().FontFamily(fontFamily);
+
+                                        row.RelativeItem().AlignRight()
+                                            .Text("Vigencia: " + (string.IsNullOrEmpty(grupo.Key.vigencia) ? "-" : grupo.Key.vigencia))
+                                            .FontSize(12).Bold().FontFamily(fontFamily);
+                                    });
+
+                                    col1.Item().PaddingVertical(10).Border(0.5f).BorderColor("#477c2c").Table(tabla =>
                                 {
                                     tabla.ColumnsDefinition(Columns =>
                                     {
                                         Columns.RelativeColumn(0.4f);
-                                        Columns.RelativeColumn(1);
+                                        Columns.RelativeColumn(0.8f);
                                         Columns.RelativeColumn(0.7f);
                                         Columns.RelativeColumn(0.8f);
-                                        Columns.RelativeColumn(1.2f);
-                                        Columns.RelativeColumn(0.7f);
+                                        Columns.RelativeColumn(1.3f);
+                                        Columns.RelativeColumn(0.8f);
                                         //Columns.RelativeColumn(0.5f);
                                         Columns.RelativeColumn(0.8f);
                                         //Columns.RelativeColumn(0.5f);
@@ -94,7 +113,7 @@ namespace HD_Reporteria.ProductoAliado
                                         Columns.RelativeColumn(0.8f);
                                         Columns.RelativeColumn(0.6f);
                                         Columns.RelativeColumn(0.9f);
-                                        Columns.RelativeColumn(1.2f);
+                                        //Columns.RelativeColumn(1.2f);
                                         //Columns.RelativeColumn(0.9f);
                                     });
 
@@ -132,101 +151,83 @@ namespace HD_Reporteria.ProductoAliado
                                         .Padding(1).Text("MARGEN").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("PRECIO LISTA").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                        header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
-                                        .Padding(1).Text("PROMOCION").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        //header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                        //.Padding(1).Text("PROMOCION").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         //header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         //.Padding(1).Text("VIGENCIA").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     });
 
-                                    foreach (var det in registrosListos)
-                                    {
+                                    int index = 0;
 
-                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().Height(20).Padding(0)
+                                    foreach (var det in grupo)
+                                    {
+                                        string backgroundColor = (index % 2 == 0) ? "#FFFFFF" : "#f0f0f0";
+
+                                        tabla.Cell().Background(backgroundColor).BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().Height(20).Padding(0)
                                         .SkiaSharpCanvas((canvas, size) =>
                                         {
-                                            // Determinar el color del círculo
                                             SKColor color;
-                                            int circleRadius = 3; // Radio del círculo
-                                            float spacing = 10; // Espacio entre los círculos
-
+                                            int circleRadius = 3;
                                             switch (det.estatus)
                                             {
                                                 case "L":
-                                                    color = SKColors.Green; // Verde
+                                                    color = SKColors.Green;
                                                     break;
                                                 case "A":
-                                                    color = SKColors.Yellow; // Amarillo
+                                                    color = SKColors.Yellow;
                                                     break;
                                                 default:
-                                                    color = SKColors.Transparent; // Sin color
+                                                    color = SKColors.Transparent;
                                                     break;
                                             }
 
-                                            // Crear el pincel para dibujar el círculo
                                             using var paint = new SKPaint
                                             {
                                                 Color = color,
                                                 Style = SKPaintStyle.Fill
                                             };
 
-                                            // Dibujar círculos
-                                            // Dibujar un solo círculo
                                             canvas.DrawCircle(size.Width / 2, size.Height / 2, circleRadius, paint);
                                         });
 
-                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingLeft(4).PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                        tabla.Cell().Background(backgroundColor).BorderBottom(0.5f).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingLeft(4).PaddingRight(3).PaddingVertical(3).ShowEntire()
                                         .Text(det.nombre_sucursal?.ToUpper()).FontSize(7).FontFamily(fontFamily);
 
-                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.NE).FontSize(7).FontFamily(fontFamily);
+                                        tabla.Cell().Background(backgroundColor).BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                        .Text(det.NE).FontSize(7).FontFamily(fontFamily);
 
-                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.Marca).FontSize(7).FontFamily(fontFamily);
+                                        tabla.Cell().Background(backgroundColor).BorderBottom(0.5f).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                        .Text(det.Marca).FontSize(7).FontFamily(fontFamily);
 
-                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.modelo_descripcion).FontSize(7).FontFamily(fontFamily);
+                                        tabla.Cell().Background(backgroundColor).BorderBottom(0.5f).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                        .Text(det.modelo_descripcion).FontSize(7).FontFamily(fontFamily);
 
-                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.antiguedad.ToString() + (det.antiguedad == 1 ? " MES" : " MESES")).FontSize(7).FontFamily(fontFamily);
+                                        tabla.Cell().Background(backgroundColor).BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                        .Text(det.antiguedad.ToString() + (det.antiguedad == 1 ? " MES" : " MESES")).FontSize(7).FontFamily(fontFamily);
 
-                                        //  tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                        //.Text(det.HP.ToString()).FontSize(7).FontFamily(fontFamily);
+                                        tabla.Cell().Background(backgroundColor).BorderBottom(0.5f).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
+                                        .Text(det.serie?.ToUpper()).FontSize(7).FontFamily(fontFamily);
 
-                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.serie?.ToUpper()).FontSize(7).FontFamily(fontFamily);
+                                        tabla.Cell().Background(backgroundColor).BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                        .Text(det.fecha_recepcion).FontSize(7).FontFamily(fontFamily);
 
-                                        // tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                        //.Text(det.horas.ToString()).FontSize(7).FontFamily(fontFamily);
+                                        tabla.Cell().Background(backgroundColor).BorderBottom(0.5f).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
+                                        .Text(det.Costo.ToString("N2")).FontSize(7).FontFamily(fontFamily);
 
-                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.fecha_recepcion).FontSize(7).FontFamily(fontFamily);
+                                        tabla.Cell().Background(backgroundColor).BorderBottom(0.5f).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
+                                        .Text(det.utilidad.ToString("N2")).FontSize(7).FontFamily(fontFamily);
 
-                                        // tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                        //.Text(det.precio.ToString("N2")).FontSize(7).FontFamily(fontFamily);
+                                        tabla.Cell().Background(backgroundColor).BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
+                                        .Text(det.margen.ToString("N1")).FontSize(7).FontFamily(fontFamily);
 
-                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.Costo.ToString("N2")).FontSize(7).FontFamily(fontFamily);
-
-                                        // tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                        //.Text(det.OT.ToString("N2")).FontSize(7).FontFamily(fontFamily);
-
-                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.utilidad.ToString("N2")).FontSize(7).FontFamily(fontFamily);
-
-                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.margen.ToString("N1")).FontSize(7).FontFamily(fontFamily);
-
-                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.precio_lista.ToString("N2")).FontSize(7).FontFamily(fontFamily);
-
-                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.promocion + "\n" + det.vigencia).FontSize(7).FontFamily(fontFamily);
-
-                                        // tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                        //.Text(det.vigencia).FontSize(7).FontFamily(fontFamily);
-
+                                        tabla.Cell().Background(backgroundColor).BorderBottom(0.5f).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
+                                        .Text(det.precio_lista.ToString("N2")).FontSize(7).FontFamily(fontFamily);
+                                        
+                                        index++;
                                     }
+
                                 });
+                                }
                             }
                             if (registrosListos.Any() && registrosAcondicionando.Any())
                             {
@@ -234,25 +235,44 @@ namespace HD_Reporteria.ProductoAliado
                             }
                             if (registrosAcondicionando.Any())
                             {
-                                col1.Item().Row(row =>
-                                {
-                                    row.RelativeItem().AlignRight().Text(txt =>
-                                    {
-                                        txt.Span("INFORMACION AL: ").Bold().FontSize(8);
-                                        txt.Span(fechaActual).FontSize(8);
-                                    });
-                                });
+                                //col1.Item().Row(row =>
+                                //{
+                                //    row.RelativeItem().AlignRight().Text(txt =>
+                                //    {
+                                //        txt.Span("INFORMACION AL: ").Bold().FontSize(8);
+                                //        txt.Span(fechaActual).FontSize(8);
+                                //    });
+                                //});
 
-                                col1.Item().PaddingVertical(10).Border(0.5f).BorderColor("#477c2c").Table(tabla =>
+                                var productosPorPromocion = registrosAcondicionando
+                                .GroupBy(p => new { p.promocion, p.vigencia })
+                                .OrderBy(g => g.Key.promocion)
+                                .ToList();
+
+                            foreach (var grupo in productosPorPromocion)
+                            {
+                                    // **Agregar título con el nombre de la promoción antes de la tabla**
+                                    col1.Item().PaddingTop(10).Row(row =>
+                                    {
+                                        row.RelativeItem().AlignLeft()
+                                            .Text(string.IsNullOrEmpty(grupo.Key.promocion) ? "Sin promoción" : grupo.Key.promocion)
+                                            .FontSize(12).Bold().FontFamily(fontFamily);
+
+                                        row.RelativeItem().AlignRight()
+                                            .Text("Vigencia: " + (string.IsNullOrEmpty(grupo.Key.vigencia) ? "-" : grupo.Key.vigencia))
+                                            .FontSize(12).Bold().FontFamily(fontFamily);
+                                    });
+
+                                    col1.Item().PaddingVertical(10).Border(0.5f).BorderColor("#477c2c").Table(tabla =>
                                 {
                                     tabla.ColumnsDefinition(Columns =>
                                     {
                                         Columns.RelativeColumn(0.4f);
-                                        Columns.RelativeColumn(1);
+                                        Columns.RelativeColumn(0.8f);
                                         Columns.RelativeColumn(0.7f);
                                         Columns.RelativeColumn(0.8f);
-                                        Columns.RelativeColumn(1.2f);
-                                        Columns.RelativeColumn(0.7f);
+                                        Columns.RelativeColumn(1.3f);
+                                        Columns.RelativeColumn(0.8f);
                                         //Columns.RelativeColumn(0.5f);
                                         Columns.RelativeColumn(0.8f);
                                         //Columns.RelativeColumn(0.5f);
@@ -263,7 +283,7 @@ namespace HD_Reporteria.ProductoAliado
                                         Columns.RelativeColumn(0.8f);
                                         Columns.RelativeColumn(0.6f);
                                         Columns.RelativeColumn(0.9f);
-                                        Columns.RelativeColumn(1.2f);
+                                        //Columns.RelativeColumn(1.2f);
                                         //Columns.RelativeColumn(0.9f);
                                     });
 
@@ -301,101 +321,83 @@ namespace HD_Reporteria.ProductoAliado
                                         .Padding(1).Text("MARGEN").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("PRECIO LISTA").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                        header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
-                                        .Padding(1).Text("PROMOCION").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        //header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                        //.Padding(1).Text("PROMOCION").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         //header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         //.Padding(1).Text("VIGENCIA").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     });
 
-                                    foreach (var det in registrosAcondicionando)
+                                    int index = 0;
+                                    // Ahora iteramos sobre los productos de esa promoción
+                                    foreach (var det in grupo)
                                     {
 
-                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().Height(20).Padding(0)
+                                        string backgroundColor = (index % 2 == 0) ? "#FFFFFF" : "#f0f0f0";
+
+                                        tabla.Cell().Background(backgroundColor).BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().Height(20).Padding(0)
                                         .SkiaSharpCanvas((canvas, size) =>
                                         {
-                                            // Determinar el color del círculo
                                             SKColor color;
-                                            int circleRadius = 3; // Radio del círculo
-                                            float spacing = 10; // Espacio entre los círculos
-
+                                            int circleRadius = 3;
                                             switch (det.estatus)
                                             {
                                                 case "L":
-                                                    color = SKColors.Green; // Verde
+                                                    color = SKColors.Green;
                                                     break;
                                                 case "A":
-                                                    color = SKColors.Yellow; // Amarillo
+                                                    color = SKColors.Yellow;
                                                     break;
                                                 default:
-                                                    color = SKColors.Transparent; // Sin color
+                                                    color = SKColors.Transparent;
                                                     break;
                                             }
 
-                                            // Crear el pincel para dibujar el círculo
                                             using var paint = new SKPaint
                                             {
                                                 Color = color,
                                                 Style = SKPaintStyle.Fill
                                             };
 
-                                            // Dibujar círculos
-                                            // Dibujar un solo círculo
                                             canvas.DrawCircle(size.Width / 2, size.Height / 2, circleRadius, paint);
                                         });
 
-                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingLeft(4).PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                        tabla.Cell().Background(backgroundColor).BorderBottom(0.5f).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingLeft(4).PaddingRight(3).PaddingVertical(3).ShowEntire()
                                         .Text(det.nombre_sucursal?.ToUpper()).FontSize(7).FontFamily(fontFamily);
 
-                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.NE).FontSize(7).FontFamily(fontFamily);
+                                        tabla.Cell().Background(backgroundColor).BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                        .Text(det.NE).FontSize(7).FontFamily(fontFamily);
 
-                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.Marca).FontSize(7).FontFamily(fontFamily);
+                                        tabla.Cell().Background(backgroundColor).BorderBottom(0.5f).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                        .Text(det.Marca).FontSize(7).FontFamily(fontFamily);
 
-                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.modelo_descripcion).FontSize(7).FontFamily(fontFamily);
+                                        tabla.Cell().Background(backgroundColor).BorderBottom(0.5f).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                        .Text(det.modelo_descripcion).FontSize(7).FontFamily(fontFamily);
 
-                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.antiguedad.ToString() + (det.antiguedad == 1 ? " MES" : " MESES")).FontSize(7).FontFamily(fontFamily);
+                                        tabla.Cell().Background(backgroundColor).BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                        .Text(det.antiguedad.ToString() + (det.antiguedad == 1 ? " MES" : " MESES")).FontSize(7).FontFamily(fontFamily);
 
-                                        //  tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                        //.Text(det.HP.ToString()).FontSize(7).FontFamily(fontFamily);
+                                        tabla.Cell().Background(backgroundColor).BorderBottom(0.5f).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
+                                        .Text(det.serie?.ToUpper()).FontSize(7).FontFamily(fontFamily);
 
-                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.serie?.ToUpper()).FontSize(7).FontFamily(fontFamily);
+                                        tabla.Cell().Background(backgroundColor).BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                        .Text(det.fecha_recepcion).FontSize(7).FontFamily(fontFamily);
 
-                                        // tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                        //.Text(det.horas.ToString()).FontSize(7).FontFamily(fontFamily);
+                                        tabla.Cell().Background(backgroundColor).BorderBottom(0.5f).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
+                                        .Text(det.Costo.ToString("N2")).FontSize(7).FontFamily(fontFamily);
 
-                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.fecha_recepcion).FontSize(7).FontFamily(fontFamily);
+                                        tabla.Cell().Background(backgroundColor).BorderBottom(0.5f).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
+                                        .Text(det.utilidad.ToString("N2")).FontSize(7).FontFamily(fontFamily);
 
-                                        // tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                        //.Text(det.precio.ToString("N2")).FontSize(7).FontFamily(fontFamily);
+                                        tabla.Cell().Background(backgroundColor).BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
+                                        .Text(det.margen.ToString("N1")).FontSize(7).FontFamily(fontFamily);
 
-                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.Costo.ToString("N2")).FontSize(7).FontFamily(fontFamily);
+                                        tabla.Cell().Background(backgroundColor).BorderBottom(0.5f).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
+                                        .Text(det.precio_lista.ToString("N2")).FontSize(7).FontFamily(fontFamily);
 
-                                        // tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                        //.Text(det.OT.ToString("N2")).FontSize(7).FontFamily(fontFamily);
-
-                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.utilidad.ToString("N2")).FontSize(7).FontFamily(fontFamily);
-
-                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.margen.ToString("N1")).FontSize(7).FontFamily(fontFamily);
-
-                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.precio_lista.ToString("N2")).FontSize(7).FontFamily(fontFamily);
-
-                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.promocion + "\n" + det.vigencia).FontSize(7).FontFamily(fontFamily);
-
-                                        // tabla.Cell().BorderBottom(0.5f).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                        //.Text(det.vigencia).FontSize(7).FontFamily(fontFamily);
-
+                                        index++;
                                     }
                                 });
+                                }
                             }
                         });
 

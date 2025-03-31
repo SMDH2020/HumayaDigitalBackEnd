@@ -60,33 +60,33 @@ namespace HD_Ventas.Reportes
 
                     sheet.Range(renglon, 1, renglon, 25).Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
 
-                    sheet.Range(renglon, 2, renglon, 4).Merge().Value = "AUTOGUIADOS";
+                    sheet.Range(renglon, 2, renglon, 4).Merge().Value = "TRACTORES";
                     sheet.Range(renglon, 2, renglon, 4).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                     sheet.Range(renglon, 2, renglon, 4).Style.Font.Bold = true;
                     sheet.Range(renglon, 2, renglon, 4).Style.Fill.BackgroundColor = XLColor.LightGray;
-                    int rengloncarteratot = renglon;
 
-                    sheet.Range(renglon, 5, renglon, 7).Merge().Value = "DRONES";
+                    sheet.Range(renglon, 5, renglon, 7).Merge().Value = "IMPLEMENTOS";
                     sheet.Range(renglon, 5, renglon, 7).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                     sheet.Range(renglon, 5, renglon, 7).Style.Font.Bold = true;
                     sheet.Range(renglon, 5, renglon, 7).Style.Fill.BackgroundColor = XLColor.LightGray;
 
-                    sheet.Range(renglon, 8, renglon, 10).Merge().Value = "IMPLEMENTOS";
+                    sheet.Range(renglon, 8, renglon, 10).Merge().Value = "JARDINEROS";
                     sheet.Range(renglon, 8, renglon, 10).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                     sheet.Range(renglon, 8, renglon, 10).Style.Font.Bold = true;
                     sheet.Range(renglon, 8, renglon, 10).Style.Fill.BackgroundColor = XLColor.LightGray;
 
-                    sheet.Range(renglon, 11, renglon, 13).Merge().Value = "JARDINEROS";
+                    sheet.Range(renglon, 11, renglon, 13).Merge().Value = "AUTOGUIADOS";
                     sheet.Range(renglon, 11, renglon, 13).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                     sheet.Range(renglon, 11, renglon, 13).Style.Font.Bold = true;
                     sheet.Range(renglon, 11, renglon, 13).Style.Fill.BackgroundColor = XLColor.LightGray;
+                    int rengloncarteratot = renglon;
 
-                    sheet.Range(renglon, 14, renglon, 16).Merge().Value = "P. ALIADO";
+                    sheet.Range(renglon, 14, renglon, 16).Merge().Value = "DRONES";
                     sheet.Range(renglon, 14, renglon, 16).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                     sheet.Range(renglon, 14, renglon, 16).Style.Font.Bold = true;
                     sheet.Range(renglon, 14, renglon, 16).Style.Fill.BackgroundColor = XLColor.LightGray;
 
-                    sheet.Range(renglon, 17, renglon, 19).Merge().Value = "TRACTORES";
+                    sheet.Range(renglon, 17, renglon, 19).Merge().Value = "P. ALIADO";
                     sheet.Range(renglon, 17, renglon, 19).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                     sheet.Range(renglon, 17, renglon, 19).Style.Font.Bold = true;
                     sheet.Range(renglon, 17, renglon, 19).Style.Fill.BackgroundColor = XLColor.LightGray;
@@ -164,25 +164,25 @@ namespace HD_Ventas.Reportes
                         var totalObjetivoAdrTriUsa = adrGroup.Sum(x => x.Objetivo_TriUsa);
                         var totalRealAdrTriUsa = adrGroup.Sum(x => x.Real_TriUsa);
 
-                        sheet.Cell(renglon, 2).Value = totalObjetivoAdrAutoguiados;
-                        sheet.Cell(renglon, 3).Value = totalRealAdrAutoguiados;
+                        sheet.Cell(renglon, 2).Value = totalObjetivoAdrTractores;
+                        sheet.Cell(renglon, 3).Value = totalRealAdrTractores;
                         //float porcentajemensual = sco.objetivo > 0 ? sco.unidades_vendidas / sco.objetivo : 0;
                         sheet.Cell(renglon, 4).FormulaA1 = $"=IF(C{renglon} > B{renglon}, 1, IF(C{renglon} > 0, MIN(C{renglon}/B{renglon}, 1), 0))";
-                        sheet.Cell(renglon, 5).Value = totalObjetivoAdrDrones;
-                        sheet.Cell(renglon, 6).Value = totalRealAdrDrones;
+                        sheet.Cell(renglon, 6).Value = totalObjetivoAdrImplementos;
+                        sheet.Cell(renglon, 5).Value = totalRealAdrImplementos;
                         //float porcentajeacumulado = sco.objetivo_acumulado > 0 ? sco.unidades_vendidas_acumulado / sco.objetivo_acumulado : 0;
                         sheet.Cell(renglon, 7).FormulaA1 = $"=IF(F{renglon} > E{renglon}, 1, IF(F{renglon} > 0, MIN(F{renglon}/E{renglon}, 1), 0))";
-                        sheet.Cell(renglon, 8).Value = totalObjetivoAdrImplementos;
-                        sheet.Cell(renglon, 9).Value = totalRealAdrImplementos;
+                        sheet.Cell(renglon, 8).Value = totalObjetivoAdrJardineros;
+                        sheet.Cell(renglon, 9).Value = totalRealAdrJardineros;
                         sheet.Cell(renglon, 10).FormulaA1 = $"=IF(I{renglon} > H{renglon}, 1, IF(I{renglon} > 0, MIN(I{renglon}/H{renglon}, 1), 0))";
-                        sheet.Cell(renglon, 11).Value = totalObjetivoAdrJardineros;
-                        sheet.Cell(renglon, 12).Value = totalRealAdrJardineros;
+                        sheet.Cell(renglon, 11).Value = totalObjetivoAdrAutoguiados;
+                        sheet.Cell(renglon, 12).Value = totalRealAdrAutoguiados;
                         sheet.Cell(renglon, 13).FormulaA1 = $"=IF(L{renglon} > K{renglon}, 1, IF(L{renglon} > 0, MIN(L{renglon}/K{renglon}, 1), 0))";
-                        sheet.Cell(renglon, 14).Value = totalObjetivoAdrPA;
-                        sheet.Cell(renglon, 15).Value = totalRealAdrPA;
+                        sheet.Cell(renglon, 14).Value = totalObjetivoAdrDrones;
+                        sheet.Cell(renglon, 15).Value = totalRealAdrDrones;
                         sheet.Cell(renglon, 16).FormulaA1 = $"=IF(O{renglon} > N{renglon}, 1, IF(O{renglon} > 0, MIN(O{renglon}/N{renglon}, 1), 0))";
-                        sheet.Cell(renglon, 17).Value = totalObjetivoAdrTractores;
-                        sheet.Cell(renglon, 18).Value = totalRealAdrTractores;
+                        sheet.Cell(renglon, 17).Value = totalObjetivoAdrPA;
+                        sheet.Cell(renglon, 18).Value = totalRealAdrPA;
                         sheet.Cell(renglon, 19).FormulaA1 = $"=IF(R{renglon} > Q{renglon}, 1, IF(R{renglon} > 0, MIN(R{renglon}/Q{renglon}, 1), 0))";
                         sheet.Cell(renglon, 20).Value = totalObjetivoAdrTracUsa;
                         sheet.Cell(renglon, 21).Value = totalRealAdrTracUsa;
@@ -190,7 +190,12 @@ namespace HD_Ventas.Reportes
                         sheet.Cell(renglon, 23).Value = totalObjetivoAdrTriUsa;
                         sheet.Cell(renglon, 24).Value = totalRealAdrTriUsa;
                         sheet.Cell(renglon, 25).FormulaA1 = $"=IF(X{renglon} > W{renglon}, 1, IF(X{renglon} > 0, MIN(X{renglon}/W{renglon}, 1), 0))";
+                        var rangoADR = sheet.Range(renglon, 1, renglon, 25);
+                        rangoADR.Style.Fill.BackgroundColor = XLColor.FromHtml("#DAE6BE");
                         renglon++;
+                        
+                        //var rango = sheet.Range(renglon, 1, renglon, 25);
+
 
                         var groupedBySucursal = adrGroup.GroupBy(x => x.sucursal);
 
@@ -215,25 +220,25 @@ namespace HD_Ventas.Reportes
                             var totalObjetivoSucursalTriUsa = sucursalGroup.Sum(x => x.Objetivo_TriUsa);
                             var totalRealSucursalTriUsa = sucursalGroup.Sum(x => x.Real_TriUsa);
 
-                            sheet.Cell(renglon, 2).Value = totalObjetivoSucursalAutoguiados;
-                            sheet.Cell(renglon, 3).Value = totalRealSucursalAutoguiados;
+                            sheet.Cell(renglon, 2).Value = totalObjetivoSucursalTractores;
+                            sheet.Cell(renglon, 3).Value = totalRealSucursalTractores;
                             //float porcentajemensual = sco.objetivo > 0 ? sco.unidades_vendidas / sco.objetivo : 0;
                             sheet.Cell(renglon, 4).FormulaA1 = $"=IF(C{renglon} > B{renglon}, 1, IF(C{renglon} > 0, MIN(C{renglon}/B{renglon}, 1), 0))";
-                            sheet.Cell(renglon, 5).Value = totalObjetivoSucursalDrones;
-                            sheet.Cell(renglon, 6).Value = totalRealSucursalDrones;
+                            sheet.Cell(renglon, 5).Value = totalObjetivoSucursalImplementos;
+                            sheet.Cell(renglon, 6).Value = totalRealSucursalImplementos;
                             //float porcentajeacumulado = sco.objetivo_acumulado > 0 ? sco.unidades_vendidas_acumulado / sco.objetivo_acumulado : 0;
                             sheet.Cell(renglon, 7).FormulaA1 = $"=IF(F{renglon} > E{renglon}, 1, IF(F{renglon} > 0, MIN(F{renglon}/E{renglon}, 1), 0))";
-                            sheet.Cell(renglon, 8).Value = totalObjetivoSucursalImplementos;
-                            sheet.Cell(renglon, 9).Value = totalRealSucursalImplementos;
+                            sheet.Cell(renglon, 8).Value = totalObjetivoSucursalJardineros;
+                            sheet.Cell(renglon, 9).Value = totalRealSucursalJardineros;
                             sheet.Cell(renglon, 10).FormulaA1 = $"=IF(I{renglon} > H{renglon}, 1, IF(I{renglon} > 0, MIN(I{renglon}/H{renglon}, 1), 0))";
-                            sheet.Cell(renglon, 11).Value = totalObjetivoSucursalJardineros;
-                            sheet.Cell(renglon, 12).Value = totalRealSucursalJardineros;
+                            sheet.Cell(renglon, 11).Value = totalObjetivoSucursalAutoguiados;
+                            sheet.Cell(renglon, 12).Value = totalRealSucursalAutoguiados;
                             sheet.Cell(renglon, 13).FormulaA1 = $"=IF(L{renglon} > K{renglon}, 1, IF(L{renglon} > 0, MIN(L{renglon}/K{renglon}, 1), 0))";
-                            sheet.Cell(renglon, 14).Value = totalObjetivoSucursalPA;
-                            sheet.Cell(renglon, 15).Value = totalRealSucursalPA;
+                            sheet.Cell(renglon, 14).Value = totalObjetivoSucursalDrones;
+                            sheet.Cell(renglon, 15).Value = totalRealSucursalDrones;
                             sheet.Cell(renglon, 16).FormulaA1 = $"=IF(O{renglon} > N{renglon}, 1, IF(O{renglon} > 0, MIN(O{renglon}/N{renglon}, 1), 0))";
-                            sheet.Cell(renglon, 17).Value = totalObjetivoSucursalTractores;
-                            sheet.Cell(renglon, 18).Value = totalRealSucursalTractores;
+                            sheet.Cell(renglon, 17).Value = totalObjetivoSucursalPA;
+                            sheet.Cell(renglon, 18).Value = totalRealSucursalPA;
                             sheet.Cell(renglon, 19).FormulaA1 = $"=IF(R{renglon} > Q{renglon}, 1, IF(R{renglon} > 0, MIN(R{renglon}/Q{renglon}, 1), 0))";
                             sheet.Cell(renglon, 20).Value = totalObjetivoSucursalTracUsa;
                             sheet.Cell(renglon, 21).Value = totalRealSucursalTracUsa;
@@ -241,30 +246,32 @@ namespace HD_Ventas.Reportes
                             sheet.Cell(renglon, 23).Value = totalObjetivoSucursalTriUsa;
                             sheet.Cell(renglon, 24).Value = totalRealSucursalTriUsa;
                             sheet.Cell(renglon, 25).FormulaA1 = $"=IF(X{renglon} > W{renglon}, 1, IF(X{renglon} > 0, MIN(X{renglon}/W{renglon}, 1), 0))";
+                            var rangoSucursal = sheet.Range(renglon, 1, renglon, 25);
+                            rangoSucursal.Style.Fill.BackgroundColor = XLColor.FromHtml("#e3e3e3");
                             renglon++;
 
                             foreach (var sco in sucursalGroup)
                             {
                                 sheet.Cell(renglon, 1).Value = sco.asesor;
-                                sheet.Cell(renglon, 2).Value = sco.Objetivo_Autoguiados;
-                                sheet.Cell(renglon, 3).Value = sco.Real_Autoguiados;
+                                sheet.Cell(renglon, 2).Value = sco.Objetivo_Tractores;
+                                sheet.Cell(renglon, 3).Value = sco.Real_Tractores;
                                 //float porcentajemensual = sco.objetivo > 0 ? sco.unidades_vendidas / sco.objetivo : 0;
                                 sheet.Cell(renglon, 4).FormulaA1 = $"=IF(C{renglon} > B{renglon}, 1, IF(C{renglon} > 0, MIN(C{renglon}/B{renglon}, 1), 0))";
-                                sheet.Cell(renglon, 5).Value = sco.Objetivo_Drones;
-                                sheet.Cell(renglon, 6).Value = sco.Real_Drones;
+                                sheet.Cell(renglon, 5).Value = sco.Objetivo_Implementos;
+                                sheet.Cell(renglon, 6).Value = sco.Real_Implementos;
                                 //float porcentajeacumulado = sco.objetivo_acumulado > 0 ? sco.unidades_vendidas_acumulado / sco.objetivo_acumulado : 0;
                                 sheet.Cell(renglon, 7).FormulaA1 = $"=IF(F{renglon} > E{renglon}, 1, IF(F{renglon} > 0, MIN(F{renglon}/E{renglon}, 1), 0))";
-                                sheet.Cell(renglon, 8).Value = sco.Objetivo_Implementos;
-                                sheet.Cell(renglon, 9).Value = sco.Real_Implementos;
+                                sheet.Cell(renglon, 8).Value = sco.Objetivo_Jardineros;
+                                sheet.Cell(renglon, 9).Value = sco.Real_Jardineros;
                                 sheet.Cell(renglon, 10).FormulaA1 = $"=IF(I{renglon} > H{renglon}, 1, IF(I{renglon} > 0, MIN(I{renglon}/H{renglon}, 1), 0))";
-                                sheet.Cell(renglon, 11).Value = sco.Objetivo_Jardineros;
-                                sheet.Cell(renglon, 12).Value = sco.Real_Jardineros;
+                                sheet.Cell(renglon, 11).Value = sco.Objetivo_Autoguiados;
+                                sheet.Cell(renglon, 12).Value = sco.Real_Autoguiados;
                                 sheet.Cell(renglon, 13).FormulaA1 = $"=IF(L{renglon} > K{renglon}, 1, IF(L{renglon} > 0, MIN(L{renglon}/K{renglon}, 1), 0))";
-                                sheet.Cell(renglon, 14).Value = sco.Objetivo_PA;
-                                sheet.Cell(renglon, 15).Value = sco.Real_PA;
+                                sheet.Cell(renglon, 14).Value = sco.Objetivo_Drones;
+                                sheet.Cell(renglon, 15).Value = sco.Real_Drones;
                                 sheet.Cell(renglon, 16).FormulaA1 = $"=IF(O{renglon} > N{renglon}, 1, IF(O{renglon} > 0, MIN(O{renglon}/N{renglon}, 1), 0))";
-                                sheet.Cell(renglon, 17).Value = sco.Objetivo_Tractores;
-                                sheet.Cell(renglon, 18).Value = sco.Real_Tractores;
+                                sheet.Cell(renglon, 17).Value = sco.Objetivo_PA;
+                                sheet.Cell(renglon, 18).Value = sco.Real_PA;
                                 sheet.Cell(renglon, 19).FormulaA1 = $"=IF(R{renglon} > Q{renglon}, 1, IF(R{renglon} > 0, MIN(R{renglon}/Q{renglon}, 1), 0))";
                                 sheet.Cell(renglon, 20).Value = sco.Objetivo_TracUsa;
                                 sheet.Cell(renglon, 21).Value = sco.Real_TracUsa;
