@@ -19,6 +19,7 @@ namespace HD_Cobranza.Modelos.Juridico
         public double recuperado { get; set; }
         public string? fecha_recuperacion { get; set; }
         public string? estatus { get; set; }
+        public string? tiene_comentario { get; set; }
 
     }
 }

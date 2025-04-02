@@ -38,5 +38,31 @@ namespace HD_Ventas.Consultas
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<IEnumerable<mdlCarga_Scorecard_porVendedor_Dash_TablaAsesor>> Scorecard_TablaAsesor(int region, int sucursal, int usuario, int ejercicioinicio, int periodoinicio, int ejercicio, int mes_actual, int sesion)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    usuario = usuario,
+                    region = region,
+                    sucursal = sucursal,
+                    ejercicioinicio = ejercicioinicio,
+                    periodoinicio = periodoinicio,
+                    ejercicio = ejercicio,
+                    mes_actual = mes_actual,
+                    sesion = sesion
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdlCarga_Scorecard_porVendedor_Dash_TablaAsesor> result = await factory.SQL.QueryAsync<mdlCarga_Scorecard_porVendedor_Dash_TablaAsesor>("Ventas.Obtener_Scorecard_porParametro_Tabla_Asesor", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }

@@ -1,7 +1,10 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
 using HD_Finanzas.Modelos;
+using HD_Finanzas.Modelos.CostoFinanciamiento;
+using HD_Finanzas.Modelos.NivelInventario;
 using HD_Finanzas.Modelos.RazonesFinancieras;
+using HD_Finanzas.Modelos.ResultadosSucursal;
 
 namespace HD_Finanzas.AccesoDatos
 {
@@ -32,6 +35,10 @@ namespace HD_Finanzas.AccesoDatos
                 dashboard.gastosproyectados = result.Read<mdlGastosProyectados>().ToList();
                 dashboard.balancegeneral = result.Read<mdlBalanceGeneral>().ToList();
                 dashboard.razonesfinancieras = result.Read<mdlRazonesFinancieras>().ToList();
+                dashboard.InventarioAntiguedad = result.Read<mdl_Inventario_Antiguedad_Dash>().ToList();
+                dashboard.CostoFinanciamiento = result.Read<mdl_Costo_Financiamiento_Dash>().ToList();
+                dashboard.ResultadosSucursal = result.Read<mdl_Resultados_Sucursal_Dash>().ToList();
+                dashboard.NivelInventario = result.Read<mdl_Nivel_Inventario_Dash>().ToList();
                 factory.SQL.Close();
                 return dashboard;
             }
