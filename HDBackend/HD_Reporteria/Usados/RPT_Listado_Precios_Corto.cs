@@ -16,8 +16,9 @@ namespace HD_Reporteria.Usados
             try
             {
                 var detalleOrdenado = detalle
-                .OrderBy(det => det.estatus == "L" ? 0 : det.estatus == "A" ? 1 : 2) 
+                .OrderBy(det => det.estatus == "L" ? 0 : det.estatus == "A" ? 1 : 2)
                 .ThenBy(det => det.sucursal)
+                .ThenBy(det => det.HP)
                 .ToList();
                 string fontFamily = "Calibri";
                 byte[] doc = Document.Create(document =>
