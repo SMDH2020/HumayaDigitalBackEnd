@@ -16,8 +16,9 @@ namespace HD_Reporteria.Usados
             try
             {
                 var detalleOrdenado = detalle
-                .OrderBy(det => det.estatus == "L" ? 0 : det.estatus == "A" ? 1 : 2) 
+                .OrderBy(det => det.estatus == "L" ? 0 : det.estatus == "A" ? 1 : 2)
                 .ThenBy(det => det.sucursal)
+                .ThenBy(det => det.HP)
                 .ToList();
                 string fontFamily = "Calibri";
                 byte[] doc = Document.Create(document =>
@@ -29,13 +30,16 @@ namespace HD_Reporteria.Usados
                         var registrosListos = detalleOrdenado.Where(x => x.estatus.Contains("L"));
                         var registrosAcondicionando = detalleOrdenado.Where(x => x.estatus.Contains("A"));
                         var registrosTrilladoras = detalleOrdenado
-                            .Where(x => x.modelo_descripcion.Contains("trilladora", StringComparison.OrdinalIgnoreCase)
-                                     || x.modelo_descripcion.Contains("cabezal", StringComparison.OrdinalIgnoreCase)
-                                     || x.modelo_descripcion.Contains("combinada", StringComparison.OrdinalIgnoreCase));
+                            .Where(x => x.modelo_descripcion.Contains("trilladora", StringComparison.OrdinalIgnoreCase));
                         var registrosTractores = detalleOrdenado
-                            .Where(x => !x.modelo_descripcion.Contains("trilladora", StringComparison.OrdinalIgnoreCase)
-                                     && !x.modelo_descripcion.Contains("cabezal", StringComparison.OrdinalIgnoreCase)
-                                     && !x.modelo_descripcion.Contains("combinada", StringComparison.OrdinalIgnoreCase));
+                            .Where(x => x.modelo_descripcion.Contains("tr-", StringComparison.OrdinalIgnoreCase)
+                                     || x.modelo_descripcion.Contains("tr", StringComparison.OrdinalIgnoreCase) 
+                                            && !x.modelo_descripcion.Contains("trilladora", StringComparison.OrdinalIgnoreCase) 
+                                            && !x.modelo_descripcion.Contains("trasn", StringComparison.OrdinalIgnoreCase)
+                                            && !x.modelo_descripcion.Contains("trans", StringComparison.OrdinalIgnoreCase)
+                                     || x.modelo_descripcion.Contains("tractor", StringComparison.OrdinalIgnoreCase));
+                        var registrosImplementos = detalleOrdenado.Except(registrosTractores)
+                                                    .Except(registrosTrilladoras);
 
                         page.Header().Height(120).Row(row =>
                         {
@@ -71,22 +75,10 @@ namespace HD_Reporteria.Usados
 
                             if (registrosTractores.Any())
                             {
-
-                                var productosPorPromocion = registrosTractores
-                                .GroupBy(p => new { p.promocion, p.vigencia })
-                                .OrderBy(g => g.Key.promocion)
-                                .ToList();
-
-                                foreach (var grupo in productosPorPromocion)
-                                {
                                     col1.Item().PaddingTop(10).Row(row =>
                                     {
                                         row.RelativeItem().PaddingLeft(40).AlignLeft()
-                                            .Text(string.IsNullOrEmpty(grupo.Key.promocion) ? "Sin promoción" : grupo.Key.promocion)
-                                            .FontSize(12).Bold().FontFamily(fontFamily);
-
-                                        row.RelativeItem().PaddingRight(40).AlignRight()
-                                            .Text("Vigencia: " + (string.IsNullOrEmpty(grupo.Key.vigencia) ? "-" : grupo.Key.vigencia))
+                                            .Text("Tractores")
                                             .FontSize(12).Bold().FontFamily(fontFamily);
                                     });
 
@@ -99,10 +91,11 @@ namespace HD_Reporteria.Usados
                                         Columns.RelativeColumn(0.6f);
                                         Columns.RelativeColumn(0.4f);
                                         Columns.RelativeColumn(0.5f);
+                                        Columns.RelativeColumn(0.5f);
                                         Columns.RelativeColumn(0.7f);
                                         Columns.RelativeColumn(0.5f);
                                         Columns.RelativeColumn(0.5f);
-                                        Columns.RelativeColumn(0.5f);
+                                        Columns.RelativeColumn(0.8f);
 
                                     });
 
@@ -126,11 +119,13 @@ namespace HD_Reporteria.Usados
                                         .Padding(1).Text("SUCURSAL").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("N. E.").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                        .Padding(1).Text("PROMOCION").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     });
 
                                     int index = 0;
 
-                                    foreach (var det in grupo)
+                                    foreach (var det in registrosTractores)
                                     {
                                         string rowBackground = (index % 2 == 0) ? "#FFFFFF" : "#F0F0F0";
 
@@ -195,10 +190,18 @@ namespace HD_Reporteria.Usados
                                         tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
                                        .Text(det.NE).FontSize(7).FontFamily(fontFamily);
 
+                                        tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                       .Text(!string.IsNullOrEmpty(det.promocion) && !string.IsNullOrEmpty(det.vigencia)
+                                        ? det.promocion.ToUpper() + " Vigencia al " + det.vigencia
+                                        : !string.IsNullOrEmpty(det.promocion)
+                                            ? det.promocion.ToUpper()
+                                            : !string.IsNullOrEmpty(det.vigencia)
+                                                ? "Vigencia al " + det.vigencia
+                                                : "").FontSize(7).FontFamily(fontFamily);
+
                                         index++;
                                     }
                                 });
-                                }
                             }
 
                             if (registrosTractores.Any() && registrosTrilladoras.Any())
@@ -208,22 +211,10 @@ namespace HD_Reporteria.Usados
 
                             if (registrosTrilladoras.Any())
                             {
-
-                                var productosPorPromocion = registrosTrilladoras
-                                .GroupBy(p => new { p.promocion, p.vigencia })
-                                .OrderBy(g => g.Key.promocion)
-                                .ToList();
-
-                                foreach (var grupo in productosPorPromocion)
-                                {
                                     col1.Item().PaddingTop(10).Row(row =>
                                     {
                                         row.RelativeItem().PaddingLeft(40).AlignLeft()
-                                            .Text(string.IsNullOrEmpty(grupo.Key.promocion) ? "Sin promoción" : grupo.Key.promocion)
-                                            .FontSize(12).Bold().FontFamily(fontFamily);
-
-                                        row.RelativeItem().PaddingRight(40).AlignRight()
-                                            .Text("Vigencia: " + (string.IsNullOrEmpty(grupo.Key.vigencia) ? "-" : grupo.Key.vigencia))
+                                            .Text("Trilladoras")
                                             .FontSize(12).Bold().FontFamily(fontFamily);
                                     });
 
@@ -236,10 +227,11 @@ namespace HD_Reporteria.Usados
                                         Columns.RelativeColumn(0.6f);
                                         Columns.RelativeColumn(0.4f);
                                         Columns.RelativeColumn(0.5f);
+                                        Columns.RelativeColumn(0.5f);
                                         Columns.RelativeColumn(0.7f);
                                         Columns.RelativeColumn(0.5f);
                                         Columns.RelativeColumn(0.5f);
-                                        Columns.RelativeColumn(0.5f);
+                                        Columns.RelativeColumn(0.8f);
 
                                     });
 
@@ -263,11 +255,13 @@ namespace HD_Reporteria.Usados
                                         .Padding(1).Text("SUCURSAL").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("N. E.").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                        .Padding(1).Text("PROMOCION").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     });
 
                                     int index = 0;
 
-                                    foreach (var det in grupo)
+                                    foreach (var det in registrosTrilladoras)
                                     {
                                         string rowBackground = (index % 2 == 0) ? "#FFFFFF" : "#F0F0F0";
 
@@ -332,10 +326,154 @@ namespace HD_Reporteria.Usados
                                         tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
                                        .Text(det.NE).FontSize(7).FontFamily(fontFamily);
 
+                                        tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                       .Text(!string.IsNullOrEmpty(det.promocion) && !string.IsNullOrEmpty(det.vigencia)
+                                        ? det.promocion.ToUpper() + " Vigencia al " + det.vigencia
+                                        : !string.IsNullOrEmpty(det.promocion)
+                                            ? det.promocion.ToUpper()
+                                            : !string.IsNullOrEmpty(det.vigencia)
+                                                ? "Vigencia al " + det.vigencia
+                                                : "").FontSize(7).FontFamily(fontFamily);
+
                                         index++;
                                     }
                                 });
-                                }
+                            }
+
+                            if (registrosTractores.Any() && registrosImplementos.Any() || registrosTrilladoras.Any() && registrosImplementos.Any())
+                            {
+                                col1.Item().PageBreak();
+                            }
+
+                            if (registrosImplementos.Any())
+                            {
+                                col1.Item().PaddingTop(10).Row(row =>
+                                {
+                                    row.RelativeItem().PaddingLeft(40).AlignLeft()
+                                        .Text("Cabezales e Implementos")
+                                        .FontSize(12).Bold().FontFamily(fontFamily);
+                                });
+
+                                col1.Item().PaddingVertical(10).PaddingHorizontal(40).Border(0.5f).BorderColor("#477c2c").Table(tabla =>
+                                {
+                                    tabla.ColumnsDefinition(Columns =>
+                                    {
+                                        Columns.RelativeColumn(0.4f);
+                                        Columns.RelativeColumn(1.2f);
+                                        Columns.RelativeColumn(0.6f);
+                                        Columns.RelativeColumn(0.4f);
+                                        Columns.RelativeColumn(0.5f);
+                                        Columns.RelativeColumn(0.5f);
+                                        Columns.RelativeColumn(0.7f);
+                                        Columns.RelativeColumn(0.5f);
+                                        Columns.RelativeColumn(0.5f);
+                                        Columns.RelativeColumn(0.8f);
+
+                                    });
+
+                                    tabla.Header(header =>
+                                    {
+                                        header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                        .Padding(1).Text("").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                        .Padding(1).Text("MODELO").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                        .Padding(1).Text("MARCA").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                        .Padding(1).Text("AÑO").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                        .Padding(1).Text("HP").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                        .Padding(1).Text("HORAS").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                        .Padding(1).Text("PRECIO").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                        .Padding(1).Text("SUCURSAL").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                        .Padding(1).Text("N. E.").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                        .Padding(1).Text("PROMOCION").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    });
+
+                                    int index = 0;
+
+                                    foreach (var det in registrosImplementos)
+                                    {
+                                        string rowBackground = (index % 2 == 0) ? "#FFFFFF" : "#F0F0F0";
+
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignCenter().AlignMiddle().Height(20).Padding(0)
+                                        .Background(rowBackground)
+                                        .SkiaSharpCanvas((canvas, size) =>
+                                        {
+                                            // Determinar el color del círculo
+                                            SKColor color;
+                                            int circleRadius = 3; // Radio del círculo
+                                            float spacing = 10; // Espacio entre los círculos
+
+                                            switch (det.estatus)
+                                            {
+                                                case "L":
+                                                    color = SKColors.Green; // Verde
+                                                    break;
+                                                case "A":
+                                                    color = SKColors.Yellow; // Amarillo
+                                                    break;
+                                                default:
+                                                    color = SKColors.Transparent; // Sin color
+                                                    break;
+                                            }
+
+                                            // Crear el pincel para dibujar el círculo
+                                            using var paint = new SKPaint
+                                            {
+                                                Color = color,
+                                                Style = SKPaintStyle.Fill
+                                            };
+
+                                            // Dibujar círculos
+                                            // Dibujar un solo círculo
+                                            canvas.DrawCircle(size.Width / 2, size.Height / 2, circleRadius, paint);
+                                        });
+
+                                        tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                       .Text(det.modelo_descripcion).FontSize(7).FontFamily(fontFamily);
+
+                                        tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                       .Text(det.Marca == "JD" ? "JOHN DEERE" : det.Marca).FontSize(7).FontFamily(fontFamily);
+
+                                        tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                       .Text(det.ejercicio.ToString()).FontSize(7).FontFamily(fontFamily);
+
+                                        tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                      .Text(det.HP.ToString()).FontSize(7).FontFamily(fontFamily);
+
+                                        tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
+                                       .Text(det.horas.ToString()).FontSize(7).FontFamily(fontFamily);
+
+                                        tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
+                                       .Text((0.00).ToString("N2")).FontSize(7).FontFamily(fontFamily);
+
+                                        // tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
+                                        //.Text(det.vigencia).FontSize(7).FontFamily(fontFamily);
+
+                                        tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingLeft(4).PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                       .Text(det.nombre_sucursal?.ToUpper()).FontSize(7).FontFamily(fontFamily);
+
+                                        tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                       .Text(det.NE).FontSize(7).FontFamily(fontFamily);
+
+                                        tabla.Cell().Background(rowBackground).BorderBottom(1).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                       .Text(!string.IsNullOrEmpty(det.promocion) && !string.IsNullOrEmpty(det.vigencia)
+                                        ? det.promocion.ToUpper() + " Vigencia al " + det.vigencia
+                                        : !string.IsNullOrEmpty(det.promocion)
+                                            ? det.promocion.ToUpper()
+                                            : !string.IsNullOrEmpty(det.vigencia)
+                                                ? "Vigencia al " + det.vigencia
+                                                : "").FontSize(7).FontFamily(fontFamily);
+
+                                        index++;
+                                    }
+                                });
                             }
                         });
 

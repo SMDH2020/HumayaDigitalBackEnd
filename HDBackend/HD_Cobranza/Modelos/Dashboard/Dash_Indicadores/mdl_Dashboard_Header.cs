@@ -10,5 +10,8 @@
         public int clientes_recuperados { get; set; }
         public float porc_importe_recuperado { get; set; }
         public float porc_clientes_recuperados { get; set; }
+        public float importe_porRecuperar {  get; set; }
+        public float porc_porRecuperar { get; set; }
+        public int clientes_porRecuperar { get; set; }
     }
 }
