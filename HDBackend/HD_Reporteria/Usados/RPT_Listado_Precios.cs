@@ -5,6 +5,7 @@ using Usados.Consultas.Usados;
 using HD_Reporteria.Cobranza;
 using static ClosedXML.Excel.XLPredefinedFormat;
 using SkiaSharp;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace HD_Reporteria.Usados
 {
@@ -42,43 +43,49 @@ namespace HD_Reporteria.Usados
 
                         bool cambioTitulo = false;
 
-                        page.Header().Height(120).Row(row =>
+                        page.Header().Height(130).Column(col2 =>
                         {
-
-                            //row.ConstantItem(140).Border(1).Placeholder();
-                            row.RelativeItem().PaddingTop(35).Height(50).Background("#477c2c").Row(row2 =>
+                            col2.Item().Row(row =>
                             {
-
-                            });
-
-                            row.ConstantColumn(0).Row(row1 =>
-                            {
-                                var rutaImagen = Path.Combine("C:\\Nube\\HumayaDigital\\HumayaDigitalBackEnd\\HDBackend\\HD_Reporteria\\Imagenes\\Logo.jpg");
-                                byte[] imageData = System.IO.File.ReadAllBytes(rutaImagen);
-                                row.ConstantItem(120).Image(imageData);
-
-                                row.ConstantColumn(693).PaddingTop(35).Height(50).Background("#477c2c").Row(row2 =>
+                                //row.ConstantItem(140).Border(1).Placeholder();
+                                row.RelativeItem().PaddingTop(35).Height(50).Background("#477c2c").Row(row2 =>
                                 {
-                                    string titulo;
 
-                                    if (cambioTitulo)
-                                    {
-                                        titulo = "INVENTARIO DE MAQUINARIA USADA ACONDICIONANDO";
-                                        
-                                    } else
-                                    {
-                                        titulo = "INVENTARIO DE MAQUINARIA USADA";
-                                    }
+                                });
 
-                                    row2.RelativeItem().Padding(10).PaddingLeft(30).Text(titulo).FontColor("#fff").FontSize(20).Bold().FontFamily(fontFamily);
-                                    //+obtenernombre_mes(periodo) + " " + ejercicio
+                                row.ConstantColumn(0).Row(row1 =>
+                                {
+                                    var rutaImagen = Path.Combine("C:\\Nube\\HumayaDigital\\HumayaDigitalBackEnd\\HDBackend\\HD_Reporteria\\Imagenes\\Logo.jpg");
+                                    byte[] imageData = System.IO.File.ReadAllBytes(rutaImagen);
+                                    row.ConstantItem(120).Image(imageData);
+
+                                    row.ConstantColumn(693).PaddingTop(35).Height(50).Background("#477c2c").Row(row2 =>
+                                    {
+                                        string titulo;
+
+                                        if (cambioTitulo)
+                                        {
+                                            titulo = "INVENTARIO DE MAQUINARIA USADA ACONDICIONANDO";
+
+                                        }
+                                        else
+                                        {
+                                            titulo = "INVENTARIO DE SEMINUEVOS";
+                                        }
+
+                                        row2.RelativeItem().Padding(10).PaddingLeft(10).Text(titulo).FontColor("#fff").FontSize(20).Bold().FontFamily(fontFamily);
+                                        //+obtenernombre_mes(periodo) + " " + ejercicio
+                                    });
                                 });
                             });
 
-
+                            //col2.Item().Row(row3 =>
+                            //{
+                            //    row3.RelativeItem().AlignCenter().Text("Tractores").FontSize(16).FontFamily(fontFamily).FontColor("#000");
+                            //});
                         });
 
-                        page.Content().PaddingTop(10).PaddingLeft(30).PaddingRight(30).Column(col1 =>
+                        page.Content().PaddingLeft(30).PaddingRight(30).Column(col1 =>
                         {
 
                             //col1.Item().LineHorizontal(0.5f);
@@ -86,22 +93,18 @@ namespace HD_Reporteria.Usados
                             System.DateTime fecha = System.DateTime.Now;
                             string fechaActual = fecha.ToString("dd/MM/yyyy", new System.Globalization.CultureInfo("es-ES"));
 
+
                             if (registrosTractores.Any())
                             {
-
-                                var productosPorPromocion = registrosTractores
-                               .GroupBy(p => new { p.promocion, p.vigencia })
-                               .OrderBy(g => g.Key.promocion)
-                               .ToList();
-
-                                col1.Item().PaddingTop(10).Row(row =>
+                                col1.Item().Row(row =>
                                 {
-                                    row.RelativeItem().PaddingLeft(10).AlignLeft()
-                                        .Text("Tractores")
+                                    row.RelativeItem().PaddingTop(-30).AlignCenter()
+                                        .Text("TRACTORES")
                                         .FontSize(12).Bold().FontFamily(fontFamily);
                                 });
 
-                                col1.Item().PaddingVertical(10).PaddingHorizontal(10).Border(0.5f).BorderColor("#477c2c").Table(tabla =>
+
+                                col1.Item().PaddingVertical(20).Border(0.5f).BorderColor("#477c2c").Table(tabla =>
                                 {
                                     tabla.ColumnsDefinition(Columns =>
                                     {
@@ -269,14 +272,14 @@ namespace HD_Reporteria.Usados
                             if (registrosTrilladoras.Any())
                             {
 
-                                col1.Item().PaddingTop(10).Row(row =>
+                                col1.Item().Row(row =>
                                 {
-                                    row.RelativeItem().PaddingLeft(10).AlignLeft()
-                                        .Text("Trilladoras")
+                                    row.RelativeItem().PaddingTop(-30).AlignCenter()
+                                        .Text("TRILLADORAS")
                                         .FontSize(12).Bold().FontFamily(fontFamily);
                                 });
 
-                                col1.Item().PaddingVertical(10).PaddingHorizontal(10).Border(0.5f).BorderColor("#477c2c").Table(tabla =>
+                                col1.Item().PaddingVertical(20).Border(0.5f).BorderColor("#477c2c").Table(tabla =>
                                 {
                                     tabla.ColumnsDefinition(Columns =>
                                     {
@@ -444,14 +447,14 @@ namespace HD_Reporteria.Usados
                             if (registrosImplementos.Any())
                             {
 
-                                col1.Item().PaddingTop(10).Row(row =>
+                                col1.Item().Row(row =>
                                 {
-                                    row.RelativeItem().PaddingLeft(10).AlignLeft()
-                                        .Text("Cabezales e Implementos")
+                                    row.RelativeItem().PaddingTop(-30).AlignCenter()
+                                        .Text("CABEZALES E IMPLEMENTOS")
                                         .FontSize(12).Bold().FontFamily(fontFamily);
                                 });
 
-                                col1.Item().PaddingVertical(10).PaddingHorizontal(10).Border(0.5f).BorderColor("#477c2c").Table(tabla =>
+                                col1.Item().PaddingVertical(20).Border(0.5f).BorderColor("#477c2c").Table(tabla =>
                                 {
                                     tabla.ColumnsDefinition(Columns =>
                                     {
