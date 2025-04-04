@@ -67,15 +67,13 @@ namespace HD_Reporteria.Usados
                                         
                                     } else
                                     {
-                                        titulo = "INVENTARIO DE MAQUINARIA USADA";
+                                        titulo = "INVENTARIO DE SEMINUEVOS";
                                     }
 
-                                    row2.RelativeItem().Padding(10).PaddingLeft(30).Text(titulo).FontColor("#fff").FontSize(20).Bold().FontFamily(fontFamily);
+                                    row2.RelativeItem().Padding(10).PaddingLeft(10).Text(titulo).FontColor("#fff").FontSize(20).Bold().FontFamily(fontFamily);
                                     //+obtenernombre_mes(periodo) + " " + ejercicio
                                 });
                             });
-
-
                         });
 
                         page.Content().PaddingTop(10).PaddingLeft(30).PaddingRight(30).Column(col1 =>
@@ -89,19 +87,14 @@ namespace HD_Reporteria.Usados
                             if (registrosTractores.Any())
                             {
 
-                                var productosPorPromocion = registrosTractores
-                               .GroupBy(p => new { p.promocion, p.vigencia })
-                               .OrderBy(g => g.Key.promocion)
-                               .ToList();
-
-                                col1.Item().PaddingTop(10).Row(row =>
+                                col1.Item().Row(row =>
                                 {
-                                    row.RelativeItem().PaddingLeft(10).AlignLeft()
-                                        .Text("Tractores")
+                                    row.RelativeItem().PaddingTop(-30).AlignCenter()
+                                        .Text("TRACTORES")
                                         .FontSize(12).Bold().FontFamily(fontFamily);
                                 });
 
-                                col1.Item().PaddingVertical(10).PaddingHorizontal(10).Border(0.5f).BorderColor("#477c2c").Table(tabla =>
+                                col1.Item().PaddingVertical(20).Border(0.5f).BorderColor("#477c2c").Table(tabla =>
                                 {
                                     tabla.ColumnsDefinition(Columns =>
                                     {
@@ -269,14 +262,14 @@ namespace HD_Reporteria.Usados
                             if (registrosTrilladoras.Any())
                             {
 
-                                col1.Item().PaddingTop(10).Row(row =>
+                                col1.Item().Row(row =>
                                 {
-                                    row.RelativeItem().PaddingLeft(10).AlignLeft()
-                                        .Text("Trilladoras")
+                                    row.RelativeItem().PaddingTop(-30).AlignCenter()
+                                        .Text("TRILLADORAS")
                                         .FontSize(12).Bold().FontFamily(fontFamily);
                                 });
 
-                                col1.Item().PaddingVertical(10).PaddingHorizontal(10).Border(0.5f).BorderColor("#477c2c").Table(tabla =>
+                                col1.Item().PaddingVertical(20).Border(0.5f).BorderColor("#477c2c").Table(tabla =>
                                 {
                                     tabla.ColumnsDefinition(Columns =>
                                     {
@@ -444,14 +437,14 @@ namespace HD_Reporteria.Usados
                             if (registrosImplementos.Any())
                             {
 
-                                col1.Item().PaddingTop(10).Row(row =>
+                                col1.Item().Row(row =>
                                 {
-                                    row.RelativeItem().PaddingLeft(10).AlignLeft()
-                                        .Text("Cabezales e Implementos")
+                                    row.RelativeItem().PaddingTop(-30).AlignCenter()
+                                        .Text("CABEZALES E IMPLEMENTOS")
                                         .FontSize(12).Bold().FontFamily(fontFamily);
                                 });
 
-                                col1.Item().PaddingVertical(10).PaddingHorizontal(10).Border(0.5f).BorderColor("#477c2c").Table(tabla =>
+                                col1.Item().PaddingVertical(20).Border(0.5f).BorderColor("#477c2c").Table(tabla =>
                                 {
                                     tabla.ColumnsDefinition(Columns =>
                                     {
