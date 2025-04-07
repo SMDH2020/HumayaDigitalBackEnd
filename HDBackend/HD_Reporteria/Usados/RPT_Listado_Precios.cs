@@ -43,7 +43,7 @@ namespace HD_Reporteria.Usados
 
                         bool cambioTitulo = false;
 
-                        page.Header().Height(160).Column(col2 =>
+                        page.Header().Height(130).Column(col2 =>
                         {
                             col2.Item().Row(row =>
                             {
@@ -79,11 +79,10 @@ namespace HD_Reporteria.Usados
                                 });
                             });
 
-                            // Aquí agregamos la nueva fila con el texto "hola, soy el segundo párrafo"
-                            col2.Item().Row(row3 =>
-                            {
-                                row3.RelativeItem().AlignCenter().Text("Tractores").FontSize(16).FontFamily(fontFamily).FontColor("#000");
-                            });
+                            //col2.Item().Row(row3 =>
+                            //{
+                            //    row3.RelativeItem().AlignCenter().Text("Tractores").FontSize(16).FontFamily(fontFamily).FontColor("#000");
+                            //});
                         });
 
                         page.Content().PaddingLeft(30).PaddingRight(30).Column(col1 =>
@@ -97,7 +96,12 @@ namespace HD_Reporteria.Usados
 
                             if (registrosTractores.Any())
                             {
-
+                                col1.Item().Row(row =>
+                                {
+                                    row.RelativeItem().PaddingTop(-30).AlignCenter()
+                                        .Text("TRACTORES")
+                                        .FontSize(12).Bold().FontFamily(fontFamily);
+                                });
 
 
                                 col1.Item().PaddingVertical(20).Border(0.5f).BorderColor("#477c2c").Table(tabla =>
