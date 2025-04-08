@@ -230,7 +230,6 @@ namespace HD_Reporteria.ProductoAliado
                                     tabla.Cell().Background("#DAE6BE").BorderColor("#afb69d").AlignRight().AlignMiddle().Padding(3)
                                         .Text(registrosAspersoras.Sum(r => r.precio_lista).ToString("N1")).FontSize(7).FontFamily(fontFamily);
 
-                                    // Promoción/Vigencia: vacío en total
                                     tabla.Cell().Background("#DAE6BE").BorderColor("#afb69d").AlignCenter().AlignMiddle().Padding(3)
                                         .Text("").FontSize(7).FontFamily(fontFamily);
                                 });
