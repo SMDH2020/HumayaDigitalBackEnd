@@ -166,10 +166,10 @@ namespace HD_Reporteria.ProductoAliado
                                         tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
                                        .Text(det.modelo_descripcion).FontSize(7).FontFamily(fontFamily);
 
-                                        tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                        tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
                                        .Text(det.Marca).FontSize(7).FontFamily(fontFamily);
 
-                                        tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
+                                        tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
                                        .Text((det.precio_lista).ToString("N2")).FontSize(7).FontFamily(fontFamily);
 
                                         tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingLeft(4).PaddingRight(3).PaddingVertical(3).ShowEntire()
@@ -193,16 +193,16 @@ namespace HD_Reporteria.ProductoAliado
                                 });
                             }
 
-                            if (registrosAspersoras.Any() && registrosRemolques.Any())
-                            {
-                                col1.Item().PageBreak();
-                            }
+                            //if (registrosAspersoras.Any() && registrosRemolques.Any())
+                            //{
+                            //    col1.Item().PageBreak();
+                            //}
 
                             if (registrosRemolques.Any())
                             {
                                 col1.Item().Row(row =>
                                 {
-                                    row.RelativeItem().PaddingTop(-30).AlignCenter()
+                                    row.RelativeItem().AlignCenter()
                                         .Text("REMOLQUES")
                                         .FontSize(12).Bold().FontFamily(fontFamily);
 
@@ -231,11 +231,11 @@ namespace HD_Reporteria.ProductoAliado
                                         header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("MARCA").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
-                                        .Padding(1).Text("SUCURSAL").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                        header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
-                                       .Padding(1).Text("N. E.").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                        header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("PRECIO").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                       .Padding(1).Text("SUCURSAL").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                        .Padding(1).Text("N. E.").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("PROMOCION").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
 
@@ -286,10 +286,10 @@ namespace HD_Reporteria.ProductoAliado
                                         tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
                                        .Text(det.modelo_descripcion).FontSize(7).FontFamily(fontFamily);
 
-                                        tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                        tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
                                        .Text(det.Marca).FontSize(7).FontFamily(fontFamily);
 
-                                        tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
+                                        tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
                                        .Text((det.precio_lista).ToString("N2")).FontSize(7).FontFamily(fontFamily);
 
                                         tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingLeft(4).PaddingRight(3).PaddingVertical(3).ShowEntire()
@@ -313,16 +313,16 @@ namespace HD_Reporteria.ProductoAliado
                                 });
                             }
 
-                            if (registrosAspersoras.Any() && registrosMolinos.Any() || registrosRemolques.Any() && registrosMolinos.Any())
-                            {
-                                col1.Item().PageBreak();
-                            }
+                            //if (registrosAspersoras.Any() && registrosMolinos.Any() || registrosRemolques.Any() && registrosMolinos.Any())
+                            //{
+                            //    col1.Item().PageBreak();
+                            //}
 
                             if (registrosMolinos.Any())
                             {
                                 col1.Item().Row(row =>
                                 {
-                                    row.RelativeItem().PaddingTop(-30).AlignCenter()
+                                    row.RelativeItem().AlignCenter()
                                         .Text("MOLINOS")
                                         .FontSize(12).Bold().FontFamily(fontFamily);
 
@@ -351,11 +351,11 @@ namespace HD_Reporteria.ProductoAliado
                                         header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("MARCA").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
-                                        .Padding(1).Text("SUCURSAL").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                        header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
-                                       .Padding(1).Text("N. E.").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                        header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("PRECIO").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                       .Padding(1).Text("SUCURSAL").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                        .Padding(1).Text("N. E.").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("PROMOCION").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
 
@@ -406,10 +406,10 @@ namespace HD_Reporteria.ProductoAliado
                                         tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
                                        .Text(det.modelo_descripcion).FontSize(7).FontFamily(fontFamily);
 
-                                        tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                        tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
                                        .Text(det.Marca).FontSize(7).FontFamily(fontFamily);
 
-                                        tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
+                                        tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
                                        .Text((det.precio_lista).ToString("N2")).FontSize(7).FontFamily(fontFamily);
 
                                         tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingLeft(4).PaddingRight(3).PaddingVertical(3).ShowEntire()
@@ -433,16 +433,16 @@ namespace HD_Reporteria.ProductoAliado
                                 });
                             }
 
-                            if (registrosAspersoras.Any() && registrosEquiposFertilizacion.Any() || registrosRemolques.Any() && registrosEquiposFertilizacion.Any() || registrosMolinos.Any() && registrosEquiposFertilizacion.Any())
-                            {
-                                col1.Item().PageBreak();
-                            }
+                            //if (registrosAspersoras.Any() && registrosEquiposFertilizacion.Any() || registrosRemolques.Any() && registrosEquiposFertilizacion.Any() || registrosMolinos.Any() && registrosEquiposFertilizacion.Any())
+                            //{
+                            //    col1.Item().PageBreak();
+                            //}
 
                             if (registrosEquiposFertilizacion.Any())
                             {
                                 col1.Item().PaddingTop(10).Row(row =>
                                 {
-                                    row.RelativeItem().PaddingTop(-30).AlignCenter()
+                                    row.RelativeItem().AlignCenter()
                                         .Text("EQUIPOS DE FERTILIZACION")
                                         .FontSize(12).Bold().FontFamily(fontFamily);
 
@@ -471,11 +471,11 @@ namespace HD_Reporteria.ProductoAliado
                                         header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("MARCA").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
-                                        .Padding(1).Text("SUCURSAL").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                        header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
-                                       .Padding(1).Text("N. E.").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                        header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("PRECIO").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                       .Padding(1).Text("SUCURSAL").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                        .Padding(1).Text("N. E.").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         header.Cell().BorderBottom(0.5f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("PROMOCION").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
 
@@ -526,10 +526,10 @@ namespace HD_Reporteria.ProductoAliado
                                         tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
                                        .Text(det.modelo_descripcion).FontSize(7).FontFamily(fontFamily);
 
-                                        tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                        tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
                                        .Text(det.Marca).FontSize(7).FontFamily(fontFamily);
 
-                                        tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
+                                        tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
                                        .Text((det.precio_lista).ToString("N2")).FontSize(7).FontFamily(fontFamily);
 
                                         tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingLeft(4).PaddingRight(3).PaddingVertical(3).ShowEntire()
