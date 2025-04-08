@@ -281,7 +281,7 @@ namespace HD_Reporteria.Usados
                                         .Text(registrosTractores.Sum(r => r.utilidad).ToString("N2")).FontSize(7).Bold().FontFamily(fontFamily);
 
                                     tabla.Cell().Background("#DAE6BE").BorderColor("#afb69d").AlignCenter().AlignMiddle().Padding(3)
-                                        .Text(((registrosTractores.Sum(r => r.utilidad) * 100) / (registrosTractores.Sum(r => r.precio_lista) + registrosTractores.Sum(r => r.utilidad))).ToString("N2"))
+                                        .Text(((registrosTractores.Sum(r => r.utilidad)) / (registrosTractores.Sum(r => r.precio_lista)) * 100).ToString("N2"))
                                         .FontSize(7).Bold().FontFamily(fontFamily);
 
                                     tabla.Cell().Background("#DAE6BE").BorderColor("#afb69d").AlignRight().AlignMiddle().Padding(3)
@@ -481,7 +481,7 @@ namespace HD_Reporteria.Usados
                                         .Text(registrosTrilladoras.Sum(r => r.utilidad).ToString("N2")).FontSize(7).Bold().FontFamily(fontFamily);
 
                                     tabla.Cell().Background("#DAE6BE").BorderColor("#afb69d").AlignCenter().AlignMiddle().Padding(3)
-                                        .Text(((registrosTrilladoras.Sum(r => r.utilidad) * 100) / (registrosTrilladoras.Sum(r => r.precio_lista) + registrosTrilladoras.Sum(r => r.utilidad))).ToString("N2"))
+                                        .Text(((registrosTrilladoras.Sum(r => r.utilidad)) / (registrosTrilladoras.Sum(r => r.precio_lista)) * 100).ToString("N2"))
                                         .FontSize(7).Bold().FontFamily(fontFamily);
 
                                     tabla.Cell().Background("#DAE6BE").BorderColor("#afb69d").AlignRight().AlignMiddle().Padding(3)
@@ -681,7 +681,7 @@ namespace HD_Reporteria.Usados
                                         .Text(registrosCabezales.Sum(r => r.utilidad).ToString("N2")).FontSize(7).Bold().FontFamily(fontFamily);
 
                                     tabla.Cell().Background("#DAE6BE").BorderColor("#afb69d").AlignCenter().AlignMiddle().Padding(3)
-                                        .Text(((registrosCabezales.Sum(r => r.utilidad) * 100) / (registrosCabezales.Sum(r => r.precio_lista) + registrosCabezales.Sum(r => r.utilidad))).ToString("N2"))
+                                        .Text(((registrosCabezales.Sum(r => r.utilidad)) / (registrosCabezales.Sum(r => r.precio_lista)) * 100).ToString("N2"))
                                         .FontSize(7).Bold().FontFamily(fontFamily);
 
                                     tabla.Cell().Background("#DAE6BE").BorderColor("#afb69d").AlignRight().AlignMiddle().Padding(3)
@@ -876,7 +876,7 @@ namespace HD_Reporteria.Usados
                                         .Text(registrosImplementos.Sum(r => r.utilidad).ToString("N2")).FontSize(7).Bold().FontFamily(fontFamily);
 
                                     tabla.Cell().Background("#DAE6BE").BorderColor("#afb69d").AlignCenter().AlignMiddle().Padding(3)
-                                        .Text(((registrosImplementos.Sum(r => r.utilidad) * 100) / (registrosImplementos.Sum(r => r.precio_lista) + registrosImplementos.Sum(r => r.utilidad))).ToString("N2"))
+                                        .Text(((registrosImplementos.Sum(r => r.utilidad)) / (registrosImplementos.Sum(r => r.precio_lista)) * 100).ToString("N2"))
                                         .FontSize(7).Bold().FontFamily(fontFamily);
 
                                     tabla.Cell().Background("#DAE6BE").BorderColor("#afb69d").AlignRight().AlignMiddle().Padding(3)
@@ -903,7 +903,7 @@ namespace HD_Reporteria.Usados
                                         .Text(detalleOrdenado.Sum(r => r.utilidad).ToString("N2")).FontSize(7).Bold().FontFamily(fontFamily);
 
                                     tabla.Cell().Background("#DAE6BE").BorderColor("#afb69d").AlignCenter().AlignMiddle().Padding(3)
-                                        .Text(((detalleOrdenado.Sum(r => r.utilidad) * 100) / (detalleOrdenado.Sum(r => r.precio_lista) + detalleOrdenado.Sum(r => r.utilidad))).ToString("N2"))
+                                        .Text(((detalleOrdenado.Sum(r => r.utilidad)) / (detalleOrdenado.Sum(r => r.precio_lista)) * 100).ToString("N2"))
                                         .FontSize(7).Bold().FontFamily(fontFamily);
 
                                     tabla.Cell().Background("#DAE6BE").BorderColor("#afb69d").AlignRight().AlignMiddle().Padding(3)
