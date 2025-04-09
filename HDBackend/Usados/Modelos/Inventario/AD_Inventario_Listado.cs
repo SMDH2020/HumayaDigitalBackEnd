@@ -86,7 +86,23 @@ namespace Usados.Modelos.Usados
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdl_Inventario> result = await factory.SQL.QueryAsync<mdl_Inventario>("Usados.sp_Inventario_Listado_Movil", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
-                return result;
+
+                IEnumerable<mdl_Inventario> result2 = result
+                    .OrderBy(x => x.modelo_descripcion.Contains("TR-")
+                                     || x.modelo_descripcion.Contains("TR ")
+                                            && !x.modelo_descripcion.Contains("TRILLADORA")
+                                            && !x.modelo_descripcion.Contains("TRASN")
+                                            && !x.modelo_descripcion.Contains("TRANS")
+                                     || x.modelo_descripcion.Contains("TRACTOR")
+                    ? 0 :
+                    x.modelo_descripcion.Contains("TRILLADORA") ? 1 :
+                    x.modelo_descripcion.Contains("CABEZAL") ? 2 :
+                    3)  // Los que no contienen esas palabras
+                .ThenBy(x => x.estatus == "L" ? 0 : x.estatus == "A" ? 1 : 2) // Ordenar por estatus
+                .ThenBy(det => det.sucursal)
+                .ThenBy(det => det.HP)
+                .ToList();
+                return result2;
             }
             catch (System.Exception ex)
             {
