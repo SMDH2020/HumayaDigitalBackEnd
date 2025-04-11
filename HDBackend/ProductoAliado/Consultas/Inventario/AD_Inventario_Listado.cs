@@ -88,7 +88,16 @@ namespace ProductoAliado.Consultas.Inventario
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdl_Inventario_Producto_Aliado> result = await factory.SQL.QueryAsync<mdl_Inventario_Producto_Aliado>("ProductoAliado.sp_Listado_Precio_Actual_Movil", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
-                return result;
+                IEnumerable<mdl_Inventario_Producto_Aliado> result2 = result
+                    .OrderBy(det =>
+                    det.modelo_descripcion.Contains("ASPERSORA") ? 0 :
+                    det.modelo_descripcion.Contains("REMOLQUE") ? 1 :
+                    det.modelo_descripcion.Contains("MOLINO") ? 2 :
+                    3)  // Los que no contienen esas palabras
+                .ThenBy(det => det.estatus == "L" ? 0 : det.estatus == "A" ? 1 : 2) // Ordenar por estatus
+                .ThenBy(det => det.sucursal) // Ordenar por sucursal
+                .ToList();
+                return result2;
             }
             catch (System.Exception ex)
             {
