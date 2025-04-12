@@ -20,11 +20,12 @@ namespace HD_Reporteria.Solicitud_Credito
                         //string imagePath = Path.Combine(desktopPath, "proyecto C#", "Logo.jpg");
 
 
-                        page.Header().Height(100).Row(row =>
+
+                        page.Header().Height(70).Row(row =>
                         {
 
                             //row.ConstantItem(140).Border(1).Placeholder();
-                            row.RelativeItem().PaddingTop(30).Height(47).Background("#477c2c").Row(row2 =>
+                            row.RelativeItem().PaddingTop(20).Height(30).Background("#477c2c").Row(row2 =>
                             {
 
                             });
@@ -33,13 +34,14 @@ namespace HD_Reporteria.Solicitud_Credito
                             {
                                 var rutaImagen = Path.Combine("C:\\Nube\\HumayaDigital\\HumayaDigitalBackEnd\\HDBackend\\HD_Reporteria\\Imagenes\\Logo.jpg");
                                 byte[] imageData = System.IO.File.ReadAllBytes(rutaImagen);
-                                row.ConstantItem(100).Image(imageData);
+                                row.ConstantItem(70).Image(imageData);
 
-                                row.ConstantColumn(450).PaddingTop(30).Height(47).Background("#477c2c").Row(row2 =>
+                                row.ConstantColumn(450).PaddingTop(20).Height(30).Background("#477c2c").Row(row2 =>
                                 {
-                                    row2.RelativeItem().Padding(10).PaddingLeft(30).Text("PEDIDO DE MAQUINARIA").FontColor("#fff").FontSize(18).Bold().FontFamily(fontFamily);
+                                    row2.RelativeItem().Padding(5).PaddingTop(3).PaddingLeft(60).Text("PEDIDO DE MAQUINARIA").FontColor("#fff").FontSize(12).Bold().FontFamily(fontFamily);
                                 });
                             });
+
 
                         });
 
