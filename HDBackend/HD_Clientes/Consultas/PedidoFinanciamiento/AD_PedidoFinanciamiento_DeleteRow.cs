@@ -11,7 +11,7 @@ namespace HD.Clientes.Consultas.PedidoFinanciamiento
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlPedido_Detalle_Financiamiento>> Delete(string folio, int docto, string usuario)
+        public async Task<mdlPedido_Detalle_Financiamiento_View> Delete(string folio, int docto, string usuario)
         {
             try
             {
@@ -22,9 +22,34 @@ namespace HD.Clientes.Consultas.PedidoFinanciamiento
                     docto,
                     usuario
                 };
-                IEnumerable<mdlPedido_Detalle_Financiamiento> result = await factory.SQL.QueryAsync<mdlPedido_Detalle_Financiamiento>("Credito.sp_Pedido_Detalle_Financiamiento_Detele", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Pedido_Detalle_Financiamiento_Delete", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlPedido_Detalle_Financiamiento_View view = new mdlPedido_Detalle_Financiamiento_View();
+                view.info = result.Read<mdlPedido_Detalle_Financiamiento_Info>().FirstOrDefault();
+                view.detalle_financiamiento = result.Read<mdlPedido_Detalle_Financiamiento>().ToList();
                 factory.SQL.Close();
-                return result;
+                return view;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<mdlPedido_Detalle_Financiamiento_View> DeleteAll(string folio)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    folio,
+                };
+                var result = await factory.SQL.QueryMultipleAsync("Credito.Pedido_Detalle_Financiamiento_EliminarAmortizaciones", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlPedido_Detalle_Financiamiento_View view = new mdlPedido_Detalle_Financiamiento_View();
+                view.info = result.Read<mdlPedido_Detalle_Financiamiento_Info>().FirstOrDefault();
+                view.detalle_financiamiento = result.Read<mdlPedido_Detalle_Financiamiento>().ToList();
+                factory.SQL.Close();
+                return view;
             }
             catch (System.Exception ex)
             {
