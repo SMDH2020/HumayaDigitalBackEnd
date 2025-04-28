@@ -752,10 +752,11 @@ namespace HD_Reporteria.GestionCobranza
                                                     {
                                                         Columns.RelativeColumn(1.4f);
                                                         Columns.RelativeColumn(1.4f);
-                                                        Columns.RelativeColumn(1f);
-                                                        Columns.RelativeColumn(1f);
-                                                        Columns.RelativeColumn(1f);
-                                                        Columns.RelativeColumn(1.5f);
+                                                        Columns.RelativeColumn(1.2f);
+                                                        Columns.RelativeColumn(1.2f);
+                                                        Columns.RelativeColumn(1.4f);
+                                                        Columns.RelativeColumn(1.4f);
+                                                        Columns.RelativeColumn(1.4f);
                                                         Columns.RelativeColumn(1.4f);
                                                         Columns.RelativeColumn(1.4f);
                                                         Columns.RelativeColumn(1.4f);
@@ -1303,11 +1304,6 @@ namespace HD_Reporteria.GestionCobranza
                                     tablaDatos.Cell().BorderBottom(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("1219732793").FontSize(10).FontFamily(fontFamily);
                                     tablaDatos.Cell().BorderBottom(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("005516").FontSize(10).FontFamily(fontFamily);
                                     tablaDatos.Cell().BorderRight(1).BorderBottom(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("072730012197327937").FontSize(10).FontFamily(fontFamily);
-
-                                    tablaDatos.Cell().BorderLeft(1).BorderBottom(1).BorderColor("#D3D3D3").Background("#f0f0f0").Padding(1).AlignCenter().Text("HSBC").FontSize(10).FontFamily(fontFamily);
-                                    tablaDatos.Cell().BorderBottom(1).BorderColor("#D3D3D3").Background("#f0f0f0").Padding(1).AlignCenter().Text("4068669746").FontSize(10).FontFamily(fontFamily);
-                                    tablaDatos.Cell().BorderBottom(1).BorderColor("#D3D3D3").Background("#f0f0f0").Padding(1).AlignCenter().Text("").FontSize(10).FontFamily(fontFamily);
-                                    tablaDatos.Cell().BorderRight(1).BorderBottom(1).BorderColor("#D3D3D3").Background("#f0f0f0").Padding(1).AlignCenter().Text("021730040686697463").FontSize(10).FontFamily(fontFamily);
 
                                     tablaDatos.Cell().BorderLeft(1).BorderBottom(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("BANCOPPEL").FontSize(10).FontFamily(fontFamily);
                                     tablaDatos.Cell().BorderBottom(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("12000010160").FontSize(10).FontFamily(fontFamily);

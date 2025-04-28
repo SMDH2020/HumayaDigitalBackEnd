@@ -13,6 +13,6 @@ namespace HD_Finanzas.Modelos.CostoFinanciamiento
         public double real { get; set; }
         public double anterior { get; set; }
         public double anteriordiferencia { get; set; }
-        public double porcentajeanterior => anterior == 0 || anteriordiferencia == 0 ? 0 : Math.Round(anteriordiferencia / anterior * 100, 2);
+        public double porcentajeanterior {  get; set; }
     }
 }
