@@ -12,5 +12,6 @@ namespace HD.Clientes.Modelos.Solicitud_Credito_Acciones
         public string? accion { get; set; }
         public string? comentarios { get; set; }
         public string? usuario { get; set; }
+        public DateTime fecha_pagare { get; set; }
     }
 }

@@ -9,5 +9,6 @@
         public string? comentarios { get; set; }
         public string? estatus { get; set; }
         public string? usuario { get; set; }
+        public DateTime fecha_pagare { get; set; }
     }
 }
