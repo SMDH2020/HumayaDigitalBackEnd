@@ -81,5 +81,31 @@ namespace HD.Endpoints.Controllers.Ventas
             var result = await datos.Detalle(folio);
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> CotizacionDetalleFolio(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Listado_Cotizaciones datos = new AD_Listado_Cotizaciones(CadenaConexion);
+            var result = await datos.DetalleCotizacion(folio);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ModificarCotizacion(mdl_Modificar_Cotizacion mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Modificar_Cotizacion datos = new AD_Modificar_Cotizacion(CadenaConexion);
+            mdl.usuario = int.Parse(Sesion.usuario());
+            await datos.ModificarCotizacion(mdl);
+
+            return Ok(new
+            {
+                mensaje = "Guardado Correctamente",
+            }
+            );
+        }
     }
 }
