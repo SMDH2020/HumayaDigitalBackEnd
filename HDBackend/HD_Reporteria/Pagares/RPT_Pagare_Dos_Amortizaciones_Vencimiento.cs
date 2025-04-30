@@ -228,7 +228,7 @@ namespace HD_Reporteria.Pagares
                                         {
                                             DateTime fechaActual = DateTime.Now;
                                             string ciudad = mdl.ubicacion.sucursal == "SANTIAGO I." ? "SANTIAGO IXCUINTLA" : mdl.ubicacion.sucursal;
-                                            txt2.Span(ciudad + ", " + mdl.ubicacion?.estado + " " + fechaActual.ToString("dd 'DE' MMMM 'DEL' yyyy").ToUpper()).FontSize(10).FontFamily("arial");
+                                            txt2.Span(ciudad + ", " + mdl.ubicacion?.estado + " " + mdl.ubicacion?.fecha_pagare.ToString("dd 'DE' MMMM 'DEL' yyyy").ToUpper()).FontSize(10).FontFamily("arial");
                                         });
                                     }
 

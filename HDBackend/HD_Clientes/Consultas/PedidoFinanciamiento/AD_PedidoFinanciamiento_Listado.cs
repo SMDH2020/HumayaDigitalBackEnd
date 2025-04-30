@@ -11,7 +11,7 @@ namespace HD.Clientes.Consultas.PedidoFinanciamiento
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlPedido_Detalle_Financiamiento>> Get(string folio)
+        public async Task<mdlPedido_Detalle_Financiamiento_View> Get(string folio)
         {
             try
             {
@@ -20,9 +20,12 @@ namespace HD.Clientes.Consultas.PedidoFinanciamiento
                 {
                     folio
                 };
-                IEnumerable<mdlPedido_Detalle_Financiamiento> result = await factory.SQL.QueryAsync<mdlPedido_Detalle_Financiamiento>("Credito.sp_Pedido_Detalle_Financiamiento_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Pedido_Detalle_Financiamiento_info", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlPedido_Detalle_Financiamiento_View view = new mdlPedido_Detalle_Financiamiento_View();
+                view.info = result.Read<mdlPedido_Detalle_Financiamiento_Info>().FirstOrDefault();
+                view.detalle_financiamiento = result.Read<mdlPedido_Detalle_Financiamiento>().ToList();
                 factory.SQL.Close();
-                return result;
+                return view;
             }
             catch (System.Exception ex)
             {
