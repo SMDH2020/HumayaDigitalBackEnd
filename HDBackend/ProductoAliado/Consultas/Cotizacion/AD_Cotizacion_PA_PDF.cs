@@ -16,15 +16,16 @@ namespace ProductoAliado.Consultas.Cotizacion
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_Inventario_Producto_Aliado>> Cotizacion(int idinventario)
+        public async Task<IEnumerable<mdl_Cotizacion_ProductoAliado>> Cotizacion(int idinventario)
         {
             try
             {
                 var parametros = new
                 {
+                    idinventario = idinventario
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_Inventario_Producto_Aliado> result = await factory.SQL.QueryAsync<mdl_Inventario_Producto_Aliado>("ProductoAliado.sp_Listado_Precio_Actual_Movil", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Cotizacion_ProductoAliado> result = await factory.SQL.QueryAsync<mdl_Cotizacion_ProductoAliado>("ProductoAliado.sp_Obtener_Cotizacion", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

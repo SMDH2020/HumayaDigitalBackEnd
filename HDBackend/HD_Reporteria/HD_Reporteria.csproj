@@ -22,8 +22,4 @@
     <ProjectReference Include="..\Usados\Usados.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ProductoAliado\" />
-  </ItemGroup>
-
 </Project>
