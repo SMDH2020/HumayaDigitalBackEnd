@@ -126,7 +126,7 @@ namespace HD_Cobranza.Capturas.Dashboard
             }
         }
 
-        public async Task<IEnumerable<mdl_Dashboard_Recuperacion_Mensual_Detalle>> ProyeccionMensualPorTipoCartera(string mes, string sucursales, string adr, string tipo_cartera)
+        public async Task<IEnumerable<mdl_Reporte_Proyeccion_Recuperacion_Mensual_tipo_cartera>> ProyeccionMensualPorTipoCartera(string mes, string sucursales, string adr, string tipo_cartera)
         {
             try
             {
@@ -139,7 +139,7 @@ namespace HD_Cobranza.Capturas.Dashboard
                     tipo_cartera = tipo_cartera
 
                 };
-                IEnumerable<mdl_Dashboard_Recuperacion_Mensual_Detalle> result = await factory.SQL.QueryAsync<mdl_Dashboard_Recuperacion_Mensual_Detalle>("Cartera_Clientes.Cobranza.sp_Reporte_Proyeccion_Recuperacion_Mensual_tipo_cartera", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Reporte_Proyeccion_Recuperacion_Mensual_tipo_cartera> result = await factory.SQL.QueryAsync<mdl_Reporte_Proyeccion_Recuperacion_Mensual_tipo_cartera>("Cartera_Clientes.Cobranza.sp_Reporte_Proyeccion_Recuperacion_Mensual_tipo_cartera", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
