@@ -126,6 +126,29 @@ namespace HD_Cobranza.Capturas.Dashboard
             }
         }
 
+        public async Task<IEnumerable<mdl_Dashboard_Recuperacion_Mensual_Detalle>> ProyeccionMensualPorTipoCartera(string mes, string sucursales, string adr, string tipo_cartera)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    mes = mes,
+                    sucursales = sucursales,
+                    adr = adr,
+                    tipo_cartera = tipo_cartera
+
+                };
+                IEnumerable<mdl_Dashboard_Recuperacion_Mensual_Detalle> result = await factory.SQL.QueryAsync<mdl_Dashboard_Recuperacion_Mensual_Detalle>("Cartera_Clientes.Cobranza.sp_Reporte_Proyeccion_Recuperacion_Mensual_tipo_cartera", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
         public async Task<IEnumerable<mdl_Dashboard_Recuperacion_Mensual_Detalle>> ReporteGraficaProyeccionTotal(int ejercicio, int periodo, string mes, string sucursales, string adr)
         {
             try
