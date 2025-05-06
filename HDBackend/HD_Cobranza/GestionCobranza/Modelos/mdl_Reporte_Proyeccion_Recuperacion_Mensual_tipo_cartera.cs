@@ -14,6 +14,7 @@ namespace HD_Cobranza.GestionCobranza.Modelos
         public string? cliente { get; set; }
         public int idsucursal { get; set; }
         public string? sucursal { get; set; }
+        public string? documento { get; set; }
         public string? linea_credito { get; set; }
         public string? mes { get; set; }
         public string? fecha { get; set; }
