@@ -111,7 +111,6 @@ namespace HD.Endpoints.Controllers.Ventas
             }
             );
         }
-
         [HttpGet]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> ImprimirPDF(string folio)

@@ -170,6 +170,7 @@ namespace HD_Cobranza.Capturas.Dashboard
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
         public async Task<IEnumerable<mdl_Dashboard_Recuperacion_Mensual_Detalle>> ReporteGraficaProyeccionTotal(int ejercicio, int periodo, string mes, string sucursales, string adr)
         {
             try

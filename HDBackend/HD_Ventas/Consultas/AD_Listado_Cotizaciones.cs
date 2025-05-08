@@ -68,7 +68,6 @@ namespace HD_Ventas.Consultas
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
-
         public async Task<IEnumerable<mdl_Cotizacion_Imprimir>> ImprimirCotizacion(string folio)
         {
             try
@@ -87,6 +86,5 @@ namespace HD_Ventas.Consultas
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
-
     }
 }
