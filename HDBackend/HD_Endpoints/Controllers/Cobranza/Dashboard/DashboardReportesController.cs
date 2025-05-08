@@ -167,7 +167,7 @@ namespace HD.Endpoints.Controllers.Cobranza.Dashboard
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Dashboard_Reportes datos = new AD_Dashboard_Reportes(CadenaConexion);
-            var result = await datos.ReporteGraficaProyeccionTotal(ejercicio, periodo, mes, sucursales, adr);
+            var result = await datos.ProyeccionMensualTotal(mes, sucursales, adr);
             var docresult = await XLSCob_Dashboard_ReporteProyeccionTotal.GenerarExcel(result, ejercicio, periodo, mes, sucursales, adr);
             return Ok(docresult);
         }
@@ -178,7 +178,7 @@ namespace HD.Endpoints.Controllers.Cobranza.Dashboard
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Dashboard_Reportes datos = new AD_Dashboard_Reportes(CadenaConexion);
-            var result = await datos.ReporteGraficaProyeccionTotal(ejercicio, periodo, mes, sucursales, adr);
+            var result = await datos.ProyeccionMensualTotal(mes, sucursales, adr);
 
             try
             {
@@ -216,11 +216,21 @@ namespace HD.Endpoints.Controllers.Cobranza.Dashboard
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ReporteProyeccionMensualTotal(string mes, string sucursales, string adr)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Dashboard_Reportes datos = new AD_Dashboard_Reportes(CadenaConexion);
+            var result = await datos.ProyeccionMensualTotal(mes, sucursales, adr);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> ImprimirExcelReporteProyeccionMensual(int ejercicio, int periodo, string mes, string sucursales, string adr, string tipo_cartera)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Dashboard_Reportes datos = new AD_Dashboard_Reportes(CadenaConexion);
-            var result = await datos.ReporteGraficaProyeccionMensual(ejercicio, periodo, mes, sucursales, adr, tipo_cartera);
+            var result = await datos.ProyeccionMensualPorTipoCartera(mes, sucursales, adr, tipo_cartera);
             var docresult = await XLSCob_Dashboard_ReporteProyeccionMensual.GenerarExcel(result, ejercicio, periodo, mes, sucursales, adr, tipo_cartera);
             return Ok(docresult);
         }

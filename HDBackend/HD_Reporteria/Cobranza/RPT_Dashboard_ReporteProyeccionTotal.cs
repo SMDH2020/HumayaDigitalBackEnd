@@ -4,6 +4,7 @@ using HD_Ventas.Modelos;
 using ClosedXML.Excel;
 using HD_Cobranza.GestionCobranza.Modelos;
 using HD_Cobranza.Modelos.Dashboard;
+using System.Globalization;
 
 namespace HD_Reporteria.Cobranza
 {
@@ -59,6 +60,22 @@ namespace HD_Reporteria.Cobranza
             }
         }
 
+        public static string obtenerLinea(string linea)
+        {
+            switch (linea)
+            {
+                case "O":
+                    return "OPERACION";
+                case "R":
+                    return "REVOLVENTE";
+                case "E":
+                    return "ESPECIAL";
+                default:
+                    return "";
+
+            }
+        }
+
         public static string FormatearMesAnio(string mes)
         {
             // Verifica que el formato sea correcto
@@ -74,7 +91,7 @@ namespace HD_Reporteria.Cobranza
             }
         }
 
-        public static RPT_Result GenerarPDF(IEnumerable<mdl_Dashboard_Recuperacion_Mensual_Detalle> detalle, int ejercicio, int periodo, string mes, string sucursales, string adr)
+        public static RPT_Result GenerarPDF(IEnumerable<mdl_Reporte_Proyeccion_Recuperacion_Mensual_tipo_cartera> detalle, int ejercicio, int periodo, string mes, string sucursales, string adr)
         {
             try
             {
@@ -83,7 +100,7 @@ namespace HD_Reporteria.Cobranza
                 {
                     document.Page(page =>
                     {
-                        page.Size(PageSizes.Letter.Portrait());
+                        page.Size(PageSizes.A4.Landscape());
 
 
 
@@ -102,9 +119,10 @@ namespace HD_Reporteria.Cobranza
                                 byte[] imageData = System.IO.File.ReadAllBytes(rutaImagen);
                                 row.ConstantItem(120).Image(imageData);
 
-                                row.ConstantColumn(450).PaddingTop(30).Height(50).Background("#477c2c").Row(row2 =>
+                                row.ConstantColumn(693).PaddingTop(30).Height(50).Background("#477c2c").Row(row2 =>
                                 {
-                                    row2.RelativeItem().Padding(5).PaddingTop(10).PaddingLeft(20).Text("PROYECCION DE RECUPERACION TOTAL " + FormatearMesAnio(mes)).FontColor("#fff").FontSize(14).Bold().FontFamily(fontFamily);
+                                    //row2.RelativeItem().Padding(5).PaddingTop(10).PaddingLeft(20).Text("PROYECCION DE RECUPERACION TOTAL " + FormatearMesAnio(mes)).FontColor("#fff").FontSize(14).Bold().FontFamily(fontFamily);
+                                    row2.RelativeItem().Padding(10).PaddingLeft(10).Text("PROYECCION DE RECUPERACION TOTAL " + FormatearMesAnio(mes)).FontColor("#fff").FontSize(20).Bold().FontFamily(fontFamily);
                                     //+obtenernombre_mes(periodo) + " " + ejercicio
                                 });
                             });
@@ -134,44 +152,116 @@ namespace HD_Reporteria.Cobranza
                             {
                                 tabla.ColumnsDefinition(Columns =>
                                 {
-                                    Columns.RelativeColumn(0.8f);
+                                    Columns.RelativeColumn(0.5f);
                                     Columns.RelativeColumn(1.2f);
-                                    Columns.RelativeColumn(1);
+                                    Columns.RelativeColumn(0.4f);
+                                    Columns.RelativeColumn(0.4f);
                                     Columns.RelativeColumn(0.6f);
-                                    Columns.RelativeColumn(1);
+                                    Columns.RelativeColumn(0.6f);
+                                    Columns.RelativeColumn(0.6f);
+                                    Columns.RelativeColumn(0.6f);
+                                    Columns.RelativeColumn(0.6f);
+                                    Columns.RelativeColumn(0.6f);
+                                    Columns.RelativeColumn(0.4f);
+                                    Columns.RelativeColumn(0.4f);
+                                    Columns.RelativeColumn(0.4f);
+                                    Columns.RelativeColumn(0.4f);
+                                    Columns.RelativeColumn(0.7f);
+                                    //Columns.RelativeColumn(2.0f);
+                                    //Columns.RelativeColumn(1);
                                 });
 
                                 tabla.Header(header =>
                                 {
                                     header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
-                                    .Padding(1).Text("SUCURSAL").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    .Padding(1).Text("LINEA").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
-                                    .Padding(1).Text("CLIENTE").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    .Padding(1).Text("CLIENTE").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
-                                    .Padding(1).Text("IMP. FACTURA").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    .Padding(1).Text("SUCURSAL").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
-                                    .Padding(1).Text("PAGADO").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    .Padding(1).Text("VENCIMIENTO").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
-                                    .Padding(1).Text("SALDO").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    .Padding(1).Text("IMPORTE").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
+                                    .Padding(1).Text("RECUPERADO").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
+                                    .Padding(1).Text("SALDO").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
+                                    .Padding(1).Text("INT. NORMAL").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
+                                    .Padding(1).Text("INT. MORATORIO").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
+                                    .Padding(1).Text("SALDO TOTAL").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
+                                    .Padding(1).Text("FECHA RECUPERACION").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
+                                    .Padding(1).Text("FECHA CONTACTO").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
+                                    .Padding(1).Text("FECHA COMPROMISO").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
+                                    .Padding(1).Text("CONVENIO").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
+                                    .Padding(1).Text("OBJECION").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    //header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
+                                    //.Padding(1).Text("OBSERVACIONES").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    //header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
+                                    //.Padding(1).Text("RESPONSABLE").FontSize(7).Bold().FontFamily(fontFamily).FontColor("#fff");
                                 });
 
                                 foreach (var det in detalle)
                                 {
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignLeft().MaxHeight(60).AlignMiddle().PaddingLeft(4).PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                    .Text(det.sucursal?.ToUpper()).FontSize(9).FontFamily(fontFamily);
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingLeft(4).PaddingRight(3).PaddingVertical(3)
+                                    .Text(obtenerLinea(det.linea_credito).ToUpper()).FontSize(7).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignLeft().MaxHeight(60).AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                   .Text(det.razonsocial?.ToUpper()).FontSize(9).FontFamily(fontFamily);
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3)
+                                   .Text(det.cliente?.ToUpper()).FontSize(7).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().MaxHeight(60).AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                   .Text(det.importe_factura.ToString("N2")).FontSize(9).FontFamily(fontFamily);
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3)
+                                  .Text(det.sucursal?.ToUpper()).FontSize(7).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().MaxHeight(60).AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                   .Text(det.pagado.ToString("N2")).FontSize(9).FontFamily(fontFamily);
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3)
+                                  .Text(!string.IsNullOrEmpty(det.vencimiento_factura)? DateTime.ParseExact(det.vencimiento_factura, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy") : "").FontSize(7).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().MaxHeight(60).AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                   .Text(det.saldo.ToString("N2")).FontSize(9).FontFamily(fontFamily);
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingVertical(3)
+                                   .Text(det.importe_factura.ToString("N2")).FontSize(7).FontFamily(fontFamily);
+
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingVertical(3)
+                                   .Text(det.pagado.ToString("N2")).FontSize(7).FontFamily(fontFamily);
+
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingVertical(3)
+                                   .Text(det.saldo.ToString("N2")).FontSize(7).FontFamily(fontFamily);
+
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingVertical(3)
+                                   .Text(det.interes_normal.ToString("N2")).FontSize(7).FontFamily(fontFamily);
+
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingVertical(3)
+                                   .Text(det.interes_moratorio.ToString("N2")).FontSize(7).FontFamily(fontFamily);
+
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingVertical(3)
+                                   .Text(det.saldo_total.ToString("N2")).FontSize(7).FontFamily(fontFamily);
+
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3)
+                                  .Text(det.fecha_recuperacion).FontSize(7).FontFamily(fontFamily);
+
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3)
+                                  .Text(det.fecha_contacto).FontSize(7).FontFamily(fontFamily);
+
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                  .Text(det.fecha_convenio).FontSize(7).FontFamily(fontFamily);
+
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                 .Text(det.tiene_convenio?.ToUpper()).FontSize(7).FontFamily(fontFamily);
+
+                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                 .Text(det.objecion?.ToUpper()).FontSize(7).FontFamily(fontFamily);
+
+                                    //   tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                    //.Text(det.observaciones?.ToUpper()).FontSize(7).FontFamily(fontFamily);
+
+                                    //   tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignLeft().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                    //.Text(det.responsable?.ToUpper()).FontSize(7).FontFamily(fontFamily);
                                 }
                             });
                         });
