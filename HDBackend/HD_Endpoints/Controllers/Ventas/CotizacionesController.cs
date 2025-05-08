@@ -6,6 +6,7 @@ using ProductoAliado.Modelos.Inventario;
 using HD_Reporteria;
 using HD_Reporteria.Cotizaciones;
 
+
 namespace HD.Endpoints.Controllers.Ventas
 {
     public class CotizacionesController : MyBase

@@ -4,7 +4,6 @@ using HD_Cobranza.Reportes;
 using HD_Reporteria.Cobranza;
 using Microsoft.AspNetCore.Mvc;
 using HD_Reporteria;
-using DocumentFormat.OpenXml.Drawing.Charts;
 
 namespace HD.Endpoints.Controllers.GestionCobranza
 {

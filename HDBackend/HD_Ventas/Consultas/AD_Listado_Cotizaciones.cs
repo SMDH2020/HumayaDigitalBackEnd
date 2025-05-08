@@ -87,5 +87,6 @@ namespace HD_Ventas.Consultas
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
     }
 }
