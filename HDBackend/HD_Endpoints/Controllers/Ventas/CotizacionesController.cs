@@ -2,6 +2,10 @@
 using HD_Ventas.Consultas;
 using HD_Ventas.Modelos;
 using Microsoft.AspNetCore.Mvc;
+using ProductoAliado.Modelos.Inventario;
+using HD_Reporteria;
+using HD_Reporteria.Cotizaciones;
+
 
 namespace HD.Endpoints.Controllers.Ventas
 {
@@ -106,6 +110,27 @@ namespace HD.Endpoints.Controllers.Ventas
                 mensaje = "Guardado Correctamente",
             }
             );
+        }
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ImprimirPDF(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Listado_Cotizaciones datos = new AD_Listado_Cotizaciones(CadenaConexion);
+            var result = await datos.ImprimirCotizacion(folio);
+
+            try
+            {
+                RPT_Result documento = RPT_Cotizacion.GenerarPDF(result);
+
+                return Ok(documento);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error de servidor");
+
+            }
+
         }
     }
 }
