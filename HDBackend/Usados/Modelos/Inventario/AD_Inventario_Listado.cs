@@ -16,6 +16,7 @@ namespace Usados.Modelos.Usados
         {
             CadenaConexion = _cadenaconexion;
         }
+
         public async Task<IEnumerable<mdl_Inventario>> Listado(string Modelo, int ejercicio, string HP, string Sucursal, string Promocion, string Estatus)
         {
             try
