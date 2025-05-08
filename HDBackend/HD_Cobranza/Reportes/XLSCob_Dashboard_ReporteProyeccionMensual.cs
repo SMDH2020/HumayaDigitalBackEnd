@@ -5,6 +5,7 @@ using HD_Cobranza.Modelos;
 using DocumentFormat.OpenXml.Bibliography;
 using HD_Cobranza.GestionCobranza.Modelos;
 using HD_Cobranza.Modelos.Dashboard;
+using System.Globalization;
 
 namespace HD_Cobranza.Reportes
 {
@@ -60,6 +61,22 @@ namespace HD_Cobranza.Reportes
             }
         }
 
+        public static string obtenerLinea(string linea)
+        {
+            switch (linea)
+            {
+                case "O":
+                    return "OPERACION";
+                case "R":
+                    return "REVOLVENTE";
+                case "E":
+                    return "ESPECIAL";
+                default:
+                    return "";
+
+            }
+        }
+
         public static string FormatearMesAnio(string mes)
         {
             // Verifica que el formato sea correcto
@@ -75,7 +92,7 @@ namespace HD_Cobranza.Reportes
             }
         }
 
-        public static Task<DocResult> GenerarExcel(IEnumerable<mdl_Dashboard_Recuperacion_Mensual_Detalle> detalle, int ejercicio, int periodo, string mes, string sucursales, string adr, string tipo_cartera)
+        public static Task<DocResult> GenerarExcel(IEnumerable<mdl_Reporte_Proyeccion_Recuperacion_Mensual_tipo_cartera> detalle, int ejercicio, int periodo, string mes, string sucursales, string adr, string tipo_cartera)
         {
             try
             {
@@ -87,35 +104,31 @@ namespace HD_Cobranza.Reportes
                     sheet.Style.Font.FontName = "Calibri";
                     sheet.Style.Font.FontSize = 10;
 
-                    int renglon = XLSEncabezado.Encabezado(ref sheet, "PROYECCION DE RECUPERACION DE CARTERA " + obtenerCartera(tipo_cartera) + " " + FormatearMesAnio(mes), 5);
-
-                    //renglon += 1;
-
-                    //sheet.Range(renglon, 1, renglon, 13).Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
-
-                    //sheet.Range(renglon, 2, renglon, 4).Merge().Value = obtenernombre_mes(mes_actual);
-                    //sheet.Range(renglon, 2, renglon, 4).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                    //sheet.Range(renglon, 2, renglon, 4).Style.Font.Bold = true;
-                    //sheet.Range(renglon, 2, renglon, 4).Style.Fill.BackgroundColor = XLColor.LightGray;
-                    //int rengloncarteratot = renglon;
-
-                    //sheet.Range(renglon, 5, renglon, 7).Merge().Value = obtenernombre_mes(periodo_inicio) + " " + ejercicio_inicio + " A " + obtenernombre_mes(mes_actual) + " " + ejercicio;
-                    //sheet.Range(renglon, 5, renglon, 7).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                    //sheet.Range(renglon, 5, renglon, 7).Style.Font.Bold = true;
-                    //sheet.Range(renglon, 5, renglon, 7).Style.Fill.BackgroundColor = XLColor.LightGray;
-                    //int renglonrecuperaciontot = renglon;
+                    int renglon = XLSEncabezado.Encabezado(ref sheet, "PROYECCION DE RECUPERACION DE CARTERA " + obtenerCartera(tipo_cartera) + " " + FormatearMesAnio(mes), 17);
 
 
                     //renglon++;
 
-                    sheet.Cell(renglon, 1).Value = "SUCURSAL";
+                    sheet.Cell(renglon, 1).Value = "LINEA";
                     sheet.Cell(renglon, 2).Value = "CLIENTE";
-                    sheet.Cell(renglon, 3).Value = "IMPORTE DE FACTURA";
-                    sheet.Cell(renglon, 4).Value = "PAGADO";
-                    sheet.Cell(renglon, 5).Value = "SALDO";
+                    sheet.Cell(renglon, 3).Value = "SUCURSAL";
+                    sheet.Cell(renglon, 4).Value = "VENCIMIENTO";
+                    sheet.Cell(renglon, 5).Value = "IMPORTE DE LA FACTURA";
+                    sheet.Cell(renglon, 6).Value = "RECUPERADO";
+                    sheet.Cell(renglon, 7).Value = "SALDO";
+                    sheet.Cell(renglon, 8).Value = "INT. NORMAL";
+                    sheet.Cell(renglon, 9).Value = "INT. MORATORIO";
+                    sheet.Cell(renglon, 10).Value = "SALDO TOTAL";
+                    sheet.Cell(renglon, 11).Value = "FECHA DE RECUPERACION";
+                    sheet.Cell(renglon, 12).Value = "FECHA DE CONTACTO";
+                    sheet.Cell(renglon, 13).Value = "FECHA COMPROMISO";
+                    sheet.Cell(renglon, 14).Value = "CONVENIO";
+                    sheet.Cell(renglon, 15).Value = "OBJECION";
+                    sheet.Cell(renglon, 16).Value = "OBSERVACIONES";
+                    sheet.Cell(renglon, 17).Value = "RESPONSABLE";
 
                     // Estilo para los encabezados de la tabla
-                    var rango = sheet.Range(renglon, 1, renglon, 5);
+                    var rango = sheet.Range(renglon, 1, renglon, 17);
                     rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
                     rango.Style.Font.Bold = true;
                     rango.Style.Font.FontSize = 12;
@@ -127,17 +140,42 @@ namespace HD_Cobranza.Reportes
                     // Llenar la tabla con los datos
                     foreach (var det in detalle)
                     {
-                        sheet.Cell(renglon, 1).Value = det.sucursal;
-                        sheet.Cell(renglon, 2).Value = det.razonsocial?.ToUpper();
-                        sheet.Cell(renglon, 3).Value = det.importe_factura;
-                        sheet.Cell(renglon, 4).Value = det.pagado;
-                        sheet.Cell(renglon, 5).Value = det.saldo;
+                        DateTime fecha = DateTime.ParseExact(det.vencimiento_factura, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+
+                        sheet.Cell(renglon, 1).Value = obtenerLinea(det.linea_credito);
+                        sheet.Cell(renglon, 2).Value = det.cliente?.ToUpper();
+                        sheet.Cell(renglon, 3).Value = det.sucursal;
+                        sheet.Cell(renglon, 4).Value = fecha;
+                        sheet.Cell(renglon, 5).Value = det.importe_factura;
+                        sheet.Cell(renglon, 6).Value = det.pagado;
+                        sheet.Cell(renglon, 7).Value = det.saldo;
+                        sheet.Cell(renglon, 8).Value = det.interes_normal;
+                        sheet.Cell(renglon, 9).Value = det.interes_moratorio;
+                        sheet.Cell(renglon, 10).Value = det.saldo_total;
+                        sheet.Cell(renglon, 11).Value = det.fecha_recuperacion;
+                        sheet.Cell(renglon, 12).Value = det.fecha_contacto;
+                        sheet.Cell(renglon, 13).Value = det.fecha_convenio;
+                        sheet.Cell(renglon, 14).Value = det.tiene_convenio;
+                        sheet.Cell(renglon, 15).Value = det.objecion;
+                        sheet.Cell(renglon, 16).Value = det.observaciones;
+                        sheet.Cell(renglon, 17).Value = det.responsable;
                         renglon++;
                     }
 
-                    sheet.Column(3).Style.NumberFormat.Format = "#,##0.00";
-                    sheet.Column(4).Style.NumberFormat.Format = "#,##0.00";
+
+                    sheet.Cell(renglon, 4).Style.DateFormat.Format = "dd/MM/yyyy";
                     sheet.Column(5).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(6).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(7).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(8).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(9).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(10).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(4).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    sheet.Column(11).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    sheet.Column(12).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    sheet.Column(13).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+
+
 
                     //sheet.Column(6).Style.NumberFormat.Format = "#,##0.00";
                     //sheet.Column(7).Style.NumberFormat.Format = "0.0 %";

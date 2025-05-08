@@ -68,5 +68,24 @@ namespace HD_Ventas.Consultas
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<IEnumerable<mdl_Cotizacion_Imprimir>> ImprimirCotizacion(string folio)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    folio = folio
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Cotizacion_Imprimir> result = await factory.SQL.QueryAsync<mdl_Cotizacion_Imprimir>("Ventas.sp_Obtener_Cotizacion_Imprimir", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }

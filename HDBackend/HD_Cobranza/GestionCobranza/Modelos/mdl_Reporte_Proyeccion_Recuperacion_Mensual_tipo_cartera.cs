@@ -19,6 +19,7 @@ namespace HD_Cobranza.GestionCobranza.Modelos
         public string? mes { get; set; }
         public string? fecha { get; set; }
         public string? vencimiento { get; set; }
+        public string? vencimiento_factura { get; set; }
         public float importe_factura { get; set; }
         public float interes_normal { get; set; }
         public float interes_moratorio { get; set; }
