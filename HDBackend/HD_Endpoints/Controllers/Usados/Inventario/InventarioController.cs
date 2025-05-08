@@ -1,5 +1,7 @@
 ﻿using HD.Security;
+using HD_Cobranza.Capturas.Dashboard;
 using HD_Cobranza.GestionCobranza.Capturas;
+using HD_Cobranza.Reportes;
 using HD_Reporteria;
 using HD_Reporteria.Cobranza;
 using HD_Reporteria.Usados;
@@ -133,6 +135,17 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
 
             }
 
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ImprimirExcel(IEnumerable<mdl_Inventario> mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Inventario_Listado datos = new AD_Inventario_Listado(CadenaConexion);
+            var result = await datos.ListadoFiltro();
+            var docresult = await XLS_Inventario.GenerarExcel(mdl);
+            return Ok(docresult);
         }
 
         [HttpPost]

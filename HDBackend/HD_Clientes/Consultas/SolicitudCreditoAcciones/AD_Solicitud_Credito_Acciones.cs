@@ -28,9 +28,10 @@ namespace HD.Clientes.Consultas.SolicitudCreditoAcciones
                     folio = mdl.folio,
                     accion = mdl.accion,
                     comentarios = mdl.comentarios,
-                    usuario = mdl.usuario
+                    usuario = mdl.usuario,
+                    fecha_pagare = mdl.fecha_pagare,
                 };
-                IEnumerable<mdlSolicitudCredito_Enviar> result = await factory.SQL.QueryAsync<mdlSolicitudCredito_Enviar>("Credito.sp_Solicitud_Credito_Accion_Notificar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdlSolicitudCredito_Enviar> result = await factory.SQL.QueryAsync<mdlSolicitudCredito_Enviar>("Credito.sp_Solicitud_Credito_Accion_Solicitud", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

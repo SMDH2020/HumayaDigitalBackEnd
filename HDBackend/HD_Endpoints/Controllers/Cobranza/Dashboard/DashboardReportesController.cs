@@ -206,6 +206,16 @@ namespace HD.Endpoints.Controllers.Cobranza.Dashboard
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ReporteProyeccionMensual(string mes, string sucursales, string adr, string tipo_cartera)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Dashboard_Reportes datos = new AD_Dashboard_Reportes(CadenaConexion);
+            var result = await datos.ProyeccionMensualPorTipoCartera(mes, sucursales, adr, tipo_cartera);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> ImprimirExcelReporteProyeccionMensual(int ejercicio, int periodo, string mes, string sucursales, string adr, string tipo_cartera)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];

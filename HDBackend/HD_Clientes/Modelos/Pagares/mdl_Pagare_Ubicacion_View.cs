@@ -10,5 +10,6 @@ namespace HD.Clientes.Modelos.Pagares
     {
         public string? sucursal { get; set; }
         public string? estado { get; set; }
+        public DateTime fecha_pagare { get; set; }
     }
 }

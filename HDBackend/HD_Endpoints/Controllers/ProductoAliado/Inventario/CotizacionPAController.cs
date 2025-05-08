@@ -29,7 +29,7 @@ namespace HD.Endpoints.Controllers.ProductoAliado.Inventario
 
             try
             {
-                RPT_Result documento = RPT_Listado_Precios_Corto.GenerarPDF(result);
+                RPT_Result documento = RPT_Cotizacion_ProductoAliado.GenerarPDF(result);
 
                 return Ok(documento);
             }

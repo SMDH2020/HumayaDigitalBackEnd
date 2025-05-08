@@ -42,5 +42,8 @@ namespace HD.Clientes.Modelos
         public double totalpagar { get; set; }
         public string? usuario { get; set; }
         public double importe_solicitado { get; set; }
+        public string? tipo_amortizacion { get; set; }
+        public double valor_insoluto { get; set; }
+
     }
 }
