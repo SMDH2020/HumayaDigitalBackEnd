@@ -6,6 +6,8 @@ using HD_Reporteria.Finanzas;
 using HD_Reporteria;
 using Microsoft.AspNetCore.Mvc;
 using HD_Reporteria.Finanzas.Excel;
+using HD_Ventas.Consultas;
+using HD_Finanzas.AccesoDatos;
 
 namespace HD.Endpoints.Controllers.Finanzas
 {
@@ -26,6 +28,16 @@ namespace HD.Endpoints.Controllers.Finanzas
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             FAD_EstadoResultados estadoresultados = new FAD_EstadoResultados(CadenaConexion);
             var result = await estadoresultados.GetEstadoResultadosByDireccionRolado(prm,"1");
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetEstadoResultadoGrafica(Fmdl_Estado_Resultados_Grafica_Filtro prm)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            FAD_EstadiResultados_Grafica estadoresultados = new FAD_EstadiResultados_Grafica(CadenaConexion);
+            var result = await estadoresultados.EstadoResultadosGrafica(prm);
             return Ok(result);
         }
 

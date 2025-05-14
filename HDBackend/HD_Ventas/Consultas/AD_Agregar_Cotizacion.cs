@@ -78,9 +78,6 @@ namespace HD_Ventas.Consultas
                 {
                     idcliente = mdl.idcliente,
                     idasesor = mdl.idasesor,
-                    crm = mdl.crm,
-                    asunto = mdl.asunto,
-                    idsucursal = mdl.idsucursal,
                     tipo_pago = mdl.tipo_pago,
                     vigencia = mdl.vigencia,
                     usuario = mdl.usuario,

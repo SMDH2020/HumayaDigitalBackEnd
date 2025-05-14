@@ -86,5 +86,24 @@ namespace HD_Ventas.Consultas
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<IEnumerable<mdl_Get_Rol_Cotizacion>> GetRol(int usuario)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    usuario = usuario
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Get_Rol_Cotizacion> result = await factory.SQL.QueryAsync<mdl_Get_Rol_Cotizacion>("Ventas.sp_Get_Rol", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }
