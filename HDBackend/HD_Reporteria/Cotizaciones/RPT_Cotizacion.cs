@@ -146,10 +146,6 @@ namespace HD_Reporteria.Cotizaciones
                             col1.Item().Row(row =>
                             {
                                 row.RelativeItem().Text(txt => {
-                                    txt.Span("Asunto: ").FontSize(9).Bold();
-                                    txt.Span(detalle.First().asunto).FontSize(9);
-                                });
-                                row.RelativeItem().AlignRight().Text(txt => {
                                     txt.Span("Folio: ").FontSize(9).Bold();
                                     txt.Span(detalle.First().folio).FontSize(9);
                                 });
@@ -160,10 +156,6 @@ namespace HD_Reporteria.Cotizaciones
                                 row.RelativeItem().Text(txt => {
                                     txt.Span("Asesor de venta: ").FontSize(9).Bold();
                                     txt.Span(detalle.First().asesorventa).FontSize(9);
-                                });
-                                row.RelativeItem().AlignRight().Text(txt => {
-                                    txt.Span("Folio CRM: ").FontSize(9).Bold();
-                                    txt.Span(detalle.First().folio_crm.ToString()).FontSize(9);
                                 });
                             });
 
