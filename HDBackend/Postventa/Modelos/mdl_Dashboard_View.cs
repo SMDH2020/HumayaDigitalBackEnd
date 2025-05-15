@@ -10,6 +10,8 @@ namespace Postventa.Modelos
     {
         public string? dashboard_titulo { get; set; }
         public IEnumerable<mdl_Dashboard_Servicio>? servicio { get; set; }
+        public IEnumerable<mdl_Dashboard_Refacciones>? refacciones { get; set; }
+
 
         //public string? columnas { get; set; }
     }

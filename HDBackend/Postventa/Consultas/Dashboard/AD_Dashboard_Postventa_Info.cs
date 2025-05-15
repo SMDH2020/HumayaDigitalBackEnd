@@ -39,6 +39,7 @@ namespace Postventa.Consultas.Dashboard
                 var view = new mdl_Dashboard_View();
                 view.dashboard_titulo = result.Read<string>().FirstOrDefault();
                 view.servicio = result.Read<mdl_Dashboard_Servicio>().ToList();
+                view.refacciones = result.Read<mdl_Dashboard_Refacciones>().ToList();
                 //view.tipo_cartera = result.Read<string>().FirstOrDefault();
                 factory.SQL.Close();
                 return view;
