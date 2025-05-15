@@ -183,7 +183,7 @@ namespace HD_Reporteria.Usados
                                        .Text(det.horas.ToString()).FontSize(7).FontFamily(fontFamily);
 
                                         tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.precio_lista.ToString("N2")).FontSize(7).FontFamily(fontFamily);
+                                       .Text(det.estatus == "A" ? "No definido" : det.precio_lista.ToString("N2")).FontSize(7).FontFamily(fontFamily);
 
                                         // tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
                                         //.Text(det.vigencia).FontSize(7).FontFamily(fontFamily);
@@ -321,7 +321,7 @@ namespace HD_Reporteria.Usados
                                        .Text(det.horas.ToString()).FontSize(7).FontFamily(fontFamily);
 
                                         tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                       .Text((det.precio_lista).ToString("N2")).FontSize(7).FontFamily(fontFamily);
+                                       .Text(det.estatus == "A" ? "No definido" : det.precio_lista.ToString("N2")).FontSize(7).FontFamily(fontFamily);
 
                                         // tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
                                         //.Text(det.vigencia).FontSize(7).FontFamily(fontFamily);
@@ -459,7 +459,7 @@ namespace HD_Reporteria.Usados
                                            .Text(det.horas.ToString()).FontSize(7).FontFamily(fontFamily);
 
                                             tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                           .Text((det.precio_lista).ToString("N2")).FontSize(7).FontFamily(fontFamily);
+                                           .Text(det.estatus == "A" ? "No definido" : det.precio_lista.ToString("N2")).FontSize(7).FontFamily(fontFamily);
 
                                             // tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
                                             //.Text(det.vigencia).FontSize(7).FontFamily(fontFamily);
@@ -592,7 +592,7 @@ namespace HD_Reporteria.Usados
                                            .Text(det.horas.ToString()).FontSize(7).FontFamily(fontFamily);
 
                                             tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
-                                           .Text((det.precio_lista).ToString("N2")).FontSize(7).FontFamily(fontFamily);
+                                           .Text(det.estatus == "A" ? "No definido" : det.precio_lista.ToString("N2")).FontSize(7).FontFamily(fontFamily);
 
                                             // tabla.Cell().Background(rowBackground).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingLeft(3).PaddingVertical(3).ShowEntire()
                                             //.Text(det.vigencia).FontSize(7).FontFamily(fontFamily);
