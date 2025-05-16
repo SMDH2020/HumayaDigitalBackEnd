@@ -45,7 +45,8 @@ namespace HD.Endpoints.Controllers.GestionCobranza
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Facturas_Estado_Cuenta datos = new AD_Facturas_Estado_Cuenta(CadenaConexion);
-            var result = await datos.GetPorFecha(idcliente,fecha);
+            var usuario = Sesion.usuario();
+            var result = await datos.GetPorFecha(idcliente,fecha, usuario);
             try
             {
                 RPT_Result documento = RPT_Estado_Cuenta.GenerarEstadoCuenta(result, fecha);
@@ -65,8 +66,9 @@ namespace HD.Endpoints.Controllers.GestionCobranza
         public async Task<ActionResult> EstadoCuentaFechaPDF(string idcliente, string fecha)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            var usuario = Sesion.usuario();
             AD_Facturas_Estado_Cuenta datos = new AD_Facturas_Estado_Cuenta(CadenaConexion);
-            var result = await datos.GetPorFecha(idcliente, fecha);
+            var result = await datos.GetPorFecha(idcliente, fecha, usuario);
             try
             {
                 RPT_Result documento = RPT_Estado_Cuenta.GenerarEstadoCuenta(result, fecha);
