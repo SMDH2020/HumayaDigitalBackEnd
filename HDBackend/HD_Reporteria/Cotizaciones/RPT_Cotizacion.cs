@@ -306,12 +306,12 @@ namespace HD_Reporteria.Cotizaciones
                             col1.Item().PaddingTop(100).Row(row =>
                             {
                                 // Firma 1
-                                row.RelativeItem().AlignCenter().Column(col =>
-                                {
-                                    col.Item().Width(150).LineHorizontal(1);
-                                    col.Item().Text("ATENTAMENTE").FontSize(9).AlignCenter();
-                                    col.Item().Text("IVÁN LÓPEZ").FontSize(9).AlignCenter();
-                                });
+                                //row.RelativeItem().AlignCenter().Column(col =>
+                                //{
+                                //    col.Item().Width(150).LineHorizontal(1);
+                                //    col.Item().Text("ATENTAMENTE").FontSize(9).AlignCenter();
+                                //    col.Item().Text("IVÁN LÓPEZ").FontSize(9).AlignCenter();
+                                //});
 
                                 // Firma 2
                                 row.RelativeItem().AlignCenter().Column(col =>

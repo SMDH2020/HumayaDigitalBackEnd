@@ -5,6 +5,7 @@
         public string folio {  get; set; }
         public int asesorventa { get; set; }
         public int idcliente {  get; set; }
+        public string razon_social { get; set; }
         public int folio_crm { get; set; }
         public string asunto { get; set; }
         public int idsucursal {  get; set; }
