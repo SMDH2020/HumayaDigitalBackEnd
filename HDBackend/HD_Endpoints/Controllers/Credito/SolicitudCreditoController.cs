@@ -1,6 +1,7 @@
 ﻿using HD.Clientes.Consultas.SolicitudCredito;
 using HD.Clientes.Modelos;
 using HD.Notifications.Analisis;
+using HD.Notifications.NotificacionesApp;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +24,14 @@ namespace HD.Endpoints.Controllers.Credito
             AD_SolicitudCredito_Guardar datos = new AD_SolicitudCredito_Guardar(CadenaConexion);
             mdl.usuario = mdl.usuario == "" ? Sesion.usuario() : mdl.usuario;
             var result = await datos.Guardar(mdl);
+
+            string origen = Sesion.origen();
+            if (Sesion.generarLog() == true && origen == "APP")
+            {
+                NE_Logs_App_HD log = new NE_Logs_App_HD(CadenaConexion);
+                await log.Guardar($"Creo una solicitud de credito, con folio:  {result.solicitud_credito.folio}", origen, Sesion.usuario());
+            }
+
             return Ok(result);
         }
 
@@ -87,6 +96,13 @@ namespace HD.Endpoints.Controllers.Credito
             if (result != null)
             {
                 await NSolicitud_Enviar.Enviar(result);
+            }
+
+            string origen = Sesion.origen();
+            if (Sesion.generarLog() == true && origen == "APP")
+            {
+                NE_Logs_App_HD log = new NE_Logs_App_HD(CadenaConexion);
+                await log.Guardar($"Se envio a analisis el pedido con folio: {folio}", origen, Sesion.usuario());
             }
 
             var response = new mdlAnalisis_Mhusa_Resultado

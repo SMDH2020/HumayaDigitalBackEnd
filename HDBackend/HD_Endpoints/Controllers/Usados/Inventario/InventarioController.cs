@@ -1,4 +1,5 @@
-﻿using HD.Security;
+﻿using HD.Notifications.NotificacionesApp;
+using HD.Security;
 using HD_Cobranza.Capturas.Dashboard;
 using HD_Cobranza.GestionCobranza.Capturas;
 using HD_Cobranza.Reportes;
@@ -112,6 +113,13 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Inventario_Listado datos = new AD_Inventario_Listado(CadenaConexion);
             var result = await datos.ListadoFiltroMovil();
+
+            string origen = Sesion.origen();
+            if (Sesion.generarLog() == true && origen == "APP")
+            {
+                NE_Logs_App_HD log = new NE_Logs_App_HD(CadenaConexion);
+                await log.Guardar("Se navego al menu de Listado de precios de Seminuevos", origen, Sesion.usuario());
+            }
             return Ok(result);
         }
 

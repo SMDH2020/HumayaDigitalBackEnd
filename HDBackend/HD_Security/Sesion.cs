@@ -27,5 +27,10 @@ namespace HD.Security
 
             return userName;
         }
+
+        bool ISesion.generarLog()
+        {
+            return true;
+        }
     }
 }

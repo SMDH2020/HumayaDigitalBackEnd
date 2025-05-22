@@ -4,5 +4,6 @@
     {
         public string? usuario();
         public string? origen();
+        public bool generarLog();
     }
 }
