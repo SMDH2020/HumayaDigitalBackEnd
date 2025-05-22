@@ -95,12 +95,10 @@ namespace HD_Reporteria.Usados
 
                                 row.ConstantColumn(450).PaddingTop(35).Height(50).Background("#477c2c").Row(row2 =>
                                 {
-                                    row2.RelativeItem().Padding(10).PaddingLeft(30).Text("COTIZACION DE EQUIPO USADO").FontColor("#fff").FontSize(20).Bold().FontFamily(fontFamily);
+                                    row2.RelativeItem().Padding(10).PaddingLeft(30).Text("COTIZACION DE EQUIPO SEMINUEVO").FontColor("#fff").FontSize(20).Bold().FontFamily(fontFamily);
                                     //+obtenernombre_mes(periodo) + " " + ejercicio
                                 });
                             });
-
-
                         });
 
                         page.Content().PaddingTop(10).PaddingLeft(30).PaddingRight(30).Column(col1 =>

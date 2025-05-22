@@ -77,6 +77,7 @@ namespace HD_Ventas.Consultas
                 var parametros = new
                 {
                     idcliente = mdl.idcliente,
+                    razon_social = mdl.razon_social,
                     idasesor = mdl.idasesor,
                     tipo_pago = mdl.tipo_pago,
                     vigencia = mdl.vigencia,
