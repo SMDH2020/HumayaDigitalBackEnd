@@ -3,5 +3,6 @@
     public interface ISesion
     {
         public string? usuario();
+        public string? origen();
     }
 }

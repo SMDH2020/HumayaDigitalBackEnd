@@ -20,5 +20,12 @@ namespace HD.Security
 
             return userName;
         }
+        string? ISesion.origen()
+        {
+            string? userName = _contextAccessor.HttpContext?.User?.Claims?.
+            FirstOrDefault(x => x.Type == ClaimTypes.Actor)?.Value;
+
+            return userName;
+        }
     }
 }
