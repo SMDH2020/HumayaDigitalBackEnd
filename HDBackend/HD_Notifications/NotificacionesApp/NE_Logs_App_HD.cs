@@ -15,7 +15,7 @@ namespace HD.Notifications.NotificacionesApp
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task Guardar(string accion, string usuario, string origen)
+        public async Task Guardar(string accion, string origen, string usuario)
         {
             try
             {
@@ -27,12 +27,12 @@ namespace HD.Notifications.NotificacionesApp
                     usuario = usuario, 
                     origen = origen
                 };
-                await factory.SQL.QueryAsync("HumayaDigital_Eventos.dbo.sp_Solicitud_Credito_Accion_Solicitud", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                await factory.SQL.QueryAsync("HumayaDigital_Eventos.dbo.sp_Guardar_Evento_App_HD", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
             }
-            catch (System.Exception ex)
+            catch 
             {
-                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+                //throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
     }
