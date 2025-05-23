@@ -1,4 +1,5 @@
-﻿using HD.Security;
+﻿using HD.Notifications.NotificacionesApp;
+using HD.Security;
 using HD_Dashboard.Consultas;
 using HD_Dashboard.Consultas.Clientes;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,14 @@ namespace HD.Endpoints.Controllers.Dashboard
             Dash_Clientes_Main datos = new Dash_Clientes_Main(CadenaConexion);
             var usuario = Sesion.usuario();
             var result = await datos.Dashboard(idcliente, usuario);
+
+            string origen = Sesion.origen();
+            if (Sesion.generarLog() == true && origen == "APP")
+            {
+                NE_Logs_App_HD log = new NE_Logs_App_HD(CadenaConexion);
+                await log.Guardar($"Navego por el menu cliente para buscar el cliente {idcliente}", origen, Sesion.usuario());
+            }
+
             return Ok(result);
 
         }

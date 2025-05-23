@@ -38,8 +38,10 @@ namespace Postventa.Consultas.Dashboard
                 var result = await factory.SQL.QueryMultipleAsync("PixelCode.Posventa.sp_dashboard", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 var view = new mdl_Dashboard_View();
                 view.dashboard_titulo = result.Read<string>().FirstOrDefault();
+                view.proyecciones = result.Read<mdl_Dashboard_Proyecciones>().ToList();
                 view.servicio = result.Read<mdl_Dashboard_Servicio>().ToList();
                 view.refacciones = result.Read<mdl_Dashboard_Refacciones>().ToList();
+                view.cotizaciones = result.Read<mdl_Dashboard_Cotizaciones>().ToList();
                 //view.tipo_cartera = result.Read<string>().FirstOrDefault();
                 factory.SQL.Close();
                 return view;

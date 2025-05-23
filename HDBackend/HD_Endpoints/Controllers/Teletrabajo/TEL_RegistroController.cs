@@ -33,7 +33,7 @@ namespace HD.Endpoints.Controllers.Teletrabajo
             string securitytkey = Configuracion["Jwt:Login"];
 
 
-            var token = await JwtManager.GenerarTocken(mdl.usuario.ToString(), "teletrabajo", securitytkey, iussuer, audience, 10080);
+            var token = await JwtManager.GenerarTocken(mdl.usuario.ToString(), "teletrabajo", securitytkey, iussuer, audience, 10080,"TELETRABAJO");
             
             
             return Ok(new { registros=result, token

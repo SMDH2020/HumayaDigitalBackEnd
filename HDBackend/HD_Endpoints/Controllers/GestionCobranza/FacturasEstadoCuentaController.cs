@@ -1,4 +1,5 @@
-﻿using HD.Security;
+﻿using HD.Notifications.NotificacionesApp;
+using HD.Security;
 using HD_Cobranza.GestionCobranza.Capturas;
 using HD_Reporteria;
 using HD_Reporteria.GestionCobranza;
@@ -45,7 +46,15 @@ namespace HD.Endpoints.Controllers.GestionCobranza
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Facturas_Estado_Cuenta datos = new AD_Facturas_Estado_Cuenta(CadenaConexion);
-            var result = await datos.GetPorFecha(idcliente,fecha);
+            var usuario = Sesion.usuario();
+            var result = await datos.GetPorFecha(idcliente,fecha, usuario);
+
+            string origen = Sesion.origen();
+            if (Sesion.generarLog() == true && origen == "APP")
+            {
+                NE_Logs_App_HD log = new NE_Logs_App_HD(CadenaConexion);
+                await log.Guardar($"Accedio al estado de cuenta del cliente: {idcliente}", origen, Sesion.usuario());
+            }
             try
             {
                 RPT_Result documento = RPT_Estado_Cuenta.GenerarEstadoCuenta(result, fecha);
@@ -65,8 +74,9 @@ namespace HD.Endpoints.Controllers.GestionCobranza
         public async Task<ActionResult> EstadoCuentaFechaPDF(string idcliente, string fecha)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            var usuario = Sesion.usuario();
             AD_Facturas_Estado_Cuenta datos = new AD_Facturas_Estado_Cuenta(CadenaConexion);
-            var result = await datos.GetPorFecha(idcliente, fecha);
+            var result = await datos.GetPorFecha(idcliente, fecha, usuario);
             try
             {
                 RPT_Result documento = RPT_Estado_Cuenta.GenerarEstadoCuenta(result, fecha);
