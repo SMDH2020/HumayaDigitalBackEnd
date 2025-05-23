@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using HD_Ventas.Reportes;
 using HD_Reporteria;
 using HD_Reporteria.Ventas;
+using DocumentFormat.OpenXml.Presentation;
+using HD.Notifications.NotificacionesApp;
 
 namespace HD.Endpoints.Controllers.Ventas
 {
@@ -27,6 +29,13 @@ namespace HD.Endpoints.Controllers.Ventas
             int usuario = int.Parse(Sesion.usuario());
             //usuario = 5630;
             var result = await datos.Scorecard(usuario);
+
+            string origen = Sesion.origen();
+            if (Sesion.generarLog() == true)
+            {
+                NE_Logs_App_HD log = new NE_Logs_App_HD(CadenaConexion);
+                await log.Guardar("Navego a Scorecard", origen, Sesion.usuario());
+            }
             return Ok(result);
         }
 

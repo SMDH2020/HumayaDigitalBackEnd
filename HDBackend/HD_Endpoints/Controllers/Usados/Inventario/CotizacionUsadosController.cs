@@ -1,4 +1,5 @@
-﻿using HD.Security;
+﻿using HD.Notifications.NotificacionesApp;
+using HD.Security;
 using HD_Cobranza.GestionCobranza.Capturas;
 using HD_Reporteria;
 using HD_Reporteria.Cobranza;
@@ -31,6 +32,13 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Cotizacion_Usados_PDF datos = new AD_Cotizacion_Usados_PDF(CadenaConexion);
             var result = await datos.Cotizacion(idinventario);
+
+            string origen = Sesion.origen();
+            if (Sesion.generarLog() == true && origen == "APP")
+            {
+                NE_Logs_App_HD log = new NE_Logs_App_HD(CadenaConexion);
+                await log.Guardar($"Compartio una cotizacion del idinventario: {idinventario}", origen, Sesion.usuario());
+            }
 
             try
             {

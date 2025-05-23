@@ -4,6 +4,7 @@ using HD.Clientes.Consultas.PedidoImpresion;
 using HD.Clientes.Consultas.SolicitudCreditoDocumento;
 using HD.Clientes.Modelos;
 using HD.Notifications.Analisis;
+using HD.Notifications.NotificacionesApp;
 using HD.Security;
 using HD_Reporteria.Pagares;
 using HD_Reporteria.Solicitud_Credito;
@@ -28,6 +29,14 @@ namespace HD.Endpoints.Controllers.Credito
             ADSolicitudCredito_Documentacion_Guardar datos = new ADSolicitudCredito_Documentacion_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.Guardar(mdl);
+
+            string origen = Sesion.origen();
+            if (Sesion.generarLog() == true && origen == "APP")
+            {
+                NE_Logs_App_HD log = new NE_Logs_App_HD(CadenaConexion);
+                await log.Guardar($"Se cargo el documento {mdl.iddocumento} de la siguiente solicitud: {mdl.folio}", origen, Sesion.usuario());
+            }
+
             return Ok(result);
 
         }
@@ -48,6 +57,14 @@ namespace HD.Endpoints.Controllers.Credito
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             ADSolicitudCredito_Documentacion_ObtenerDocumento datos = new ADSolicitudCredito_Documentacion_ObtenerDocumento(CadenaConexion);
             var result = await datos.Obtener(folio, iddocumento);
+
+            string origen = Sesion.origen();
+            if (Sesion.generarLog() == true && origen == "APP")
+            {
+                NE_Logs_App_HD log = new NE_Logs_App_HD(CadenaConexion);
+                await log.Guardar($"Descargo el documento {iddocumento} del folio: {folio}", origen, Sesion.usuario());
+            }
+
             if (result is null)
                 return BadRequest(new { mensaje = "Documento no encontrado. Favor de comunicarse con el administrador del sistema" });
             return Ok(result);

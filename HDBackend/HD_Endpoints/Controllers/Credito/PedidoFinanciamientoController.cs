@@ -1,6 +1,7 @@
 ﻿using HD.Clientes.Consultas.PedidoFinanciamiento;
 using HD.Clientes.Consultas.PedidoUnidades;
 using HD.Clientes.Modelos;
+using HD.Notifications.NotificacionesApp;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +25,13 @@ namespace HD.Endpoints.Controllers.Credito
             await datos.Guardar(mdl);
             //AD_ClientesDatosPersonaFisica_Guardar datosfisica = new AD_ClientesDatosPersonaFisica_Guardar(CadenaConexion);
             //await datosfisica.Guardar(mdl);
+            string origen = Sesion.origen();
+            if (Sesion.generarLog() == true && origen == "APP")
+            {
+                NE_Logs_App_HD log = new NE_Logs_App_HD(CadenaConexion);
+                await log.Guardar($"Se registro una amortizacion del pedido con folio: {mdl.folio}", origen, Sesion.usuario());
+            }
+
             return Ok(new { mensaje = "datos cargados con exito" });
         }
 

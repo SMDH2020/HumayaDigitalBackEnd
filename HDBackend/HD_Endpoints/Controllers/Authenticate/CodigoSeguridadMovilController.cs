@@ -1,5 +1,7 @@
-﻿using HD.Generales.Autenticate;
+﻿using DocumentFormat.OpenXml.Presentation;
+using HD.Generales.Autenticate;
 using HD.Generales.Consultas;
+using HD.Notifications.NotificacionesApp;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,6 +33,11 @@ namespace HD.Endpoints.Controllers.Authenticate
                 string audience = Configuracion["Jwt:Audience"];
                 string securitytkey = Configuracion["Jwt:Login"];
                 var token = await JwtManager.GenerarTocken(Login.usuario, Login.usuario, securitytkey, iussuer, audience, 10080,"APP");
+
+
+                NE_Logs_App_HD log = new NE_Logs_App_HD(CadenaConexion);
+                await log.Guardar("Se inicio sesion en aplicacion", "APP", Login.usuario);
+                
                 return Ok(new { usuario = result.usuario, presas = result.presas, token });
 
             }
