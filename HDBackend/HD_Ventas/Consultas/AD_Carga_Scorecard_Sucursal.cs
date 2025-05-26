@@ -31,5 +31,24 @@ namespace HD_Ventas.Consultas
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<IEnumerable<mdlCarga_Scorecard_Sucursal>> ScorecardGrupo(int ejercicio)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    ejercicio = ejercicio
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdlCarga_Scorecard_Sucursal> result = await factory.SQL.QueryAsync<mdlCarga_Scorecard_Sucursal>("Ventas.sp_scorecard_Obtener_Grupo", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }
