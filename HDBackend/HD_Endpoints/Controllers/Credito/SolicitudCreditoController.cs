@@ -26,10 +26,10 @@ namespace HD.Endpoints.Controllers.Credito
             var result = await datos.Guardar(mdl);
 
             string origen = Sesion.origen();
-            if (Sesion.generarLog() == true && origen == "APP")
+            if (Sesion.generarLog() == true && origen == "APP" )
             {
                 NE_Logs_App_HD log = new NE_Logs_App_HD(CadenaConexion);
-                await log.Guardar($"Creo una solicitud de credito, con folio:  {result.solicitud_credito.folio}", origen, Sesion.usuario());
+                await log.Guardar($"Creo una solicitud de credito con folio:  {result.solicitud_credito.folio}", origen, Sesion.usuario());
             }
 
             return Ok(result);
