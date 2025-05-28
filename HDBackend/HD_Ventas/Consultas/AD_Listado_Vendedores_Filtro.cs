@@ -18,7 +18,7 @@ namespace HD_Ventas.Consultas
             {
                 var parametros = new
                 {
-                    usuario = 8919,
+                    usuario = usuario,
                     idsucursalfiltro = idsucursalfiltro,
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);

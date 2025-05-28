@@ -22,8 +22,20 @@ namespace HD.Endpoints.Controllers.Ventas
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Carga_Scorecard_Sucursal datos = new AD_Carga_Scorecard_Sucursal(CadenaConexion);
             int usuario = int.Parse(Sesion.usuario());
-            usuario = 8919;
+            //usuario = 8919;
             var result = await datos.Scorecard(ejercicio, sucursal);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> MostrarScorecardGrupo(int ejercicio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Carga_Scorecard_Sucursal datos = new AD_Carga_Scorecard_Sucursal(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+            //usuario = 8919;
+            var result = await datos.ScorecardGrupo(ejercicio);
             return Ok(result);
         }
     }
