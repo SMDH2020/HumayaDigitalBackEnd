@@ -39,5 +39,106 @@ namespace Postventa.Consultas.Dashboard
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<IEnumerable<mdl_Precios_Garantias_porModelo>> ObtenerPrecios()
+        {
+            try
+            {
+                //var parametros = new
+                //{
+                //    ejercicio,
+                //    periodo
+                //};
+
+                var parametros = new DynamicParameters();
+                //parametros.Add("ejercicio", ejercicio, System.Data.DbType.Int16);
+                //parametros.Add("periodo_inicio", periodo_inicio, System.Data.DbType.Int16);
+                //parametros.Add("periodo_fin", periodo_fin, System.Data.DbType.Int16);
+                //parametros.Add("adr", adr, System.Data.DbType.String);
+                //parametros.Add("sucursal", sucursal, System.Data.DbType.String);
+
+
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Precios_Garantias_porModelo> result = await factory.SQL.QueryAsync<mdl_Precios_Garantias_porModelo>("PixelCode.Posventa.sp_Obtener_Precio_Garantias_porModelo", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<bool> AgregarPrecioGarantia(mdl_Agregar_Precio_Garantia mdl)
+        {
+
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    modelo = mdl.modelo,
+                    precio_original = mdl.precio_original,
+                    precio_ajustado = mdl.precio_ajustado,
+                    inicio_vigencia = mdl.inicio_vigencia,
+                    vigencia = mdl.vigencia,
+                    usuario = mdl.usuario,
+                };
+                await factory.SQL.QueryAsync("PixelCode.Posventa.sp_Guardar_Precio_Garantia_porModelo", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<IEnumerable<mdl_Mensaje_Garantia>> ObtenerMensaje()
+        {
+            try
+            {
+
+                var parametros = new DynamicParameters();
+                //parametros.Add("ejercicio", ejercicio, System.Data.DbType.Int16);
+                //parametros.Add("periodo_inicio", periodo_inicio, System.Data.DbType.Int16);
+                //parametros.Add("periodo_fin", periodo_fin, System.Data.DbType.Int16);
+                //parametros.Add("adr", adr, System.Data.DbType.String);
+                //parametros.Add("sucursal", sucursal, System.Data.DbType.String);
+
+
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Mensaje_Garantia> result = await factory.SQL.QueryAsync<mdl_Mensaje_Garantia>("PixelCode.Posventa.sp_Obtener_Mensaje_Garantia", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<bool> AgregarMensajeGarantia(mdl_Mensaje_Garantia mdl)
+        {
+
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    mensaje = mdl.mensaje,
+                    inicio_vigencia = mdl.inicio_vigencia,
+                    vigencia = mdl.vigencia,
+                    usuario = mdl.usuario,
+                };
+                await factory.SQL.QueryAsync("PixelCode.Posventa.sp_Guardar_Mensaje_Garantia", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }

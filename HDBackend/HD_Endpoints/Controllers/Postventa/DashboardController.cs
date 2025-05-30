@@ -1,8 +1,11 @@
 ﻿using HD.Security;
 using HD_Cobranza.GestionCobranza.Capturas;
 using HD_Cobranza.GestionCobranza.Modelos;
+using HD_Ventas.Consultas;
+using HD_Ventas.Modelos;
 using Microsoft.AspNetCore.Mvc;
 using Postventa.Consultas.Dashboard;
+using Postventa.Modelos;
 
 namespace HD.Endpoints.Controllers.Postventa
 {
@@ -35,6 +38,59 @@ namespace HD.Endpoints.Controllers.Postventa
             var result = await datos.ObtenerVencimientos(ejercicio, periodo_inicio, periodo_fin, adr, sucursal);
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> PreciosGarantias()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Vencimiento_Garantias datos = new AD_Obtener_Vencimiento_Garantias(CadenaConexion);
+            var result = await datos.ObtenerPrecios();
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> AgregarPrecioGarantia(mdl_Agregar_Precio_Garantia mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Vencimiento_Garantias datos = new AD_Obtener_Vencimiento_Garantias(CadenaConexion);
+            mdl.usuario = int.Parse(Sesion.usuario());
+            await datos.AgregarPrecioGarantia(mdl);
+
+            return Ok(new
+            {
+                mensaje = "Guardado Correctamente",
+            }
+            );
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> MensajeGarantias()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Vencimiento_Garantias datos = new AD_Obtener_Vencimiento_Garantias(CadenaConexion);
+            var result = await datos.ObtenerMensaje();
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> AgregarMensajeGarantia(mdl_Mensaje_Garantia mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Vencimiento_Garantias datos = new AD_Obtener_Vencimiento_Garantias(CadenaConexion);
+            mdl.usuario = int.Parse(Sesion.usuario());
+            await datos.AgregarMensajeGarantia(mdl);
+
+            return Ok(new
+            {
+                mensaje = "Guardado Correctamente",
+            }
+            );
+        }
+
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
