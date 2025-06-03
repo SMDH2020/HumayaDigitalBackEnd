@@ -9,6 +9,8 @@ namespace Postventa.Modelos
         [StringLength(1000, ErrorMessage = "El modelo no debe exceder los 1000 caracteres")]
         public string mensaje { get; set; }
         public string inicio_vigencia { get; set; }
+        public string tipo { get; set; }
+
         public string vigencia { get; set; }
         public int usuario { get; set; }
     }

@@ -67,11 +67,11 @@ namespace HD.Endpoints.Controllers.Postventa
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> MensajeGarantias()
+        public async Task<ActionResult> MensajeGarantias(string tipo)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Obtener_Vencimiento_Garantias datos = new AD_Obtener_Vencimiento_Garantias(CadenaConexion);
-            var result = await datos.ObtenerMensaje();
+            var result = await datos.ObtenerMensaje(tipo);
             return Ok(result);
         }
 
