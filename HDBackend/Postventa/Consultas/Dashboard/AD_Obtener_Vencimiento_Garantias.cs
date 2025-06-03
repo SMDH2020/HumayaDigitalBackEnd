@@ -27,6 +27,7 @@ namespace Postventa.Consultas.Dashboard
                 parametros.Add("periodo_fin", periodo_fin, System.Data.DbType.Int16);
                 parametros.Add("adr", adr, System.Data.DbType.String);
                 parametros.Add("sucursal", sucursal, System.Data.DbType.String);
+                //parametros.Add("tipo", tipo, System.Data.DbType.String);
 
 
                 FactoryConection factory = new FactoryConection(CadenaConexion);
@@ -94,7 +95,7 @@ namespace Postventa.Consultas.Dashboard
             }
         }
 
-        public async Task<IEnumerable<mdl_Mensaje_Garantia>> ObtenerMensaje()
+        public async Task<IEnumerable<mdl_Mensaje_Garantia>> ObtenerMensaje(string tipo)
         {
             try
             {
@@ -103,7 +104,7 @@ namespace Postventa.Consultas.Dashboard
                 //parametros.Add("ejercicio", ejercicio, System.Data.DbType.Int16);
                 //parametros.Add("periodo_inicio", periodo_inicio, System.Data.DbType.Int16);
                 //parametros.Add("periodo_fin", periodo_fin, System.Data.DbType.Int16);
-                //parametros.Add("adr", adr, System.Data.DbType.String);
+                parametros.Add("tipo", tipo, System.Data.DbType.String);
                 //parametros.Add("sucursal", sucursal, System.Data.DbType.String);
 
 
@@ -127,6 +128,7 @@ namespace Postventa.Consultas.Dashboard
                 var parametros = new
                 {
                     mensaje = mdl.mensaje,
+                    tipo = mdl.tipo,
                     inicio_vigencia = mdl.inicio_vigencia,
                     vigencia = mdl.vigencia,
                     usuario = mdl.usuario,
