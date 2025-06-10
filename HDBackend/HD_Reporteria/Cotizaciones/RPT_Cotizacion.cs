@@ -98,10 +98,15 @@ namespace HD_Reporteria.Cotizaciones
             try
             {
                 string fontFamily = "Calibri";
-                var modelos = JsonConvert.DeserializeObject<List<mdl_Detalle_Cotizacion_Imprimir>>(detalle.FirstOrDefault().detalle);
+                List<mdl_Detalle_Cotizacion_Imprimir> modelos = new();
+                string jsonEscapado = detalle.FirstOrDefault()?.detalle;
+                if (!string.IsNullOrWhiteSpace(jsonEscapado))
+                {
+                    modelos = JsonConvert.DeserializeObject<List<mdl_Detalle_Cotizacion_Imprimir>>(jsonEscapado);
+                }
                 double sumaPrecioLista = modelos.Sum(m => m.precio_lista);
-                double sumaDescuento = modelos.Sum(m => m.descuento);
-                double sumaPrecioTotal = modelos.Sum(m => m.precio_total);
+                //double sumaDescuento = modelos.Sum(m => m.descuento);
+                double sumaPrecioTotal = modelos.Sum(m => m.precio_promocion);
 
                 byte[] doc = Document.Create(document =>
                 {
@@ -241,10 +246,22 @@ namespace HD_Reporteria.Cotizaciones
                                         column.Item().PaddingVertical(0.5f).Text("Características del equipo: ").FontSize(9).FontFamily(fontFamily);
                                         column.Item().PaddingTop(2).Column(inner =>
                                         {
-                                            foreach (var carac in modelo.caracteristicas_json)
+                                            //foreach (var carac in modelo.caracteristicas_json)
+                                            //{
+                                            string raw = modelo.caracteristicas_json;
+
+                                            // Extraemos solo la descripción (la primer descripción que haya)
+                                            int startIndex = raw.IndexOf("\"descripcion\":\"") + "\"descripcion\":\"".Length;
+                                            int endIndex = raw.IndexOf("\"", startIndex);
+                                            string descripcionSolo = "";
+
+                                            if (startIndex > -1 && endIndex > startIndex)
                                             {
-                                                inner.Item().Text("• " + carac.descripcion).FontSize(8);
+                                                descripcionSolo = raw.Substring(startIndex, endIndex - startIndex);
                                             }
+
+                                            inner.Item().Text("• " + descripcionSolo).FontSize(8);
+                                            //}
                                         });
                                     });
 
@@ -254,13 +271,17 @@ namespace HD_Reporteria.Cotizaciones
                                             txt.Span("Precio de lista: ").FontSize(9).Bold();
                                             txt.Span(modelo.precio_lista.ToString("N0")).FontSize(9);
                                         });
+                                        //column.Item().AlignRight().Text(txt => {
+                                        //    txt.Span("Descuento: ").FontSize(9).Bold();
+                                        //    txt.Span(modelo.descuento.ToString("N0")).FontSize(9);
+                                        //});
                                         column.Item().AlignRight().Text(txt => {
-                                            txt.Span("Descuento: ").FontSize(9).Bold();
-                                            txt.Span(modelo.descuento.ToString("N0")).FontSize(9);
+                                            txt.Span("Esquema de pago: ").FontSize(9).Bold();
+                                            txt.Span(modelo.descripcion_promocion).FontSize(9);
                                         });
                                         column.Item().AlignRight().Text(txt => {
-                                            txt.Span("Precio total: ").FontSize(9).Bold();
-                                            txt.Span(modelo.precio_total.ToString("N0")).FontSize(9);
+                                            txt.Span("Precio Final: ").FontSize(9).Bold();
+                                            txt.Span(modelo.precio_promocion.ToString("N0")).FontSize(9);
                                         });
                                         column.Item().AlignRight().Text(txt => {
                                             txt.Span("Moneda: ").FontSize(9).Bold();
@@ -281,13 +302,13 @@ namespace HD_Reporteria.Cotizaciones
                                     });
                                 });
 
-                                innerCol.Item().Row(row =>
-                                {
-                                    row.RelativeItem().AlignRight().Text(txt => {
-                                        txt.Span("Descuento: ").FontSize(9).Bold();
-                                        txt.Span(sumaDescuento.ToString("N0")).FontSize(9);
-                                    });
-                                });
+                                //innerCol.Item().Row(row =>
+                                //{
+                                //    row.RelativeItem().AlignRight().Text(txt => {
+                                //        txt.Span("Descuento: ").FontSize(9).Bold();
+                                //        txt.Span(sumaDescuento.ToString("N0")).FontSize(9);
+                                //    });
+                                //});
 
                                 innerCol.Item().Row(row =>
                                 {
