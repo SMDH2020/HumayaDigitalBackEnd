@@ -9,12 +9,12 @@ namespace HD_Ventas.Modelos
         public int idlinea {  get; set; }
 
         [Required(ErrorMessage = "El modelo es un valor requerido")]
-        [RegularExpression(@"^[. , - # $ % ñ Ñ a-zA-Z0-9]+$", ErrorMessage = "El campo modelo debe contener solo letras y numeros")]
-        [StringLength(30, ErrorMessage = "El modelo no debe exceder los 30 caracteres")]
+        [RegularExpression(@"^[. , ( ) á é í ó ú # $ % ñ Ñ a-zA-Z0-9]+$", ErrorMessage = "El campo descripcion debe contener solo letras y numeros")]
+        [StringLength(100, ErrorMessage = "El modelo no debe exceder los 100 caracteres")]
         public string modelo {  get; set; }
 
         [Required(ErrorMessage = "La descripcion es un valor requerido")]
-        [RegularExpression(@"^[. , - # $ % ñ Ñ a-zA-Z0-9]+$", ErrorMessage = "El campo descripcion debe contener solo letras y numeros")]
+        [RegularExpression(@"^[. , ( ) á é í ó ú # $ % ñ Ñ a-zA-Z0-9]+$", ErrorMessage = "El campo descripcion debe contener solo letras y numeros")]
         [StringLength(100, ErrorMessage = "La descripción no debe exceder los 100 caracteres")]
         public string descripcion_mdl {  get; set; }
 
@@ -23,7 +23,7 @@ namespace HD_Ventas.Modelos
         public float precio_lista {  get; set; }
         public int usuario { get; set; }
 
-        [RegularExpression(@"^[ .,\-\#\$\%ñÑa-zA-Z0-9\[\]\""]+$", ErrorMessage = "El campo caracteristicas debe contener solo letras, números y ciertos símbolos")]
+        [RegularExpression(@"^[ .,#\$%ñÑa-zA-Z0-9áéíóúÁÉÍÓÚ()\\\[\]""]+$", ErrorMessage = "El campo caracteristicas debe contener solo letras, números y ciertos símbolos")]
         [StringLength(2500, ErrorMessage = "Las caracteristicas no debe exceder los 2500 caracteres")]
         public string caracteristicas {  get; set; }
         public string imagenes { get; set; }

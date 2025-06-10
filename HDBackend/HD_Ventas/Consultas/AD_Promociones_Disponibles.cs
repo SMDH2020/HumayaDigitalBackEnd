@@ -1,0 +1,181 @@
+﻿using Dapper;
+using HD.AccesoDatos;
+using HD_Ventas.Modelos;
+
+namespace HD_Ventas.Consultas
+{
+    public class AD_Promociones_Disponibles
+    {
+        private string CadenaConexion;
+        public AD_Promociones_Disponibles(string _cadenaconexion)
+        {
+            CadenaConexion = _cadenaconexion;
+        }
+
+        public async Task<IEnumerable<mdl_Promociones_Disponibles>> ObtenerPromocionesDisponibles()
+        {
+            try
+            {
+
+                var parametros = new DynamicParameters();
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Promociones_Disponibles> result = await factory.SQL.QueryAsync<mdl_Promociones_Disponibles>("Ventas.sp_Obtener_Promociones_Disponibles", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<IEnumerable<mdl_Promociones_Disponibles>> ObtenerPromocionID(int idpromocion)
+        {
+            try
+            {
+
+                var parametros = new DynamicParameters();
+                parametros.Add("idpromocion", idpromocion, System.Data.DbType.Int16);
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Promociones_Disponibles> result = await factory.SQL.QueryAsync<mdl_Promociones_Disponibles>("Ventas.sp_Obtener_Promocion_ID", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+        public async Task<IEnumerable<mdl_Promociones_Disponibles>> AgregarPromocion(string descripcion, string inicio_vigencia, string vigencia, int usuario)
+        {
+            try
+            {
+                //var parametros = new
+                //{
+                //    @descripcion = descripcion,
+                //    @inicio_vigencia = inicio_vigencia,
+                //    @vigencia = vigencia,
+                //    @usuario = usuario
+                //};
+
+                var parametros = new DynamicParameters();
+                parametros.Add("descripcion_promocion", descripcion, System.Data.DbType.String);
+                parametros.Add("inicio_vigencia", inicio_vigencia, System.Data.DbType.String);
+                parametros.Add("vigencia", vigencia, System.Data.DbType.String);
+                parametros.Add("usuario", usuario, System.Data.DbType.Int16);
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Promociones_Disponibles> result = await factory.SQL.QueryAsync<mdl_Promociones_Disponibles>("Ventas.sp_Guardar_Promocion_Disponible", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<IEnumerable<mdl_Promociones_Disponibles>> EditarPromocion(int idpromocion, string descripcion, string inicio_vigencia, string vigencia, int usuario)
+        {
+            try
+            {
+                //var parametros = new
+                //{
+                //    @descripcion = descripcion,
+                //    @inicio_vigencia = inicio_vigencia,
+                //    @vigencia = vigencia,
+                //    @usuario = usuario
+                //};
+
+                var parametros = new DynamicParameters();
+                parametros.Add("idpromocion", idpromocion, System.Data.DbType.Int16);
+                parametros.Add("descripcion_promocion", descripcion, System.Data.DbType.String);
+                parametros.Add("inicio_vigencia", inicio_vigencia, System.Data.DbType.String);
+                parametros.Add("vigencia", vigencia, System.Data.DbType.String);
+                parametros.Add("usuario", usuario, System.Data.DbType.Int16);
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Promociones_Disponibles> result = await factory.SQL.QueryAsync<mdl_Promociones_Disponibles>("Ventas.sp_Editar_Promocion", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<IEnumerable<mdl_Modelos_Esquema>> ObtenerModelosEsquema(int idpromocion)
+        {
+            try
+            {
+
+                var parametros = new DynamicParameters();
+                parametros.Add("idpromocion", idpromocion, System.Data.DbType.Int16);
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Modelos_Esquema> result = await factory.SQL.QueryAsync<mdl_Modelos_Esquema>("Ventas.sp_Obtener_Modelos_Esquema", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<bool> AgregarModelosEsquema(int idmodelo, int idpromocion, float precio_promocion, int usuario)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new DynamicParameters();
+                parametros.Add("idmodelo", idmodelo, System.Data.DbType.Int16);
+                parametros.Add("idpromocion", idpromocion, System.Data.DbType.Int16);
+                parametros.Add("precio_promocion", precio_promocion, System.Data.DbType.Decimal);
+                parametros.Add("usuario", usuario, System.Data.DbType.Int16);
+
+                await factory.SQL.QueryAsync("Ventas.sp_Guardar_Modelos_Esquema", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<IEnumerable<mdl_Modelos_en_Esquema>> ObtenerModelosEnEsquema()
+        {
+            try
+            {
+
+                var parametros = new DynamicParameters();
+                //parametros.Add("idpromocion", idpromocion, System.Data.DbType.Int16);
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Modelos_en_Esquema> result = await factory.SQL.QueryAsync<mdl_Modelos_en_Esquema>("Ventas.sp_Obtener_Modelos_En_Esquema", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<IEnumerable<mdl_Esquemas_por_Modelo>> ObtenerEsquemasporModelo(int idmodelo)
+        {
+            try
+            {
+
+                var parametros = new DynamicParameters();
+                parametros.Add("idmodelo", idmodelo, System.Data.DbType.Int16);
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Esquemas_por_Modelo> result = await factory.SQL.QueryAsync<mdl_Esquemas_por_Modelo>("Ventas.sp_Obtener_Esquemas_porModelo", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+    }
+}

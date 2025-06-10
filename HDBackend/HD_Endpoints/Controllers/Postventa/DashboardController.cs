@@ -49,6 +49,16 @@ namespace HD.Endpoints.Controllers.Postventa
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ModelosGarantia()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Vencimiento_Garantias datos = new AD_Obtener_Vencimiento_Garantias(CadenaConexion);
+            var result = await datos.ObtenerModelos();
+            return Ok(result);
+        }
+
         [HttpPost]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> AgregarPrecioGarantia(mdl_Agregar_Precio_Garantia mdl)
@@ -101,5 +111,17 @@ namespace HD.Endpoints.Controllers.Postventa
             var result = await datos.ObtenerCotizaciones(ejercicio, periodo_inicio, periodo_fin, adr, sucursal);
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ExcluirModelo(string modelo)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Vencimiento_Garantias datos = new AD_Obtener_Vencimiento_Garantias(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.ExcluirModelo(modelo, usuario);
+            return Ok(result);
+        }
+
     }
 }
