@@ -109,5 +109,15 @@ namespace HD.Endpoints.Controllers.Ventas
             var result = await datos.ObtenerEsquemasporModelo(idmodelo);
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetEsquemasDDL()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Promociones_Disponibles datos = new AD_Promociones_Disponibles(CadenaConexion);
+            var result = await datos.GetEsquemasDDL();
+            return Ok(result);
+        }
     }
 }

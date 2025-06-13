@@ -16,6 +16,7 @@ namespace Postventa.Modelos
         public IEnumerable<mdl_Dashboard_Vencimiento_Garantias>? vencimiento_garantias_temprana { get; set; }
         public IEnumerable<mdl_Dashboard_Vencimiento_Garantias>? vencimiento_garantias_tardia { get; set; }
         public IEnumerable<mdl_Dashboard_Vencimiento_Garantias>? vencimiento_garantias_checklist { get; set; }
+        public IEnumerable<mdl_Dashboard_Grafica_Garantia>? vencimiento_garantias_grafica { get; set; }
 
         //public string? columnas { get; set; }
     }

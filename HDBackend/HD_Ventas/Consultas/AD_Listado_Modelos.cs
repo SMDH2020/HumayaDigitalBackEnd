@@ -50,6 +50,25 @@ namespace HD_Ventas.Consultas
             }
         }
 
+        public async Task<IEnumerable<mdl_Listado_Modelos>> ListadoCompletoenEsquema(int idpromocion)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    idpromocion = idpromocion
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Listado_Modelos> result = await factory.SQL.QueryAsync<mdl_Listado_Modelos>("Ventas.sp_Listado_Modelos_Cotizacion_enEsquema", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
         public async Task<IEnumerable<mdl_Listado_Lineas_DropDownList>> ListadoLineasDropdownlist()
         {
             try

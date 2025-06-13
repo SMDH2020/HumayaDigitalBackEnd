@@ -45,6 +45,8 @@ namespace Postventa.Consultas.Dashboard
                 view.vencimiento_garantias_temprana = result.Read<mdl_Dashboard_Vencimiento_Garantias>().ToList();
                 view.vencimiento_garantias_tardia = result.Read<mdl_Dashboard_Vencimiento_Garantias>().ToList();
                 view.vencimiento_garantias_checklist = result.Read<mdl_Dashboard_Vencimiento_Garantias>().ToList();
+                view.vencimiento_garantias_grafica = result.Read<mdl_Dashboard_Grafica_Garantia>().ToList();
+
 
                 //view.tipo_cartera = result.Read<string>().FirstOrDefault();
                 factory.SQL.Close();
