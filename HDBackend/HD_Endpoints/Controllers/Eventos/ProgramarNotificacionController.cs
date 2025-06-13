@@ -52,5 +52,15 @@ namespace HD.Endpoints.Controllers.Eventos
             var result = await datos.obtenerID(idnotificacion);
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> Modulos_Redireccion()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Modulos_Redireccion_Listado datos = new AD_Modulos_Redireccion_Listado(CadenaConexion);
+            var result = await datos.Listado();
+            return Ok(result);
+        }
     }
 }

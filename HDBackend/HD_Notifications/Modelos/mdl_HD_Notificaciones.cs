@@ -13,6 +13,9 @@ namespace HD.Notifications.Modelos
         public DateTime fecha_evento { get; set; }
         public bool repite { get; set; }
         public int dias { get; set; }
+        public int redireccion { get; set; }
+        public string? tipo { get; set; }
+
         public string? usuario { get; set; }
 
     }
