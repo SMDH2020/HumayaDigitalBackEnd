@@ -177,5 +177,23 @@ namespace HD_Ventas.Consultas
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<IEnumerable<mdl_Esquemas_DDL>> GetEsquemasDDL()
+        {
+            try
+            {
+
+                var parametros = new DynamicParameters();
+                //parametros.Add("idmodelo", idmodelo, System.Data.DbType.Int16);
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Esquemas_DDL> result = await factory.SQL.QueryAsync<mdl_Esquemas_DDL>("Ventas.sp_Get_Esquemas_Disponibles_Cotizacion", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }

@@ -7,6 +7,8 @@ using Newtonsoft.Json;
 using HD.Clientes.Consultas.Clientes;
 using System.ComponentModel;
 using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Wordprocessing;
+using HD.Clientes.Consultas.Modelos;
 
 namespace HD_Reporteria.Cotizaciones
 {
@@ -93,6 +95,79 @@ namespace HD_Reporteria.Cotizaciones
             }
         }
 
+        static bool EsBase64Valido(string base64String)
+        {
+            if (string.IsNullOrWhiteSpace(base64String))
+                return false;
+
+            base64String = base64String.Trim();
+
+            if (base64String.Contains(","))
+            {
+                base64String = base64String.Split(',')[1];
+            }
+
+            try
+            {
+                Convert.FromBase64String(base64String);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        static byte[] ObtenerImagenDesdeBase64(string base64String)
+        {
+            if (string.IsNullOrWhiteSpace(base64String))
+                return null;
+
+            base64String = base64String.Trim();
+
+            if (base64String.Contains(","))
+            {
+                base64String = base64String.Split(',')[1]; // Extrae la parte base64
+            }
+
+            try
+            {
+                return Convert.FromBase64String(base64String);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        static string LimpiarBase64SiEsJson(string posibleJson)
+        {
+            try
+            {
+                // Intentar deserializar por si viene como JSON con "documento"
+                var obj = JsonConvert.DeserializeObject<DocumentoImagen>(posibleJson);
+
+                if (obj?.documento != null)
+                {
+                    var base64Completo = obj.documento;
+                    int comaIndex = base64Completo.IndexOf(',');
+                    return comaIndex != -1 ? base64Completo.Substring(comaIndex + 1) : base64Completo;
+                }
+            }
+            catch
+            {
+                // No era JSON o deserialización falló, retornamos el original
+            }
+
+            return posibleJson; // Retorna tal cual si no era JSON
+        }
+
+        private class DocumentoImagen
+        {
+            public string documento { get; set; }
+        }
+
+
         public static RPT_Result GenerarPDF(IEnumerable<mdl_Cotizacion_Imprimir> detalle)
         {
             try
@@ -105,10 +180,10 @@ namespace HD_Reporteria.Cotizaciones
                     modelos = JsonConvert.DeserializeObject<List<mdl_Detalle_Cotizacion_Imprimir>>(jsonEscapado);
                 }
                 double sumaPrecioLista = modelos.Sum(m => m.precio_lista);
-                //double sumaDescuento = modelos.Sum(m => m.descuento);
+                double sumaDescuento = modelos.Sum(m => m.descuento);
                 double sumaPrecioTotal = modelos.Sum(m => m.precio_promocion);
 
-                byte[] doc = Document.Create(document =>
+                byte[] doc = QuestPDF.Fluent.Document.Create(document =>
                 {
                     document.Page(page =>
                     {
@@ -148,21 +223,21 @@ namespace HD_Reporteria.Cotizaciones
                             DateTime fecha = DateTime.Now;
                             string fechaActual = fecha.ToString("dd/MM/yyyy", new System.Globalization.CultureInfo("es-ES"));
 
-                            col1.Item().Row(row =>
-                            {
-                                row.RelativeItem().Text(txt => {
-                                    txt.Span("Folio: ").FontSize(9).Bold();
-                                    txt.Span(detalle.First().folio).FontSize(9);
-                                });
-                            });
+                            //col1.Item().Row(row =>
+                            //{
+                            //    row.RelativeItem().Text(txt => {
+                            //        txt.Span("Folio: ").FontSize(9).Bold();
+                            //        txt.Span(detalle.First().folio).FontSize(9);
+                            //    });
+                            //});
 
-                            col1.Item().PaddingBottom(5).Row(row =>
-                            {
-                                row.RelativeItem().Text(txt => {
-                                    txt.Span("Asesor de venta: ").FontSize(9).Bold();
-                                    txt.Span(detalle.First().asesorventa).FontSize(9);
-                                });
-                            });
+                            //col1.Item().PaddingBottom(5).Row(row =>
+                            //{
+                            //    row.RelativeItem().Text(txt => {
+                            //        txt.Span("Asesor de venta: ").FontSize(9).Bold();
+                            //        txt.Span(detalle.First().asesorventa).FontSize(9);
+                            //    });
+                            //});
 
 
                             col1.Item().Border(1).Padding(5).BorderColor(QuestPDF.Helpers.Colors.Black).Column(innerCol =>
@@ -194,137 +269,301 @@ namespace HD_Reporteria.Cotizaciones
                                         txt.Span(fechaActual).FontSize(9);
                                     });
                                 });
-                            });
 
-                            col1.Item().Row(row =>
-                            {
-                                row.RelativeItem().PaddingTop(5).AlignLeft().Text(txt => {
-                                    txt.Span("De acuerdo a su amable solicitud tenemos el gusto de cotizar a usted lo siguiente, con vigencia al: ").FontSize(9);
-                                    txt.Span(detalle.First().vigencia).FontSize(9).Bold();
+                                innerCol.Item().Row(row =>
+                                {
+                                    row.RelativeItem().Text(txt => {
+                                        txt.Span("Folio: ").FontSize(9).Bold();
+                                        txt.Span(detalle.First().folio).FontSize(9);
+                                    });
+                                    row.RelativeItem().AlignRight().Text(txt => {
+                                        txt.Span("Moneda: ").FontSize(9).Bold();
+                                        txt.Span(modelos.FirstOrDefault().moneda).FontSize(9);
+                                    });
                                 });
-                                //row.RelativeItem().AlignRight().Text("Vigencia al: " + detalle.First().vigencia).FontSize(9);
 
+                                innerCol.Item().Row(row =>
+                                {
+                                    row.RelativeItem().Text(txt => {
+                                        txt.Span("Asesor de venta: ").FontSize(9).Bold();
+                                        txt.Span(detalle.First().asesorventa.ToUpper()).FontSize(9);
+                                    });
+                                    row.RelativeItem().AlignRight().Text(txt => {
+                                        txt.Span("Esquema de Pago: ").FontSize(9).Bold();
+                                        txt.Span(modelos.FirstOrDefault().descripcion_promocion).FontSize(9);
+                                    });
+                                });
+                                innerCol.Item().PaddingTop(5).Row(row =>
+                                {
+                                    row.RelativeItem().Text(txt => {
+                                        txt.Span("De acuerdo a su amable solicitud tenemos el gusto de cotizar a usted lo siguiente, con vigencia al: ").FontSize(9);
+                                        txt.Span(detalle.First().vigencia).FontSize(9).Bold();
+                                    });
+                                });
                             });
 
+                            //col1.Item().Row(row =>
+                            //{
+                            //    row.RelativeItem().PaddingTop(5).AlignLeft().Text(txt => {
+                            //        txt.Span("De acuerdo a su amable solicitud tenemos el gusto de cotizar a usted lo siguiente, con vigencia al: ").FontSize(9);
+                            //        txt.Span(detalle.First().vigencia).FontSize(9).Bold();
+                            //    });
+                            //    //row.RelativeItem().AlignRight().Text("Vigencia al: " + detalle.First().vigencia).FontSize(9);
 
+                            //});
                             col1.Item().PaddingVertical(10).Border(1).BorderColor("#477c2c").Table(tabla =>
                             {
                                 tabla.ColumnsDefinition(columns =>
                                 {
-                                    columns.RelativeColumn(0.1f);
-                                    columns.RelativeColumn(1.5f); 
-                                    columns.RelativeColumn(1); 
+                                    columns.RelativeColumn(0.1f); // Índice
+                                    columns.RelativeColumn(1.9f); // Todo lo demás
                                 });
 
                                 // Header
                                 tabla.Header(header =>
                                 {
-                                    header.Cell().ColumnSpan(1).BorderBottom(1).BorderColor("#fedb05")
-                                       .Background("#477c2c").Height(20).AlignMiddle()
-                                       .Padding(4).Text("").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().BorderBottom(1).BorderColor("#fedb05")
+                                        .Background("#477c2c").Height(20).AlignMiddle()
+                                        .Padding(4).Text("#").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
 
-                                    header.Cell().ColumnSpan(1).BorderBottom(1).BorderColor("#fedb05")
+                                    header.Cell().BorderBottom(1).BorderColor("#fedb05")
                                         .Background("#477c2c").Height(20).AlignMiddle()
                                         .Padding(4).Text("MODELO / DESCRIPCION").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
-
-                                    header.Cell().ColumnSpan(1).BorderBottom(1).BorderColor("#fedb05")
-                                        .Background("#477c2c").AlignRight().Height(20).AlignMiddle()
-                                        .Padding(4).Text("IMPORTES").FontSize(9).Bold().FontFamily(fontFamily).FontColor("#fff");
                                 });
 
                                 int c = 1;
-                                // Filas con datos
                                 foreach (var modelo in modelos)
                                 {
-                                    tabla.Cell().BorderBottom(1).BorderRight(1).BorderColor("#477c2c").Padding(5).Column(column =>
+                                    // Columna índice
+                                    tabla.Cell().BorderBottom(1).BorderRight(1).BorderColor("#477c2c").Padding(5).AlignCenter().Text(c.ToString()).FontSize(9);
+
+                                    // Columna de información
+                                    tabla.Cell().BorderBottom(1).ShowEntire().BorderColor("#477c2c").Padding(5).Column(col =>
                                     {
-                                        column.Item().Text(c.ToString()).FontSize(9).AlignCenter();
-                                    });
-                                    tabla.Cell().BorderBottom(1).BorderColor("#477c2c").Padding(5).Column(column =>
-                                    {
-                                        column.Item().Text(modelo.modelo + " / " + modelo.descripcion).Bold().FontSize(9).FontFamily(fontFamily);
-                                        column.Item().PaddingVertical(0.5f).Text("Características del equipo: ").FontSize(9).FontFamily(fontFamily);
-                                        column.Item().PaddingTop(2).Column(inner =>
+                                        col.Item().Text(modelo.modelo + " / " + modelo.descripcion).Bold().FontSize(9).FontFamily(fontFamily);
+
+                                        col.Item().PaddingTop(3).Text("Características del equipo:").FontSize(9).FontFamily(fontFamily);
+
+                                        // Característica principal
+                                        string raw = modelo.caracteristicas_json;
+                                        int startIndex = raw.IndexOf("\"descripcion\":\"") + "\"descripcion\":\"".Length;
+                                        int endIndex = raw.IndexOf("\"", startIndex);
+                                        string descripcionSolo = (startIndex > -1 && endIndex > startIndex) ? raw.Substring(startIndex, endIndex - startIndex) : "";
+
+                                        if (!string.IsNullOrEmpty(descripcionSolo))
                                         {
-                                            //foreach (var carac in modelo.caracteristicas_json)
-                                            //{
-                                            string raw = modelo.caracteristicas_json;
+                                            col.Item().PaddingVertical(2).Text("• " + descripcionSolo).FontSize(8).Justify();
+                                        }
 
-                                            // Extraemos solo la descripción (la primer descripción que haya)
-                                            int startIndex = raw.IndexOf("\"descripcion\":\"") + "\"descripcion\":\"".Length;
-                                            int endIndex = raw.IndexOf("\"", startIndex);
-                                            string descripcionSolo = "";
+                                        col.Item().PaddingTop(5).Row(row =>
+                                        {
+                                            var img = LimpiarBase64SiEsJson(modelo.imagen);
+                                            var imagen = EsBase64Valido(img) ? ObtenerImagenDesdeBase64(img) : null;
 
-                                            if (startIndex > -1 && endIndex > startIndex)
+                                            if (imagen != null)
                                             {
-                                                descripcionSolo = raw.Substring(startIndex, endIndex - startIndex);
+                                                row.RelativeItem().Width(150).Image(imagen);
                                             }
 
-                                            inner.Item().Text("• " + descripcionSolo).FontSize(8);
-                                            //}
-                                        });
-                                    });
+                                            // Segunda descripción si existe
+                                            string descripcionSegunda = "";
+                                            if (!string.IsNullOrEmpty(raw))
+                                            {
+                                                string patron = "\"descripcion\":\"";
+                                                int firstIndex = raw.IndexOf(patron);
+                                                if (firstIndex != -1)
+                                                {
+                                                    int secondIndex = raw.IndexOf(patron, firstIndex + patron.Length);
+                                                    if (secondIndex != -1)
+                                                    {
+                                                        int startIndex2 = secondIndex + patron.Length;
+                                                        int endIndex2 = raw.IndexOf("\"", startIndex2);
+                                                        if (endIndex2 != -1 && endIndex2 > startIndex2)
+                                                        {
+                                                            descripcionSegunda = raw.Substring(startIndex2, endIndex2 - startIndex2);
+                                                        }
+                                                    }
+                                                }
+                                            }
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#477c2c").AlignBottom().Padding(5).Column(column =>
-                                    {
-                                        column.Item().AlignRight().Text(txt => {
-                                            txt.Span("Precio de lista: ").FontSize(9).Bold();
-                                            txt.Span(modelo.precio_lista.ToString("N0")).FontSize(9);
+                                            if (!string.IsNullOrEmpty(descripcionSegunda))
+                                            {
+                                                row.RelativeItem().Column(inner =>
+                                                {
+                                                    var lineas = descripcionSegunda.Replace("\\n", "\n").Split('\n');
+
+                                                    inner.Item().Text("Puntos de valor del equipo:").FontSize(9).Bold();
+                                                    inner.Item().PaddingTop(2).Text(txt =>
+                                                    {
+                                                        foreach (var linea in lineas)
+                                                        {
+                                                            if (!string.IsNullOrWhiteSpace(linea))
+                                                                txt.Span("• " + linea.Trim()).FontSize(8);
+                                                            txt.Span("\n");
+                                                        }
+                                                    });
+                                                });
+                                            }
+                                            
+                                            float anchoLabel = 60;
+                                            float anchoValor = 60;
+
+                                            row.RelativeItem().PaddingTop(5).AlignRight().AlignBottom().Column(precios =>
+                                            {
+                                                precios.Item().Row(row =>
+                                                {
+                                                    row.ConstantItem(anchoLabel).AlignLeft().Text("Subtotal:").FontSize(10).Bold();
+                                                    row.ConstantItem(anchoValor).AlignRight().Text((modelo.precio_promocion != 0 ? modelo.precio_promocion : modelo.precio_lista).ToString("N0")).FontSize(10);
+                                                });
+
+                                                precios.Item().Row(row =>
+                                                {
+                                                    row.ConstantItem(anchoLabel).AlignLeft().Text("Descuento:").FontSize(10).Bold();
+                                                    row.ConstantItem(anchoValor).AlignRight().Text(modelo.descuento.ToString("N0")).FontSize(10);
+                                                });
+
+                                                precios.Item().Row(row =>
+                                                {
+                                                    row.ConstantItem(anchoLabel).AlignLeft().Text("Total:").FontSize(10).Bold();
+                                                    row.ConstantItem(anchoValor).AlignRight().Text(
+                                                        ((modelo.precio_promocion != 0 ? modelo.precio_promocion : modelo.precio_lista) - modelo.descuento).ToString("N0")
+                                                    ).FontSize(10);
+                                                });
+                                            });
                                         });
-                                        //column.Item().AlignRight().Text(txt => {
-                                        //    txt.Span("Descuento: ").FontSize(9).Bold();
-                                        //    txt.Span(modelo.descuento.ToString("N0")).FontSize(9);
+
+                                        // Precios
+                                        //float anchoLabel = 60;
+                                        //float anchoValor = 60;
+
+                                        //col.Item().PaddingTop(5).Column(precios =>
+                                        //{
+                                        //    precios.Item().Row(row =>
+                                        //    {
+                                        //        row.ConstantItem(anchoLabel).AlignLeft().Text("Subtotal:").FontSize(10).Bold();
+                                        //        row.ConstantItem(anchoValor).AlignRight().Text((modelo.precio_promocion != 0 ? modelo.precio_promocion : modelo.precio_lista).ToString("N0")).FontSize(10);
+                                        //    });
+
+                                        //    precios.Item().Row(row =>
+                                        //    {
+                                        //        row.ConstantItem(anchoLabel).AlignLeft().Text("Descuento:").FontSize(10).Bold();
+                                        //        row.ConstantItem(anchoValor).AlignRight().Text(modelo.descuento.ToString("N0")).FontSize(10);
+                                        //    });
+
+                                        //    precios.Item().Row(row =>
+                                        //    {
+                                        //        row.ConstantItem(anchoLabel).AlignLeft().Text("Total:").FontSize(10).Bold();
+                                        //        row.ConstantItem(anchoValor).AlignRight().Text(
+                                        //            ((modelo.precio_promocion != 0 ? modelo.precio_promocion : modelo.precio_lista) - modelo.descuento).ToString("N0")
+                                        //        ).FontSize(10);
+                                        //    });
                                         //});
-                                        column.Item().AlignRight().Text(txt => {
-                                            txt.Span("Esquema de pago: ").FontSize(9).Bold();
-                                            txt.Span(modelo.descripcion_promocion).FontSize(9);
-                                        });
-                                        column.Item().AlignRight().Text(txt => {
-                                            txt.Span("Precio Final: ").FontSize(9).Bold();
-                                            txt.Span(modelo.precio_promocion.ToString("N0")).FontSize(9);
-                                        });
-                                        column.Item().AlignRight().Text(txt => {
-                                            txt.Span("Moneda: ").FontSize(9).Bold();
-                                            txt.Span(modelo.moneda).FontSize(9);
-                                        });
                                     });
 
                                     c++;
                                 }
                             });
-                            col1.Item().BorderBottom(1).Padding(5).BorderColor(QuestPDF.Helpers.Colors.Black).Column(innerCol =>
+
+
+                            //    string raw = modelo.caracteristicas_json;
+                            //    string descripcionSegunda = "";
+
+                            //    if (!string.IsNullOrEmpty(raw))
+                            //    {
+                            //        string patron = "\"descripcion\":\"";
+
+                            //        int firstIndex = raw.IndexOf(patron);
+                            //        if (firstIndex != -1)
+                            //        {
+                            //            int secondIndex = raw.IndexOf(patron, firstIndex + patron.Length);
+                            //            if (secondIndex != -1)
+                            //            {
+                            //                int startIndex = secondIndex + patron.Length;
+                            //                int endIndex = raw.IndexOf("\"", startIndex);
+
+                            //                if (endIndex != -1 && endIndex > startIndex)
+                            //                {
+                            //                    descripcionSegunda = raw.Substring(startIndex, endIndex - startIndex);
+                            //                }
+                            //            }
+                            //        }
+                            //    }
+
+                            //    col1.Item().PaddingTop(10).Row(row =>
+                            //    {
+                            //        var img = LimpiarBase64SiEsJson(modelo.imagen);
+                            //        var imagen = EsBase64Valido(img)
+                            //        ? ObtenerImagenDesdeBase64(img)
+                            //        : null;
+
+                            //        if (imagen != null)
+                            //        {
+                            //            row.RelativeItem(2).Column(col =>
+                            //            {
+                            //                // Texto arriba
+                            //                col.Item().AlignLeft().Text(txt =>
+                            //                {
+                            //                    txt.Span("IMAGEN DEL EQUIPO:").FontSize(9).Bold();
+                            //                });
+
+                            //                // Imagen abajo
+                            //                float anchoImagen = 180;
+                            //                float altoImagen = 180;
+
+                            //                col.Item().PaddingTop(5).AlignCenter().Height(altoImagen).Width(anchoImagen)
+                            //                    .Image(imagen);
+                            //            });
+                            //        }
+
+                            //        row.RelativeItem(2).Column(column =>
+                            //        {
+                            //            if (!string.IsNullOrEmpty(descripcionSegunda))
+                            //            {
+                            //                column.Item().Text("Puntos de valor del equipo:").FontSize(9).Bold();
+                            //                column.Item().PaddingTop(2).Text("• " + descripcionSegunda).FontSize(8);
+                            //            }
+                            //        });
+
+
+                            //    });
+                            //}
+
+
+                            if (modelos.Count > 1)
                             {
-                                innerCol.Item().Row(row =>
+                                col1.Item().BorderBottom(1).AlignRight().Padding(5).ShowEntire().BorderColor(QuestPDF.Helpers.Colors.Black).Column(innerCol =>
                                 {
-                                    row.RelativeItem().AlignRight().Text(txt => {
-                                        txt.Span("Subtotal: ").FontSize(9).Bold();
-                                        txt.Span(sumaPrecioLista.ToString("N0")).FontSize(9);
+                                    float anchoLabel = 60;
+                                    float anchoValor = 60;
+
+                                    innerCol.Item().Row(row =>
+                                    {
+                                        row.ConstantItem(anchoLabel).AlignLeft().Text("Subtotal:").FontSize(10).Bold();
+                                        row.ConstantItem(anchoValor).AlignRight().Text((sumaPrecioLista).ToString("N0")).FontSize(10);
+                                    });
+                                    //if (sumaDescuento > 0)
+                                    //{
+                                    innerCol.Item().Row(row =>
+                                    {
+                                        row.ConstantItem(anchoLabel).AlignLeft().Text("Descuento:").FontSize(10).Bold();
+                                        row.ConstantItem(anchoValor).AlignRight().Text((sumaDescuento).ToString("N0")).FontSize(10);
+                                    });
+                                    //}
+
+                                    innerCol.Item().Row(row =>
+                                    {
+                                        row.ConstantItem(anchoLabel).AlignLeft().Text("Total:").FontSize(10).Bold();
+                                        row.ConstantItem(anchoValor).AlignRight().Text((sumaPrecioTotal - sumaDescuento).ToString("N0")).FontSize(10);
                                     });
                                 });
+                            }
 
-                                //innerCol.Item().Row(row =>
-                                //{
-                                //    row.RelativeItem().AlignRight().Text(txt => {
-                                //        txt.Span("Descuento: ").FontSize(9).Bold();
-                                //        txt.Span(sumaDescuento.ToString("N0")).FontSize(9);
-                                //    });
-                                //});
-
-                                innerCol.Item().Row(row =>
-                                {
-                                    row.RelativeItem().AlignRight().Text(txt => {
-                                        txt.Span("Total: ").FontSize(9).Bold();
-                                        txt.Span(sumaPrecioTotal.ToString("N0")).FontSize(9);
-                                    });
-                                });
-                            });
-
-                            col1.Item().Row(row =>
+                            col1.Item().PaddingTop(10).Row(row =>
                             {
                                 row.RelativeItem().Text("Estos precios son netos y de contado quedan sujetos a cambio sin previo aviso, prevaleciendo los que estén en vigor al momento de facturar.").FontSize(9);
                             });
 
-                            col1.Item().PaddingTop(100).Row(row =>
+                            col1.Item().PaddingTop(100).ShowEntire().Row(row =>
                             {
                                 // Firma 1
                                 //row.RelativeItem().AlignCenter().Column(col =>
