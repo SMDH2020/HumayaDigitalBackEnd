@@ -25,13 +25,13 @@ namespace HD.Notifications.Consultas
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var parametros = new
                 {
-                    idnotificacion = mdl.idnotificacion,
+                    idencabezado = mdl.idencabezado,
                     mensaje = mdl.mensaje,
                     fecha_evento = mdl.fecha_evento,
-                    repite = mdl.repite,
-                    dias = mdl.dias,
                     redireccion = mdl.redireccion,
                     tipo = mdl.tipo,
+                    hora = mdl.hora,
+                    duracion = mdl.duracion,
                     usuario = mdl.usuario,
                 };
                 await factory.SQL.QueryAsync("HumayaDigital_Eventos.dbo.sp_HD_Notificaciones_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);

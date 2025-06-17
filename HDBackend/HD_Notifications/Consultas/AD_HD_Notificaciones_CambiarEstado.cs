@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
-using HD.Notifications.Modelos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,24 +8,26 @@ using System.Threading.Tasks;
 
 namespace HD.Notifications.Consultas
 {
-    public class AD_HD_Notificaciones_Listado
+    public class AD_HD_Notificaciones_CambiarEstado
     {
         private string CadenaConexion;
-        public AD_HD_Notificaciones_Listado(string _cadenaconexion)
+        public AD_HD_Notificaciones_CambiarEstado(string _cadenaconexion)
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_HD_Notificaciones_Listado>> Listado()
+
+        public async Task<bool> cambiarEstado(int idencabezado)
         {
             try
             {
                 var parametros = new
                 {
+                    idencabezado = idencabezado
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_HD_Notificaciones_Listado> result = await factory.SQL.QueryAsync<mdl_HD_Notificaciones_Listado>("HumayaDigital_Eventos.dbo.sp_HD_Notificaciones_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                await factory.SQL.QueryAsync("HumayaDigital_Eventos.dbo.sp_HD_Notificaciones_CambiarEstado", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
-                return result;
+                return true;
             }
             catch (System.Exception ex)
             {

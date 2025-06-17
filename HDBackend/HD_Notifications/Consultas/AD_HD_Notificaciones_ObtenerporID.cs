@@ -19,16 +19,35 @@ namespace HD.Notifications.Consultas
             CadenaConexion = _cadenaconexion;
         }
 
-        public async Task<mdl_HD_Notificaciones> obtenerID(int idnotificacion)
+        public async Task<mdl_HD_Notificaciones_Listado> obtenerID(int iddetalle)
         {
             try
             {
                 var parametros = new
                 {
-                    idnotificacion = idnotificacion
+                    iddetalle = iddetalle
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                mdl_HD_Notificaciones result = await factory.SQL.QueryFirstOrDefaultAsync<mdl_HD_Notificaciones>("HumayaDigital_Eventos.dbo.sp_HD_Notificaciones_ObtenerporID", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdl_HD_Notificaciones_Listado result = await factory.SQL.QueryFirstOrDefaultAsync<mdl_HD_Notificaciones_Listado>("HumayaDigital_Eventos.dbo.sp_HD_Notificaciones_ObtenerporID", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<IEnumerable<mdl_HD_Notificaciones_Listado>> obtenerListadoDetalle(int idencabezado)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    idencabezado = idencabezado
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_HD_Notificaciones_Listado> result = await factory.SQL.QueryAsync<mdl_HD_Notificaciones_Listado>("HumayaDigital_Eventos.dbo.sp_HD_Notificaciones_ListadoPorID", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
