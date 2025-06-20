@@ -276,14 +276,10 @@ namespace HD_Reporteria.Cotizaciones
                                         txt.Span("Folio: ").FontSize(9).Bold();
                                         txt.Span(detalle.First().folio).FontSize(9);
                                     });
-                                    //row.RelativeItem().AlignRight().Text(txt => {
-                                    //    txt.Span("Moneda: ").FontSize(9).Bold();
-                                    //    txt.Span(modelos.FirstOrDefault().moneda).FontSize(9);
-                                    //});
-
-                                    row.RelativeItem().AlignRight().Text(txt => {
-                                        txt.Span("Esquema de Pago: ").FontSize(9).Bold();
-                                        txt.Span(modelos.FirstOrDefault().descripcion_promocion).FontSize(9);
+                                    row.RelativeItem().AlignRight().Text(txt =>
+                                    {
+                                        txt.Span("Moneda: ").FontSize(9).Bold();
+                                        txt.Span(modelos.FirstOrDefault().moneda).FontSize(9);
                                     });
 
                                 });
@@ -294,7 +290,11 @@ namespace HD_Reporteria.Cotizaciones
                                         txt.Span("Asesor de venta: ").FontSize(9).Bold();
                                         txt.Span(detalle.First().asesorventa.ToUpper()).FontSize(9);
                                     });
-                                    
+
+                                    row.RelativeItem().AlignRight().Text(txt => {
+                                        txt.Span("Esquema de Pago: ").FontSize(9).Bold();
+                                        txt.Span(modelos.FirstOrDefault().descripcion_promocion).FontSize(9);
+                                    });
                                 });
                                 innerCol.Item().PaddingTop(5).Row(row =>
                                 {
@@ -433,11 +433,11 @@ namespace HD_Reporteria.Cotizaciones
                                                     ).FontSize(10);
                                                 });
 
-                                                precios.Item().Row(row =>
-                                                {
-                                                    row.ConstantItem(anchoLabel).AlignLeft().Text("Moneda:").FontSize(10).Bold();
-                                                    row.ConstantItem(anchoValor).AlignRight().Text(modelo.moneda).FontSize(10);
-                                                });
+                                                //precios.Item().Row(row =>
+                                                //{
+                                                //    row.ConstantItem(anchoLabel).AlignLeft().Text("Moneda:").FontSize(10).Bold();
+                                                //    row.ConstantItem(anchoValor).AlignRight().Text(modelo.moneda).FontSize(10);
+                                                //});
                                             });
                                         });
 
