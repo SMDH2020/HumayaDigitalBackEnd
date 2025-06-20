@@ -3,6 +3,7 @@
     public class mdlListado_Facturacion_Maquinaria
     {
         public int id { get; set; }
+        public string alerta { get; set; }
         public int idlinea { get; set; }
         public string? scorecard { get; set; }
         public int idSucursal { get; set; }

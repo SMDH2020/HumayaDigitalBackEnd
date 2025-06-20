@@ -27,11 +27,11 @@ namespace HD.Endpoints.Controllers.Ventas
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> Parametros(int ejercicio, int periodo, string adr, string sucursal, int linea)
+        public async Task<ActionResult> Parametros(int ejercicio, int periodo, string adr, string sucursal, int linea, string advertencia)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Listado_Facturacion_Maquinaria datos = new AD_Listado_Facturacion_Maquinaria(CadenaConexion);
-            var result = await datos.Get(ejercicio, periodo, adr, sucursal, linea);
+            var result = await datos.Get(ejercicio, periodo, adr, sucursal, linea, advertencia);
             return Ok(result);
         }
 
