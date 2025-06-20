@@ -11,5 +11,6 @@
         public int idpromocion { get; set; }
         public string? descripcion_promocion { get; set; }
         public float precio_promocion { get; set; }
+        public string eliminado { get; set; } = "N";
     }
 }

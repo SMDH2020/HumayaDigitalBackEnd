@@ -71,6 +71,17 @@ namespace HD.Endpoints.Controllers.Ventas
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> EliminarModelosdeEsquema(int idmodelo, int idpromocion)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Promociones_Disponibles datos = new AD_Promociones_Disponibles(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.EliminarModelodeEsquema(idmodelo, idpromocion, usuario);
+            return Ok(result);
+        }
+
         [HttpPost]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> GuardarModelosEsquema(mdl_Agregar_Modelos_Esquema mdl)

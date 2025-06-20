@@ -11,7 +11,7 @@ namespace HD_Ventas.Consultas
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlListado_Facturacion_Maquinaria>> Get(int ejercicio, int periodo, string adr, string sucursal, int linea)
+        public async Task<IEnumerable<mdlListado_Facturacion_Maquinaria>> Get(int ejercicio, int periodo, string adr, string sucursal, int linea, string advertencia)
         {
             try
             {
@@ -22,7 +22,8 @@ namespace HD_Ventas.Consultas
                     periodo = periodo,
                     adr = adr,
                     sucursales = sucursal,
-                    linea = linea
+                    linea = linea,
+                    advertencia = advertencia
                 };
                 IEnumerable<mdlListado_Facturacion_Maquinaria> result = await factory.SQL.QueryAsync<mdlListado_Facturacion_Maquinaria>("Ventas.sp_Listado_Facturacion_Maquinaria", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();

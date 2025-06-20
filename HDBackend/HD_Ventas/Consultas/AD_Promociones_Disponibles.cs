@@ -142,6 +142,26 @@ namespace HD_Ventas.Consultas
             }
         }
 
+        public async Task<IEnumerable<mdl_Modelos_en_Esquema>> EliminarModelodeEsquema(int idmodelo, int idpromocion, int usuario)
+        {
+            try
+            {
+
+                var parametros = new DynamicParameters();
+                parametros.Add("idmodelo", idmodelo, System.Data.DbType.Int16);
+                parametros.Add("idpromocion", idpromocion, System.Data.DbType.Int16);
+                parametros.Add("usuario", usuario, System.Data.DbType.Int16);
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Modelos_en_Esquema> result = await factory.SQL.QueryAsync<mdl_Modelos_en_Esquema>("Ventas.sp_Eliminar_Modelo_dePromocion", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
         public async Task<IEnumerable<mdl_Modelos_en_Esquema>> ObtenerModelosEnEsquema()
         {
             try

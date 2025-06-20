@@ -17,5 +17,6 @@ namespace Postventa.Modelos
         public string sucursal { get; set; }
         public string cliente { get; set; }
         public string contrato_adquirido { get; set; }
+        public string grupo {  get; set; }
     }
 }
