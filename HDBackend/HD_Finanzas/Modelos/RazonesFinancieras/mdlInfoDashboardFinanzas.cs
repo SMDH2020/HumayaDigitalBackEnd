@@ -24,6 +24,6 @@ namespace HD_Finanzas.Modelos.RazonesFinancieras
         public List<mdl_Nivel_Inventario_Dash>? NivelInventario {  get; set; }
         public List<Fmdl_Actualizacion_Usuario>? ActualizacionUsuario { get; set; }
         public List<mdl_Permisos_Dashboard_Financiero>? Permisos {  get; set; }
-
+        public List<mdl_Permisos_Dashboard_Sucursales>? sucursalesPermiso {  get; set; }
     }
 }

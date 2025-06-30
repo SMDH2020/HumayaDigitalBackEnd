@@ -26,7 +26,8 @@ namespace HD.Endpoints.Controllers.Cobranza.Dashboard.Dashboard_Indicadores
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Dashboard_Indicadores_Graficas datos = new AD_Dashboard_Indicadores_Graficas(CadenaConexion);
-            var result = await datos.ObtenerGraficas(ejercicio, periodo, adr, sucursales, responsable);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.ObtenerGraficas(ejercicio, periodo, adr, sucursales, responsable, usuario);
             return Ok(result);
         }
     }

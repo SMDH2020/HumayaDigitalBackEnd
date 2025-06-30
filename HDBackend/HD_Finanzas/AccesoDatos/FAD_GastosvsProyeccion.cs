@@ -26,7 +26,7 @@ namespace HD_Finanzas.AccesoDatos
                     tipo = vm.tipo,
                     usuario = usuario
                 };
-                IEnumerable<Fmdl_GastosPorConcepto> gastosvs = await factory.SQL.QueryAsync<Fmdl_GastosPorConcepto>("PixelCode.dbo.SP_GastosvsProyeccion_Rolado", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<Fmdl_GastosPorConcepto> gastosvs = await factory.SQL.QueryAsync<Fmdl_GastosPorConcepto>("PixelCode.dbo.SP_GastosvsProyeccion_Rolado_HD", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return gastosvs;
             }

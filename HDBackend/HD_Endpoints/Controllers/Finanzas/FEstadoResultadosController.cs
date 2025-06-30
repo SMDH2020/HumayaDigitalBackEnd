@@ -26,8 +26,9 @@ namespace HD.Endpoints.Controllers.Finanzas
         public async Task<ActionResult> GetEstadoResultadosByDireccionRolado(Fmdl_EstadoResultadosRolado prm)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            string usuario = Sesion.usuario();
             FAD_EstadoResultados estadoresultados = new FAD_EstadoResultados(CadenaConexion);
-            var result = await estadoresultados.GetEstadoResultadosByDireccionRolado(prm,"1");
+            var result = await estadoresultados.GetEstadoResultadosByDireccionRolado(prm,usuario);
             return Ok(result);
         }
 

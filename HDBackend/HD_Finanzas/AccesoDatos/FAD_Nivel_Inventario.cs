@@ -19,10 +19,12 @@ namespace HD_Finanzas.AccesoDatos
                 {
                     Ejercicio = filtro.Ejercicio,
                     Periodo = filtro.Periodo,
-                    ADR = filtro.adr,
-                    Sucursales = filtro.sucursal
+                    //ADR = filtro.adr,
+                    Sucursales = filtro.sucursal,
+                    departamentos = filtro.departamentos,
+                    usuario = filtro.usuario
                 };
-                var result = await factory.SQL.QueryAsync<mdl_Nivel_Inventario>("PixelCode.dbo.sp_Obtener_Inventario", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryAsync<mdl_Nivel_Inventario>("PixelCode.dbo.sp_Obtener_Inventario_HD", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

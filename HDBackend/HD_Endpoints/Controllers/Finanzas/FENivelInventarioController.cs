@@ -25,6 +25,7 @@ namespace HD.Endpoints.Controllers.Finanzas
         public async Task<ActionResult> Obtener(mdl_Nivel_Inventario_Filtrado vm)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            vm.usuario = Sesion.usuario();
             FAD_Nivel_Inventario nvl = new FAD_Nivel_Inventario(CadenaConexion);
             return Ok(await nvl.Obtener(vm));
         }

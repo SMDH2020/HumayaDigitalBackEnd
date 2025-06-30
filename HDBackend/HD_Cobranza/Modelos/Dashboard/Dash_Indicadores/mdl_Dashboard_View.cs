@@ -16,6 +16,8 @@
         public IEnumerable<mdl_Dashboard_ProyeccionesRecuperar>? listado { get; set; }
         public string? tipo_cartera { get; set; }
         public string? columnas { get; set; }
+        public IEnumerable<mdl_Permisos_Dash_Sucursales>? permisos { get; set; }
+
 
     }
 }
