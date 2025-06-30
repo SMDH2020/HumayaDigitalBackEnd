@@ -10,7 +10,8 @@ namespace HD_Finanzas.Modelos.NivelInventario
         public string concepto { get; set; }
         public double invactual { get; set; }
         public double invanterior { get; set; }
-        public int dias { get; set; }
-        public int diasant { get; set; }
+        public float diferencia {  get; set; }
+        //public int dias { get; set; }
+        //public int diasant { get; set; }
     }
 }

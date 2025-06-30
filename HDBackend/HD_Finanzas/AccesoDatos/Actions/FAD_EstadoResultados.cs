@@ -25,7 +25,7 @@ namespace HD_Finanzas.AccesoDatos.Actions
                     ADR = vm.adr,
                     usuario = usuario
                 };
-                var result = await factory.SQL.QueryMultipleAsync("PixelCode.dbo.SP_EstadoResultadosByDireccion_Rolado", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("PixelCode.dbo.SP_EstadoResultadosByDireccion_Rolado_HD", parametros, commandType: System.Data.CommandType.StoredProcedure);
 
                 List<Fmdl_EstadoResultados_Result> ERNow = result.Read<Fmdl_EstadoResultados_Result>().ToList();
                 List<Fmdl_EstadoResultados_Result> ERLast = result.Read<Fmdl_EstadoResultados_Result>().ToList();
@@ -104,10 +104,10 @@ namespace HD_Finanzas.AccesoDatos.Actions
                 var VentasNetasTotalesLast = view.Where(x => x.concepto.Equals("Ventas Netas")).Sum(x => x.lastimporte);
                 var ProyVentasNetasTotalesLast = view.Where(x => x.concepto.Equals("Ventas Netas")).Sum(x => x.lastporyimporte);
 
-                var CostosVentasTotales = view.Where(x => x.orden == 4).Sum(x => x.importe);
-                var ProyCostosVentasTotales = view.Where(x => x.orden == 4).Sum(x => x.proyimporte);
-                var CostosVentasTotalesLast = view.Where(x => x.orden == 4).Sum(x => x.lastimporte);
-                var ProyCostosVentasTotalesLast = view.Where(x => x.orden == 4).Sum(x => x.lastporyimporte);
+                var CostosVentasTotales = view.Where(x => x.orden >= 400 && x.orden <= 499).Sum(x => x.importe);
+                var ProyCostosVentasTotales = view.Where(x => x.orden >= 400 && x.orden <= 499).Sum(x => x.proyimporte);
+                var CostosVentasTotalesLast = view.Where(x => x.orden >= 400 && x.orden <= 499).Sum(x => x.lastimporte);
+                var ProyCostosVentasTotalesLast = view.Where(x => x.orden >= 400 && x.orden <= 499).Sum(x => x.lastporyimporte);
 
                 view.Add(new Fmdl_EstadoResultados_View
                 {

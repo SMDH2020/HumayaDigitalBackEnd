@@ -27,7 +27,8 @@ namespace HD.Endpoints.Controllers.Finanzas
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             FAD_GastosvsProyeccion datos = new FAD_GastosvsProyeccion(CadenaConexion);
-            var result = await datos.GetGastosvsProyeccion(vm, "1");
+            string usuario = Sesion.usuario();
+            var result = await datos.GetGastosvsProyeccion(vm, usuario);
             return Ok(result);
         }
 

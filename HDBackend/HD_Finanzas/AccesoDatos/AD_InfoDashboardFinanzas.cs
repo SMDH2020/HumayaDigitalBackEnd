@@ -49,6 +49,7 @@ namespace HD_Finanzas.AccesoDatos
                 dashboard.NivelInventario = result.Read<mdl_Nivel_Inventario_Dash>().ToList();
                 dashboard.ActualizacionUsuario = result.Read<Fmdl_Actualizacion_Usuario>().ToList();
                 dashboard.Permisos = result.Read<mdl_Permisos_Dashboard_Financiero>().ToList();
+                dashboard.sucursalesPermiso = result.Read<mdl_Permisos_Dashboard_Sucursales>().ToList();
                 factory.SQL.Close();
                 return dashboard;
             }
