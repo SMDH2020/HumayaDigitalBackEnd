@@ -326,6 +326,7 @@ namespace HD_Finanzas.AccesoDatos.Actions
 
                 index++;
                 //var otrosingresos = OGstNow.Where(x => x.departamento.Equals("OTROS INGRESOS")).ToList();
+               
                 OGstNow.ForEach(item =>
                 {
                     Fmdl_EstadoResultados_View oingresos = new Fmdl_EstadoResultados_View();
