@@ -1,13 +1,11 @@
 ﻿using HD.Security;
+using HD_Finanzas.AccesoDatos;
 using HD_Finanzas.AccesoDatos.Actions;
 using HD_Finanzas.Modelos.Estado_Resultados;
-using HD_Finanzas.Modelos.Gastos_Proyeccion;
-using HD_Reporteria.Finanzas;
 using HD_Reporteria;
-using Microsoft.AspNetCore.Mvc;
+using HD_Reporteria.Finanzas;
 using HD_Reporteria.Finanzas.Excel;
-using HD_Ventas.Consultas;
-using HD_Finanzas.AccesoDatos;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HD.Endpoints.Controllers.Finanzas
 {
@@ -28,7 +26,7 @@ namespace HD.Endpoints.Controllers.Finanzas
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             string usuario = Sesion.usuario();
             FAD_EstadoResultados estadoresultados = new FAD_EstadoResultados(CadenaConexion);
-            var result = await estadoresultados.GetEstadoResultadosByDireccionRolado(prm,usuario);
+            var result = await estadoresultados.GetEstadoResultadosByDireccionRolado(prm, usuario);
             return Ok(result);
         }
 
