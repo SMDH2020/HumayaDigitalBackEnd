@@ -43,5 +43,31 @@ namespace HD.Notifications.Consultas
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<mdl_HD_Notificaciones_Listado> GuardarInstantanea(mdl_HD_Notificaciones mdl)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    idencabezado = mdl.idencabezado,
+                    mensaje = mdl.mensaje,
+                    fecha_evento = mdl.fecha_evento,
+                    redireccion = mdl.redireccion,
+                    tipo = mdl.tipo,
+                    hora = mdl.hora,
+                    duracion = mdl.duracion,
+                    usuario = mdl.usuario,
+                };
+                mdl_HD_Notificaciones_Listado result = await factory.SQL.QueryFirstOrDefaultAsync<mdl_HD_Notificaciones_Listado>("HumayaDigital_Eventos.dbo.sp_HD_Notificaciones_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }
