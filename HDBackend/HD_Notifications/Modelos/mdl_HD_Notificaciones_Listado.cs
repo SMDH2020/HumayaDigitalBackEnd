@@ -15,8 +15,12 @@ namespace HD.Notifications.Modelos
         public int idmodulo { get; set; }
         public bool estatus { get; set; }
         public string? modulo { get; set; }
+        public string? ruta { get; set; }
+
         public string? tipo_alerta { get; set; }
         public int frecuencia { get; set; }
+        public string? redireccion { get; set; }
+
 
     }
 }
