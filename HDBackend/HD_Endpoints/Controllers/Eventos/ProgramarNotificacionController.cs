@@ -4,6 +4,8 @@ using HD.Notifications.Consultas;
 using HD.Notifications.Modelos;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
+using System.Text;
 using Usados.Consultas.Inventario;
 using Usados.Modelos.Inventario;
 
@@ -21,6 +23,9 @@ namespace HD.Endpoints.Controllers.Eventos
         }
 
 
+        private const string OneSignalAppId = "04e611d6-045a-4105-af2d-04880d3c4cb9"; // Tu App ID
+        private const string OneSignalApiKey = "os_v2_app_attbdvqeljaqllznasea2pcmxgflnvyahosesendbr7qoaleizbkfh73lqkpbwxfdb53m3f5gjlmcme6bhgtbrczxvi5uyvlbqnrwvy"; // ⚠️ Tu REST API Key
+
         [HttpPost]
         public async Task<ActionResult> Post(mdl_HD_Notificaciones mdl)
         {
@@ -29,6 +34,50 @@ namespace HD.Endpoints.Controllers.Eventos
             AD_HD_Notificaciones_Guardar datos = new AD_HD_Notificaciones_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             await datos.Guardar(mdl);
+            return Ok(new { mensaje = "datos cargados con exito" });
+
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarInstantanea(mdl_HD_Notificaciones mdl)
+        {
+
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_HD_Notificaciones_Guardar datos = new AD_HD_Notificaciones_Guardar(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result =  await datos.GuardarInstantanea(mdl);
+
+            using var client = new HttpClient();
+
+            var payload = new
+            {
+                app_id = OneSignalAppId,
+                included_segments = new[] { "All" },
+                headings = new { en = "Humaya Digital" },
+                contents = new { en = result.mensaje ?? "Mensaje por defecto" },
+                data = new { targetPage = result.ruta ?? "" }
+
+            };
+
+            var jsonPayload = JsonSerializer.Serialize(payload);
+            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+            client.DefaultRequestHeaders.Add("Authorization", $"Basic {OneSignalApiKey}");
+
+            var response = await client.PostAsync("https://onesignal.com/api/v1/notifications", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var resultado = await response.Content.ReadAsStringAsync();
+                return Ok(JsonDocument.Parse(resultado));
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                return StatusCode((int)response.StatusCode, error);
+            }
+
             return Ok(new { mensaje = "datos cargados con exito" });
 
         }

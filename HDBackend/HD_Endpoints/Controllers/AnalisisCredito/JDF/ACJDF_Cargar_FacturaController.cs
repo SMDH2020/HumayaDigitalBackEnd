@@ -57,6 +57,25 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
 
         [HttpPost]
         [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarFacturaCompleta(mdlJDFAnalisis_Datos_Facturacion_Guardar mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADJDF_Analisis_Cargar_Factura datos = new ADJDF_Analisis_Cargar_Factura(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.Guardar(mdl);
+            foreach (mdl_documentos_facturados_EQUIP fac in mdl.documentos)
+            {
+                await datos.Guardar_detalle(mdl.folio, mdl.registro, fac.orden, fac.documento, mdl.usuario, fac.docto_financiamiento);
+            }
+            return Ok(new
+            {
+                documentacion = result.documento,
+                socket = result.mdlSolicitud
+            });
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> GuardarMhusaDetalleCondicionado(mdlJDFAnalisis_Datos_Facturacion_Guardar mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];

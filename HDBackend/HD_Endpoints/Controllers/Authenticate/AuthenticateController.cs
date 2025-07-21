@@ -44,7 +44,7 @@ namespace HD.Endpoints.Controllers.Authenticate
                 string? usuario = result.sesion?.idusuario;
                 if(usuario == null) usuario = string.Empty;
 
-                var token = await JwtManager.GenerarTocken(usuario, usuario, securitytkey, iussuer, audience,15,"WEB");
+                var token = await JwtManager.GenerarTocken(usuario, usuario, securitytkey, iussuer, audience,43200,"WEB");
                 return Ok(new { usuario = result.sesion, token });
             }
             else

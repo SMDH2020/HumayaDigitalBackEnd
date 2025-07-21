@@ -25,6 +25,7 @@ namespace HD.Clientes.Consultas.SolicitudCredito
                 mdlSolicitud_Credito_Detalle? detalle = result.Read<mdlSolicitud_Credito_Detalle>().FirstOrDefault();
                 mdlSolicitudCredito_Screen? screen = result.Read<mdlSolicitudCredito_Screen>().FirstOrDefault();
                 mdlSolicitud_Credito_Asesor? asesor = result.Read<mdlSolicitud_Credito_Asesor>().FirstOrDefault();
+                mdlUsuariosRol? capp = result.Read< mdlUsuariosRol >().FirstOrDefault();
                 factory.SQL.Close();
                 return new mdlView_Solicitud_Credito()
                 {
