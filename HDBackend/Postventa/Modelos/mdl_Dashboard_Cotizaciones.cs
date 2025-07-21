@@ -15,5 +15,10 @@ namespace Postventa.Modelos
         public string? vendedor { get; set; }
         public string? fecha { get; set; }
         public double total { get; set; }
+        public string? whatsapp { get; set; }
+        public string? estado { get; set; }
+        public string? mensaje1 { get; set; }
+        public string? mensaje2 { get; set; }
+
     }
 }
