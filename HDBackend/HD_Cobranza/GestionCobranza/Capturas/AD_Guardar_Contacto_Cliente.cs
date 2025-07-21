@@ -36,5 +36,9 @@ namespace HD_Cobranza.GestionCobranza.Capturas
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+
     }
+
+
 }

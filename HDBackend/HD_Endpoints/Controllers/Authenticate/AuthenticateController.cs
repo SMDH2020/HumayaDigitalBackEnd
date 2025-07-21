@@ -27,7 +27,7 @@ namespace HD.Endpoints.Controllers.Authenticate
             {
                 string CadenaConexion = Configuracion["ConnectionStrings:Login"];
 
-                 AD_Autenticacion datos = new AD_Autenticacion(CadenaConexion);
+                AD_Autenticacion datos = new AD_Autenticacion(CadenaConexion);
                 var result = await datos.Autenticar(mdl);
 
                 string? email = result.autenticacion?.email;

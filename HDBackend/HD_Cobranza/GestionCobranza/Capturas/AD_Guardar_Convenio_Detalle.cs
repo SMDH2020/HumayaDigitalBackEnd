@@ -33,6 +33,8 @@ namespace HD_Cobranza.GestionCobranza.Capturas
                     @razon_descuento = mdl.razon_descuento,
                     @usuario = mdl.usuario,
                     @detalle = mdl.detalle,
+                    @comentario_gestion = mdl.comentario_gestion,
+                    @categoria = mdl.categoria,
                     @gestion = mdl.gestion,
                     @objecion = mdl.objecion,
                     @comentarios = mdl.comentarios,
@@ -41,7 +43,7 @@ namespace HD_Cobranza.GestionCobranza.Capturas
                     @saldo = mdl.saldo,
                     @moratorios = mdl.moratorios,
                     @interespactado = mdl.interespactado,
-                    @total = mdl.total
+                    @total = mdl.total,
                 };
 
                 var result = await factory.SQL.QueryAsync<mdl_Facturas_Seleccionadas>("GestionCobranza.sp_Guardar_Gestion_Cobranza", parametros, commandType: System.Data.CommandType.StoredProcedure);
