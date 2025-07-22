@@ -106,7 +106,8 @@ namespace HD.Endpoints.Controllers.ProductoAliado.Inventario
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Inventario_Listado datos = new AD_Inventario_Listado(CadenaConexion);
-            var result = await datos.ListadoPrecioActualMovil();
+            var usuario = Sesion.usuario();
+            var result = await datos.ListadoPrecioActualMovil(usuario);
 
             string origen = Sesion.origen();
             if (Sesion.generarLog() == true && origen == "APP")
@@ -173,7 +174,8 @@ namespace HD.Endpoints.Controllers.ProductoAliado.Inventario
 
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Inventario_Listado datos = new AD_Inventario_Listado(CadenaConexion);
-            var result = await datos.ListadoPrecioActualMovil();
+            var usuario = Sesion.usuario();
+            var result = await datos.ListadoPrecioActualMovil(usuario);
 
             try
             {
