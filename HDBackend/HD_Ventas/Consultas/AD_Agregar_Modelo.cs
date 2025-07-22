@@ -29,6 +29,7 @@ namespace HD_Ventas.Consultas
                     modelo = mdl.modelo,
                     descripcion_mdl = mdl.descripcion_mdl,
                     precio_lista = mdl.precio_lista,
+                    moneda = mdl.moneda,
                     usuario = mdl.usuario,
                     caracteristicas = mdl.caracteristicas,
                     imagenes = mdl.imagenes

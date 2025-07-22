@@ -2,6 +2,7 @@
 using HD_Cobranza.GestionCobranza.Modelos;
 using HD_Cobranza.GestionCobranza.Capturas;
 using Microsoft.AspNetCore.Mvc;
+using HD.Clientes.Consultas.ClientesDatosContacto;
 
 namespace HD.Endpoints.Controllers.GestionCobranza
 {

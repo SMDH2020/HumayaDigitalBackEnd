@@ -13,7 +13,7 @@ namespace HD_Ventas.Modelos
 
         [Required(ErrorMessage = "El modelo es un valor requerido")]
         [RegularExpression(@"^[. , - # $ % ñ Ñ a-zA-Z0-9]+$", ErrorMessage = "El campo modelo debe contener solo letras y numeros")]
-        [StringLength(30, ErrorMessage = "El modelo no debe exceder los 30 caracteres")]
+        [StringLength(100, ErrorMessage = "El modelo no debe exceder los 100 caracteres")]
         public string modelo { get; set; }
 
         [Required(ErrorMessage = "La descripcion es un valor requerido")]
@@ -24,9 +24,10 @@ namespace HD_Ventas.Modelos
         [Required(ErrorMessage = "El precio de lista es un valor requerido")]
         [Range(0, double.MaxValue, ErrorMessage = "El campo deposito esta fuera de rango")]
         public float precio_lista { get; set; }
+        public string moneda {  get; set; }
         public int usuario { get; set; }
 
-        [RegularExpression(@"^[. , - # $ % ñ Ñ a-zA-Z0-9]+$", ErrorMessage = "El campo descripcion debe contener solo letras y numeros")]
+        [RegularExpression(@"^[ .,#\$%ñÑa-zA-Z0-9áéíóúÁÉÍÓÚ()\\\[\]""]+$", ErrorMessage = "El campo caracteristicas debe contener solo letras, números y ciertos símbolos")]
         [StringLength(2500, ErrorMessage = "Las caracteristicas no debe exceder los 2500 caracteres")]
         public string caracteristicas { get; set; }
         public string imagenes { get; set; }

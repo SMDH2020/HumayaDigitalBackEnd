@@ -33,10 +33,10 @@ namespace Enlace.Dapper.Reportes
                 {
                     ejercicio = vm.Ejercicio,
                     periodo = vm.periodo,
-                    adr=vm.adr,
-                    sucursales=vm.sucursales
+                    //adr=vm.adr,
+                    //sucursales=vm.sucursales
                 };
-                var result = await factory.SQL.QueryMultipleAsync("PixelCode.dbo.SP_Obtener_BalanceGeneralOtro", prm, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("PixelCode.dbo.SP_Obtener_BalanceGeneral_HD_Actualizado", prm, commandType: System.Data.CommandType.StoredProcedure);
                 IEnumerable<Fmdl_BalanceGeneral> balance = result.Read<Fmdl_BalanceGeneral>().ToList();
                 vmCargaBalanza infobalanza = result.Read<vmCargaBalanza>().FirstOrDefault();
                 factory.SQL.Close();

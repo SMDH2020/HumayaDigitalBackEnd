@@ -27,7 +27,7 @@ namespace HD.Endpoints.Controllers.Authenticate
             {
                 string CadenaConexion = Configuracion["ConnectionStrings:Login"];
 
-                 AD_Autenticacion datos = new AD_Autenticacion(CadenaConexion);
+                AD_Autenticacion datos = new AD_Autenticacion(CadenaConexion);
                 var result = await datos.Autenticar(mdl);
 
                 string? email = result.autenticacion?.email;
@@ -44,7 +44,7 @@ namespace HD.Endpoints.Controllers.Authenticate
                 string? usuario = result.sesion?.idusuario;
                 if(usuario == null) usuario = string.Empty;
 
-                var token = await JwtManager.GenerarTocken(usuario, usuario, securitytkey, iussuer, audience,15,"WEB");
+                var token = await JwtManager.GenerarTocken(usuario, usuario, securitytkey, iussuer, audience,43200,"WEB");
                 return Ok(new { usuario = result.sesion, token });
             }
             else

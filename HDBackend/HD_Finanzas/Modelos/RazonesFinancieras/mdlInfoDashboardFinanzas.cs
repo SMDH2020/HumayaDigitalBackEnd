@@ -1,4 +1,6 @@
-﻿using HD_Finanzas.Modelos.CostoFinanciamiento;
+﻿using HD_Finanzas.Modelos.Actions;
+using HD_Finanzas.Modelos.CostoFinanciamiento;
+using HD_Finanzas.Modelos.Estado_Resultados;
 using HD_Finanzas.Modelos.NivelInventario;
 using HD_Finanzas.Modelos.ResultadosSucursal;
 
@@ -20,5 +22,8 @@ namespace HD_Finanzas.Modelos.RazonesFinancieras
         public List<mdl_Costo_Financiamiento_Dash>? CostoFinanciamiento { get; set; }
         public List<mdl_Resultados_Sucursal_Dash>? ResultadosSucursal { get; set; }
         public List<mdl_Nivel_Inventario_Dash>? NivelInventario {  get; set; }
+        public List<Fmdl_Actualizacion_Usuario>? ActualizacionUsuario { get; set; }
+        public List<mdl_Permisos_Dashboard_Financiero>? Permisos {  get; set; }
+        public List<mdl_Permisos_Dashboard_Sucursales>? sucursalesPermiso {  get; set; }
     }
 }

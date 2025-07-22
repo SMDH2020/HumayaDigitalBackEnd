@@ -13,6 +13,7 @@
         public float interes_moratorio {  get; set; }
         public float saldo_total { get; set; }
         public float recuperado { get; set; }
+        public float saldo { get; set; }
         public string? fecha_recuperacion { get; set; }
         public string? fecha_contacto { get; set; }
         public string? fecha_compromiso { get; set; }

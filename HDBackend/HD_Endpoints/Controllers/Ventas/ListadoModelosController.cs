@@ -28,6 +28,26 @@ namespace HD.Endpoints.Controllers.Ventas
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ModelosCotizacion()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Listado_Modelos datos = new AD_Listado_Modelos(CadenaConexion);
+            var result = await datos.ListadoCompleto();
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ModelosCotizacionenEsquema(int idpromocion)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Listado_Modelos datos = new AD_Listado_Modelos(CadenaConexion);
+            var result = await datos.ListadoCompletoenEsquema(idpromocion);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> LineasDropDownList()
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];

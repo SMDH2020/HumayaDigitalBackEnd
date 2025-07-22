@@ -11,16 +11,18 @@ namespace HD_Cobranza.Capturas
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlCob_TotalCarteraPorSucursal>> Listado()
+        public async Task<IEnumerable<mdlCob_TotalCarteraPorSucursal>> Listado(string adr, string sucursal, string usuario)
         {
             try
             {
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var parametros = new
                 {
-                    
+                    adr = adr,
+                    sucursal = sucursal,
+                    usuario = usuario
                 };
-                var result = await factory.SQL.QueryAsync<mdlCob_TotalCarteraPorSucursal>("Credito.sp_obtener_resumen_cartera_por_Sucursal", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryAsync<mdlCob_TotalCarteraPorSucursal>("Credito.sp_obtener_resumen_cartera_por_Sucursal_Filtrado", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
 
                 List<mdlCob_TotalCarteraPorSucursal> listado = result.ToList();
