@@ -32,6 +32,17 @@ namespace HD.Endpoints.Controllers.Finanzas
 
         [HttpPost]
         [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetEstadoResultadosEbitda(Fmdl_EstadoResultadosRolado prm)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            string usuario = Sesion.usuario();
+            FAD_EstadoResultados estadoresultados = new FAD_EstadoResultados(CadenaConexion);
+            var result = await estadoresultados.GetEstadoResultadosEbitda(prm, usuario);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> GetEstadoResultadoGrafica(Fmdl_Estado_Resultados_Grafica_Filtro prm)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];

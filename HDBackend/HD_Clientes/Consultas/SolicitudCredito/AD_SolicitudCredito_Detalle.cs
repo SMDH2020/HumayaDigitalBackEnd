@@ -31,7 +31,8 @@ namespace HD.Clientes.Consultas.SolicitudCredito
                 {
                     solicitud_credito = detalle,
                     config = screen,
-                    asesor = asesor
+                    asesor = asesor,
+                    capp = capp,
                 };
             }
             catch (System.Exception ex)
