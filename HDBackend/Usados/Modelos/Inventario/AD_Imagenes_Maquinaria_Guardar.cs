@@ -23,7 +23,8 @@ namespace Usados.Modelos.Inventario
                     idinventario = mdl.idinventario,
                     documento = mdl.documento,
                     extension = mdl.extension,
-                    usuario = mdl.usuario
+                    usuario = mdl.usuario,
+                    id_imagen=mdl.id_imagen
                 };
                 IEnumerable<mdl_Imagenes_Maquinaria> result = await factory.SQL.QueryAsync<mdl_Imagenes_Maquinaria>("Usados.sp_Guardar_Imagen_Maquinaria", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();

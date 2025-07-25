@@ -78,12 +78,13 @@ namespace ProductoAliado.Consultas.Inventario
             }
         }
 
-        public async Task<IEnumerable<mdl_Inventario_Producto_Aliado>> ListadoPrecioActualMovil()
+        public async Task<IEnumerable<mdl_Inventario_Producto_Aliado>> ListadoPrecioActualMovil(string usuario)
         {
             try
             {
                 var parametros = new
                 {
+                    usuario = usuario
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdl_Inventario_Producto_Aliado> result = await factory.SQL.QueryAsync<mdl_Inventario_Producto_Aliado>("ProductoAliado.sp_Listado_Precio_Actual_Movil", parametros, commandType: System.Data.CommandType.StoredProcedure);
