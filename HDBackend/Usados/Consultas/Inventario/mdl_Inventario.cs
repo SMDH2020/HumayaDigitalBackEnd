@@ -29,6 +29,7 @@
         public string? tiene_imagen { get; set; }
         public int usuario { get; set; }
         public string? imagen { get; set; }
+        public string? agregar_imagen { get; set; }
 
     }
 }
