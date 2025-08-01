@@ -39,5 +39,23 @@ namespace HD_Finanzas.AccesoDatos
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+        public async Task<IEnumerable<mdl_Poryeccion_Gasto_Anual>> ObtenerExcel(int ejercicio)
+        {
+            try
+            {
+                var parametros = new
+                {
+                  ejercicio = ejercicio,
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Poryeccion_Gasto_Anual> result = await factory.SQL.QueryAsync<mdl_Poryeccion_Gasto_Anual>("PixelCode.dbo.sp_Obtener_Excel_ProyeccionGastos", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }
