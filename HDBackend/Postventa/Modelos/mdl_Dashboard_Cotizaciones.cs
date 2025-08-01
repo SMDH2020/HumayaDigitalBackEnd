@@ -11,6 +11,7 @@ namespace Postventa.Modelos
         public string? orden { get; set; }
         public int idsucursal { get; set; }
         public string? sucursal { get; set; }
+        public int idcliente { get; set; }
         public string? cliente { get; set; }
         public string? vendedor { get; set; }
         public string? fecha { get; set; }

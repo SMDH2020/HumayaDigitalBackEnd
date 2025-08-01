@@ -84,14 +84,14 @@ namespace HD_Cobranza.GestionCobranza.Capturas
                 {
                     if (result.FirstOrDefault().ADR == 1)
                     {
-                        para = new List<string> { "desarrolladorti2@humaya.com.mx", "guadalupeolivas@humaya.com.mx" };
-                        //para = new List<string> { "creditosinaloa@humaya.com.mx", "gerenciacobranza@humaya.com.mx", "cobranzasinaloa@humaya.com.mx", "martinzazueta@humaya.com.mx" };
+                        //para = new List<string> { "desarrolladorti2@humaya.com.mx", "guadalupeolivas@humaya.com.mx" };
+                        para = new List<string> { "creditosinaloa@humaya.com.mx", "gerenciacobranza@humaya.com.mx", "cobranzasinaloa@humaya.com.mx", "martinzazueta@humaya.com.mx" };
 
                     }
                     else
                     {
-                        para = new List<string> { "desarrolladorti2@humaya.com.mx", "guadalupeolivas@humaya.com.mx" };
-                        //para = new List<string> { "creditonayarit@humaya.com.mx", "gerenciacobranza@humaya.com.mx", "cobranzanayarit@humaya.com.mx", "martinzazueta@humaya.com.mx" };
+                        //para = new List<string> { "desarrolladorti2@humaya.com.mx", "guadalupeolivas@humaya.com.mx" };
+                        para = new List<string> { "creditonayarit@humaya.com.mx", "gerenciacobranza@humaya.com.mx", "cobranzanayarit@humaya.com.mx", "martinzazueta@humaya.com.mx" };
                     }
                 }
                 else
