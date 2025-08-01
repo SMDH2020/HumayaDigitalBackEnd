@@ -31,11 +31,11 @@ namespace HD.Endpoints.Controllers.Postventa
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> VencimientosGarantias(int ejercicio, int periodo_inicio, int periodo_fin, string adr, string sucursal)
+        public async Task<ActionResult> VencimientosGarantias(int ejercicio, int periodo_inicio, int periodo_fin, string whatsapp, string estado, string adr, string sucursal)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Obtener_Vencimiento_Garantias datos = new AD_Obtener_Vencimiento_Garantias(CadenaConexion);
-            var result = await datos.ObtenerVencimientos(ejercicio, periodo_inicio, periodo_fin, adr, sucursal);
+            var result = await datos.ObtenerVencimientos(ejercicio, periodo_inicio, periodo_fin, whatsapp, estado, adr, sucursal);
             return Ok(result);
         }
 
@@ -104,11 +104,11 @@ namespace HD.Endpoints.Controllers.Postventa
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> CotizacionesAbiertas(int ejercicio, int periodo_inicio, int periodo_fin, string adr, string sucursal)
+        public async Task<ActionResult> CotizacionesAbiertas(int ejercicio, int periodo_inicio, int periodo_fin, string whatsapp, string estado, string motivo, string adr, string sucursal)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Obtener_Cotizaciones_Abiertas datos = new AD_Obtener_Cotizaciones_Abiertas(CadenaConexion);
-            var result = await datos.ObtenerCotizaciones(ejercicio, periodo_inicio, periodo_fin, adr, sucursal);
+            var result = await datos.ObtenerCotizaciones(ejercicio, periodo_inicio, periodo_fin, whatsapp, estado, motivo, adr, sucursal);
             return Ok(result);
         }
 

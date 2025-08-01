@@ -15,7 +15,11 @@ namespace Postventa.Modelos
         public float monto { get; set; }
         public int IDSucursal { get; set; }
         public string sucursal { get; set; }
-        public string cliente { get; set; }
+        public int idcliente {  get; set; }
+        public string razon_social { get; set; }
+        public string contacto { get; set; }
+        public string estado { get; set; }
+        public string mensaje_enviado {  get; set; }
         public string contrato_adquirido { get; set; }
         public string grupo {  get; set; }
     }
