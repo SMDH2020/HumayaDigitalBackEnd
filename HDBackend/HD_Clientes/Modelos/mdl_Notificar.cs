@@ -9,5 +9,9 @@ namespace HD.Clientes.Modelos
     public class mdl_Notificar
     {
         public int notificar { get; set; }
+        public string? vendedor { get; set; }
+        public string? cliente { get; set; }
+
+
     }
 }

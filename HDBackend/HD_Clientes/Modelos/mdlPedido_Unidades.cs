@@ -21,16 +21,16 @@ namespace HD.Clientes.Modelos
 
         [Required(ErrorMessage = "El modelo es un valor requerido")]
         [RegularExpression(@"^[ a-zA-Z0-9]+$", ErrorMessage = "El campo modelo debe contener solo numeros y letras")]
-        [StringLength(20, MinimumLength = 1, ErrorMessage = "El campo modelo admite como maximo 50 caracteres")]
+        [StringLength(100, MinimumLength = 1, ErrorMessage = "El campo modelo admite como maximo 50 caracteres")]
         public string? modelo { get; set; }
 
 
         [RegularExpression(@"^[ a-zA-Z0-9]+$", ErrorMessage = "El campo descripcion debe contener solo numeros y letras")]
-        [StringLength(40, MinimumLength = 0, ErrorMessage = "El campo descripcion admite como maximo 40 caracteres")]
+        [StringLength(100, MinimumLength = 0, ErrorMessage = "El campo descripcion admite como maximo 40 caracteres")]
         public string? descripcion { get; set; }
 
         [RegularExpression(@"^[ a-zA-Z0-9]+$", ErrorMessage = "El campo serie debe contener solo numeros y letras")]
-        [StringLength(30, MinimumLength = 0, ErrorMessage = "El campo serie admite como maximo 20 caracteres")]
+        [StringLength(100, MinimumLength = 0, ErrorMessage = "El campo serie admite como maximo 20 caracteres")]
         public string? serie { get; set; } = " ";
 
         [Required(ErrorMessage = "La cantidad es un valor requerido")]

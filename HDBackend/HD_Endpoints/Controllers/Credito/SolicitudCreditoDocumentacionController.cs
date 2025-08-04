@@ -377,7 +377,14 @@ namespace HD.Endpoints.Controllers.Credito
             ADSolicitud_Credito_Documentacion_JDF_Guardar datos = new ADSolicitud_Credito_Documentacion_JDF_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.Guardar(mdl);
+
+            if (result.notificar.notificar == 1)
+            {
+                await NotificacionComentarios.EnviarCargaDocumentosVendedor(result, mdl.folio);
+            }
+
             return Ok(result);
+
 
         }
 
