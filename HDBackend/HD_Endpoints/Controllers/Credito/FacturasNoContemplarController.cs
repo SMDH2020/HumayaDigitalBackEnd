@@ -36,6 +36,16 @@ namespace HD.Endpoints.Controllers.Credito
             return Ok(result);
 
         }
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> Eliminar(string documento)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADFacturasNoContemplar datos = new ADFacturasNoContemplar(CadenaConexion);
+            var result = await datos.Eliminar(documento);
+            return Ok(result);
+
+        }
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]

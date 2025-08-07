@@ -71,18 +71,19 @@ namespace HD_Cobranza.GestionCobranza.Capturas
             }
         }
 
-        public async Task<IEnumerable<mdlPedidos_Facturados>> ObtenerInformacionCreditoFactura(int cliente)
+        public async Task<mdlPedidos_Facturados> ObtenerInformacionCreditoFactura(string folio,string documento)
         {
             try
             {
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var parametros = new
                 {
-                    cliente = cliente
+                    folio, documento
                 };
 
-                IEnumerable<mdlPedidos_Facturados> result = await factory.SQL.QueryAsync<mdlPedidos_Facturados>("GestionCobranza.sp_Facturas_Obtener_Informacion_Credito", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlPedidos_Facturados result = await factory.SQL.QueryFirstOrDefaultAsync<mdlPedidos_Facturados>("GestionCobranza.sp_Facturas_Obtener_Informacion_Credito", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
+                if (result is null) result = new mdlPedidos_Facturados();
                 return result;
             }
             catch (System.Exception ex)
