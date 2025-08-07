@@ -38,6 +38,7 @@
                         return "total";
                     case "Ventas Totales":
                         return "sub-total";
+                    case "EBITDA": return "total";
                     default:
                         return "";
                 }

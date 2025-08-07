@@ -11,7 +11,7 @@ namespace Postventa.Consultas.Dashboard
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_Dashboard_Cotizaciones>> ObtenerCotizaciones(int ejercicio, int periodo_inicio, int periodo_fin, string adr, string sucursal)
+        public async Task<IEnumerable<mdl_Dashboard_Cotizaciones>> ObtenerCotizaciones(int ejercicio, int periodo_inicio, int periodo_fin, string whatsapp, string estado, string motivo, string adr, string sucursal)
         {
             try
             {
@@ -25,6 +25,9 @@ namespace Postventa.Consultas.Dashboard
                 parametros.Add("ejercicio", ejercicio, System.Data.DbType.Int16);
                 parametros.Add("periodo_inicio", periodo_inicio, System.Data.DbType.Int16);
                 parametros.Add("periodo_fin", periodo_fin, System.Data.DbType.Int16);
+                parametros.Add("whatsapp", whatsapp, System.Data.DbType.String);
+                parametros.Add("estatus", estado, System.Data.DbType.String);
+                parametros.Add("motivo", motivo, System.Data.DbType.String);
                 parametros.Add("adr", adr, System.Data.DbType.String);
                 parametros.Add("sucursal", sucursal, System.Data.DbType.String);
 

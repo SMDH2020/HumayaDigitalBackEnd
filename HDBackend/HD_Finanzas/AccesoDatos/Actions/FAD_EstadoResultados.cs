@@ -11,6 +11,28 @@ namespace HD_Finanzas.AccesoDatos.Actions
         {
             CadenaConexion = _cadenaconexion;
         }
+        public async Task<IEnumerable<mdlEstadoResultadosEbitda>> GetEstadoResultadosEbitda(Fmdl_EstadoResultadosRolado vm,string usuario)
+        {
+            try
+            {
+                FactoryConection conection = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    fechainicio = vm.fechainicio,
+                    fechafin = vm.fechafin,
+                    Departamentos = vm.departamento,
+                    Sucursales = vm.sucursal,
+                    ADR = vm.adr,
+                    usuario = usuario
+                };
+                var result = await conection.SQL.QueryAsync<mdlEstadoResultadosEbitda>("PixelCode..sp_Reporte_Estado_Resultados_EBITDA", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
         public async Task<List<Fmdl_EstadoResultados_View>> GetEstadoResultadosByDireccionRolado(Fmdl_EstadoResultadosRolado vm, string usuario)
         {
             try

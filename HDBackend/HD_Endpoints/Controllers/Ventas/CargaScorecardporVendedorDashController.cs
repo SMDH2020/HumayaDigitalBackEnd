@@ -1,11 +1,10 @@
-﻿using HD_Ventas.Consultas;
+﻿using HD.Notifications.NotificacionesApp;
 using HD.Security;
-using Microsoft.AspNetCore.Mvc;
-using HD_Ventas.Reportes;
 using HD_Reporteria;
 using HD_Reporteria.Ventas;
-using DocumentFormat.OpenXml.Presentation;
-using HD.Notifications.NotificacionesApp;
+using HD_Ventas.Consultas;
+using HD_Ventas.Reportes;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HD.Endpoints.Controllers.Ventas
 {
