@@ -112,7 +112,8 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Inventario_Listado datos = new AD_Inventario_Listado(CadenaConexion);
-            var result = await datos.ListadoFiltroMovil();
+            var usuario = Sesion.usuario();
+            var result = await datos.ListadoFiltroMovil(usuario);
 
             string origen = Sesion.origen();
             if (Sesion.generarLog() == true && origen == "APP")
