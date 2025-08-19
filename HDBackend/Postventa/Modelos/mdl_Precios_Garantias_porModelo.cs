@@ -3,12 +3,12 @@ namespace Postventa.Modelos
 {
     public class mdl_Precios_Garantias_porModelo
     {
-        public int idprecio {  get; set; }
-        public string modelo {  get; set; }
-        public float precio_original {  get; set; }
-        public float precio_ajustado { get; set; }
-        public string? inicio_vigencia { get; set; }
-        public string? vigencia { get; set; }
-        public int estatus { get; set; }
+        public int idprecio { get; set; }
+        public string modelo { get; set; }
+        public float venta_temprana { get; set; }
+        public float venta_tardia { get; set; }
+        public float venta_fin_garantia { get; set; }
+        public string? fecha_inicio { get; set; }
+        public string? fecha_fin { get; set; }
     }
 }
