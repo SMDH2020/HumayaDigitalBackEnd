@@ -54,7 +54,8 @@ namespace HD.Generales.Consultas
                 var parametros = new
                 {
                     usuario = login.usuario,
-                    codigoautenticacion = login.codigoseguridad
+                    codigoautenticacion = login.codigoseguridad,
+                    oneSignalID = login.oneSignalID
                 };
                 var result = await factory.SQL.QueryMultipleAsync("sp_Usuario_Sesion_Movil", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 mdlLoginResult? usuario = result.Read<mdlLoginResult>().FirstOrDefault();
