@@ -15,12 +15,6 @@ namespace Postventa.Consultas.Dashboard
         {
             try
             {
-                //var parametros = new
-                //{
-                //    ejercicio,
-                //    periodo
-                //};
-
                 var parametros = new DynamicParameters();
                 parametros.Add("ejercicio", ejercicio, System.Data.DbType.Int16);
                 parametros.Add("periodo_inicio", periodo_inicio, System.Data.DbType.Int16);
@@ -29,8 +23,6 @@ namespace Postventa.Consultas.Dashboard
                 parametros.Add("estatus", estado, System.Data.DbType.String);
                 parametros.Add("adr", adr, System.Data.DbType.String);
                 parametros.Add("sucursal", sucursal, System.Data.DbType.String);
-                //parametros.Add("tipo", tipo, System.Data.DbType.String);
-
 
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdl_Dashboard_Vencimiento_Garantias> result = await factory.SQL.QueryAsync<mdl_Dashboard_Vencimiento_Garantias>("PixelCode.Posventa.sp_Obtener_Vencimiento_Garantias", parametros, commandType: System.Data.CommandType.StoredProcedure);
@@ -146,15 +138,32 @@ namespace Postventa.Consultas.Dashboard
             }
         }
 
-        public async Task<IEnumerable<mdl_Obtener_Modelos_Garantia>> ExcluirModelo(string modelo, int usuario)
+        public async Task<IEnumerable<mdl_Obtener_Modelos_Garantia>> ExcluirModelo(string modelo,string tipo, int usuario)
         {
             try
             {
                 var parametros = new DynamicParameters();
                 parametros.Add("modelo", modelo, System.Data.DbType.String);
+                parametros.Add("tipo", tipo, System.Data.DbType.String);
                 parametros.Add("usuario", usuario, System.Data.DbType.Int16);
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_Obtener_Modelos_Garantia> result = await factory.SQL.QueryAsync<mdl_Obtener_Modelos_Garantia>("PixelCode.Posventa.sp_Excluir_Modelo_Garantia", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Obtener_Modelos_Garantia> result = await factory.SQL.QueryAsync<mdl_Obtener_Modelos_Garantia>("PixelCode.Posventa.sp_Garantia_Modelos_Excluidos", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+        public async Task<IEnumerable<mdl_Obtener_Modelos_Garantia>> EliminarReglaExclusion(string id)
+        {
+            try
+            {
+                var parametros = new DynamicParameters();
+                parametros.Add("id", id, System.Data.DbType.String);
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Obtener_Modelos_Garantia> result = await factory.SQL.QueryAsync<mdl_Obtener_Modelos_Garantia>("PixelCode.Posventa.Garantia_Modelos_Excluidos_Eliminar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
