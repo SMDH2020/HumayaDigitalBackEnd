@@ -233,7 +233,7 @@ namespace HD_Reporteria.Pagares
                                     {
                                         txt1.Item().Height(15).AlignCenter().Text(txt2 =>
                                         {
-                                            txt2.Span(mdl.firmas.suscriptor).FontSize(10).FontFamily(fontFamily);
+                                            txt2.Span(mdl.firmas.suscriptor).FontSize(08).FontFamily(fontFamily);
                                             //txt2.Span("NAVOLATO").FontSize(10);
                                         });
                                     });
@@ -243,7 +243,7 @@ namespace HD_Reporteria.Pagares
                                     {
                                         txt1.Item().Height(15).AlignCenter().Text(txt2 =>
                                         {
-                                            txt2.Span(mdl.firmas.aval).FontSize(10).FontFamily(fontFamily);
+                                            txt2.Span(mdl.firmas.aval).FontSize(08).FontFamily(fontFamily);
                                             //txt2.Span("NAVOLATO").FontSize(10);
                                         });
                                     });
