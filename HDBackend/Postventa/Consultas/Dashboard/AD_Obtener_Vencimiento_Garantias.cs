@@ -53,6 +53,56 @@ namespace Postventa.Consultas.Dashboard
             }
         }
 
+        public async Task<mdl_Precios_Garantias_porModelo> obtenerID(int id)
+        {
+            try
+            {
+
+
+                var parametros = new
+                {
+                    id = id
+                };
+
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var result = await factory.SQL.QueryFirstOrDefaultAsync<mdl_Precios_Garantias_porModelo>("Postventa.sp_Precio_Garantias_porModelo_ObtenerID", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<bool> cargarInformacion(mdl_Datos_Carga_Precios_Garantia mdl)
+        {
+            try
+            {
+
+                var parametros = new
+                {
+                    idprecio = mdl.idprecio ,
+                    modelo = mdl.modelo ,
+                    venta_temprana = mdl.venta_temprana,
+                    venta_tardia = mdl.venta_tardia,
+                    venta_fin_garantia = mdl.venta_fin_garantia,
+                    fecha_inicio = mdl.fecha_inicio,
+                    fecha_fin = mdl.fecha_fin,
+                    tipo_carga = mdl.tipo_carga,
+                };
+
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                await factory.SQL.QueryAsync<mdl_Precios_Garantias_porModelo>("Postventa.sp_Precio_Garantias_porModelo_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return true;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
         public async Task<bool> AgregarPrecioGarantia(mdl_Agregar_Precio_Garantia mdl)
         {
 
@@ -69,6 +119,32 @@ namespace Postventa.Consultas.Dashboard
                     usuario = mdl.usuario,
                 };
                 await factory.SQL.QueryAsync("PixelCode.Posventa.sp_Guardar_Precio_Garantia_porModelo", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<bool> ActualizarPrecioGarantia(mdl_Precios_Garantias_porModelo mdl)
+        {
+
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    idprecio = mdl.idprecio ,
+                    modelo = mdl.modelo,
+                    venta_temprana = mdl.venta_temprana,
+                    venta_tardia = mdl.venta_tardia,
+                    venta_fin_garantia = mdl.venta_fin_garantia,
+                    fecha_inicio = mdl.fecha_inicio,
+                    fecha_fin = mdl.fecha_fin,
+                };
+                await factory.SQL.QueryAsync("Postventa.sp_Precio_Garantias_porModelo_ActualizarRegistro", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return true;
             }
