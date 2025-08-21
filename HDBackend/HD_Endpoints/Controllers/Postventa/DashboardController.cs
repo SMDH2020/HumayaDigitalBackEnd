@@ -37,6 +37,17 @@ namespace HD.Endpoints.Controllers.Postventa
             return Ok(result);
         }
 
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ActualizarNumeroClienteGarantia(Int64 numero, int idgarantia )
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Vencimiento_Garantias datos = new AD_Obtener_Vencimiento_Garantias(CadenaConexion);
+            var result = await datos.ActualizarNumero(numero, idgarantia);
+            return Ok(result);
+        }
+
         [HttpGet]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> PreciosGarantias()
