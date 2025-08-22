@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
+using HD.Clientes.Modelos.SC_Analisis.Credito_Condicionados;
 using HD.Notifications.Modelos;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,37 @@ namespace HD.Notifications.Consultas
                 mdl_HD_Notificaciones_Listado result = await factory.SQL.QueryFirstOrDefaultAsync<mdl_HD_Notificaciones_Listado>("HumayaDigital_Eventos.dbo.Obtener_Mensaje_Push", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<mdl_Notificacion_Usuarios_Especificos_View>  obtenerIDUsuario(int idencabezado, DateTime fecha_evento, string? usuario, string? usuarioNotificar)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    idencabezado = idencabezado,
+                    fecha = fecha_evento,
+                    usuario = usuario,
+                    usuarioNotificar = usuarioNotificar
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                //var result = await factory.SQL.QueryMultipleAsync(", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("HumayaDigital_Eventos.dbo.Obtener_Mensaje_Push_Especifico", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdl_Notificacion_Usuarios_Especificos_View view = new mdl_Notificacion_Usuarios_Especificos_View();
+                view.notificacionCuerpo = result.Read<mdl_HD_Notificaciones_Usuario_Especifico>().FirstOrDefault();
+                view.notificacionUsuarios = result.Read<mdl_Usuarios_Especificos>().ToList();
+
+                // Cerrar la conexión
+                factory.SQL.Close();
+
+                // Retornar la tupla con ambos sets
+                return view;
+
             }
             catch (System.Exception ex)
             {

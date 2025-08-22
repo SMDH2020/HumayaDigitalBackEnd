@@ -9,6 +9,7 @@ namespace Postventa.Modelos
 {
     public class mdl_Dashboard_Vencimiento_Garantias
     {
+        public int id_garantia { get; set; }
         public string modelo { get; set; }
         public string num_serie { get; set; }
         public string expiracion_format { get; set; }

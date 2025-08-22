@@ -110,9 +110,56 @@ namespace HD.Endpoints.Controllers.Eventos
             {
                 app_id = OneSignalAppId,
                 included_segments = new[] { "All" },
+                //include_player_ids = new[] { data.onSignal }, // ✅ CAMBIO AQUÍ
                 headings = new { en = data.Titulo ?? "Título por defecto" },
                 contents = new { en = resultado.mensaje ?? "Mensaje por defecto" },
                 data = new { targetPage = resultado.redireccion ?? "" }
+
+            };
+
+            var jsonPayload = JsonSerializer.Serialize(payload);
+            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+            client.DefaultRequestHeaders.Add("Authorization", $"Basic {OneSignalApiKey}");
+
+            var response = await client.PostAsync("https://onesignal.com/api/v1/notifications", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadAsStringAsync();
+                return Ok(JsonDocument.Parse(result));
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                return StatusCode((int)response.StatusCode, error);
+            }
+
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> enviarEspecifico(NotificacionDto data)
+        {
+
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Conseguir_Mensaje_Manual datos = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
+            data.usuario = Sesion.usuario();
+            var resultado = await datos.obtenerIDUsuario(data.idencabezado, data.fecha_evento, data.usuario, data.usuarioNotificar);
+
+            using var client = new HttpClient();
+
+            var playerIds = resultado.notificacionUsuarios?.Select(u => u.idSuscripcion).ToArray() ?? new string[] { };
+
+            var payload = new
+            {
+                app_id = OneSignalAppId,
+                //included_segments = new[] { "All" },
+                include_player_ids = playerIds, // ✅ CAMBIO AQUÍ
+
+                headings = new { en = data.Titulo ?? "Título por defecto" },
+                contents = new { en = resultado.notificacionCuerpo.mensaje ?? "Mensaje por defecto" },
+                data = new { targetPage = resultado.notificacionCuerpo.redireccion ?? "" }
 
             };
 
@@ -145,6 +192,8 @@ namespace HD.Endpoints.Controllers.Eventos
             public string? redireccion { get; set; }
             public DateTime fecha_evento { get; set; }
             public string? usuario { get; set; }
+            //public IEnumerable<string>? idSuscripcion { get; set; }
+            public string? usuarioNotificar { get; set; }
 
         }
     }

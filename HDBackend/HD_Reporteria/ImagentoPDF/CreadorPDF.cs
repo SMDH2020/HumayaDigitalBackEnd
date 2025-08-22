@@ -51,7 +51,7 @@ namespace HD_Reporteria.Solicitud_Credito
                 return new RPT_Result
                 {
                     extension = "pdf",
-                    nombredocumento = "Pedido maquinaria",
+                    nombredocumento = mdl.nombreDocumento,
                     documento = Convert.ToBase64String(doc)
                 };
             }

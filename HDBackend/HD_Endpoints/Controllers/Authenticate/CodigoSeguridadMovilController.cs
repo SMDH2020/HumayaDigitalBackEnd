@@ -38,7 +38,7 @@ namespace HD.Endpoints.Controllers.Authenticate
                 NE_Logs_App_HD log = new NE_Logs_App_HD(CadenaConexion);
                 await log.Guardar("Se inicio sesion en aplicacion", "APP", Login.usuario);
                 
-                return Ok(new { usuario = result.usuario, presas = result.presas, token });
+                return Ok(new { usuario = result.usuario, presas = result.presas, menu = result.menu ,token });
 
             }
             else

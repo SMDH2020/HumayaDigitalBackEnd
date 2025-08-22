@@ -63,6 +63,52 @@ namespace HD.Clientes.Consultas.AnalisisCredito.JDF_Condicionado
             }
         }
 
+        public async Task<mdlSolicitud_CRedito_Documentacion_Email> GuardarIMGtoPDF(string folio, int iddocumento, string documento, string comentarios, string extension, string vigencia, string usuario)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    folio = folio,
+                    iddocumento = iddocumento,
+                    documento = documento,
+                    comentarios = comentarios,
+                    extension = extension,
+                    vigencia = vigencia,
+                    usuario = usuario,
+                };
+                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Solicitud_Credito_Documentacion_JDF_Guardar_Email", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlSolicitud_CRedito_Documentacion_Email documentocargados = new mdlSolicitud_CRedito_Documentacion_Email();
+                documentocargados.documentacion = result.Read<mdlSolicitudCredito_Documentacion>().ToList();
+                documentocargados.notificar = result.Read<mdl_Notificar>().FirstOrDefault();
+                documentocargados.mdlSolicitud = result.Read<mdlSolicitudCredito_Enviar>().ToList();
+
+
+                // Verificar si notificar es 0
+                if (documentocargados.notificar != null && documentocargados.notificar.notificar == 0)
+                {
+                    // Crear un solo objeto mdlSolicitud con idusuario igual a 0
+                    documentocargados.mdlSolicitud = new List<mdlSolicitudCredito_Enviar>
+            {
+                        new mdlSolicitudCredito_Enviar {
+                            idempleado = 0,
+                            nombre = "",
+                            correo = ""
+                        }
+
+            };
+                }
+
+                factory.SQL.Close();
+                return documentocargados;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
         public async Task<mdlSolicitud_CRedito_Documentacion_Email> GuardarDocumentoReestructuracionNotificar(mdlSolicitudCredito_Documentacion_View view)
         {
             try
