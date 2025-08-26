@@ -24,10 +24,12 @@ namespace HD.Endpoints.Controllers.Credito
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             RPT_Result documento = CreadorPDF.Generar(mdl);
 
+            string cadenaBase64ConMime = "data:application/pdf;base64," + documento.documento;
+
             ADSolicitud_Credito_Documentacion_JDF_Guardar datos = new ADSolicitud_Credito_Documentacion_JDF_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             mdl.vigencia = DateTime.Now.AddMonths(1).ToString("yyyy/MM/dd");
-            var result = await datos.GuardarIMGtoPDF(mdl.folio, mdl.iddocumento, documento.documento, mdl.comentarios, documento.extension, mdl.vigencia, mdl.usuario);
+            var result = await datos.GuardarIMGtoPDF(mdl.folio, mdl.iddocumento, cadenaBase64ConMime, mdl.comentarios, documento.extension, mdl.vigencia, mdl.usuario);
 
             return Ok(documento);
         }
