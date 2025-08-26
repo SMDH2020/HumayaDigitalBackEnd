@@ -11,7 +11,7 @@ namespace Postventa.Consultas.Dashboard
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_Dashboard_Cotizaciones>> ObtenerCotizaciones(int ejercicio, int periodo_inicio, int periodo_fin, string whatsapp, string estado, string motivo, string adr, string sucursal)
+        public async Task<IEnumerable<mdl_Dashboard_Cotizaciones_list>> ObtenerCotizaciones(int ejercicio, int periodo_inicio, int periodo_fin, string whatsapp, string estado, string motivo, string adr, string sucursal)
         {
             try
             {
@@ -33,7 +33,7 @@ namespace Postventa.Consultas.Dashboard
 
 
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_Dashboard_Cotizaciones> result = await factory.SQL.QueryAsync<mdl_Dashboard_Cotizaciones>("PixelCode.Posventa.sp_Obtener_Cotizaciones_Abiertas", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Dashboard_Cotizaciones_list> result = await factory.SQL.QueryAsync<mdl_Dashboard_Cotizaciones_list>("PixelCode.Posventa.sp_Obtener_Cotizaciones_Abiertas", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

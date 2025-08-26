@@ -41,7 +41,7 @@ namespace Postventa.Consultas.Dashboard
                 view.proyecciones = result.Read<mdl_Dashboard_Proyecciones>().ToList();
                 view.servicio = result.Read<mdl_Dashboard_Servicio>().ToList();
                 view.refacciones = result.Read<mdl_Dashboard_Refacciones>().ToList();
-                view.cotizaciones = result.Read<mdl_Dashboard_Cotizaciones>().ToList();
+                view.cotizaciones = result.Read<mdl_Dashboard_Cotizaciones>().FirstOrDefault();
                 view.vencimiento_garantias_grafica = result.Read<mdl_Dashboard_Grafica_Garantia>().ToList();
 
 
