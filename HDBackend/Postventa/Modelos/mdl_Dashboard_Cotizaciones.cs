@@ -9,10 +9,10 @@
         public int por_mensajes_enviados { get; set; }
         public int esperando_respuesta { get; set; }
         public int por_esperando_respuesta { get; set; }
-        public int clientes_con_interes { get; set; }
-        public int por_clientes_con_interes { get; set; }
-        public int clientes_sin_interes { get; set; }
-        public int por_clientes_sin_interes { get; set; }
+        public int cliente_con_interes { get; set; }
+        public int por_cliente_con_interes { get; set; }
+        public int cliente_sin_interes { get; set; }
+        public int por_cliente_sin_interes { get; set; }
         public int tiempo_entrega { get; set; }
         public int por_tiempo_entrega { get; set; }
         public int precio_refaccion { get; set; }

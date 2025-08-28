@@ -1,6 +1,4 @@
 ﻿using HD.Security;
-using HD_Cobranza.GestionCobranza.Capturas;
-using HD_Cobranza.Reportes;
 using Microsoft.AspNetCore.Mvc;
 using Postventa.Consultas.Dashboard;
 using Postventa.Modelos;
@@ -40,7 +38,7 @@ namespace HD.Endpoints.Controllers.Postventa
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ActualizarNumeroClienteGarantia(Int64 numero, int idgarantia )
+        public async Task<ActionResult> ActualizarNumeroClienteGarantia(Int64 numero, int idgarantia)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Obtener_Vencimiento_Garantias datos = new AD_Obtener_Vencimiento_Garantias(CadenaConexion);
@@ -167,12 +165,12 @@ namespace HD.Endpoints.Controllers.Postventa
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ExcluirModelo(string modelo,string tipo)
+        public async Task<ActionResult> ExcluirModelo(string modelo, string tipo)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Obtener_Vencimiento_Garantias datos = new AD_Obtener_Vencimiento_Garantias(CadenaConexion);
             int usuario = int.Parse(Sesion.usuario());
-            var result = await datos.ExcluirModelo(modelo,tipo, usuario);
+            var result = await datos.ExcluirModelo(modelo, tipo, usuario);
             return Ok(result);
         }
         [HttpGet]
