@@ -29,7 +29,7 @@ namespace HD_Reporteria.Solicitud_Credito
                         document.Page(page =>
                         {
                             page.Size(PageSizes.A4);
-                            page.Margin(0); // sin márgenes
+                            page.Margin(25); // sin márgenes
                             page.PageColor(Colors.White);
 
                             page.Content().AlignCenter()
