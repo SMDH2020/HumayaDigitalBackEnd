@@ -77,12 +77,13 @@ namespace Usados.Modelos.Usados
             }
         }
 
-        public async Task<IEnumerable<mdl_Inventario>> ListadoFiltroMovil()
+        public async Task<IEnumerable<mdl_Inventario>> ListadoFiltroMovil(string usuario)
         {
             try
             {
                 var parametros = new
                 {
+                    usuario = usuario
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdl_Inventario> result = await factory.SQL.QueryAsync<mdl_Inventario>("Usados.sp_Inventario_Listado_Movil", parametros, commandType: System.Data.CommandType.StoredProcedure);

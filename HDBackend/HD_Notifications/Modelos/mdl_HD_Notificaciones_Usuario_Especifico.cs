@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HD.Clientes.Modelos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HD.Notifications.Modelos
 {
-    public class mdl_HD_Notificaciones_Listado
+    public class mdl_HD_Notificaciones_Usuario_Especifico
     {
         public int iddetalle { get; set; }
         public int idencabezado { get; set; }
@@ -18,11 +19,8 @@ namespace HD.Notifications.Modelos
         public string? ruta { get; set; }
 
         public string? tipo_alerta { get; set; }
-        public string? empleado { get; set; }
-
         public int frecuencia { get; set; }
         public string? redireccion { get; set; }
-
 
     }
 }

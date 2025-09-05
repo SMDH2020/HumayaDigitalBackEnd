@@ -31,5 +31,16 @@ namespace HD.Endpoints.Controllers.Finanzas
             string usuario = Sesion.usuario();
             return Ok(await nvl.Obtener(vm, usuario));
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> PGConsolidadoExcel(int ejercicio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Proyeccion_Gastos nvl = new AD_Proyeccion_Gastos(CadenaConexion);
+            string usuario = Sesion.usuario();
+            var result = await nvl.ObtenerExcel(ejercicio);
+            return Ok(await XLS_Proyeccion_Gastos.GenerarExcel(result,ejercicio));
+        }
     }
 }

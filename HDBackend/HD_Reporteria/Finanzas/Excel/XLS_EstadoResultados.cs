@@ -99,7 +99,11 @@ namespace HD_Reporteria.Finanzas.Excel
                             sheet.Cell(renglon, 8).Value = ln.lastimporte;
                             sheet.Cell(renglon, 9).Value = ln.lastpor / 100;
                             sheet.Cell(renglon, 10).Value = ln.lastdiffimporte;
-                            sheet.Cell(renglon, 11).Value = ln.lastdiffpor / 100;                                          
+                            sheet.Cell(renglon, 11).Value = ln.lastdiffpor / 100;     
+                            if(ln.clase!="")
+                            {
+                                sheet.Row(renglon).Style.Font.Bold = true;
+                            }
                             renglon++;
                         }
 

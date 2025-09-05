@@ -11,7 +11,7 @@ namespace Postventa.Consultas.Dashboard
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_Dashboard_Cotizaciones>> ObtenerCotizaciones(int ejercicio, int periodo_inicio, int periodo_fin, string whatsapp, string estado, string motivo, string adr, string sucursal)
+        public async Task<IEnumerable<mdl_Dashboard_Cotizaciones_list>> ObtenerCotizaciones(int ejercicio, int periodo_inicio, int periodo_fin,string facturado, string whatsapp, string estado, string motivo, string adr, string sucursal)
         {
             try
             {
@@ -26,6 +26,7 @@ namespace Postventa.Consultas.Dashboard
                 parametros.Add("periodo_inicio", periodo_inicio, System.Data.DbType.Int16);
                 parametros.Add("periodo_fin", periodo_fin, System.Data.DbType.Int16);
                 parametros.Add("whatsapp", whatsapp, System.Data.DbType.String);
+                parametros.Add("facturado", whatsapp, System.Data.DbType.String);
                 parametros.Add("estatus", estado, System.Data.DbType.String);
                 parametros.Add("motivo", motivo, System.Data.DbType.String);
                 parametros.Add("adr", adr, System.Data.DbType.String);
@@ -33,7 +34,7 @@ namespace Postventa.Consultas.Dashboard
 
 
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_Dashboard_Cotizaciones> result = await factory.SQL.QueryAsync<mdl_Dashboard_Cotizaciones>("PixelCode.Posventa.sp_Obtener_Cotizaciones_Abiertas", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Dashboard_Cotizaciones_list> result = await factory.SQL.QueryAsync<mdl_Dashboard_Cotizaciones_list>("PixelCode.Posventa.sp_Obtener_Cotizaciones_Abiertas", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

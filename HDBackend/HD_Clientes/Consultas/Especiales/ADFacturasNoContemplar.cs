@@ -48,6 +48,24 @@ namespace HD.Clientes.Consultas.Especiales
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { mensaje = ex.Message });
             }
         }
+        public async Task<IEnumerable<mdlFacturasnocontemplar_List>> Eliminar(string documento)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    documento
+                };
+                var result = await factory.SQL.QueryAsync<mdlFacturasnocontemplar_List>("Credito.sp_Facturas_no_contemplar_eliminar",parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { mensaje = ex.Message });
+            }
+        }
 
         public async Task<IEnumerable<mdlFacturasNoContemplar_Buscar>> Buscar(int documento)
         {
