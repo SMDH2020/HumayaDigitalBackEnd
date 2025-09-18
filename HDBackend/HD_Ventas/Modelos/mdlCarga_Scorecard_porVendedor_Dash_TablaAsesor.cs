@@ -21,5 +21,11 @@
         public int Real_TracUsa { get; set; }
         public int Objetivo_TriUsa { get; set; }
         public int Real_TriUsa { get; set; }
+
+        public int Objetivo_Garantia { get; set; }
+        public int Real_Garantia { get; set; }
+        public int Objetivo_Poliza { get; set; }
+        public int Real_Poliza { get; set; }
+
     }
 }
