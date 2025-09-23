@@ -5,6 +5,8 @@
         public int total_mensajes { get; set; }
         public int pendientes { get; set; }
         public int por_pendientes { get; set; }
+        public int facturados { get; set; }
+        public int por_facturados { get; set; }
         public int mensajes_enviados { get; set; }
         public int por_mensajes_enviados { get; set; }
         public int esperando_respuesta { get; set; }
