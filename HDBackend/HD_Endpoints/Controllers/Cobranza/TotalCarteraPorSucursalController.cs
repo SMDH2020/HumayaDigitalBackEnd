@@ -28,6 +28,18 @@ namespace HD.Endpoints.Controllers.Cobranza
             return Ok(result);
 
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ListadoDetalle(string adr, string sucursal, int ejercicio, int periodo, string linea)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADCob_Total_Cartera_Detalle datos = new ADCob_Total_Cartera_Detalle(CadenaConexion);
+            string usuario = Sesion.usuario();
+            var result = await datos.Listado(adr, sucursal, ejercicio, periodo, linea, usuario);
+            return Ok(result);
+
+        }
         [HttpGet]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> GenerarExcel(string adr, string sucursal)
@@ -39,6 +51,7 @@ namespace HD.Endpoints.Controllers.Cobranza
             var docresult = await XLSCob_TotalCartera_Sucursal.CrearResumenPorSucursal(result);
             return Ok(docresult);
         }
+
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
