@@ -43,6 +43,8 @@ namespace Postventa.Consultas.Dashboard
                 view.refacciones = result.Read<mdl_Dashboard_Refacciones>().ToList();
                 view.cotizaciones = result.Read<mdl_Dashboard_Cotizaciones>().FirstOrDefault();
                 view.vencimiento_garantias_grafica = result.Read<mdl_Dashboard_Grafica_Garantia>().ToList();
+                view.servicios_pendientes = result.Read<mdl_Dashboard_Servicios_Pendientes>().FirstOrDefault();
+
 
 
                 //view.tipo_cartera = result.Read<string>().FirstOrDefault();
