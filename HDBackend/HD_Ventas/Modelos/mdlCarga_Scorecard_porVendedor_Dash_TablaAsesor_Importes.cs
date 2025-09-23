@@ -10,6 +10,7 @@ namespace HD_Ventas.Modelos
     {
         public string? adr { get; set; }
         public string? sucursal { get; set; }
+        public string? idasesor { get; set; }
         public string? asesor { get; set; }
         public double Objetivo_Autoguiados { get; set; }
         public double Real_Autoguiados { get; set; }

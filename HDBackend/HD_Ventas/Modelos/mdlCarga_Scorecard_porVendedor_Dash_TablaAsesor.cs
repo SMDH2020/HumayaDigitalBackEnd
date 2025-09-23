@@ -4,6 +4,7 @@
     {
         public string? adr {  get; set; }
         public string? sucursal { get; set; }
+        public string? idasesor { get; set; }
         public string? asesor {  get; set; }
         public int Objetivo_Autoguiados { get; set; }
         public int Real_Autoguiados { get; set; }
