@@ -52,5 +52,43 @@ namespace HD_Cobranza.Capturas
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<IEnumerable<mdlCob_Total_Cartera_Detalle>> ListadoMensual(string adr, string sucursal, int ejercicio, int periodo, string linea)
+        {
+            if (adr == "0")
+            {
+                adr = "";
+            }
+
+            if (sucursal == "0")
+            {
+                sucursal = "";
+            }
+
+            if (linea == "0")
+            {
+                linea = "";
+            }
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    region = adr,
+                    sucursales = sucursal,
+                    lineas = prmLineas.Value(linea),
+                    ejercicio = ejercicio,
+                    periodo = periodo
+                };
+                var result = await factory.SQL.QueryAsync<mdlCob_Total_Cartera_Detalle>("EQUIP.Credito.sp_Obtener_Total_Cartera_Mensual", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }
