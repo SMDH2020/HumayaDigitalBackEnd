@@ -40,6 +40,20 @@ namespace HD.Endpoints.Controllers.Cobranza
             return Ok(result);
 
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GenerarExcelDetalle(string adr, string sucursal, int ejercicio, int periodo, string linea)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADCob_Total_Cartera_Detalle datos = new ADCob_Total_Cartera_Detalle(CadenaConexion);
+            string usuario = Sesion.usuario();
+            var result = await datos.Listado(adr, sucursal, ejercicio, periodo, linea, usuario);
+            var docresult = await XLSFacturacionVencidas.CrearExcelTotalCartera(result);
+            return Ok(docresult);
+
+        }
+
         [HttpGet]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> GenerarExcel(string adr, string sucursal)

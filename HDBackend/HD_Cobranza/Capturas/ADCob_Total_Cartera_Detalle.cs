@@ -25,7 +25,12 @@ namespace HD_Cobranza.Capturas
 
             if(sucursal == "0")
             {
-                sucursal = "100";
+                sucursal = "";
+            }
+
+            if (linea == "0")
+            {
+                linea = "";
             }
             try
             {
@@ -34,10 +39,10 @@ namespace HD_Cobranza.Capturas
                 {
                     region = adr,
                     sucursales = sucursal,
-                    lineas = linea,
+                    lineas = prmLineas.Value(linea),
                     usuario = 1
                 };
-                var result = await factory.SQL.QueryAsync<mdlCob_Total_Cartera_Detalle>("EQUIP.Credito.sp_Obtener_TotalCartera_Detalle", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryAsync<mdlCob_Total_Cartera_Detalle>("EQUIP.Credito.sp_Obtener_Total_Cartera", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
 
                 return result;
