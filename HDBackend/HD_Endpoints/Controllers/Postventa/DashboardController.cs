@@ -1,4 +1,6 @@
 ﻿using HD.Security;
+using HD_Ventas.Consultas;
+using HD_Ventas.Modelos;
 using Microsoft.AspNetCore.Mvc;
 using Postventa.Consultas.Dashboard;
 using Postventa.Modelos;
@@ -183,5 +185,103 @@ namespace HD.Endpoints.Controllers.Postventa
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ServiciosPendientes(int ejercicio, int periodo_inicio, int periodo_fin, string adr, string sucursal, int hrsuso, string msj_estatus, string motivo, string facturado)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Servicios_Pendientes datos = new AD_Obtener_Servicios_Pendientes(CadenaConexion);
+            var result = await datos.ObtenerServicios(ejercicio, periodo_inicio, periodo_fin, adr, sucursal, hrsuso, msj_estatus, motivo, facturado);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> AgregarContactoServiciosPendientes(mdl_Agregar_Contacto_Servicios_Pendientes mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Servicios_Pendientes datos = new AD_Obtener_Servicios_Pendientes(CadenaConexion);
+            //mdl.usuario = int.Parse(Sesion.usuario());
+            await datos.AgregarContactoServiciosPendientes(mdl);
+
+            return Ok(new
+            {
+                mensaje = "Guardado Correctamente",
+            }
+            );
+        }
+
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> PaquetesmantenimientoDisponibles()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Servicios_Pendientes datos = new AD_Obtener_Servicios_Pendientes(CadenaConexion);
+            var result = await datos.ObtenerPaquetesMantenimiento();
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetPaqueteEditar(int id_paquete)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Servicios_Pendientes datos = new AD_Obtener_Servicios_Pendientes(CadenaConexion);
+            var result = await datos.ObtenerPaquetesMantenimientoid(id_paquete);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> AgregarPaqueteMantenimiento(mdl_Paquetes_Mantenimiento mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Servicios_Pendientes datos = new AD_Obtener_Servicios_Pendientes(CadenaConexion);
+            //mdl.usuario = int.Parse(Sesion.usuario());
+            await datos.AgregarPaqueteMantenimiento(mdl);
+
+            return Ok(new
+            {
+                mensaje = "Guardado Correctamente",
+            }
+            );
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetPreciosMantenimiento(int id_paquete)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Servicios_Pendientes datos = new AD_Obtener_Servicios_Pendientes(CadenaConexion);
+            var result = await datos.ObtenerPreciosMantenimiento(id_paquete);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetPrecioModeloMantenimiento(int id_precio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Servicios_Pendientes datos = new AD_Obtener_Servicios_Pendientes(CadenaConexion);
+            var result = await datos.ObtenerPrecioMantenimientoModelo(id_precio);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> AgregarPreciosMantenimiento(mdl_Precios_Mantenimiento_porModelo mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Servicios_Pendientes datos = new AD_Obtener_Servicios_Pendientes(CadenaConexion);
+            //mdl.usuario = int.Parse(Sesion.usuario());
+            await datos.GuardarPreciosMantenimiento(mdl);
+
+            return Ok(new
+            {
+                mensaje = "Guardado Correctamente",
+            }
+            );
+        }
     }
 }
