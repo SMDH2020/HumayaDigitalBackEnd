@@ -14,6 +14,7 @@
         public string modelo { get; set; }
         public int grupo { get; set; }
         public string estado { get; set; }
+        public string motivo {  get; set; }
         public string mensaje_enviado {  get; set; }
         public string facturado { get; set; }
     }

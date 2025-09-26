@@ -187,11 +187,11 @@ namespace HD.Endpoints.Controllers.Postventa
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ServiciosPendientes(int ejercicio, int periodo_inicio, int periodo_fin, string adr, string sucursal, int hrsuso, string msj_estatus, string facturado)
+        public async Task<ActionResult> ServiciosPendientes(int ejercicio, int periodo_inicio, int periodo_fin, string adr, string sucursal, int hrsuso, string msj_estatus, string motivo, string facturado)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Obtener_Servicios_Pendientes datos = new AD_Obtener_Servicios_Pendientes(CadenaConexion);
-            var result = await datos.ObtenerServicios(ejercicio, periodo_inicio, periodo_fin, adr, sucursal, hrsuso, msj_estatus, facturado);
+            var result = await datos.ObtenerServicios(ejercicio, periodo_inicio, periodo_fin, adr, sucursal, hrsuso, msj_estatus, motivo, facturado);
             return Ok(result);
         }
 
