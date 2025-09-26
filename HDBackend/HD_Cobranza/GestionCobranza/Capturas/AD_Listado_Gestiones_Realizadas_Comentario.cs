@@ -11,20 +11,20 @@ namespace HD_Cobranza.GestionCobranza.Capturas
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_Listado_Gestiones_Realizadas_Comentario>> Get(int ejercicio, int periodo, string adr, string sucursal, int responsable)
+        public async Task<IEnumerable<mdl_Listado_Gestiones_Realizadas_Comentario>> Get(string? fechainicio, string? fechafin, string adr, string sucursal, int responsable)
         {
             try
             {
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var parametros = new
                 {
-                    ejercicio = ejercicio,
-                    periodo = periodo,
+                    fechainicio = fechainicio,
+                    fechafin = fechafin,
                     adr = adr,
                     sucursal = sucursal,
                     responsable = responsable
                 };
-                IEnumerable<mdl_Listado_Gestiones_Realizadas_Comentario> result = await factory.SQL.QueryAsync<mdl_Listado_Gestiones_Realizadas_Comentario>("GestionCobranza.sp_Listado_Gestiones_Realizadas", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Listado_Gestiones_Realizadas_Comentario> result = await factory.SQL.QueryAsync<mdl_Listado_Gestiones_Realizadas_Comentario>("GestionCobranza.sp_Listado_Gestiones_Realizadas_porRango", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

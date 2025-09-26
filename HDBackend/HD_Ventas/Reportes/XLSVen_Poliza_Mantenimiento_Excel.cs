@@ -1,13 +1,16 @@
 ﻿using ClosedXML.Excel;
 using HD.AccesoDatos;
-using HD_Cobranza.Reportes;
-using HD_Cobranza.Modelos;
-using DocumentFormat.OpenXml.Bibliography;
-using HD_Cobranza.GestionCobranza.Modelos;
+using HD_Ventas.Modelos;
+using HD_Ventas.Modelos.PaqueteServicios;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace HD_Cobranza.Reportes
+namespace HD_Ventas.Reportes
 {
-    public class XLSCob_Listado_Convenios_Realizados
+    public class XLSVen_Poliza_Mantenimiento_Excel
     {
         public static string obtenernombre_mes(int numeromes)
         {
@@ -42,11 +45,11 @@ namespace HD_Cobranza.Reportes
 
             }
         }
-        public static Task<DocResult> GenerarExcel(IEnumerable<mdl_Detalle_Clientes_Gestionar_Convenios> detalle, string? titulo)
+        public static Task<DocResult> GenerarExcel(IEnumerable<mdl_Poliza_Mantenimiento_Listado> scorecard, int ejercicio, int mes_actual, int ejercicio_inicio, int periodo_inicio)
         {
             try
             {
-                string sheetname = "CONVENIOS REALIZADOS";
+                string sheetname = "Poliza Mantenimiento";
                 string ruta = $"C:\\SMDH\\Procesados\\{sheetname}.xlsx";
                 using (var workbook = new XLWorkbook())
                 {
@@ -54,11 +57,11 @@ namespace HD_Cobranza.Reportes
                     sheet.Style.Font.FontName = "Calibri";
                     sheet.Style.Font.FontSize = 10;
 
-                    int renglon = XLSEncabezado.Encabezado(ref sheet, titulo, 6);
+                    int renglon = XLSEncabezado.Encabezado(ref sheet, $"POLIZA MANTENIMIENTO", 13);
 
                     //renglon += 1;
 
-                    //sheet.Range(renglon, 1, renglon, 13).Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
+                    sheet.Range(renglon, 1, renglon, 13).Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
 
                     //sheet.Range(renglon, 2, renglon, 4).Merge().Value = obtenernombre_mes(mes_actual);
                     //sheet.Range(renglon, 2, renglon, 4).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
@@ -73,17 +76,26 @@ namespace HD_Cobranza.Reportes
                     //int renglonrecuperaciontot = renglon;
 
 
-                    //renglon++;
+                    renglon++;
 
                     sheet.Cell(renglon, 1).Value = "SUCURSAL";
-                    sheet.Cell(renglon, 2).Value = "RAZON SOCIAL";
-                    sheet.Cell(renglon, 3).Value = "SALDO";
-                    sheet.Cell(renglon, 4).Value = "MONTO DE CONVENIO";
-                    sheet.Cell(renglon, 5).Value = "VENCIMIENTO DE CONVENIO";
-                    sheet.Cell(renglon, 6).Value = "RESPONSABLE";
+                    sheet.Cell(renglon, 2).Value = "CLIENTE";
+                    sheet.Cell(renglon, 3).Value = "SERIE";
+                    sheet.Cell(renglon, 4).Value = "PERIODO";
+                    sheet.Cell(renglon, 5).Value = "NUMERO FACTURA";
+                    sheet.Cell(renglon, 6).Value = "INTERNA/EXTERNA";
+                    sheet.Cell(renglon, 7).Value = "MANO DE OBRA";
+                    sheet.Cell(renglon, 8).Value = "REFACCIONES";
+                    sheet.Cell(renglon, 9).Value = "KM";
+                    sheet.Cell(renglon, 10).Value = "MONTO FACTURADO";
+                    sheet.Cell(renglon, 11).Value = "ORDEN DE TRABAJO";
+                    sheet.Cell(renglon, 12).Value = "Mes";
+                    sheet.Cell(renglon, 13).Value = "VENDEDOR";
+
+
 
                     // Estilo para los encabezados de la tabla
-                    var rango = sheet.Range(renglon, 1, renglon, 6);
+                    var rango = sheet.Range(renglon, 1, renglon, 13);
                     rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
                     rango.Style.Font.Bold = true;
                     rango.Style.Font.FontSize = 12;
@@ -93,26 +105,51 @@ namespace HD_Cobranza.Reportes
                     renglon++;
 
                     // Llenar la tabla con los datos
-                    foreach (var det in detalle)
+                    foreach (var sco in scorecard)
                     {
-                        sheet.Cell(renglon, 1).Value = det.sucursal;
-                        sheet.Cell(renglon, 2).Value = det.razon_social?.ToUpper();
-                        sheet.Cell(renglon, 3).Value = det.saldo;
-                        sheet.Cell(renglon, 4).Value = det.monto;
-                        sheet.Cell(renglon, 5).Value = det.fecha_convenio;
-                        sheet.Cell(renglon, 6).Value = det.NombreCompleto?.ToUpper();
+                        sheet.Cell(renglon, 1).Value = sco.sucursal;
+                        sheet.Cell(renglon, 2).Value = sco.cliente;
+                        sheet.Cell(renglon, 3).Value = sco.serie;
+                        sheet.Cell(renglon, 4).Value = sco.periodo;
+                        sheet.Cell(renglon, 5).Value = sco.num_factura;
+                        sheet.Cell(renglon, 6).Value = sco.tipo == "I" ? "Interno" : sco.tipo == "E" ? "Externa" : "";
+                        sheet.Cell(renglon, 7).Value = sco.mano_obra;
+                        sheet.Cell(renglon, 8).Value = sco.refacciones;
+                        sheet.Cell(renglon, 9).Value = sco.km;
+                        sheet.Cell(renglon, 10).Value = sco.facturacion;
+                        sheet.Cell(renglon, 11).Value = sco.orden_trabajo;
+                        sheet.Cell(renglon, 12).Value = obtenernombre_mes(sco.mes);
+                        sheet.Cell(renglon, 13).Value = sco.vendedor;
+
+
                         renglon++;
                     }
 
-                    sheet.Column(3).Style.NumberFormat.Format = "#,##0.00";
-                    sheet.Column(4).Style.NumberFormat.Format = "#,##0.00";
+                    //float totalImporteProyectado = scorecard.Sum(sco => sco.importe_proyectado);
+                    //float totalImporte = scorecard.Sum(sco => sco.importe);
+                    //float totalImporteProyectadoAcumulado = scorecard.Sum(sco => sco.importe_proyectado_acumulado);
+                    //float totalImporteAcumulado = scorecard.Sum(sco => sco.importe_acumulado);
 
+                    //sheet.Cell(renglon, 1).Value = "IMPORTE TOTAL";
+                    //sheet.Cell(renglon, 2).Value = totalImporteAcumulado;
+                    //sheet.Cell(renglon, 3).Value = totalImporte;
+                    //sheet.Cell(renglon, 4).Value = "";
+                    //sheet.Cell(renglon, 5).Value = totalImporteProyectadoAcumulado;
+                    //sheet.Cell(renglon, 6).Value = totalImporteAcumulado;
+                    //sheet.Cell(renglon, 7).Value = "";
+
+                    //sheet.Row(renglon).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(7).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(8).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(9).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(10).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(11).Style.NumberFormat.Format = "#,##0.00";
                     //sheet.Column(6).Style.NumberFormat.Format = "#,##0.00";
                     //sheet.Column(7).Style.NumberFormat.Format = "0.0 %";
 
-                    //rango = sheet.Range(renglon, 1, renglon, 8);
-                    //rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#e5e6e6");
-                    //rango.Style.Font.Bold = true;
+                    rango = sheet.Range(renglon, 1, renglon, 13);
+                    rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#e5e6e6");
+                    rango.Style.Font.Bold = true;
 
                     sheet.Columns().AdjustToContents();
                     workbook.SaveAs(ruta);

@@ -42,7 +42,7 @@ namespace HD_Reporteria.Cobranza
             }
         }
 
-        public static RPT_Result GenerarPDF(IEnumerable<mdl_Detalle_Clientes_Gestionar_Convenios> detalle, int ejercicio, int periodo)
+        public static RPT_Result GenerarPDF(IEnumerable<mdl_Detalle_Clientes_Gestionar_Convenios> detalle, string? titulo)
         {
             try
             {
