@@ -11,7 +11,7 @@ namespace Postventa.Consultas.Dashboard
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_Servicios_Pendientes>> ObtenerServicios(int ejercicio, int periodo_inicio, int periodo_fin, string adr, string sucursal, int hrsuso, string msj_estatus, string facturado)
+        public async Task<IEnumerable<mdl_Servicios_Pendientes>> ObtenerServicios(int ejercicio, int periodo_inicio, int periodo_fin, string adr, string sucursal, int hrsuso, string msj_estatus, string motivo, string facturado)
         {
             try
             {
@@ -23,6 +23,7 @@ namespace Postventa.Consultas.Dashboard
                 parametros.Add("sucursal", sucursal, System.Data.DbType.String);
                 parametros.Add("hrsuso", hrsuso, System.Data.DbType.Int16);
                 parametros.Add("msj_estatus", msj_estatus, System.Data.DbType.String);
+                parametros.Add("motivo", motivo, System.Data.DbType.String);
                 parametros.Add("facturado", facturado, System.Data.DbType.String);
 
                 FactoryConection factory = new FactoryConection(CadenaConexion);
