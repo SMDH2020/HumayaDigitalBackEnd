@@ -42,7 +42,7 @@ namespace HD_Cobranza.Reportes
 
             }
         }
-        public static Task<DocResult> GenerarExcel(IEnumerable<mdl_Listado_Gestiones_Realizadas_Comentario> detalle, int ejercicio, int periodo)
+        public static Task<DocResult> GenerarExcel(IEnumerable<mdl_Listado_Gestiones_Realizadas_Comentario> detalle, string? titulo)
         {
             try
             {
@@ -54,7 +54,7 @@ namespace HD_Cobranza.Reportes
                     sheet.Style.Font.FontName = "Calibri";
                     sheet.Style.Font.FontSize = 10;
 
-                    int renglon = XLSEncabezado.Encabezado(ref sheet, $"BITACORA DE GESTIONES REALIZADAS {obtenernombre_mes(periodo) + " " + ejercicio}", 11);
+                    int renglon = XLSEncabezado.Encabezado(ref sheet, titulo, 11);
 
                     //renglon += 1;
 

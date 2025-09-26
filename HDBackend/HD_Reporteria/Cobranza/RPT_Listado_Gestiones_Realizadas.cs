@@ -42,7 +42,7 @@ namespace HD_Reporteria.Cobranza
             }
         }
 
-        public static RPT_Result GenerarPDF(IEnumerable<mdl_Listado_Gestiones_Realizadas_Comentario> detalle, int ejercicio, int periodo)
+        public static RPT_Result GenerarPDF(IEnumerable<mdl_Listado_Gestiones_Realizadas_Comentario> detalle, string? titulo)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace HD_Reporteria.Cobranza
 
                                 row.ConstantColumn(693).PaddingTop(35).Height(50).Background("#477c2c").Row(row2 =>
                                 {
-                                    row2.RelativeItem().Padding(10).PaddingLeft(30).Text("GESTIONES REALIZADAS " + obtenernombre_mes(periodo) + " " + ejercicio).FontColor("#fff").FontSize(20).Bold().FontFamily(fontFamily);
+                                    row2.RelativeItem().Padding(10).PaddingLeft(30).Text(titulo).FontColor("#fff").FontSize(20).Bold().FontFamily(fontFamily);
                                     //+obtenernombre_mes(periodo) + " " + ejercicio
                                 });
                             });
