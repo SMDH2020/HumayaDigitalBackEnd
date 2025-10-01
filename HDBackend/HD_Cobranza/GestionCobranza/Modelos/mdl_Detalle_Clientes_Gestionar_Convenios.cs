@@ -4,6 +4,7 @@
     {
         public string? folio { get; set; }
         public string? razon_social { get; set; }
+        public string? objecion { get; set; }
         public double saldo { get; set; }
         public double monto { get; set; }
 
