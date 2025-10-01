@@ -18,6 +18,7 @@
         public string? fecha_contacto { get; set; }
         public string? fecha_compromiso { get; set; }
         public string? convenio { get; set; }
+        public string? comentario { get; set; }
         public string? objecion { get; set; }
         public string? observaciones { get; set; }
         public string? responsable { get; set; }

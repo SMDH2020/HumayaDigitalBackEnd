@@ -11,7 +11,7 @@ namespace HD_Cobranza.GestionCobranza.Capturas
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_Detalle_Clientes_Gestionar_Convenios>> Get(string? fechainicio, string? fechafin, string adr, string sucursal, int responsable)
+        public async Task<IEnumerable<mdl_Detalle_Clientes_Gestionar_Convenios>> Get(string? fechainicio, string? fechafin, string adr, string sucursal, int responsable, int objecion)
         {
             try
             {
@@ -22,7 +22,8 @@ namespace HD_Cobranza.GestionCobranza.Capturas
                     fechafin = fechafin,
                     adr = adr,
                     sucursal = sucursal,
-                    responsable = responsable
+                    responsable = responsable,
+                    objecion = objecion
                 };
                 IEnumerable<mdl_Detalle_Clientes_Gestionar_Convenios> result = await factory.SQL.QueryAsync<mdl_Detalle_Clientes_Gestionar_Convenios>("GestionCobranza.sp_Detalle_Clientes_Gestionar_Parametros_PorRango", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
