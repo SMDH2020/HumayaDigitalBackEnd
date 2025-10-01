@@ -49,7 +49,7 @@ namespace HD_Cobranza.GestionCobranza.Capturas
 
                 var result = await factory.SQL.QueryAsync<mdl_Gestion_Cobranza_Reestructuracion>("GestionCobranza.sp_Guardar_Gestion_Cobranza", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
-                enviarcorreo(mdl.documento_reestructuracion, mdl.idcliente, email, password, mdl.comentario_reestructuracion);
+                //enviarcorreo(mdl.documento_reestructuracion, mdl.idcliente, email, password, mdl.comentario_reestructuracion);
                 return result;
             }
             catch (System.Exception ex)
