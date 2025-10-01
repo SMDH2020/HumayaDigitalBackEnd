@@ -37,8 +37,8 @@ namespace HD_Ventas.Consultas
                 var parametros = new
                 {
                     idrol=obj.idrol,
-                    documento=obj.idrol,
-                    idusuario = obj.usuario
+                    documento=obj.documento,
+                    usuario = obj.usuario
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 await factory.SQL.QueryAsync<mdlSimulador_documento_obtener>("sp_simulador_incentivo_documento_guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
