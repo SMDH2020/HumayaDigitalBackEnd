@@ -12,14 +12,15 @@ namespace HD_Ventas.Consultas
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlListadoLineasVentas>> Linea(string descripcion, int usuario)
+        public async Task<IEnumerable<mdlListadoLineasVentas>> Linea(string descripcion, int usuario,string departamento)
         {
             try
             {
                 var parametros = new
                 {
                     @descripcion = descripcion,
-                    @usuario = usuario
+                    @usuario = usuario,
+                    @departamento = departamento
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdlListadoLineasVentas> result = await factory.SQL.QueryAsync<mdlListadoLineasVentas>("Ventas.sp_Guardar_Linea_Venta", parametros, commandType: System.Data.CommandType.StoredProcedure);

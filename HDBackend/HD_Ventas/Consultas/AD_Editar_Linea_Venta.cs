@@ -11,7 +11,7 @@ namespace HD_Ventas.Consultas
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlListadoLineasVentas>> EditarLinea(int idlinea, string descripcion, int estatus, int usuario)
+        public async Task<IEnumerable<mdlListadoLineasVentas>> EditarLinea(int idlinea, string descripcion, int estatus, int usuario,string departamento)
         {
             try
             {
@@ -20,7 +20,8 @@ namespace HD_Ventas.Consultas
                     @idlinea = idlinea,
                     @descripcion = descripcion,
                     @estatus = estatus,
-                    @usuario = usuario
+                    @usuario = usuario,
+                    @departamento=departamento
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdlListadoLineasVentas> result = await factory.SQL.QueryAsync<mdlListadoLineasVentas>("Ventas.sp_Editar_Linea_Venta", parametros, commandType: System.Data.CommandType.StoredProcedure);
