@@ -38,24 +38,24 @@ namespace HD.Endpoints.Controllers.Ventas
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> AgregarLinea(string descripcion, int usuario)
+        public async Task<ActionResult> AgregarLinea(string descripcion,string departamento)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Agregar_Linea_Venta datos = new AD_Agregar_Linea_Venta(CadenaConexion);
-            usuario = int.Parse(Sesion.usuario());
-            var result = await datos.Linea(descripcion, usuario);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.Linea(descripcion, usuario,departamento);
             return Ok(result);
         }
 
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> EditarLinea(int idlinea, string descripcion, int estatus, int usuario)
+        public async Task<ActionResult> EditarLinea(int idlinea, string descripcion, int estatus, string departamento)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Editar_Linea_Venta datos = new AD_Editar_Linea_Venta(CadenaConexion);
-            usuario = int.Parse(Sesion.usuario());
-            var result = await datos.EditarLinea(idlinea, descripcion, estatus, usuario);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.EditarLinea(idlinea, descripcion, estatus, usuario,departamento);
             return Ok(result);
         }
     }
