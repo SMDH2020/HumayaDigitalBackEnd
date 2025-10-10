@@ -4,5 +4,6 @@
     {
         public int idlinea {  get; set; }
         public string descripcion {  get; set; }
+        public int iddepartamento { get; set; }
     }
 }

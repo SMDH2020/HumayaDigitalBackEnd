@@ -21,11 +21,11 @@ namespace HD.Endpoints.Controllers.Ventas
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> PromocionesDisponibles()
+        public async Task<ActionResult> PromocionesDisponibles(string estado)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Promociones_Disponibles datos = new AD_Promociones_Disponibles(CadenaConexion);
-            var result = await datos.ObtenerPromocionesDisponibles();
+            var result = await datos.ObtenerPromocionesDisponibles(estado);
             return Ok(result);
         }
 
@@ -102,7 +102,7 @@ namespace HD.Endpoints.Controllers.Ventas
             AD_Promociones_Disponibles datos_documentos = new AD_Promociones_Disponibles(CadenaConexion);
             foreach (mdl_Modelos_Esquema data in mdl.modelosEsquema)
             {
-                await datos_documentos.AgregarModelosEsquema(data.idmodelo, data.idpromocion, data.precio_promocion, usuario);
+                await datos_documentos.AgregarModelosEsquema(data.idmodelo, data.idpromocion, data.costo_refacciones, data.costo_servicios, data.precio_promocion, usuario);
             }
 
             return Ok(new
