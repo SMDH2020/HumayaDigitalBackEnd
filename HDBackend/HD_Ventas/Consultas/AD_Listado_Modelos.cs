@@ -69,16 +69,16 @@ namespace HD_Ventas.Consultas
             }
         }
 
-        public async Task<IEnumerable<mdl_Listado_Lineas_DropDownList>> ListadoLineasDropdownlist()
+        public async Task<IEnumerable<mdl_Listado_Lineas_DropDownList>> ListadoLineasDropdownlist(int usuario)
         {
             try
             {
                 var parametros = new
                 {
-                    //usuario = usuario
+                    usuario = usuario
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_Listado_Lineas_DropDownList> result = await factory.SQL.QueryAsync<mdl_Listado_Lineas_DropDownList>("Ventas.sp_Obtener_Lineas_Dropdownlist", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Listado_Lineas_DropDownList> result = await factory.SQL.QueryAsync<mdl_Listado_Lineas_DropDownList>("Ventas.sp_Obtener_Lineas_Dropdownlist_Permisos", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

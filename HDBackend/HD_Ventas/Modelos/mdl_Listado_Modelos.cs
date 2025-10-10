@@ -9,6 +9,8 @@
         public string linea { get; set; }
         public string caracteristicas { get; set; }
         public int estatus { get; set; }
+        public float costo_refacciones {  get; set; }
+        public float costo_servicios { get; set; }
         public float precio_lista { get; set; }
         public string moneda { get; set; }
         public string tiene_fotografia {  get; set; }

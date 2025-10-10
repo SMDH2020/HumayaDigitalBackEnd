@@ -45,7 +45,6 @@ namespace HD.Endpoints.Controllers.Authenticate
             AD_RelUsuariosMenu_Listado datos = new AD_RelUsuariosMenu_Listado(CadenaConexion);
             var result = await datos.ListadoUsuarioMenu( idmodulo, idusuario);
             return Ok(result);
-
         }
 
         [HttpGet]

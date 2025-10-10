@@ -28,6 +28,8 @@ namespace HD_Ventas.Consultas
                     idlinea = mdl.idlinea,
                     modelo = mdl.modelo,
                     descripcion_mdl = mdl.descripcion_mdl,
+                    costo_refacciones = mdl.costo_refacciones,
+                    costo_servicios = mdl.costo_servicio,
                     precio_lista = mdl.precio_lista,
                     moneda = mdl.moneda,
                     usuario = mdl.usuario,

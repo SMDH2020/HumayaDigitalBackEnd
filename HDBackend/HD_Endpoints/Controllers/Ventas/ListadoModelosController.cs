@@ -52,7 +52,8 @@ namespace HD.Endpoints.Controllers.Ventas
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Listado_Modelos datos = new AD_Listado_Modelos(CadenaConexion);
-            var result = await datos.ListadoLineasDropdownlist();
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.ListadoLineasDropdownlist(usuario);
             return Ok(result);
         }
 

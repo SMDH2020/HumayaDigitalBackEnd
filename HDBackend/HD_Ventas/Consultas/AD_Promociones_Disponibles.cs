@@ -12,12 +12,13 @@ namespace HD_Ventas.Consultas
             CadenaConexion = _cadenaconexion;
         }
 
-        public async Task<IEnumerable<mdl_Promociones_Disponibles>> ObtenerPromocionesDisponibles()
+        public async Task<IEnumerable<mdl_Promociones_Disponibles>> ObtenerPromocionesDisponibles(string estado)
         {
             try
             {
 
                 var parametros = new DynamicParameters();
+                parametros.Add("estado", estado, System.Data.DbType.String);
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdl_Promociones_Disponibles> result = await factory.SQL.QueryAsync<mdl_Promociones_Disponibles>("Ventas.sp_Obtener_Promociones_Disponibles", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
@@ -121,7 +122,7 @@ namespace HD_Ventas.Consultas
             }
         }
 
-        public async Task<bool> AgregarModelosEsquema(int idmodelo, int idpromocion, float precio_promocion, int usuario)
+        public async Task<bool> AgregarModelosEsquema(int idmodelo, int idpromocion, float costo_refacciones, float costo_servicios, float precio_promocion, int usuario)
         {
             try
             {
@@ -129,6 +130,8 @@ namespace HD_Ventas.Consultas
                 var parametros = new DynamicParameters();
                 parametros.Add("idmodelo", idmodelo, System.Data.DbType.Int16);
                 parametros.Add("idpromocion", idpromocion, System.Data.DbType.Int16);
+                parametros.Add("costo_refacciones", costo_refacciones, System.Data.DbType.Decimal);
+                parametros.Add("costo_servicios", costo_servicios, System.Data.DbType.Decimal);
                 parametros.Add("precio_promocion", precio_promocion, System.Data.DbType.Decimal);
                 parametros.Add("usuario", usuario, System.Data.DbType.Int16);
 
