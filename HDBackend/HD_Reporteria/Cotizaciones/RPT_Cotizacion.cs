@@ -180,8 +180,10 @@ namespace HD_Reporteria.Cotizaciones
                     modelos = JsonConvert.DeserializeObject<List<mdl_Detalle_Cotizacion_Imprimir>>(jsonEscapado);
                 }
                 double sumaPrecioLista = modelos.Sum(m => m.precio_lista);
-                double sumaDescuento = modelos.Sum(m => m.descuento);
-                double sumaPrecioTotal = modelos.Sum(m => m.precio_promocion);
+                double sumaDescuentoPromocion = modelos.Sum(m => m.descuento_promocion);
+                double sumaPrecioPromocion = modelos.Sum(m => m.precio_promocion);
+                double sumaDescuento = modelos.Sum(m => m.descuento_adicional);
+                double sumaPrecioTotal = modelos.Sum(m => m.precio_venta);
 
                 byte[] doc = QuestPDF.Fluent.Document.Create(document =>
                 {
@@ -279,7 +281,7 @@ namespace HD_Reporteria.Cotizaciones
                                     row.RelativeItem().AlignRight().Text(txt =>
                                     {
                                         txt.Span("Moneda: ").FontSize(9).Bold();
-                                        txt.Span(modelos.FirstOrDefault().moneda).FontSize(9);
+                                        txt.Span(detalle.First().moneda).FontSize(9);
                                     });
 
                                 });
@@ -408,35 +410,50 @@ namespace HD_Reporteria.Cotizaciones
                                                 });
                                             }
                                             
-                                            float anchoLabel = 60;
+                                            float anchoLabel = 110;
                                             float anchoValor = 60;
 
                                             row.RelativeItem().PaddingTop(5).AlignRight().AlignBottom().Column(precios =>
                                             {
+                                                if (detalle.First().imprimir_precio_lista == 1)
+                                                {
+                                                    precios.Item().Row(row =>
+                                                    {
+                                                        row.ConstantItem(anchoLabel).AlignLeft().Text("Precio de lista:").FontSize(10).Bold();
+                                                        row.ConstantItem(anchoValor).AlignRight().Text((modelo.precio_lista).ToString("N0")).FontSize(10);
+                                                    });
+
+                                                    precios.Item().Row(row =>
+                                                    {
+                                                        row.ConstantItem(anchoLabel).AlignLeft().Text("Descuento:").FontSize(10).Bold();
+                                                        row.ConstantItem(anchoValor).AlignRight().Text(modelo.descuento_promocion.ToString("N0")).FontSize(10);
+                                                    });
+                                                }
+
                                                 precios.Item().Row(row =>
                                                 {
                                                     row.ConstantItem(anchoLabel).AlignLeft().Text("Subtotal:").FontSize(10).Bold();
-                                                    row.ConstantItem(anchoValor).AlignRight().Text((modelo.precio_promocion != 0 ? modelo.precio_promocion : modelo.precio_lista).ToString("N0")).FontSize(10);
+                                                    row.ConstantItem(anchoValor).AlignRight().Text(modelo.precio_promocion > 0 ? modelo.precio_promocion.ToString("N0") : modelo.precio_lista.ToString("N0")).FontSize(10);
                                                 });
 
                                                 precios.Item().Row(row =>
                                                 {
-                                                    row.ConstantItem(anchoLabel).AlignLeft().Text("Descuento:").FontSize(10).Bold();
-                                                    row.ConstantItem(anchoValor).AlignRight().Text(modelo.descuento.ToString("N0")).FontSize(10);
+                                                    row.ConstantItem(anchoLabel).AlignLeft().Text("Descuento Adicional:").FontSize(10).Bold();
+                                                    row.ConstantItem(anchoValor).AlignRight().Text(modelo.descuento_adicional.ToString("N0")).FontSize(10);
                                                 });
 
                                                 precios.Item().Row(row =>
                                                 {
                                                     row.ConstantItem(anchoLabel).AlignLeft().Text("Total:").FontSize(10).Bold();
-                                                    row.ConstantItem(anchoValor).AlignRight().Text(
-                                                        ((modelo.precio_promocion != 0 ? modelo.precio_promocion : modelo.precio_lista) - modelo.descuento).ToString("N0")
-                                                    ).FontSize(10);
+                                                    row.ConstantItem(anchoValor).AlignRight().Text(modelo.precio_venta.ToString("N0")).FontSize(10);
                                                 });
 
                                                 //precios.Item().Row(row =>
                                                 //{
-                                                //    row.ConstantItem(anchoLabel).AlignLeft().Text("Moneda:").FontSize(10).Bold();
-                                                //    row.ConstantItem(anchoValor).AlignRight().Text(modelo.moneda).FontSize(10);
+                                                //    row.ConstantItem(anchoLabel).AlignLeft().Text("Total:").FontSize(10).Bold();
+                                                //    row.ConstantItem(anchoValor).AlignRight().Text(
+                                                //        ((modelo.precio_promocion != 0 ? modelo.precio_promocion : modelo.precio_lista) - modelo.descuento).ToString("N0")
+                                                //    ).FontSize(10);
                                                 //});
                                             });
                                         });
@@ -548,7 +565,7 @@ namespace HD_Reporteria.Cotizaciones
                                     innerCol.Item().Row(row =>
                                     {
                                         row.ConstantItem(anchoLabel).AlignLeft().Text("Subtotal:").FontSize(10).Bold();
-                                        row.ConstantItem(anchoValor).AlignRight().Text((sumaPrecioLista).ToString("N0")).FontSize(10);
+                                        row.ConstantItem(anchoValor).AlignRight().Text((sumaPrecioPromocion > 0 ? sumaPrecioPromocion : sumaPrecioLista).ToString("N0")).FontSize(10);
                                     });
                                     //if (sumaDescuento > 0)
                                     //{
@@ -562,7 +579,7 @@ namespace HD_Reporteria.Cotizaciones
                                     innerCol.Item().Row(row =>
                                     {
                                         row.ConstantItem(anchoLabel).AlignLeft().Text("Total:").FontSize(10).Bold();
-                                        row.ConstantItem(anchoValor).AlignRight().Text((sumaPrecioTotal - sumaDescuento).ToString("N0")).FontSize(10);
+                                        row.ConstantItem(anchoValor).AlignRight().Text((sumaPrecioTotal).ToString("N0")).FontSize(10);
                                     });
                                 });
                             }
