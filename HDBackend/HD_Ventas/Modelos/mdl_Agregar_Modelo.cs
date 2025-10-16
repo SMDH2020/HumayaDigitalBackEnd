@@ -18,6 +18,12 @@ namespace HD_Ventas.Modelos
         [StringLength(100, ErrorMessage = "La descripción no debe exceder los 100 caracteres")]
         public string descripcion_mdl {  get; set; }
 
+        [Range(0, double.MaxValue, ErrorMessage = "El campo costo de refacciones esta fuera de rango")]
+        public float costo_refacciones { get; set; }
+
+        [Range(0, double.MaxValue, ErrorMessage = "El campo costo de servicio esta fuera de rango")]
+        public float costo_servicio { get; set; }
+
         [Required(ErrorMessage = "El precio de lista es un valor requerido")]
         [Range(0, double.MaxValue, ErrorMessage = "El campo precio de lista esta fuera de rango")]
         public float precio_lista {  get; set; }

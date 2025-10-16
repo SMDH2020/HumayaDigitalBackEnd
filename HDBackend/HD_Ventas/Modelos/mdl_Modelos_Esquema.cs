@@ -10,6 +10,8 @@
         public float precio_lista { get; set; }
         public int idpromocion { get; set; }
         public string? descripcion_promocion { get; set; }
+        public float costo_refacciones { get; set; }
+        public float costo_servicios { get; set; }
         public float precio_promocion { get; set; }
         public string eliminado { get; set; } = "N";
     }

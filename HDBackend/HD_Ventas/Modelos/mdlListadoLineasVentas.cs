@@ -6,5 +6,6 @@
         public string descripcion { get; set; }
         public int estatus { get; set; }
         public int usuario { get; set; }
+        public  string departamento { get; set; }
     }
 }
