@@ -12,6 +12,7 @@ namespace HD.Clientes.Modelos.PrestamoClientes
         public string? sucursal { get; set; }
         public string? cliente { get; set; }
         public string? vendedor { get; set; }
+        public double importe { get; set; }
         public string? fecha { get; set; }
     }
 }
