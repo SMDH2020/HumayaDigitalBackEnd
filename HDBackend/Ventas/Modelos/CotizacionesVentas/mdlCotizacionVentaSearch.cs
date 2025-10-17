@@ -8,5 +8,6 @@
         public List<mdlCotizacionVentaDropdownlist>? clientes{ get; set; }
         public List<mdlCotizacionVentaDropdownlist>? asesorventas{ get; set; }
         public List<mdlCotizacionVentaDropdownlist>? esquemas{ get; set; }
+        public List<mdlCotizacionVentasModelos>? modelos { get; set; }
     }
 }
