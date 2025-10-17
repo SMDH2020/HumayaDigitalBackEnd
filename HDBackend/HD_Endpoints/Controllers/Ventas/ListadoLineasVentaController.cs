@@ -2,6 +2,7 @@
 using HD.Security;
 using HD_Cobranza.GestionCobranza.Capturas;
 using HD_Ventas.Consultas;
+using HD_Ventas.Modelos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HD.Endpoints.Controllers.Ventas
@@ -36,26 +37,26 @@ namespace HD.Endpoints.Controllers.Ventas
             return Ok(result);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> AgregarLinea(string descripcion,string departamento)
+        public async Task<ActionResult> AgregarLinea(mdlListadoLineasVentas mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Agregar_Linea_Venta datos = new AD_Agregar_Linea_Venta(CadenaConexion);
             int usuario = int.Parse(Sesion.usuario());
-            var result = await datos.Linea(descripcion, usuario,departamento);
+            var result = await datos.Linea(mdl);
             return Ok(result);
         }
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> EditarLinea(int idlinea, string descripcion, int estatus, string departamento)
+        public async Task<ActionResult> EditarLinea(mdlListadoLineasVentas mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Editar_Linea_Venta datos = new AD_Editar_Linea_Venta(CadenaConexion);
             int usuario = int.Parse(Sesion.usuario());
-            var result = await datos.EditarLinea(idlinea, descripcion, estatus, usuario,departamento);
+            var result = await datos.EditarLinea(mdl);
             return Ok(result);
         }
     }
