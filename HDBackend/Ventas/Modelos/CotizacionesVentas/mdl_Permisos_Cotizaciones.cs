@@ -4,5 +4,6 @@
     {
         public string usuariorol {  get; set; }
         public int regionusuario {  get; set; }
+        public string sucursalesusuario { get; set; }
     }
 }

@@ -45,7 +45,7 @@ namespace Ventas.Reportes
 
         public static string ObtenerNombreFase(string fase)
         {
-            switch (fase)
+            switch (fase.Substring(0,2))
             {
                 case "PR": return "PROMOCION";
                 case "IN": return "INTERES";
