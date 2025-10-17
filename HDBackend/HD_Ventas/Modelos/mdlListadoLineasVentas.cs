@@ -7,5 +7,7 @@
         public int estatus { get; set; }
         public int usuario { get; set; }
         public  string departamento { get; set; }
+        public  string imagen { get; set; }
+
     }
 }
