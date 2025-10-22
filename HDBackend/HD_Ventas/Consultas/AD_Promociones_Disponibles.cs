@@ -207,7 +207,7 @@ namespace HD_Ventas.Consultas
             }
         }
 
-        public async Task<IEnumerable<mdl_Modelos_en_Esquema>> ObtenerModelosEnEsquemaPDF(int idlinea, int esquema)
+        public async Task<mdl_Modelos_Esquema_Linea_PDF_View> ObtenerModelosEnEsquemaPDF(int idlinea, int esquema)
         {
             try
             {
@@ -215,9 +215,12 @@ namespace HD_Ventas.Consultas
                 parametros.Add("idlinea", idlinea, System.Data.DbType.Int16);
                 parametros.Add("esquema", esquema, System.Data.DbType.Int16);
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_Modelos_en_Esquema> result = await factory.SQL.QueryAsync<mdl_Modelos_en_Esquema>("Ventas.sp_Obtener_Modelos_En_Esquema_Linea_PDF", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("Ventas.sp_Obtener_Modelos_En_Esquema_Linea_PDF", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdl_Modelos_Esquema_Linea_PDF_View mdl = new mdl_Modelos_Esquema_Linea_PDF_View();
+                mdl.modelos = result.Read<mdl_Modelos_en_Esquema>().ToList();
+                mdl.esquema = result.Read<string>().FirstOrDefault();
                 factory.SQL.Close();
-                return result;
+                return mdl;
             }
             catch (System.Exception ex)
             {

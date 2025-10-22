@@ -14,11 +14,11 @@ namespace HD_Reporteria.Ventas
 {
     public class RPT_Esquema_Pago
     {
-        public static RPT_Result GenerarPDF(IEnumerable<mdl_Modelos_en_Esquema> detalle)
+        public static RPT_Result GenerarPDF(mdl_Modelos_Esquema_Linea_PDF_View detalle)
         {
             try
             {
-                var detalleOrdenado = detalle
+                var detalleOrdenado = detalle.modelos
                 .ToList();
                 string fontFamily = "Calibri";
                 byte[] doc = Document.Create(document =>
@@ -63,6 +63,13 @@ namespace HD_Reporteria.Ventas
                                 col1.Item().EnsureSpace(100).Column(column =>
                                 {
 
+                                    column.Item().Row(row =>
+                                    {
+                                        row.RelativeItem().PaddingTop(5).AlignCenter()
+                                            .Text(string.IsNullOrWhiteSpace(detalle.esquema) ? "PRECIO DE LISTA" : detalle.esquema)
+                                            .FontSize(12).Bold().FontFamily(fontFamily);
+                                    });
+
                                     col1.Item().PaddingBottom(10).PaddingTop(20).PaddingHorizontal(30).Border(0.5f).BorderColor("#477c2c").Table(tabla =>
                                     {
                                         tabla.ColumnsDefinition(Columns =>
@@ -88,7 +95,7 @@ namespace HD_Reporteria.Ventas
 
                                         int index = 0;
 
-                                        foreach (var det in detalle)
+                                        foreach (var det in detalle.modelos)
                                         {
                                             string rowBackground = (index % 2 == 0) ? "#FFFFFF" : "#F0F0F0";
 
