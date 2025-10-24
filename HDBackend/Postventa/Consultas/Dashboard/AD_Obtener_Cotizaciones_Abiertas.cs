@@ -34,7 +34,7 @@ namespace Postventa.Consultas.Dashboard
 
 
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_Dashboard_Cotizaciones_list> result = await factory.SQL.QueryAsync<mdl_Dashboard_Cotizaciones_list>("PixelCode.Posventa.sp_Obtener_Cotizaciones_Abiertas", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Dashboard_Cotizaciones_list> result = await factory.SQL.QueryAsync<mdl_Dashboard_Cotizaciones_list>("Postventa.sp_Obtener_Cotizaciones_Abiertas", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
