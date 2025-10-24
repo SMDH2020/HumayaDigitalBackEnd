@@ -26,7 +26,7 @@ namespace Postventa.Consultas.Dashboard
                 parametros.Add("sucursal", sucursal, System.Data.DbType.String);
 
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_Dashboard_Vencimiento_Garantias> result = await factory.SQL.QueryAsync<mdl_Dashboard_Vencimiento_Garantias>("PixelCode.Posventa.sp_Obtener_Vencimiento_Garantias", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Dashboard_Vencimiento_Garantias> result = await factory.SQL.QueryAsync<mdl_Dashboard_Vencimiento_Garantias>("Postventa.sp_Obtener_Vencimiento_Garantias", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
@@ -63,7 +63,7 @@ namespace Postventa.Consultas.Dashboard
                 var parametros = new DynamicParameters();
 
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_Precios_Garantias_porModelo> result = await factory.SQL.QueryAsync<mdl_Precios_Garantias_porModelo>("PixelCode.Posventa.sp_Obtener_Precio_Garantias_porModelo", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Precios_Garantias_porModelo> result = await factory.SQL.QueryAsync<mdl_Precios_Garantias_porModelo>("Postventa.sp_Obtener_Precio_Garantias_porModelo", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
@@ -123,7 +123,7 @@ namespace Postventa.Consultas.Dashboard
             }
         }
 
-        public async Task<bool> AgregarPrecioGarantia(mdl_Agregar_Precio_Garantia mdl)
+        public async Task<bool> AgregarPrecioGarantia(mdl_Agregar_Precio_Garantia mdl) //no se utiliza
         {
 
             try
@@ -174,7 +174,7 @@ namespace Postventa.Consultas.Dashboard
             }
         }
 
-        public async Task<IEnumerable<mdl_Mensaje_Garantia>> ObtenerMensaje(string tipo)
+        public async Task<IEnumerable<mdl_Mensaje_Garantia>> ObtenerMensaje(string tipo) //no se utiliza
         {
             try
             {
@@ -194,7 +194,7 @@ namespace Postventa.Consultas.Dashboard
             }
         }
 
-        public async Task<bool> AgregarMensajeGarantia(mdl_Mensaje_Garantia mdl)
+        public async Task<bool> AgregarMensajeGarantia(mdl_Mensaje_Garantia mdl)//no se utiliza
         {
 
             try
@@ -224,7 +224,7 @@ namespace Postventa.Consultas.Dashboard
             {
                 var parametros = new DynamicParameters();
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_Obtener_Modelos_Garantia> result = await factory.SQL.QueryAsync<mdl_Obtener_Modelos_Garantia>("PixelCode.Posventa.sp_Obtener_Modelos_Garantia", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Obtener_Modelos_Garantia> result = await factory.SQL.QueryAsync<mdl_Obtener_Modelos_Garantia>("Postventa.sp_Obtener_Modelos_Garantia", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
@@ -243,7 +243,7 @@ namespace Postventa.Consultas.Dashboard
                 parametros.Add("tipo", tipo, System.Data.DbType.String);
                 parametros.Add("usuario", usuario, System.Data.DbType.Int16);
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_Obtener_Modelos_Garantia> result = await factory.SQL.QueryAsync<mdl_Obtener_Modelos_Garantia>("PixelCode.Posventa.sp_Garantia_Modelos_Excluidos", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Obtener_Modelos_Garantia> result = await factory.SQL.QueryAsync<mdl_Obtener_Modelos_Garantia>("Postventa.sp_Garantia_Modelos_Excluidos", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
@@ -259,7 +259,7 @@ namespace Postventa.Consultas.Dashboard
                 var parametros = new DynamicParameters();
                 parametros.Add("id", id, System.Data.DbType.String);
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_Obtener_Modelos_Garantia> result = await factory.SQL.QueryAsync<mdl_Obtener_Modelos_Garantia>("PixelCode.Posventa.Garantia_Modelos_Excluidos_Eliminar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Obtener_Modelos_Garantia> result = await factory.SQL.QueryAsync<mdl_Obtener_Modelos_Garantia>("Postventa.Garantia_Modelos_Excluidos_Eliminar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

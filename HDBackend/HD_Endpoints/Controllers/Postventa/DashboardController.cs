@@ -114,7 +114,7 @@ namespace HD.Endpoints.Controllers.Postventa
 
         [HttpPost]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> AgregarPrecioGarantia(mdl_Agregar_Precio_Garantia mdl)
+        public async Task<ActionResult> AgregarPrecioGarantia(mdl_Agregar_Precio_Garantia mdl) //no se utiliza
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Obtener_Vencimiento_Garantias datos = new AD_Obtener_Vencimiento_Garantias(CadenaConexion);
@@ -130,7 +130,7 @@ namespace HD.Endpoints.Controllers.Postventa
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> MensajeGarantias(string tipo)
+        public async Task<ActionResult> MensajeGarantias(string tipo) //no se utiliza
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Obtener_Vencimiento_Garantias datos = new AD_Obtener_Vencimiento_Garantias(CadenaConexion);
@@ -140,7 +140,7 @@ namespace HD.Endpoints.Controllers.Postventa
 
         [HttpPost]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> AgregarMensajeGarantia(mdl_Mensaje_Garantia mdl)
+        public async Task<ActionResult> AgregarMensajeGarantia(mdl_Mensaje_Garantia mdl) //no se utiliza
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Obtener_Vencimiento_Garantias datos = new AD_Obtener_Vencimiento_Garantias(CadenaConexion);

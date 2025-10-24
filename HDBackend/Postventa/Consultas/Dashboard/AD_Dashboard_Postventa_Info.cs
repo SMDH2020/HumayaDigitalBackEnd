@@ -35,7 +35,7 @@ namespace Postventa.Consultas.Dashboard
                 parametros.Add("sucursal", sucursal, System.Data.DbType.String);
 
 
-                var result = await factory.SQL.QueryMultipleAsync("PixelCode.Posventa.sp_dashboard", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("Postventa.sp_dashboard", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 var view = new mdl_Dashboard_View();
                 view.dashboard_titulo = result.Read<string>().FirstOrDefault();
                 view.proyecciones = result.Read<mdl_Dashboard_Proyecciones>().ToList();

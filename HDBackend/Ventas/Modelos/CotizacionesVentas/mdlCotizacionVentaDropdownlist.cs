@@ -4,5 +4,6 @@
     {
         public string id { get; set; }
         public string label { get; set; }
+        public string vigencia { get; set; }
     }
 }
