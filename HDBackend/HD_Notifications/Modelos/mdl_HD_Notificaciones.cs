@@ -13,6 +13,8 @@ namespace HD.Notifications.Modelos
         public DateTime fecha_evento { get; set; }
         public int redireccion { get; set; }
         public string? tipo { get; set; }
+        public string? dia { get; set; }
+
         public string? hora { get; set; }
         public int duracion { get; set; }
 
