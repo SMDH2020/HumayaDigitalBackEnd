@@ -30,6 +30,7 @@ namespace HD.Notifications.Consultas
                     fecha_evento = mdl.fecha_evento,
                     redireccion = mdl.redireccion,
                     tipo = mdl.tipo,
+                    @dia = mdl.dia,
                     hora = mdl.hora,
                     duracion = mdl.duracion,
                     usuario = mdl.usuario,

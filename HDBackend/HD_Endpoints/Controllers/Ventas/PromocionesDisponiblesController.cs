@@ -1,10 +1,13 @@
 ﻿using DocumentFormat.OpenXml.Drawing.Charts;
 using HD.Security;
 using HD_Cobranza.GestionCobranza.Capturas;
+using HD_Reporteria;
+using HD_Reporteria.Ventas;
 using HD_Ventas.Consultas;
 using HD_Ventas.Modelos;
 using Microsoft.AspNetCore.Mvc;
 using Usados.Consultas.Inventario;
+using Usados.Consultas.Usados;
 using Usados.Modelos.Inventario;
 
 namespace HD.Endpoints.Controllers.Ventas
@@ -114,12 +117,38 @@ namespace HD.Endpoints.Controllers.Ventas
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ModelosenEsquema()
+        public async Task<ActionResult> ModelosenEsquema(int idlinea, int esquema)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Promociones_Disponibles datos = new AD_Promociones_Disponibles(CadenaConexion);
-            var result = await datos.ObtenerModelosEnEsquema();
+            var result = await datos.ObtenerModelosEnEsquema(idlinea, esquema);
             return Ok(result);
+        }
+
+
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ModelosenEsquemaPDF(int idlinea, int esquema)
+        {
+            // Concatenar todos los idinventario en una cadena separada por comas
+            //string idinventario = string.Join(",", mdl.datosActualizados.Select(r => r.idinventario.ToString()));
+
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Promociones_Disponibles datos = new AD_Promociones_Disponibles(CadenaConexion);
+            var result = await datos.ObtenerModelosEnEsquemaPDF(idlinea, esquema);
+
+            try
+            {
+                RPT_Result documento = RPT_Esquema_Pago.GenerarPDF(result);
+
+                return Ok(documento);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error de servidor");
+
+            }
         }
 
         [HttpGet]
