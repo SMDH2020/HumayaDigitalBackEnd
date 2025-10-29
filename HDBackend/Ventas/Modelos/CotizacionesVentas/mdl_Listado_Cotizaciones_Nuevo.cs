@@ -16,6 +16,7 @@ namespace Ventas.Modelos.CotizacionesVentas
         public string asunto { get; set; }
         public int idsucursal { get; set; }
         public string sucursal { get; set; }
+        public string linea { get; set; }
         public string modelo { get; set; }
         public int idpromocion {  get; set; }
         public string esquema { get; set; }
