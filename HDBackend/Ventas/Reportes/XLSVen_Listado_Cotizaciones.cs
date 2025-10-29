@@ -72,7 +72,7 @@ namespace Ventas.Reportes
                     sheet.Style.Font.FontName = "Calibri";
                     sheet.Style.Font.FontSize = 10;
 
-                    int renglon = XLSEncabezado.Encabezado(ref sheet, titulo, 10);
+                    int renglon = XLSEncabezado.Encabezado(ref sheet, titulo, 11);
 
                     //renglon += 1;
 
@@ -97,15 +97,16 @@ namespace Ventas.Reportes
                     sheet.Cell(renglon, 2).Value = "CLIENTE";
                     sheet.Cell(renglon, 3).Value = "ASESOR";
                     sheet.Cell(renglon, 4).Value = "SUCURSAL";
-                    sheet.Cell(renglon, 5).Value = "MODELO";
-                    sheet.Cell(renglon, 6).Value = "ESQUEMA";
-                    sheet.Cell(renglon, 7).Value = "MONTO";
-                    sheet.Cell(renglon, 8).Value = "FECHA DE COTIZACION";
-                    sheet.Cell(renglon, 9).Value = "VIGENCIA";
-                    sheet.Cell(renglon, 10).Value = "FECHA DE VENTAS";
+                    sheet.Cell(renglon, 5).Value = "LINEA";
+                    sheet.Cell(renglon, 6).Value = "MODELO";
+                    sheet.Cell(renglon, 7).Value = "ESQUEMA";
+                    sheet.Cell(renglon, 8).Value = "MONTO";
+                    sheet.Cell(renglon, 9).Value = "FECHA DE COTIZACION";
+                    sheet.Cell(renglon, 10).Value = "VIGENCIA";
+                    sheet.Cell(renglon, 11).Value = "FECHA DE VENTAS";
 
                     // Estilo para los encabezados de la tabla
-                    var rango = sheet.Range(renglon, 1, renglon, 10);
+                    var rango = sheet.Range(renglon, 1, renglon, 11);
                     rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
                     rango.Style.Font.Bold = true;
                     rango.Style.Font.FontSize = 12;
@@ -121,16 +122,17 @@ namespace Ventas.Reportes
                         sheet.Cell(renglon, 2).Value = det.razon_social?.ToUpper();
                         sheet.Cell(renglon, 3).Value = det.nombre_asesor?.ToUpper();
                         sheet.Cell(renglon, 4).Value = det.sucursal;
-                        sheet.Cell(renglon, 5).Value = det.modelo;
-                        sheet.Cell(renglon, 6).Value = det.esquema?.ToUpper();
-                        sheet.Cell(renglon, 7).Value = det.monto_total;
-                        sheet.Cell(renglon, 8).Value = det.createdate;
-                        sheet.Cell(renglon, 9).Value = det.vigencia;
-                        sheet.Cell(renglon, 10).Value = det.fecha_venta;
+                        sheet.Cell(renglon, 5).Value = det.linea;
+                        sheet.Cell(renglon, 6).Value = det.modelo;
+                        sheet.Cell(renglon, 7).Value = det.esquema?.ToUpper();
+                        sheet.Cell(renglon, 8).Value = det.monto_total;
+                        sheet.Cell(renglon, 9).Value = det.createdate;
+                        sheet.Cell(renglon, 10).Value = det.vigencia;
+                        sheet.Cell(renglon, 11).Value = det.fecha_venta;
                         renglon++;
                     }
 
-                    sheet.Column(7).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(8).Style.NumberFormat.Format = "#,##0.00";
 
                     //sheet.Column(6).Style.NumberFormat.Format = "#,##0.00";
                     //sheet.Column(7).Style.NumberFormat.Format = "0.0 %";
