@@ -3,6 +3,7 @@ using HD_Ventas.Consultas;
 using HD_Ventas.Modelos;
 using Microsoft.AspNetCore.Mvc;
 using Postventa.Consultas.Dashboard;
+using Postventa.Consultas.ReporteMensajeria;
 using Postventa.Modelos;
 
 namespace HD.Endpoints.Controllers.Postventa
@@ -19,11 +20,23 @@ namespace HD.Endpoints.Controllers.Postventa
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> FiltroSucursalesDash()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Dashboard_Postventa_Info datos = new AD_Dashboard_Postventa_Info(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.ObtenerFiltroSucursal(usuario);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> Dashboard(int ejercicio, int periodo_inicio, int periodo_fin, string adr, string sucursal)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Dashboard_Postventa_Info datos = new AD_Dashboard_Postventa_Info(CadenaConexion);
-            var result = await datos.ObtenerDashboard(ejercicio, periodo_inicio, periodo_fin, adr, sucursal);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.ObtenerDashboard(ejercicio, periodo_inicio, periodo_fin, adr, sucursal, usuario);
             return Ok(result);
         }
 
@@ -33,7 +46,8 @@ namespace HD.Endpoints.Controllers.Postventa
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Obtener_Vencimiento_Garantias datos = new AD_Obtener_Vencimiento_Garantias(CadenaConexion);
-            var result = await datos.ObtenerVencimientos(ejercicio, periodo_inicio, periodo_fin,facturado, whatsapp, estado, adr, sucursal);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.ObtenerVencimientos(ejercicio, periodo_inicio, periodo_fin,facturado, whatsapp, estado, adr, sucursal, usuario);
             return Ok(result);
         }
 
@@ -161,7 +175,8 @@ namespace HD.Endpoints.Controllers.Postventa
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Obtener_Cotizaciones_Abiertas datos = new AD_Obtener_Cotizaciones_Abiertas(CadenaConexion);
-            var result = await datos.ObtenerCotizaciones(ejercicio, periodo_inicio, periodo_fin,facturado, whatsapp, estado, motivo, adr, sucursal);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.ObtenerCotizaciones(ejercicio, periodo_inicio, periodo_fin,facturado, whatsapp, estado, motivo, adr, sucursal, usuario);
             return Ok(result);
         }
 
@@ -191,7 +206,8 @@ namespace HD.Endpoints.Controllers.Postventa
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Obtener_Servicios_Pendientes datos = new AD_Obtener_Servicios_Pendientes(CadenaConexion);
-            var result = await datos.ObtenerServicios(ejercicio, periodo_inicio, periodo_fin, adr, sucursal, hrsuso, msj_estatus, motivo, facturado);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.ObtenerServicios(ejercicio, periodo_inicio, periodo_fin, adr, sucursal, hrsuso, msj_estatus, motivo, facturado, usuario);
             return Ok(result);
         }
 

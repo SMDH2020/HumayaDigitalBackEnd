@@ -11,7 +11,7 @@ namespace Postventa.Consultas.Dashboard
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_Servicios_Pendientes>> ObtenerServicios(int ejercicio, int periodo_inicio, int periodo_fin, string adr, string sucursal, int hrsuso, string msj_estatus, string motivo, string facturado)
+        public async Task<IEnumerable<mdl_Servicios_Pendientes>> ObtenerServicios(int ejercicio, int periodo_inicio, int periodo_fin, string adr, string sucursal, int hrsuso, string msj_estatus, string motivo, string facturado, int usuario)
         {
             try
             {
@@ -25,6 +25,7 @@ namespace Postventa.Consultas.Dashboard
                 parametros.Add("msj_estatus", msj_estatus, System.Data.DbType.String);
                 parametros.Add("motivo", motivo, System.Data.DbType.String);
                 parametros.Add("facturado", facturado, System.Data.DbType.String);
+                parametros.Add("usuario", usuario, System.Data.DbType.Int16);
 
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdl_Servicios_Pendientes> result = await factory.SQL.QueryAsync<mdl_Servicios_Pendientes>("Postventa.sp_Obtener_Listado_Servicios_Pendientes", parametros, commandType: System.Data.CommandType.StoredProcedure);

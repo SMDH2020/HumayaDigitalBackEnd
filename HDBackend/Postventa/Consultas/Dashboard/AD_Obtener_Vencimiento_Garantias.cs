@@ -11,7 +11,7 @@ namespace Postventa.Consultas.Dashboard
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_Dashboard_Vencimiento_Garantias>> ObtenerVencimientos(int ejercicio, int periodo_inicio, int periodo_fin,string facturado, string whatsapp, string estado, string adr, string sucursal)
+        public async Task<IEnumerable<mdl_Dashboard_Vencimiento_Garantias>> ObtenerVencimientos(int ejercicio, int periodo_inicio, int periodo_fin,string facturado, string whatsapp, string estado, string adr, string sucursal, int usuario)
         {
             try
             {
@@ -24,6 +24,7 @@ namespace Postventa.Consultas.Dashboard
                 parametros.Add("estatus", estado, System.Data.DbType.String);
                 parametros.Add("adr", adr, System.Data.DbType.String);
                 parametros.Add("sucursal", sucursal, System.Data.DbType.String);
+                parametros.Add("usuario", usuario, System.Data.DbType.Int16);
 
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdl_Dashboard_Vencimiento_Garantias> result = await factory.SQL.QueryAsync<mdl_Dashboard_Vencimiento_Garantias>("Postventa.sp_Obtener_Vencimiento_Garantias", parametros, commandType: System.Data.CommandType.StoredProcedure);
