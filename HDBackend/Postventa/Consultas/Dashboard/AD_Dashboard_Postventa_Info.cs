@@ -16,7 +16,7 @@ namespace Postventa.Consultas.Dashboard
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<mdl_Dashboard_View> ObtenerDashboard(int ejercicio, int periodo_inicio, int periodo_fin, string adr, string sucursal)
+        public async Task<mdl_Dashboard_View> ObtenerDashboard(int ejercicio, int periodo_inicio, int periodo_fin, string adr, string sucursal, int usuario)
         {
             try
             {
@@ -33,7 +33,7 @@ namespace Postventa.Consultas.Dashboard
                 parametros.Add("periodo_fin", periodo_fin, System.Data.DbType.Int16);
                 parametros.Add("adr", adr, System.Data.DbType.String);
                 parametros.Add("sucursal", sucursal, System.Data.DbType.String);
-
+                parametros.Add("usuario", usuario, System.Data.DbType.Int16);
 
                 var result = await factory.SQL.QueryMultipleAsync("Postventa.sp_dashboard", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 var view = new mdl_Dashboard_View();
@@ -52,6 +52,31 @@ namespace Postventa.Consultas.Dashboard
                 return view;
             }
             catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<IEnumerable<mdl_Filtro_Sucursales_Rol>> ObtenerFiltroSucursal(int usuario)
+        {
+            try
+            {
+                //var parametros = new
+                //{
+                //    ejercicio,
+                //    periodo
+                //};
+
+                var parametros = new DynamicParameters();
+                parametros.Add("usuario", usuario, System.Data.DbType.Int16);
+
+
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Filtro_Sucursales_Rol> result = await factory.SQL.QueryAsync<mdl_Filtro_Sucursales_Rol>("Postventa.sp_Get_Sucursales_Dashboard_Rol", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (Exception ex)
             {
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
