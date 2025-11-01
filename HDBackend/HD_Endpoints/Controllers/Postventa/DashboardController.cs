@@ -190,6 +190,7 @@ namespace HD.Endpoints.Controllers.Postventa
             var result = await datos.ExcluirModelo(modelo, tipo, usuario);
             return Ok(result);
         }
+
         [HttpGet]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> EliminarReglaExclusion(string id)
@@ -208,6 +209,37 @@ namespace HD.Endpoints.Controllers.Postventa
             AD_Obtener_Servicios_Pendientes datos = new AD_Obtener_Servicios_Pendientes(CadenaConexion);
             int usuario = int.Parse(Sesion.usuario());
             var result = await datos.ObtenerServicios(ejercicio, periodo_inicio, periodo_fin, adr, sucursal, hrsuso, msj_estatus, motivo, facturado, usuario);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ModelosExcluidosServicios()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Servicios_Pendientes datos = new AD_Obtener_Servicios_Pendientes(CadenaConexion);
+            var result = await datos.ObtenerModelosExcluidos();
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> EliminarReglaExclusionServicios(string id)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Servicios_Pendientes datos = new AD_Obtener_Servicios_Pendientes(CadenaConexion);
+            var result = await datos.EliminarReglaExclusionServicios(id);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ExcluirModeloServicio(string modelo, string tipo)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Servicios_Pendientes datos = new AD_Obtener_Servicios_Pendientes(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.ExcluirModeloServicios(modelo, tipo, usuario);
             return Ok(result);
         }
 
