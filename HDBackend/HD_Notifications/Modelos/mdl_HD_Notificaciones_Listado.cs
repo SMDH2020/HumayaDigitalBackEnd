@@ -18,6 +18,7 @@ namespace HD.Notifications.Modelos
         public string? ruta { get; set; }
 
         public string? tipo_alerta { get; set; }
+        public string? dia { get; set; }
         public string? empleado { get; set; }
 
         public int frecuencia { get; set; }
