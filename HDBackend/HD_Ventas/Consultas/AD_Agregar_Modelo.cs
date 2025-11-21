@@ -33,6 +33,7 @@ namespace HD_Ventas.Consultas
                     precio_lista = mdl.precio_lista,
                     moneda = mdl.moneda,
                     usuario = mdl.usuario,
+                    categoria = mdl.categoria,
                     caracteristicas = mdl.caracteristicas,
                     imagenes = mdl.imagenes
                 };

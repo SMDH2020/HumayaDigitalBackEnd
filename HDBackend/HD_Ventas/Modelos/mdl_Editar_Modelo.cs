@@ -31,6 +31,7 @@ namespace HD_Ventas.Modelos
         [Range(0, double.MaxValue, ErrorMessage = "El campo preico de lista esta fuera de rango")]
         public float precio_lista { get; set; }
         public string moneda {  get; set; }
+        public int categoria {  get; set; }
         public int usuario { get; set; }
 
         [RegularExpression(@"^[ .,#\$%ñÑa-zA-Z0-9áéíóúÁÉÍÓÚ()\\\[\]""]+$", ErrorMessage = "El campo caracteristicas debe contener solo letras, números y ciertos símbolos")]

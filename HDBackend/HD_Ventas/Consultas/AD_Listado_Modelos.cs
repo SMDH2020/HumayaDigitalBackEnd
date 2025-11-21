@@ -88,6 +88,25 @@ namespace HD_Ventas.Consultas
             }
         }
 
+        public async Task<IEnumerable<mdl_Categorias_DropDownList>> ListadoCategoriasDropdownlist()
+        {
+            try
+            {
+                var parametros = new
+                {
+                    
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Categorias_DropDownList> result = await factory.SQL.QueryAsync<mdl_Categorias_DropDownList>("Ventas.sp_Get_Categorias_DropDownList", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
         public async Task<IEnumerable<mdl_Listado_Modelos>> ObtenerModeloID(int idmodelo)
         {
             try

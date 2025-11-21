@@ -194,5 +194,59 @@ namespace Ventas.Consultas.CotizacionesVentas
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<IEnumerable<mdl_Comentarios_Cotizaciones>> GuardarComentario(string folio, string comentario, int usuario)
+        {
+            try
+            {
+                var parametros = new DynamicParameters();
+                parametros.Add("folio", folio, System.Data.DbType.String);
+                parametros.Add("comentario", comentario, System.Data.DbType.String);
+                parametros.Add("usuario", usuario, System.Data.DbType.Int16);
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Comentarios_Cotizaciones> result = await factory.SQL.QueryAsync<mdl_Comentarios_Cotizaciones>("Ventas.sp_Guardar_Comentario_Cotizacion", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<IEnumerable<mdl_Comentarios_Cotizaciones>> ObtenerComentarios(string folio)
+        {
+            try
+            {
+                var parametros = new DynamicParameters();
+                parametros.Add("folio", folio, System.Data.DbType.String);
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Comentarios_Cotizaciones> result = await factory.SQL.QueryAsync<mdl_Comentarios_Cotizaciones>("Ventas.sp_Get_Comentarios_Cotizacion_Folio", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<IEnumerable<mdl_Listado_Cotizaciones_Nuevo>> GuardarCultivo(string folio, string cultivo)
+        {
+            try
+            {
+                var parametros = new DynamicParameters();
+                parametros.Add("folio", folio, System.Data.DbType.String);
+                parametros.Add("cultivo", cultivo, System.Data.DbType.String);
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Listado_Cotizaciones_Nuevo> result = await factory.SQL.QueryAsync<mdl_Listado_Cotizaciones_Nuevo>("Ventas.sp_Guardar_Cultivo_Cotizacion", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }
