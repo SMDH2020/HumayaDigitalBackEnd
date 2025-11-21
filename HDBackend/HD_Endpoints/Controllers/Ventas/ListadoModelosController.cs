@@ -59,6 +59,16 @@ namespace HD.Endpoints.Controllers.Ventas
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> CategoriasDropDownList()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Listado_Modelos datos = new AD_Listado_Modelos(CadenaConexion);
+            var result = await datos.ListadoCategoriasDropdownlist();
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> ObtenerModelosID(int idmodelo)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];

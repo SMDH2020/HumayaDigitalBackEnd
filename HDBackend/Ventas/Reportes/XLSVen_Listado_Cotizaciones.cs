@@ -43,6 +43,8 @@ namespace Ventas.Reportes
             }
         }
 
+
+
         public static string ObtenerNombreFase(string fase)
         {
             switch (fase.Substring(0,2))
@@ -72,7 +74,7 @@ namespace Ventas.Reportes
                     sheet.Style.Font.FontName = "Calibri";
                     sheet.Style.Font.FontSize = 10;
 
-                    int renglon = XLSEncabezado.Encabezado(ref sheet, titulo, 11);
+                    int renglon = XLSEncabezado.Encabezado(ref sheet, titulo, 13);
 
                     //renglon += 1;
 
@@ -103,10 +105,13 @@ namespace Ventas.Reportes
                     sheet.Cell(renglon, 8).Value = "MONTO";
                     sheet.Cell(renglon, 9).Value = "FECHA DE COTIZACION";
                     sheet.Cell(renglon, 10).Value = "VIGENCIA";
-                    sheet.Cell(renglon, 11).Value = "FECHA DE VENTAS";
+                    sheet.Cell(renglon, 11).Value = "FECHA DE VENTA";
+                    sheet.Cell(renglon, 12).Value = "COMENTARIO";
+                    sheet.Cell(renglon, 13).Value = "CULTIVO";
+
 
                     // Estilo para los encabezados de la tabla
-                    var rango = sheet.Range(renglon, 1, renglon, 11);
+                    var rango = sheet.Range(renglon, 1, renglon, 13);
                     rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
                     rango.Style.Font.Bold = true;
                     rango.Style.Font.FontSize = 12;
@@ -129,6 +134,8 @@ namespace Ventas.Reportes
                         sheet.Cell(renglon, 9).Value = det.createdate;
                         sheet.Cell(renglon, 10).Value = det.vigencia;
                         sheet.Cell(renglon, 11).Value = det.fecha_venta;
+                        sheet.Cell(renglon, 12).Value = det.comentario;
+                        sheet.Cell(renglon, 13).Value = det.cultivo;
                         renglon++;
                     }
 

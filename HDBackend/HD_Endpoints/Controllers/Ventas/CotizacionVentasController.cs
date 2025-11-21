@@ -5,6 +5,7 @@ using HD_Cobranza.Reportes;
 using HD_Ventas.Consultas;
 using HD_Ventas.Modelos;
 using Microsoft.AspNetCore.Mvc;
+using Postventa.Consultas.Dashboard;
 using Ventas.Consultas.CotizacionesVentas;
 using Ventas.Modelos.CotizacionesVentas;
 using Ventas.Reportes;
@@ -125,6 +126,39 @@ namespace HD.Endpoints.Controllers.Ventas
             AD_CotizacionVentas datos = new AD_CotizacionVentas(CadenaConexion);
             int usuario = int.Parse(Sesion.usuario());
             var result = await datos.GetPermisos(usuario);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarComentario(string folio, string comentario)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_CotizacionVentas datos = new AD_CotizacionVentas(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.GuardarComentario(folio, comentario, usuario);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarCultivo(string folio, string cultivo)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_CotizacionVentas datos = new AD_CotizacionVentas(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.GuardarCultivo(folio, cultivo);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetComentarios(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_CotizacionVentas datos = new AD_CotizacionVentas(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.ObtenerComentarios(folio);
             return Ok(result);
         }
     }

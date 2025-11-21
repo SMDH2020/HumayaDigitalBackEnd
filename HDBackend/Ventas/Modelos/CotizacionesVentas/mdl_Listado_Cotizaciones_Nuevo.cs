@@ -15,6 +15,7 @@ namespace Ventas.Modelos.CotizacionesVentas
         public string razon_social { get; set; }
         public string asunto { get; set; }
         public int idsucursal { get; set; }
+        public int idestado { get; set; }
         public string sucursal { get; set; }
         public string linea { get; set; }
         public string modelo { get; set; }
@@ -26,5 +27,7 @@ namespace Ventas.Modelos.CotizacionesVentas
         public string vigencia { get; set; }
         public string createdate { get; set; }
         public int createuser { get; set; }
+        public string? comentario {  get; set; }
+        public string? cultivo { get; set; }
     }
 }
