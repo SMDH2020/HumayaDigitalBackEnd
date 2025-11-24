@@ -3,6 +3,7 @@ using HD.Clientes.Consultas.AnalisisCredito.JDF;
 using HD.Clientes.Consultas.Credito_Condicionado;
 using HD.Clientes.Modelos.SC_Analisis.JDF;
 using HD.Notifications.Analisis;
+using HD.Notifications.Consultas;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
 
@@ -129,6 +130,17 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             }
             await NotificacionComentarios.Enviar_Mhusa(result);
+
+            //enviar notificacion
+            var usuariosNotificados = string.Join(",", result.mdlSolicitud?.Select(u => u.idempleado.ToString()) ?? new List<string>());
+            var usuario = Sesion.usuario();
+
+            AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
+            var resultado = await usuarios.GuardarNotificacionSolicitud(mdl.folio, "Solicitud facturada de" + result.mdldatos.cliente, 9, usuario, usuariosNotificados);
+
+            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+            await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
+
             return Ok(result);
         }
         [HttpGet]
