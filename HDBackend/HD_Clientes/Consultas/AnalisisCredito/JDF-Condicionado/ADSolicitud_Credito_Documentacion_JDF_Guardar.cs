@@ -39,20 +39,20 @@ namespace HD.Clientes.Consultas.AnalisisCredito.JDF_Condicionado
                 documentocargados.mdlSolicitud = result.Read<mdlSolicitudCredito_Enviar>().ToList();
 
 
-                // Verificar si notificar es 0
-                if (documentocargados.notificar != null && documentocargados.notificar.notificar == 0)
-                {
-                    // Crear un solo objeto mdlSolicitud con idusuario igual a 0
-                    documentocargados.mdlSolicitud = new List<mdlSolicitudCredito_Enviar> 
-            {
-                        new mdlSolicitudCredito_Enviar { 
-                            idempleado = 0,
-                            nombre = "",
-                            correo = ""
-                        }
+            //    // Verificar si notificar es 0
+            //    if (documentocargados.notificar != null && documentocargados.notificar.notificar == 0)
+            //    {
+            //        // Crear un solo objeto mdlSolicitud con idusuario igual a 0
+            //        documentocargados.mdlSolicitud = new List<mdlSolicitudCredito_Enviar> 
+            //{
+            //            new mdlSolicitudCredito_Enviar { 
+            //                idempleado = 0,
+            //                nombre = "",
+            //                correo = ""
+            //            }
 
-            };
-                }
+            //};
+            //    }
 
                 factory.SQL.Close();
                 return documentocargados;
