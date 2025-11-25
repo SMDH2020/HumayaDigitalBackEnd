@@ -16,5 +16,6 @@
         public string? folio_fiscal { get; set; }
         public string? documento { get; set; }
         public string? sucursal { get; set; }
+        public string? cliente { get; set; }
     }
 }
