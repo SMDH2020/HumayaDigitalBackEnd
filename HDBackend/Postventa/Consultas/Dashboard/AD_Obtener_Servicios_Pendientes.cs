@@ -11,7 +11,7 @@ namespace Postventa.Consultas.Dashboard
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_Servicios_Pendientes>> ObtenerServicios(int ejercicio, int periodo_inicio, int periodo_fin, string adr, string sucursal, int hrsuso, string msj_estatus, string motivo, string facturado)
+        public async Task<IEnumerable<mdl_Servicios_Pendientes>> ObtenerServicios(int ejercicio, int periodo_inicio, int periodo_fin, string adr, string sucursal, int hrsuso, string msj_estatus, string motivo, string facturado, int usuario)
         {
             try
             {
@@ -25,6 +25,7 @@ namespace Postventa.Consultas.Dashboard
                 parametros.Add("msj_estatus", msj_estatus, System.Data.DbType.String);
                 parametros.Add("motivo", motivo, System.Data.DbType.String);
                 parametros.Add("facturado", facturado, System.Data.DbType.String);
+                parametros.Add("usuario", usuario, System.Data.DbType.Int16);
 
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdl_Servicios_Pendientes> result = await factory.SQL.QueryAsync<mdl_Servicios_Pendientes>("Postventa.sp_Obtener_Listado_Servicios_Pendientes", parametros, commandType: System.Data.CommandType.StoredProcedure);
@@ -167,6 +168,58 @@ namespace Postventa.Consultas.Dashboard
                 return true;
             }
             catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<IEnumerable<mdl_Obtener_Modelos_Excluidos_Servicios>> ObtenerModelosExcluidos()
+        {
+            try
+            {
+                var parametros = new DynamicParameters();
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Obtener_Modelos_Excluidos_Servicios> result = await factory.SQL.QueryAsync<mdl_Obtener_Modelos_Excluidos_Servicios>("Postventa.sp_Obtener_Modelos_Excluidos_Servicio", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<IEnumerable<mdl_Obtener_Modelos_Excluidos_Servicios>> EliminarReglaExclusionServicios(string id)
+        {
+            try
+            {
+                var parametros = new DynamicParameters();
+                parametros.Add("id", id, System.Data.DbType.String);
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Obtener_Modelos_Excluidos_Servicios> result = await factory.SQL.QueryAsync<mdl_Obtener_Modelos_Excluidos_Servicios>("Postventa.Servicios_Modelos_Excluidos_Eliminar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<IEnumerable<mdl_Obtener_Modelos_Excluidos_Servicios>> ExcluirModeloServicios(string modelo, string tipo, int usuario)
+        {
+            try
+            {
+                var parametros = new DynamicParameters();
+                parametros.Add("modelo", modelo, System.Data.DbType.String);
+                parametros.Add("tipo", tipo, System.Data.DbType.String);
+                parametros.Add("usuario", usuario, System.Data.DbType.Int16);
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Obtener_Modelos_Excluidos_Servicios> result = await factory.SQL.QueryAsync<mdl_Obtener_Modelos_Excluidos_Servicios>("Postventa.sp_Servicios_Modelos_Excluir", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
             {
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }

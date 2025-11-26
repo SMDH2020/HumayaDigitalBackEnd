@@ -13,6 +13,8 @@
         public float costo_servicios { get; set; }
         public float precio_lista { get; set; }
         public string moneda { get; set; }
+        public int categoria {  get; set; }
+        public string categoria_descripcion { get; set; }
         public string tiene_fotografia {  get; set; }
     }
 }

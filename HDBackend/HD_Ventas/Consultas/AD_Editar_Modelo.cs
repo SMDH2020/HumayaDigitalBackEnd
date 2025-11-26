@@ -35,6 +35,7 @@ namespace HD_Ventas.Consultas
                     moneda = mdl.moneda,
                     usuario = mdl.usuario,
                     caracteristicas = mdl.caracteristicas,
+                    categoria = mdl.categoria,
                     imagenes = mdl.imagenes
                 };
                 await factory.SQL.QueryAsync("Ventas.Editar_Modelo", parametros, commandType: System.Data.CommandType.StoredProcedure);
