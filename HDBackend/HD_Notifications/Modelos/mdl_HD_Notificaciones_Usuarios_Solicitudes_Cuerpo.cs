@@ -12,9 +12,11 @@ namespace HD.Notifications.Modelos
         public string? mensaje { get; set; }
         public int idmodulo { get; set; }
         public string? redireccion { get; set; }
+        public string? redireccionweb { get; set; }
 
         public string? parametro { get; set; }
         public string? cliente { get; set; }
+        public string? portafolio { get; set; }
 
     }
 }
