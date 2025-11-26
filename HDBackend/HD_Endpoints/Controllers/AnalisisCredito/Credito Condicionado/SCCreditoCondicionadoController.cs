@@ -6,6 +6,8 @@ using HD.Clientes.Modelos.SC_Analisis.Credito_Condicionados;
 using HD.Notifications.Analisis;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
+using HD.Notifications.Consultas;
+using System.Globalization;
 
 namespace HD.Endpoints.Controllers.AnalisisCredito.Credito_Condicionado
 {
@@ -37,6 +39,18 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Credito_Condicionado
             AD_Credito_Condicionado_Enviar datos = new AD_Credito_Condicionado_Enviar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.BuscarFolio(mdl);
+
+            //enviar notificacion
+            var usuariosNotificados = string.Join(",", result.mdlSolicitud?.Select(u => u.idempleado.ToString()) ?? new List<string>());
+            var usuario = Sesion.usuario();
+            var textoCliente = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(mdl.cliente.ToLower());
+
+            AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
+            var resultado = await usuarios.GuardarNotificacionSolicitud(result.estado.folio_condicionado, "Se activo crédito condicionado para " + textoCliente, 9, usuario, usuariosNotificados);
+
+            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+            await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
+
             return Ok(result);
 
         }

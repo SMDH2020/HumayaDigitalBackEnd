@@ -17,7 +17,7 @@ namespace HD.Notifications.Consultas
         }
 
         private const string OneSignalAppId = "04e611d6-045a-4105-af2d-04880d3c4cb9"; // Tu App ID
-        private const string OneSignalApiKey = "os_v2_app_attbdvqeljaqllznasea2pcmxesxlsp34p6uri5u6y2k3sjaxvp3uinb3677d6kywsvu4peahau4b7bd5gh4wqld3vlwvsxr6eudhhi"; // ⚠️ Tu REST API Key
+        private const string OneSignalApiKey = "os_v2_app_attbdvqeljaqllznasea2pcmxhzu4frjjsaewnf2td7i6ogticf4ewmwd3nostj3lfw2ez3tp3yx5likdtsyb6itmfz3edc74gyqvgq"; // ⚠️ Tu REST API Key
 
         public async Task<bool> Enviar_Notificacion_Solicitud(mdl_Notificacion_Usuarios_Solicitudes_View mdl, string? titulo)
         {
@@ -35,9 +35,11 @@ namespace HD.Notifications.Consultas
                 contents = new { en = mdl.notificacionCuerpo.mensaje ?? "Mensaje por defecto" },
                 data = new
                 {
-                    targetPage = mdl.notificacionCuerpo.redireccion ?? "",
+                    targetPage = mdl.notificacionCuerpo.redireccionweb ?? "",
+                    targetMobile = mdl.notificacionCuerpo.redireccion ?? "",
                     parametro = mdl.notificacionCuerpo.parametro ?? "",
-                    cliente = mdl.notificacionCuerpo.cliente ?? ""
+                    cliente = mdl.notificacionCuerpo.cliente ?? "",
+                    portafolio = mdl.notificacionCuerpo.portafolio ?? "",
                 }
 
             };
