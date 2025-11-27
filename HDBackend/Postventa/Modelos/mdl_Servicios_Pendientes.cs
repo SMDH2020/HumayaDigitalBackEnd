@@ -13,6 +13,7 @@
         public string primer_uso {  get; set; }
         public string modelo { get; set; }
         public int grupo { get; set; }
+        public string fecha_envio { get; set; }
         public string estado { get; set; }
         public string motivo {  get; set; }
         public string mensaje_enviado {  get; set; }

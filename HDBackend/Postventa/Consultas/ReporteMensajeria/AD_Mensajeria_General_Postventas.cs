@@ -38,5 +38,23 @@ namespace Postventa.Consultas.ReporteMensajeria
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<IEnumerable<mdl_Accesos_Mensajeria_General>> GetAccesos(int usuario)
+        {
+            try
+            {
+                var parametros = new DynamicParameters();
+                parametros.Add("usuario", usuario, System.Data.DbType.Int16);
+
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Accesos_Mensajeria_General> result = await factory.SQL.QueryAsync<mdl_Accesos_Mensajeria_General>("Postventa.sp_get_Accesos_Mensajeria", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }
