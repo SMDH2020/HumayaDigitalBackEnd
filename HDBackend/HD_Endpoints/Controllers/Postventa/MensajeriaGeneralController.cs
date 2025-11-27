@@ -39,5 +39,16 @@ namespace HD.Endpoints.Controllers.Postventa
             var result = await datos.ObtenerReporte(ejercicio_inicio, ejercicio_fin, periodo_inicio, periodo_fin, adr, sucursal, mostrar, interes, motivo, usuario);
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetAccesosMensajeria()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Mensajeria_General_Postventas datos = new AD_Mensajeria_General_Postventas(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.GetAccesos(usuario);
+            return Ok(result);
+        }
     }
 }
