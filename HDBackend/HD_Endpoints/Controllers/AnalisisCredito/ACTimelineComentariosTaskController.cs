@@ -2,8 +2,10 @@
 using HD.Clientes.Modelos;
 using HD.Clientes.Modelos.SC_Analisis;
 using HD.Notifications.Analisis;
+using HD.Notifications.Consultas;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 
 namespace HD.Endpoints.Controllers.AnalisisCredito
 {
@@ -74,19 +76,48 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             }
             if (result.mdldatos.noificar == true) await NotificacionComentarios.Enviar_Mhusa(result);
-            if (result.mdldatos.noificar != true)
-            {
-                // Crear un solo objeto mdlSolicitud con idusuario igual a 0
-                result.mdlSolicitud = new List<mdlSolicitudCredito_Enviar>
-                      {
-                        new mdlSolicitudCredito_Enviar {
-                            idempleado = 0,
-                            nombre = "",
-                            correo = ""
-                        }
+            //if (result.mdldatos.noificar != true)
+            //{
+            //    // Crear un solo objeto mdlSolicitud con idusuario igual a 0
+            //    result.mdlSolicitud = new List<mdlSolicitudCredito_Enviar>
+            //          {
+            //            new mdlSolicitudCredito_Enviar {
+            //                idempleado = 0,
+            //                nombre = "",
+            //                correo = ""
+            //            }
 
-                      };
+            //          };
+            //}
+
+            if ( mdl.idproceso == 31 && mdl.estatus == "A")
+            {
+                //enviar notificacion
+                var usuariosNotificados = string.Join(",", result.mdlSolicitud?.Select(u => u.idempleado.ToString()) ?? new List<string>());
+                var usuario = Sesion.usuario();
+                var textoCliente = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result.mdldatos.cliente.ToLower());
+
+                AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
+                var resultado = await usuarios.GuardarNotificacionSolicitud(mdl.folio, "Se aprobo " + mdl.nombreDocumento.ToLower() + " del cliente " + textoCliente, 9, usuario, usuariosNotificados);
+
+                AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+                await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
             }
+
+            if (mdl.estatus == "M") {
+                //enviar notificacion
+                var usuariosNotificados = string.Join(",", result.mdlSolicitud?.Select(u => u.idempleado.ToString()) ?? new List<string>());
+                var usuario = Sesion.usuario();
+                var textoCliente = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result.mdldatos.cliente.ToLower());
+
+                AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
+                var resultado = await usuarios.GuardarNotificacionSolicitud(mdl.folio, "Modificar " + mdl.nombreDocumento.ToLower() + " del cliente " + textoCliente, 9, usuario, usuariosNotificados);
+
+                AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+                await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
+            }
+
+
             return Ok(new
             {
                 documentacion = result.documentacion,
@@ -178,6 +209,18 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             }
             await NotificacionComentarios.Enviar_Mhusa(result);
+
+            //enviar notificacion
+            var usuariosNotificados = string.Join(",", result.mdlSolicitud?.Select(u => u.idempleado.ToString()) ?? new List<string>());
+            var usuario = Sesion.usuario();
+            var textoCliente = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result.mdldatos.cliente.ToLower());
+
+            AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
+            var resultado = await usuarios.GuardarNotificacionSolicitud(mdl.folio, "Se aprobo " + mdl.nombreDocumento.ToLower() + " del cliente " + textoCliente, 9, usuario, usuariosNotificados);
+
+            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+            await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
+
             return Ok(new
             {
                 documentacion = result.documentacion,
@@ -203,19 +246,31 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             }
             await NotificacionComentarios.Enviar_Mhusa(result);
-            if (result.mdldatos.noificar != true)
-            {
-                // Crear un solo objeto mdlSolicitud con idusuario igual a 0
-                result.mdlSolicitud = new List<mdlSolicitudCredito_Enviar>
-                {
-                        new mdlSolicitudCredito_Enviar {
-                            idempleado = 0,
-                            nombre = "",
-                            correo = ""
-                        }
+            //if (result.mdldatos.noificar != true)
+            //{
+            //    // Crear un solo objeto mdlSolicitud con idusuario igual a 0
+            //    result.mdlSolicitud = new List<mdlSolicitudCredito_Enviar>
+            //    {
+            //            new mdlSolicitudCredito_Enviar {
+            //                idempleado = 0,
+            //                nombre = "",
+            //                correo = ""
+            //            }
 
-                };
-            }
+            //    };
+            //}
+
+            //enviar notificacion
+            var usuariosNotificados = string.Join(",", result.mdlSolicitud?.Select(u => u.idempleado.ToString()) ?? new List<string>());
+            var usuario = Sesion.usuario();
+            var textoCliente = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result.mdldatos.cliente.ToLower());
+
+            AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
+            var resultado = await usuarios.GuardarNotificacionSolicitud(mdl.folio, "Se aprobo " + mdl.nombreDocumento.ToLower() + " del cliente " + textoCliente, 9, usuario, usuariosNotificados);
+
+            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+            await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
+
             return Ok(new
             {
                 documentacion = result.documentacion,
