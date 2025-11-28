@@ -32,12 +32,12 @@ namespace HD.Endpoints.Controllers.Eventos
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> Borrar(int idevento_usuario)
+        public async Task<ActionResult> Borrar(int idlog)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Evento_Usuario_Borrar_Notificaciones datos = new AD_Evento_Usuario_Borrar_Notificaciones(CadenaConexion);
             var usuario = Sesion.usuario();
-            var result = await datos.Borrar(idevento_usuario, usuario);
+            var result = await datos.Borrar(idlog, usuario);
             return Ok(result);
         }
 
@@ -51,5 +51,18 @@ namespace HD.Endpoints.Controllers.Eventos
             var result = await datos.BorrarTodo(usuario);
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> obtenerMensaje(int idlog)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Evento_Usuario_Obtener_Mensaje datos = new AD_Evento_Usuario_Obtener_Mensaje(CadenaConexion);
+            var usuario = Sesion.usuario();
+            var result = await datos.obtenerMensaje(usuario, idlog);
+            return Ok(result);
+        }
+
+
     }
 }
