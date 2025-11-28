@@ -18,7 +18,7 @@ namespace HD.Notifications.Consultas
             CadenaConexion = _cadenaconexion;
         }
 
-        public async Task<mdl_HD_Notificaciones_Listado> obtenerID(int idencabezado, DateTime fecha_evento, string? usuario)
+        public async Task<mdl_HD_Notificaciones_Usuarios_Solicitudes_Cuerpo> obtenerID(int idencabezado, DateTime fecha_evento, string? usuario)
         {
             try
             {
@@ -29,7 +29,7 @@ namespace HD.Notifications.Consultas
                     usuario = usuario
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                mdl_HD_Notificaciones_Listado result = await factory.SQL.QueryFirstOrDefaultAsync<mdl_HD_Notificaciones_Listado>("HumayaDigital_Eventos.dbo.Obtener_Mensaje_Push", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdl_HD_Notificaciones_Usuarios_Solicitudes_Cuerpo result = await factory.SQL.QueryFirstOrDefaultAsync<mdl_HD_Notificaciones_Usuarios_Solicitudes_Cuerpo>("HumayaDigital_Eventos.dbo.Obtener_Mensaje_Push_One_Signal", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

@@ -15,6 +15,8 @@ namespace HD.Notifications.Modelos
         public string? redireccionweb { get; set; }
 
         public string? parametro { get; set; }
+        public string? estado { get; set; }
+
         public string? cliente { get; set; }
         public string? portafolio { get; set; }
 

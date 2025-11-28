@@ -1,4 +1,5 @@
-﻿using HD.Notifications.NotificacionesApp;
+﻿using HD.Notifications;
+using HD.Notifications.NotificacionesApp;
 using HD.Security;
 using HD_Reporteria;
 using HD_Reporteria.ProductoAliado;
@@ -61,6 +62,12 @@ namespace HD.Endpoints.Controllers.ProductoAliado.Inventario
             {
                 await datos.ActualizarListado(data);
             }
+
+            //enviar notificacion
+            DateTime fecha_evento = DateTime.Now;
+
+            AD_OneSignal usuarios = new AD_OneSignal(CadenaConexion);
+            await usuarios.EnviarTodos(8, fecha_evento, usuario);
 
             return Ok(new
             {

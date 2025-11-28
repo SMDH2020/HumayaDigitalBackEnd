@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Text;
 using Usados.Consultas.Inventario;
 using Usados.Modelos.Inventario;
+using HD.Notifications;
 
 namespace HD.Endpoints.Controllers.Eventos
 {
@@ -48,35 +49,11 @@ namespace HD.Endpoints.Controllers.Eventos
             mdl.usuario = Sesion.usuario();
             var result =  await datos.GuardarInstantanea(mdl);
 
-            using var client = new HttpClient();
+            //enviar notificacion
+            DateTime fecha_evento = DateTime.Now;
 
-            var payload = new
-            {
-                app_id = OneSignalAppId,
-                included_segments = new[] { "All" },
-                headings = new { en = "Humaya Digital" },
-                contents = new { en = result.mensaje ?? "Mensaje por defecto" },
-                data = new { targetPage = result.ruta ?? "" }
-
-            };
-
-            var jsonPayload = JsonSerializer.Serialize(payload);
-            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
-
-            client.DefaultRequestHeaders.Add("Authorization", $"Basic {OneSignalApiKey}");
-
-            var response = await client.PostAsync("https://onesignal.com/api/v1/notifications", content);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var resultado = await response.Content.ReadAsStringAsync();
-                return Ok(JsonDocument.Parse(resultado));
-            }
-            else
-            {
-                var error = await response.Content.ReadAsStringAsync();
-                return StatusCode((int)response.StatusCode, error);
-            }
+            AD_OneSignal usuarios = new AD_OneSignal(CadenaConexion);
+            await usuarios.EnviarTodos(result.idencabezado, fecha_evento, mdl.usuario);
 
             return Ok(new { mensaje = "datos cargados con exito" });
 

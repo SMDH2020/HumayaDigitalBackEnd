@@ -1,4 +1,6 @@
-﻿using HD.Notifications.NotificacionesApp;
+﻿using HD.Notifications;
+using HD.Notifications.Consultas;
+using HD.Notifications.NotificacionesApp;
 using HD.Security;
 using HD_Cobranza.Capturas.Dashboard;
 using HD_Cobranza.GestionCobranza.Capturas;
@@ -7,6 +9,7 @@ using HD_Reporteria;
 using HD_Reporteria.Cobranza;
 using HD_Reporteria.Usados;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 using Usados.Consultas.Inventario;
 using Usados.Consultas.Usados;
 using Usados.Modelos.Inventario;
@@ -67,6 +70,13 @@ namespace HD.Endpoints.Controllers.Usados.Inventario
             {
                 await datos.ActualizarListado(data);
             }
+
+            //enviar notificacion
+            DateTime fecha_evento = DateTime.Now;
+
+            AD_OneSignal usuarios = new AD_OneSignal(CadenaConexion);
+            await usuarios.EnviarTodos(9, fecha_evento, usuario);
+
 
             return Ok(new
             {
