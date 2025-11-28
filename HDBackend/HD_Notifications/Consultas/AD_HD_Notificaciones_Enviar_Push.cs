@@ -18,7 +18,7 @@ namespace HD.Notifications.Consultas
 
         private const string OneSignalAppId = "04e611d6-045a-4105-af2d-04880d3c4cb9"; // Tu App ID
 
-        private const string OneSignalApiKey = "os_v2_app_attbdvqeljaqllznasea2pcmxg3bivslzcpur34bx6g5g6i56rzp3ajx44oerbkx77useti2vmimfrjo636cikgj3axrcrqze4offja"; // ⚠️ Tu REST API Key
+        private const string OneSignalApiKey = "os_v2_app_attbdvqeljaqllznasea2pcmxh24k5sjo4re27nmzzxeozl4tgyels7j6n7lnbwkxtxkbsgwuvtopepgho4wee63jslspkmph2cqpmq"; // ⚠️ Tu REST API Key
 
 
         public async Task<bool> Enviar_Notificacion_Solicitud(mdl_Notificacion_Usuarios_Solicitudes_View mdl, string? titulo)

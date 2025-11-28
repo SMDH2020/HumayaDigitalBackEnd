@@ -118,8 +118,8 @@ namespace HD.Endpoints.Controllers.Credito
             AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
             var resultado = await usuarios.GuardarNotificacionSolicitud(folio, $"Se envio a analisis el pedido con folio: {folio}", 9, usuario, usuariosNotificados);
 
-            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
-            await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
+            //AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+            //await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
 
             //Retornar info
             var response = new mdlAnalisis_Mhusa_Resultado
