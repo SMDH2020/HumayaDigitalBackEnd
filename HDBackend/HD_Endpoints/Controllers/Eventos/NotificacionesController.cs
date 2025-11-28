@@ -3,6 +3,7 @@ using HD.Security;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using System.Text;
+using HD.Notifications;
 
 
 //namespace HD.Endpoints.Controllers.Eventos
@@ -21,8 +22,8 @@ using System.Text;
 //            Sesion = sesion;
 //        }
 
-        //private const string OneSignalAppId = "04e611d6-045a-4105-af2d-04880d3c4cb9"; // Tu App ID
-        //private const string OneSignalApiKey = "os_v2_app_attbdvqeljaqllznasea2pcmxgflnvyahosesendbr7qoaleizbkfh73lqkpbwxfdb53m3f5gjlmcme6bhgtbrczxvi5uyvlbqnrwvy"; // ⚠️ Tu REST API Key
+//private const string OneSignalAppId = "04e611d6-045a-4105-af2d-04880d3c4cb9"; // Tu App ID
+//private const string OneSignalApiKey = "os_v2_app_attbdvqeljaqllznasea2pcmxgflnvyahosesendbr7qoaleizbkfh73lqkpbwxfdb53m3f5gjlmcme6bhgtbrczxvi5uyvlbqnrwvy"; // ⚠️ Tu REST API Key
 
 //        [HttpPost("enviar")]
 //        public async Task<IActionResult> EnviarNotificacion([FromBody] NotificacionDto data)
@@ -33,35 +34,35 @@ using System.Text;
 //            var usuario = Sesion.usuario();
 //            var resultado = await datos.obtenerID(data.idencabezado, data.fecha_evento, usuario);
 
-            //using var client = new HttpClient();
+//using var client = new HttpClient();
 
-            //var payload = new
-            //{
-            //    app_id = OneSignalAppId,
-            //    included_segments = new[] { "All" },
-            //    headings = new { en = data.Titulo ?? "Título por defecto" },
-            //    contents = new { en = resultado.mensaje ?? "Mensaje por defecto" },
-            //    data = new { targetPage = resultado.redireccion ?? "" }
+//var payload = new
+//{
+//    app_id = OneSignalAppId,
+//    included_segments = new[] { "All" },
+//    headings = new { en = data.Titulo ?? "Título por defecto" },
+//    contents = new { en = resultado.mensaje ?? "Mensaje por defecto" },
+//    data = new { targetPage = resultado.redireccion ?? "" }
 
-            //};
+//};
 
-            //var jsonPayload = JsonSerializer.Serialize(payload);
-            //var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+//var jsonPayload = JsonSerializer.Serialize(payload);
+//var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
-            //client.DefaultRequestHeaders.Add("Authorization", $"Basic {OneSignalApiKey}");
+//client.DefaultRequestHeaders.Add("Authorization", $"Basic {OneSignalApiKey}");
 
-            //var response = await client.PostAsync("https://onesignal.com/api/v1/notifications", content);
+//var response = await client.PostAsync("https://onesignal.com/api/v1/notifications", content);
 
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    var result = await response.Content.ReadAsStringAsync();
-            //    return Ok(JsonDocument.Parse(result));
-            //}
-            //else
-            //{
-            //    var error = await response.Content.ReadAsStringAsync();
-            //    return StatusCode((int)response.StatusCode, error);
-            //}
+//if (response.IsSuccessStatusCode)
+//{
+//    var result = await response.Content.ReadAsStringAsync();
+//    return Ok(JsonDocument.Parse(result));
+//}
+//else
+//{
+//    var error = await response.Content.ReadAsStringAsync();
+//    return StatusCode((int)response.StatusCode, error);
+//}
 //        }
 
 //        public class NotificacionDto
@@ -91,7 +92,7 @@ namespace HD.Endpoints.Controllers.Eventos
         }
 
         private const string OneSignalAppId = "04e611d6-045a-4105-af2d-04880d3c4cb9"; // Tu App ID
-        private const string OneSignalApiKey = "os_v2_app_attbdvqeljaqllznasea2pcmxhzu4frjjsaewnf2td7i6ogticf4ewmwd3nostj3lfw2ez3tp3yx5likdtsyb6itmfz3edc74gyqvgq"; // ⚠️ Tu REST API Key
+        private const string OneSignalApiKey = "os_v2_app_attbdvqeljaqllznasea2pcmxg3bivslzcpur34bx6g5g6i56rzp3ajx44oerbkx77useti2vmimfrjo636cikgj3axrcrqze4offja"; // ⚠️ Tu REST API Key
 
 
         [HttpPost]
@@ -100,40 +101,14 @@ namespace HD.Endpoints.Controllers.Eventos
         {
 
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-            AD_Conseguir_Mensaje_Manual datos = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
+            AD_OneSignal datos = new AD_OneSignal(CadenaConexion);
             data.usuario = Sesion.usuario();
-            var resultado = await datos.obtenerID(data.idencabezado, data.fecha_evento, data.usuario);
+            await datos.EnviarTodos(data.idencabezado, data.fecha_evento, data.usuario);
 
-            using var client = new HttpClient();
-
-            var payload = new
+            return Ok(new
             {
-                app_id = OneSignalAppId,
-                included_segments = new[] { "All" },
-                //include_player_ids = new[] { data.onSignal }, // ✅ CAMBIO AQUÍ
-                headings = new { en = data.Titulo ?? "Título por defecto" },
-                contents = new { en = resultado.mensaje ?? "Mensaje por defecto" },
-                data = new { targetPage = resultado.redireccion ?? "" }
-
-            };
-
-            var jsonPayload = JsonSerializer.Serialize(payload);
-            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
-
-            client.DefaultRequestHeaders.Add("Authorization", $"Basic {OneSignalApiKey}");
-
-            var response = await client.PostAsync("https://onesignal.com/api/v1/notifications", content);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var result = await response.Content.ReadAsStringAsync();
-                return Ok(JsonDocument.Parse(result));
-            }
-            else
-            {
-                var error = await response.Content.ReadAsStringAsync();
-                return StatusCode((int)response.StatusCode, error);
-            }
+                mensaje = "Enviado Correctamente",
+            });
 
         }
 
@@ -190,6 +165,7 @@ namespace HD.Endpoints.Controllers.Eventos
             public string? Titulo { get; set; }
             public string? Mensaje { get; set; }
             public string? redireccion { get; set; }
+            public int evento { get; set; }
             public DateTime fecha_evento { get; set; }
             public string? usuario { get; set; }
             //public IEnumerable<string>? idSuscripcion { get; set; }

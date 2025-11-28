@@ -17,13 +17,13 @@ namespace HD.Clientes.Consultas.Eventos
             CadenaConexion = _cadenaconexion;
         }
 
-        public async Task<IEnumerable<mdl_evento_notificacion>> Borrar(int idevento_usuario, string usuario)
+        public async Task<IEnumerable<mdl_evento_notificacion>> Borrar(int idlog, string usuario)
         {
             try
             {
                 var parametros = new
                 {
-                    idevento_usuario,
+                    idlog,
                     usuario
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
