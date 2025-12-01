@@ -70,53 +70,21 @@ namespace HD.Notifications.Consultas
             }
         }
 
-        public async Task<mdl_Notificacion_Usuarios_Solicitudes_View> GuardarNotificacionSolicitud(string? folio, string? mensaje, int idreferencia, string? usuario, string? usuarioNotificar)
-        {
-            try
-            {
-                var parametros = new
-                {
-                    folio = folio,
-                    mensaje = mensaje,
-                    idreferencia = idreferencia,
-                    usuario = usuario,
-                    usuarioNotificar = usuarioNotificar
-                };
-                FactoryConection factory = new FactoryConection(CadenaConexion);
-                //var result = await factory.SQL.QueryMultipleAsync(", parametros, commandType: System.Data.CommandType.StoredProcedure);
-                var result = await factory.SQL.QueryMultipleAsync("HumayaDigital_Eventos.dbo.Obtener_Mensaje_Push_Especifico_Solicitud", parametros, commandType: System.Data.CommandType.StoredProcedure);
-                mdl_Notificacion_Usuarios_Solicitudes_View view = new mdl_Notificacion_Usuarios_Solicitudes_View();
-                view.notificacionCuerpo = result.Read<mdl_HD_Notificaciones_Usuarios_Solicitudes_Cuerpo>().FirstOrDefault();
-                view.notificacionUsuarios = result.Read<mdl_Usuarios_Especificos>().ToList();
-
-                // Cerrar la conexión
-                factory.SQL.Close();
-
-                // Retornar la tupla con ambos sets
-                return view;
-
-            }
-            catch (System.Exception ex)
-            {
-                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
-            }
-        }
-
-        //public async Task<mdl_Notificacion_Usuarios_Solicitudes_View> GuardarNotificacionSolicitud(int idevento, int referencia, string mensaje, string parametro, string usuarios)
+        //public async Task<mdl_Notificacion_Usuarios_Solicitudes_View> GuardarNotificacionSolicitud(string? folio, string? mensaje, int idreferencia, string? usuario, string? usuarioNotificar)
         //{
         //    try
         //    {
         //        var parametros = new
         //        {
-        //            idevento = idevento,
-        //            referencia = referencia,
+        //            folio = folio,
         //            mensaje = mensaje,
-        //            parametro = parametro,
-        //            usuarios = usuarios
+        //            idreferencia = idreferencia,
+        //            usuario = usuario,
+        //            usuarioNotificar = usuarioNotificar
         //        };
         //        FactoryConection factory = new FactoryConection(CadenaConexion);
         //        //var result = await factory.SQL.QueryMultipleAsync(", parametros, commandType: System.Data.CommandType.StoredProcedure);
-        //        var result = await factory.SQL.QueryMultipleAsync("HumayaDigital_Eventos.dbo.sp_Guardar_Notificacion_OneSignal", parametros, commandType: System.Data.CommandType.StoredProcedure);
+        //        var result = await factory.SQL.QueryMultipleAsync("HumayaDigital_Eventos.dbo.Obtener_Mensaje_Push_Especifico_Solicitud", parametros, commandType: System.Data.CommandType.StoredProcedure);
         //        mdl_Notificacion_Usuarios_Solicitudes_View view = new mdl_Notificacion_Usuarios_Solicitudes_View();
         //        view.notificacionCuerpo = result.Read<mdl_HD_Notificaciones_Usuarios_Solicitudes_Cuerpo>().FirstOrDefault();
         //        view.notificacionUsuarios = result.Read<mdl_Usuarios_Especificos>().ToList();
@@ -133,5 +101,37 @@ namespace HD.Notifications.Consultas
         //        throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
         //    }
         //}
+
+        public async Task<mdl_Notificacion_Usuarios_Solicitudes_View> GuardarNotificacionSolicitud(int idevento, int referencia, string mensaje, string parametro, string usuarios)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    idevento = idevento,
+                    referencia = referencia,
+                    mensaje = mensaje,
+                    parametro = parametro,
+                    usuarios = usuarios
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                //var result = await factory.SQL.QueryMultipleAsync(", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("HumayaDigital_Eventos.dbo.sp_Guardar_Notificacion_OneSignal", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdl_Notificacion_Usuarios_Solicitudes_View view = new mdl_Notificacion_Usuarios_Solicitudes_View();
+                view.notificacionCuerpo = result.Read<mdl_HD_Notificaciones_Usuarios_Solicitudes_Cuerpo>().FirstOrDefault();
+                view.notificacionUsuarios = result.Read<mdl_Usuarios_Especificos>().ToList();
+
+                // Cerrar la conexión
+                factory.SQL.Close();
+
+                // Retornar la tupla con ambos sets
+                return view;
+
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }
