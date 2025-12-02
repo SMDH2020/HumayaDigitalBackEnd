@@ -114,9 +114,11 @@ namespace HD.Endpoints.Controllers.Credito
             //enviar notificacion
             var usuariosNotificados = string.Join(",",result.mdlSolicitud?.Select(u => u.idempleado.ToString())?? new List<string>());
             var usuario = Sesion.usuario();
+            var idevento = 1;
+            var referencia = 9;
 
             AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
-            var resultado = await usuarios.GuardarNotificacionSolicitud(folio, $"Se envio a analisis el pedido con folio: {folio}", 9, usuario, usuariosNotificados);
+            var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, $"Se envio a analisis el pedido con folio: {folio}", folio, usuariosNotificados);
 
             AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
             await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");

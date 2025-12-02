@@ -73,9 +73,11 @@ namespace HD.Endpoints.Controllers.Credito.ReestructurarCredito
                 var usuariosNotificados = string.Join(",", result.mdlSolicitud?.Select(u => u.idempleado.ToString()) ?? new List<string>());
                 var usuario = Sesion.usuario();
                 var textoCliente = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result.detail.razon_social.ToLower());
+                var idevento = 4;
+                var referencia = 9;
 
                 AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
-                var resultado = await usuarios.GuardarNotificacionSolicitud(folio, "Se registro una reestructura para el cliente " + textoCliente, 9, usuario, usuariosNotificados);
+                var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, "Se registro una reestructura para el cliente " + textoCliente, result.detail.folio_solicitud, usuariosNotificados);
 
                 AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
                 await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
