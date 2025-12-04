@@ -56,9 +56,18 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Mhusa
             var textoCliente = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result.mdldatos.cliente.ToLower());
             var idevento = 1;
             var referencia = 9;
+            string mensaje;
+            if (mdl.estatus == "M")
+            {
+                mensaje = "Se solicita modificar pedido de " + textoCliente;
+            }
+            else
+            {
+                mensaje = "Se aceptaron las condiciones del cliente " + textoCliente;
+            }
 
             AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
-            var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, "Se aceptaron las condiciones del cliente " + textoCliente, mdl.folio, usuariosNotificados);
+            var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, mensaje,mdl.folio.Substring(0, 2) == "CC" ? result.mdldatos.folio :  mdl.folio, usuariosNotificados);
 
             AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
             await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");

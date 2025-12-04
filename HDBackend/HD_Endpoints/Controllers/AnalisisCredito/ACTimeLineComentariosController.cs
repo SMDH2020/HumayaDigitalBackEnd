@@ -51,6 +51,31 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
                 }
                 await NotificacionComentarios.Enviar_Mhusa(result);
 
+                if(mdl.idproceso == 29 || mdl.idproceso == 38 || mdl.idproceso == 1520 )
+                {
+                    //enviar notificacion
+                    var usuariosNotificados = string.Join(",", result.mdlSolicitud.Select(u => u.idempleado.ToString()) ?? new List<string>());
+                    var usuario = Sesion.usuario();
+                    var textoCliente = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result.mdldatos.cliente.ToLower());
+                    var idevento = mdl.folio.Substring(0, 2) == "PC" ? 3 : mdl.folio.Substring(0, 2) == "RC" ? 4 : 1;
+                    var referencia = 9;
+                    string mensaje;
+
+                    if(mdl.idproceso == 38 || mdl.idproceso == 1520) {
+                        mensaje = "Se finalizo timeline de " + textoCliente;
+                    }
+                    else
+                    {
+                        mensaje = "Gerente valido el pedido de " + textoCliente;
+                    }
+
+                    AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
+                    var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, mensaje, mdl.folio, usuariosNotificados);
+
+                    AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+                    await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
+                }
+
                 var response = new mdlAnalisis_Mhusa_Resultado
                 {
                     estado = result.estado,
@@ -181,8 +206,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             ADAnalisis_Comentarios_JDF_Condicionado datos = new ADAnalisis_Comentarios_JDF_Condicionado(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.Guardar(mdl);
-            var idevento = 1;
-            var referencia = 9;
+
 
             if (result is null)
             {
@@ -209,18 +233,24 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
                 await NotificacionComentarios.Enviar_Mhusa(result);
 
 
-                if (mdl.idproceso == 35 || mdl.idproceso == 1100 || mdl.idproceso == 1010)
+                if (mdl.idproceso == 35 || mdl.idproceso == 1100 || mdl.idproceso == 1010|| mdl.idproceso == 1150)
                 {
                     //enviar notificacion
                     var usuariosNotificados = string.Join(",", result.mdlSolicitud?.Select(u => u.idempleado.ToString()) ?? new List<string>());
                     var usuario = Sesion.usuario();
                     var textoCliente = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result.mdldatos.cliente.ToLower());
+                    var idevento = 1;
+                    var referencia = mdl.idproceso == 1010 ? 9 : 11;
 
                     string mensaje;
 
                     if(mdl.idproceso == 1010)
                     {
                         mensaje = "Pedido autorizado del cliente " + textoCliente;
+                    }
+                    else if(mdl.idproceso == 1150)
+                    {
+                        mensaje = "Se finalizo timeline de " + textoCliente;
                     }
                     else
                     {
