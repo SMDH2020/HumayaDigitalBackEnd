@@ -8,6 +8,7 @@ using HD.Security;
 using Microsoft.AspNetCore.Mvc;
 using HD.Notifications.Consultas;
 using System.Globalization;
+using System.Net.Sockets;
 
 namespace HD.Endpoints.Controllers.AnalisisCredito.Credito_Condicionado
 {
@@ -40,13 +41,16 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Credito_Condicionado
             mdl.usuario = Sesion.usuario();
             var result = await datos.BuscarFolio(mdl);
 
+
             //enviar notificacion
-            var usuariosNotificados = string.Join(",", result.mdlSolicitud?.Select(u => u.idempleado.ToString()) ?? new List<string>());
+            var usuariosNotificados = string.Join(",", result.mdlSolicitud.Select(u => u.idempleado.ToString()) ?? new List<string>());
             var usuario = Sesion.usuario();
             var textoCliente = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(mdl.cliente.ToLower());
+            var idevento = 2;
+            var referencia = 9;
 
             AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
-            var resultado = await usuarios.GuardarNotificacionSolicitud(result.estado.folio_condicionado, "Se activo crédito condicionado para " + textoCliente, 9, usuario, usuariosNotificados);
+            var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, "Se habilito credito condicionado para " + textoCliente, mdl.folio, usuariosNotificados);
 
             AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
             await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
@@ -81,6 +85,19 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Credito_Condicionado
             else
             {
                 await NotificacionComentarios.Enviar_Mhusa(result);
+
+                //enviar notificacion
+                var usuariosNotificados = string.Join(",", result.mdlSolicitud.Select(u => u.idempleado.ToString()) ?? new List<string>());
+                var usuario = Sesion.usuario();
+                var textoCliente = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result.mdldatos.cliente.ToLower());
+                var idevento = mdl.folio.Substring(0, 2) == "CC" ? 2 : mdl.folio.Substring(0, 2) == "RC" ? 4 : 1;
+                var referencia = 9;
+
+                AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
+                var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, "Se finalizo timeline de " + textoCliente, idevento == 2 ? result.mdldatos.folio_solicitud : mdl.folio, usuariosNotificados);
+
+                AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+                await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
 
             }
             var response = new mdlAnalisis_Mhusa_Resultado

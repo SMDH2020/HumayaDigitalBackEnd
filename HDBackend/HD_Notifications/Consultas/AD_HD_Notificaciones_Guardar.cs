@@ -27,15 +27,17 @@ namespace HD.Notifications.Consultas
                 {
                     idencabezado = mdl.idencabezado,
                     mensaje = mdl.mensaje,
-                    fecha_evento = mdl.fecha_evento,
+                    //fecha_evento = mdl.fecha_evento,
+                    fecha_inicio = mdl.fecha_inicio,
+                    fecha_fin = mdl.fecha_fin,
                     redireccion = mdl.redireccion,
                     tipo = mdl.tipo,
                     @dia = mdl.dia,
                     hora = mdl.hora,
-                    duracion = mdl.duracion,
+                    //duracion = mdl.duracion,
                     usuario = mdl.usuario,
                 };
-                await factory.SQL.QueryAsync("HumayaDigital_Eventos.dbo.sp_HD_Notificaciones_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                await factory.SQL.QueryAsync("HumayaDigital_Eventos.dbo.sp_HD_Notificaciones_Guardar_Nuevo", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return true;
             }
@@ -54,14 +56,17 @@ namespace HD.Notifications.Consultas
                 {
                     idencabezado = mdl.idencabezado,
                     mensaje = mdl.mensaje,
-                    fecha_evento = mdl.fecha_evento,
+                    //fecha_evento = mdl.fecha_evento,
+                    fecha_inicio = mdl.fecha_inicio,
+                    fecha_fin = mdl.fecha_fin,
                     redireccion = mdl.redireccion,
                     tipo = mdl.tipo,
+                    @dia = mdl.dia,
                     hora = mdl.hora,
-                    duracion = mdl.duracion,
+                    //duracion = mdl.duracion,
                     usuario = mdl.usuario,
                 };
-                mdl_HD_Notificaciones_Listado result = await factory.SQL.QueryFirstOrDefaultAsync<mdl_HD_Notificaciones_Listado>("HumayaDigital_Eventos.dbo.sp_HD_Notificaciones_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdl_HD_Notificaciones_Listado result = await factory.SQL.QueryFirstOrDefaultAsync<mdl_HD_Notificaciones_Listado>("HumayaDigital_Eventos.dbo.sp_HD_Notificaciones_Guardar_Nuevo", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

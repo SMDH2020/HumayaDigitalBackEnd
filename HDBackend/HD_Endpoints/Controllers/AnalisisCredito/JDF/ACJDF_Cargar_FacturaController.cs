@@ -7,6 +7,7 @@ using HD.Notifications.Consultas;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
+using System.Net.Sockets;
 
 namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
 {
@@ -32,12 +33,15 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
             //    await datos.Guardar_detalle(mdl.folio, mdl.registro, fac.orden, fac.documento, mdl.usuario, fac.docto_financiamiento);
             //}
 
+            //enviar notificacion
             var usuariosNotificados = string.Join(",", result.mdlSolicitud?.Select(u => u.idempleado.ToString()) ?? new List<string>());
             var usuario = Sesion.usuario();
             var textoCliente = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result.documento.cliente.ToLower());
+            var idevento = 1;
+            var referencia = 9;
 
             AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
-            var resultado = await usuarios.GuardarNotificacionSolicitud(mdl.folio, "Equipo facturado para " + textoCliente, 9, usuario, usuariosNotificados);
+            var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, "Solicitud facturada de " + textoCliente, mdl.folio, usuariosNotificados);
 
             AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
             await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
@@ -65,6 +69,19 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
             //ADNotificacionFinalizacionProceso notificacion = new ADNotificacionFinalizacionProceso(CadenaConexion);
             //var body = await notificacion.GetBody(mdl.folio);
             //await NotificacionComentarios.EnviarProcesoFinalizado(body, mdl.folio);
+
+            //enviar notificacion
+            var usuariosNotificados = string.Join(",", socket.Select(u => u.idempleado.ToString()) ?? new List<string>());
+            var usuario = Sesion.usuario();
+            //var textoCliente = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result.mdldatos.cliente.ToLower());
+            var idevento = mdl.folio.Substring(0, 2) == "PC" ? 3 : mdl.folio.Substring(0, 2) == "RC" ? 4 : 1;
+            var referencia = 9;
+
+            AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
+            var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, "Se cargo pagare equip de la solicitud: " + mdl.folio, mdl.folio, usuariosNotificados);
+
+            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+            await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
             return Ok(new {socket=socket});
         }
 
@@ -80,6 +97,20 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
             //{
             //    await datos.Guardar_detalle(mdl.folio, mdl.registro, fac.orden, fac.documento, mdl.usuario, fac.docto_financiamiento);
             //}
+
+            //enviar notificacion
+            var usuariosNotificados = string.Join(",", result.mdlSolicitud.Select(u => u.idempleado.ToString()) ?? new List<string>());
+            var usuario = Sesion.usuario();
+            var textoCliente = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result.documento.cliente.ToLower());
+            var idevento = mdl.folio.Substring(0, 2) == "PC" ? 3 : mdl.folio.Substring(0, 2) == "CC" ? 2 : 1;
+            var referencia = 9;
+
+            AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
+            var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, "Solicitud facturada del cliente " + textoCliente, mdl.folio, usuariosNotificados);
+
+            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+            await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
+
             return Ok(new
             {
                 documentacion = result.documento,
@@ -126,6 +157,20 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             }
             await NotificacionComentarios.EnviarNotificacionOperacionCondicionada(resultado);
+
+
+            //enviar notificacion
+            var usuariosNotificados = string.Join(",", resultado.mdlSolicitud.Select(u => u.idempleado.ToString()) ?? new List<string>());
+            var usuario = Sesion.usuario();
+            //var textoCliente = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result.mdldatos.cliente.ToLower());
+            var idevento = mdl.folio.Substring(0, 2) == "CC" ? 2 : mdl.folio.Substring(0, 2) == "RC" ? 4 : 1;
+            var referencia = 9;
+
+            AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
+            var resultadoo = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, "Se cargo pagare equip de la solicitud: " + resultado.mdldatos.folio_solicitud, resultado.mdldatos.folio_solicitud, usuariosNotificados);
+
+            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+            await notificacionPush.Enviar_Notificacion_Solicitud(resultadoo, "Humaya Digital");
             return Ok(new { socket = resultado.mdlSolicitud });
         }
 
@@ -147,9 +192,11 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
             var usuariosNotificados = string.Join(",", result.mdlSolicitud?.Select(u => u.idempleado.ToString()) ?? new List<string>());
             var usuario = Sesion.usuario();
             var textoCliente = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result.mdldatos.cliente.ToLower());
+            var idevento = 1;
+            var referencia = 9;
 
             AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
-            var resultado = await usuarios.GuardarNotificacionSolicitud(mdl.folio, "Solicitud facturada de" + textoCliente, 9, usuario, usuariosNotificados);
+            var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, "Solicitud facturada de" + textoCliente , mdl.folio, usuariosNotificados);
 
             AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
             await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
