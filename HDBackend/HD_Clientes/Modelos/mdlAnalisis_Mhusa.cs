@@ -13,6 +13,7 @@ namespace HD.Clientes.Modelos
     public class mdldatos_notificacion
     {
         public string? folio { get; set; }
+        public string? folio_solicitud { get; set; }
         public string? asunto { get; set; }
         public string? cliente { get; set; }
         public string? asesor { get; set; }

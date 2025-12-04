@@ -19,7 +19,7 @@ namespace HD.Notifications
         }
 
         private const string OneSignalAppId = "04e611d6-045a-4105-af2d-04880d3c4cb9"; // Tu App ID
-        private const string OneSignalApiKey = "os_v2_app_attbdvqeljaqllznasea2pcmxekuoyv7pueeg654qgf6zciqakxbbayf3wf2gtrvflz6rawthlg3kik5dca2f7kwyfzk5pskekkeu4a";
+        private const string OneSignalApiKey = "os_v2_app_attbdvqeljaqllznasea2pcmxgg3pfycb32e5svzyslqh5pchfrnb7swjed2ezv5gkzmuk767xjrcs7xp55rvqvnwaoyb6asbsyczjq";
 
         public async Task<bool> EnviarTodos(int idencabezado,  DateTime fecha_evento, string usuario) {
 
