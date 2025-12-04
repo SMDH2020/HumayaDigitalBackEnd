@@ -63,7 +63,7 @@ namespace HD_Ventas.Consultas
             }
         }
 
-        public async Task<IEnumerable<mdlCarga_Scorecard_porVendedor_Dash_TablaAsesor>> Scorecard_TablaAsesor(int region, string? sucursal, string? usuario, int ejercicioinicio, int periodoinicio, int ejercicio, int mes_actual, int sesion)
+        public async Task<IEnumerable<mdlCarga_Scorecard_porVendedor_Dash_TablaAsesor>> Scorecard_TablaAsesor(string region, string? sucursal, string? usuario, int ejercicioinicio, int periodoinicio, int ejercicio, int mes_actual, int sesion)
         {
             try
             {

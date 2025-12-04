@@ -78,7 +78,7 @@ namespace HD.Endpoints.Controllers.Ventas
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> MostrarScorecardVendedorporParametrosTablaAsesor(int region, string? sucursal, string? vendedor, int ejercicioinicio, int periodoinicio, int ejercicio, int mes_actual)
+        public async Task<ActionResult> MostrarScorecardVendedorporParametrosTablaAsesor(string region, string? sucursal, string? vendedor, int ejercicioinicio, int periodoinicio, int ejercicio, int mes_actual)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Carga_Scorecard_porParametros_Dash datos = new AD_Carga_Scorecard_porParametros_Dash(CadenaConexion);
@@ -117,7 +117,7 @@ namespace HD.Endpoints.Controllers.Ventas
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ImprimirExcelTablaAsesores(int region, string? sucursal, string? vendedor, int ejercicioinicio, int periodoinicio, int ejercicio, int mes_actual)
+        public async Task<ActionResult> ImprimirExcelTablaAsesores(string region, string? sucursal, string? vendedor, int ejercicioinicio, int periodoinicio, int ejercicio, int mes_actual)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Carga_Scorecard_porParametros_Dash datos = new AD_Carga_Scorecard_porParametros_Dash(CadenaConexion);
@@ -154,7 +154,7 @@ namespace HD.Endpoints.Controllers.Ventas
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ImprimirPDFTablaAsesores(int region, string? sucursal, string? vendedor, int ejercicioinicio, int periodoinicio, int ejercicio, int mes_actual)
+        public async Task<ActionResult> ImprimirPDFTablaAsesores(string region, string? sucursal, string? vendedor, int ejercicioinicio, int periodoinicio, int ejercicio, int mes_actual)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Carga_Scorecard_porParametros_Dash datos = new AD_Carga_Scorecard_porParametros_Dash(CadenaConexion);
