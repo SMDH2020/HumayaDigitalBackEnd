@@ -17,6 +17,10 @@ namespace HD.Notifications.Modelos
         public string? modulo { get; set; }
         public string? ruta { get; set; }
 
+        public string? fecha_inicio { get; set; }
+	    public string? fecha_fin {  get; set; }
+	    public string? hora { get; set; }
+
         public string? tipo_alerta { get; set; }
         public string? dia { get; set; }
         public string? empleado { get; set; }

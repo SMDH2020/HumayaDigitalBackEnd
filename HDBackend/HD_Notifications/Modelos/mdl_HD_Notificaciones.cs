@@ -10,13 +10,15 @@ namespace HD.Notifications.Modelos
     {
         public int idencabezado { get; set; }
         public string? mensaje { get; set; }
-        public DateTime fecha_evento { get; set; }
+        //public DateTime fecha_evento { get; set; }
+        public DateTime? fecha_inicio { get; set; }
+        public DateTime? fecha_fin {  get; set; }
         public int redireccion { get; set; }
         public string? tipo { get; set; }
         public string? dia { get; set; }
 
         public string? hora { get; set; }
-        public int duracion { get; set; }
+        //public int duracion { get; set; }
 
         public string? usuario { get; set; }
 
