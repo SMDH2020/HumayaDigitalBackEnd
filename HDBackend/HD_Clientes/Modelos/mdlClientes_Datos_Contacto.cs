@@ -20,7 +20,7 @@ namespace HD.Clientes.Modelos
         public string? idmedio_contacto { get; set; }
 
         [Required(ErrorMessage = "El Tipo de Contacto es un valor requerido")]
-        [RegularExpression(@"^[COVECRPO]+$", ErrorMessage = "El campo tipo de contacto debe estar formado  por las siguientes opciones [CO][VE][CR][PO]")]
+        [RegularExpression(@"^(CO|VE|CR|PO|SE|RE)$", ErrorMessage = "El campo tipo de contacto debe estar formado  por las siguientes opciones [CO][VE][CR][PO][SE][RE]")]
         [StringLength(2, MinimumLength = 2, ErrorMessage = "El campo tipo de contacto debe estar formado por 2 digitos")]
         public string? tipo_contacto { get; set; }="";
         public string? idtipo_contacto { get; set; }
