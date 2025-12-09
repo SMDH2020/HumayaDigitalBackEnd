@@ -75,12 +75,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
 app.UseRouting();
+app.UseCors("corsApp");
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseHttpsRedirection();
+
+
+
 app.UseMiddleware<ManejadorMiddlewares>();
-app.UseCors("corsApp");
+
 
 app.UseEndpoints(endpoints =>
 {
