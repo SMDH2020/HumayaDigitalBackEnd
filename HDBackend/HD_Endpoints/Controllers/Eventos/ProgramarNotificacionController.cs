@@ -25,7 +25,7 @@ namespace HD.Endpoints.Controllers.Eventos
 
 
         private const string OneSignalAppId = "04e611d6-045a-4105-af2d-04880d3c4cb9"; // Tu App ID
-        private const string OneSignalApiKey = "os_v2_app_attbdvqeljaqllznasea2pcmxgflnvyahosesendbr7qoaleizbkfh73lqkpbwxfdb53m3f5gjlmcme6bhgtbrczxvi5uyvlbqnrwvy"; // ⚠️ Tu REST API Key
+        private const string OneSignalApiKey = ""; // ⚠️ Tu REST API Key
 
         [HttpPost]
         public async Task<ActionResult> Post(mdl_HD_Notificaciones mdl)
