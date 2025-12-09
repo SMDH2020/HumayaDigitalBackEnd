@@ -46,6 +46,26 @@ namespace HD.Generales.Consultas
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+        public async Task<bool> OneSignal(mdlCodigoSeguridad login)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+
+                var parametros = new
+                {
+                    usuario = login.usuario,
+                    oneSignalID = login.oneSignalID
+                };
+                 await factory.SQL.QueryAsync("sp_OneSignalID", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
         public async Task<mdlDatosSesion_Movil> UsuarioSesionMovil(mdlCodigoSeguridad login)
         {
             try
