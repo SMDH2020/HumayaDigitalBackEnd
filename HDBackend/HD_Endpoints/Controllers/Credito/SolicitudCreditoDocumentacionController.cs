@@ -383,20 +383,20 @@ namespace HD.Endpoints.Controllers.Credito
             if (result.notificar.notificar == 1)
             {
                 await NotificacionComentarios.EnviarCargaDocumentosVendedor(result, mdl.folio);
+
+                //enviar notificacion
+                var usuariosNotificados = string.Join(",", result.mdlSolicitud?.Select(u => u.idempleado.ToString()) ?? new List<string>());
+                var usuario = Sesion.usuario();
+                var textoCliente = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result.notificar.cliente.ToLower());
+                var idevento = mdl.folio.Substring(0, 2) == "PC" ? 3 : 1;
+                var referencia = 9;
+
+                AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
+                var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, result.notificar.vendedor + " cargo toda la documentación del cliente " + textoCliente, mdl.folio, usuariosNotificados);
+
+                AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+                await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
             }
-
-            //enviar notificacion
-            var usuariosNotificados = string.Join(",", result.mdlSolicitud?.Select(u => u.idempleado.ToString()) ?? new List<string>());
-            var usuario = Sesion.usuario();
-            var textoCliente = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result.notificar.cliente.ToLower());
-            var idevento = mdl.folio.Substring(0, 2) == "PC" ? 3 : 1;
-            var referencia = 9;
-
-            AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
-            var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, result.notificar.vendedor + " cargo " + mdl.nombreDocumento.ToLower() + " del cliente " + textoCliente, mdl.folio, usuariosNotificados);
-
-            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
-            await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
 
             return Ok(result);
 
