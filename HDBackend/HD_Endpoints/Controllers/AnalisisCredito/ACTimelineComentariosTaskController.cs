@@ -82,7 +82,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             var idevento = mdl.folio.Substring(0, 2) == "PC" ? 3 : 1;
             var referencia = 9;
 
-            if ( mdl.idproceso == 31 && mdl.estatus == "A")
+            if ( mdl.idproceso == 31 && result.mdldatos.noificar == true)
             {
                 //enviar notificacion
                 var usuariosNotificados = string.Join(",", result.mdlSolicitud?.Select(u => u.idempleado.ToString()) ?? new List<string>());
@@ -90,7 +90,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
                 var textoCliente = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result.mdldatos.cliente.ToLower());
 
                 AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
-                var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, "Se aprobo " + mdl.nombreDocumento.ToLower() + " del cliente " + textoCliente, mdl.folio, usuariosNotificados);
+                var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, "Se aprobo toda la documentación del cliente " + textoCliente, mdl.folio, usuariosNotificados);
 
 
                 AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
