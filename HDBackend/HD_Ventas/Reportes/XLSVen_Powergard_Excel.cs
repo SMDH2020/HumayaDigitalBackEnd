@@ -86,7 +86,7 @@ namespace HD_Ventas.Reportes
                     sheet.Cell(renglon, 6).Value = "INTERNA/EXTERNA";
                     sheet.Cell(renglon, 7).Value = "FECHA FACTURACION";
                     sheet.Cell(renglon, 8).Value = "# OT";
-                    sheet.Cell(renglon, 9).Value = "VENDEDORN";
+                    sheet.Cell(renglon, 9).Value = "VENDEDOR";
                     sheet.Cell(renglon, 10).Value = "COBERTURA";
 
 
@@ -133,6 +133,7 @@ namespace HD_Ventas.Reportes
                     //sheet.Row(renglon).Style.NumberFormat.Format = "#,##0.00";
                     sheet.Column(4).Style.NumberFormat.Format = "#,##0.00";
                     sheet.Column(5).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(8).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                     //sheet.Column(6).Style.NumberFormat.Format = "#,##0.00";
                     //sheet.Column(7).Style.NumberFormat.Format = "0.0 %";
 

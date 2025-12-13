@@ -10,5 +10,6 @@
         public string promocion { get; set; }
         public string moneda { get; set; } = "MXN";
         public bool imprimir_precio_lista { get; set; } = true;
+        public string? terminos {  get; set; }
     }
 }
