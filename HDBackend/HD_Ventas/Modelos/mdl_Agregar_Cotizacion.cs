@@ -20,6 +20,9 @@ namespace HD_Ventas.Modelos
         public string vigencia { get; set; }
         public int usuario { get; set; }
 
+        [RegularExpression(@"^[. , # $ % ñ Ñ a-zA-Z0-9]+$", ErrorMessage = "El campo condiciones debe contener solo letras y numeros")]
+        public string? terminos {  get; set; }
+
         [Required(ErrorMessage = "El detalle es un valor requerido")]
         public string detalle { get; set; }
     }

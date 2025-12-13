@@ -59,6 +59,7 @@ namespace Ventas.Consultas.CotizacionesVentas
                     moneda = mdl.moneda,
                     mostrar_precio_lista = mdl.mostrar_precio_lista,
                     usuario = mdl.usuario,
+                    terminos = mdl.terminos,
                     detalle = mdl.detalle
                 };
                 await factory.SQL.QueryAsync("Ventas.sp_Guardar_Cotizacion_Nuevo", parametros, commandType: System.Data.CommandType.StoredProcedure);

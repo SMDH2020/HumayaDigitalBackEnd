@@ -14,6 +14,7 @@
         public string fase_cotizacion { get; set; }
         public string moneda { get; set; }
         public int imprimir_precio_lista { get; set; }
+        public string? terminos {  get; set; }
         public string vigencia { get; set; }
         public string detalle { get; set; }
     }

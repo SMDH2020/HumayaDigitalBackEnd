@@ -31,6 +31,11 @@ namespace Ventas.Modelos.CotizacionesVentas
         public int mostrar_precio_lista { get; set; }
         public int usuario { get; set; }
 
+
+        [RegularExpression(@"^[. , # $ % ñ Ñ a-zA-Z0-9]+$", ErrorMessage = "El campo condiciones debe contener solo letras y numeros")]
+        [StringLength(500, ErrorMessage = "El campo terminos y condiciones debe tener máximo 500 caracteres")]
+        public string? terminos { get; set; }
+
         [Required(ErrorMessage = "El detalle es un valor requerido")]
         public string detalle { get; set; }
     }
