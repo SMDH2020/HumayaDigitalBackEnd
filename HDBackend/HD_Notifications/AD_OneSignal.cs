@@ -18,7 +18,7 @@ namespace HD.Notifications
             CadenaConexion = _cadenaconexion;
         }
 
-        private const string OneSignalAppId = "86b046ee-3e05-4858-b275-6affdc2d9f19"; // Tu App ID
+        private const string OneSignalAppId = "04e611d6-045a-4105-af2d-04880d3c4cb9"; // Tu App ID
         private const string OneSignalApiKey = "";
 
         public async Task<bool> EnviarTodos(int idencabezado,  DateTime fecha_evento, string usuario) {
