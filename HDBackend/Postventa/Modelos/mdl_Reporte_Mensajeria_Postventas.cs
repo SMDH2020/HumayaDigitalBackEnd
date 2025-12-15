@@ -22,9 +22,11 @@
 
         public string? orden {  get; set; }
         public int idcliente { get; set; }
+        public int idcliente_equip {  get; set; }
         public int id_vendedor { get; set; }
         public string? vendedor { get; set; }
         public string? fecha { get; set; }
+        public string? fecha_envio { get; set; }
         public string? tipo { get; set; }
     }
 }
