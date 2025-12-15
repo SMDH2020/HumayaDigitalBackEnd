@@ -31,5 +31,21 @@ namespace Ventas.Consultas
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<IEnumerable<mdl_ddlVendedor>> ListadoAllEmpleados()
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+
+                IEnumerable<mdl_ddlVendedor> result = await factory.SQL.QueryAsync<mdl_ddlVendedor>("Credito.sp_Empleados_Listado", commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }

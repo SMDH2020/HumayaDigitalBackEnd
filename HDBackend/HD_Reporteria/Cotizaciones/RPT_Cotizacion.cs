@@ -220,33 +220,16 @@ namespace HD_Reporteria.Cotizaciones
                         page.Content().PaddingTop(10).PaddingLeft(30).PaddingRight(30).Column(col1 =>
                         {
 
-                            //col1.Item().LineHorizontal(0.5f);
-
                             DateTime fecha = DateTime.Now;
                             string fechaActual = fecha.ToString("dd/MM/yyyy", new System.Globalization.CultureInfo("es-ES"));
-
-                            //col1.Item().Row(row =>
-                            //{
-                            //    row.RelativeItem().Text(txt => {
-                            //        txt.Span("Folio: ").FontSize(9).Bold();
-                            //        txt.Span(detalle.First().folio).FontSize(9);
-                            //    });
-                            //});
-
-                            //col1.Item().PaddingBottom(5).Row(row =>
-                            //{
-                            //    row.RelativeItem().Text(txt => {
-                            //        txt.Span("Asesor de venta: ").FontSize(9).Bold();
-                            //        txt.Span(detalle.First().asesorventa).FontSize(9);
-                            //    });
-                            //});
 
 
                             col1.Item().Border(1).Padding(5).BorderColor(QuestPDF.Helpers.Colors.Black).Column(innerCol =>
                             {
                                 innerCol.Item().Row(row =>
                                 {
-                                    row.RelativeItem().Text(txt => {
+                                    row.RelativeItem().Text(txt =>
+                                    {
                                         txt.Span("Apreciable: ").FontSize(9).Bold();
                                         txt.Span(detalle.First().razon_social).FontSize(9);
                                     });
@@ -254,7 +237,8 @@ namespace HD_Reporteria.Cotizaciones
 
                                 innerCol.Item().Row(row =>
                                 {
-                                    row.RelativeItem().Text(txt => {
+                                    row.RelativeItem().Text(txt =>
+                                    {
                                         txt.Span("Dirección: ").FontSize(9).Bold();
                                         txt.Span(detalle.First().direccion).FontSize(9);
                                     });
@@ -262,11 +246,13 @@ namespace HD_Reporteria.Cotizaciones
 
                                 innerCol.Item().Row(row =>
                                 {
-                                    row.RelativeItem().Text(txt => { 
-                                        txt.Span("Sucursal: ").FontSize(9).Bold(); 
+                                    row.RelativeItem().Text(txt =>
+                                    {
+                                        txt.Span("Sucursal: ").FontSize(9).Bold();
                                         txt.Span(detalle.First().sucursal).FontSize(9);
                                     });
-                                    row.RelativeItem().AlignRight().Text(txt => {
+                                    row.RelativeItem().AlignRight().Text(txt =>
+                                    {
                                         txt.Span("Informacion al: ").FontSize(9).Bold();
                                         txt.Span(fechaActual).FontSize(9);
                                     });
@@ -274,7 +260,8 @@ namespace HD_Reporteria.Cotizaciones
 
                                 innerCol.Item().Row(row =>
                                 {
-                                    row.RelativeItem().Text(txt => {
+                                    row.RelativeItem().Text(txt =>
+                                    {
                                         txt.Span("Folio: ").FontSize(9).Bold();
                                         txt.Span(detalle.First().folio).FontSize(9);
                                     });
@@ -288,32 +275,27 @@ namespace HD_Reporteria.Cotizaciones
 
                                 innerCol.Item().Row(row =>
                                 {
-                                    row.RelativeItem().Text(txt => {
+                                    row.RelativeItem().Text(txt =>
+                                    {
                                         txt.Span("Asesor de venta: ").FontSize(9).Bold();
                                         txt.Span(detalle.First().asesorventa.ToUpper()).FontSize(9);
                                     });
 
-                                    row.RelativeItem().AlignRight().Text(txt => {
+                                    row.RelativeItem().AlignRight().Text(txt =>
+                                    {
                                         txt.Span("Esquema de Pago: ").FontSize(9).Bold();
                                         txt.Span(modelos.FirstOrDefault().descripcion_promocion).FontSize(9);
                                     });
                                 });
                                 innerCol.Item().PaddingTop(5).Row(row =>
                                 {
-                                    row.RelativeItem().Text(txt => {
+                                    row.RelativeItem().Text(txt =>
+                                    {
                                         txt.Span("De acuerdo a su amable solicitud tenemos el gusto de cotizar a usted lo siguiente, con vigencia al: ").FontSize(9);
                                         txt.Span(detalle.First().vigencia).FontSize(9).Bold();
                                     });
                                 });
                             });
-
-                            //col1.Item().Row(row =>
-                            //{
-                            //    row.RelativeItem().PaddingTop(5).AlignLeft().Text(txt => {
-                            //        txt.Span("De acuerdo a su amable solicitud tenemos el gusto de cotizar a usted lo siguiente, con vigencia al: ").FontSize(9);
-                            //        txt.Span(detalle.First().vigencia).FontSize(9).Bold();
-                            //    });
-                            //    //row.RelativeItem().AlignRight().Text("Vigencia al: " + detalle.First().vigencia).FontSize(9);
 
                             //});
                             col1.Item().PaddingVertical(10).Border(1).BorderColor("#477c2c").Table(tabla =>
@@ -409,7 +391,7 @@ namespace HD_Reporteria.Cotizaciones
                                                     });
                                                 });
                                             }
-                                            
+
                                             float anchoLabel = 110;
                                             float anchoValor = 60;
 
@@ -447,113 +429,13 @@ namespace HD_Reporteria.Cotizaciones
                                                     row.ConstantItem(anchoLabel).AlignLeft().Text("Total:").FontSize(10).Bold();
                                                     row.ConstantItem(anchoValor).AlignRight().Text(modelo.precio_venta.ToString("N0")).FontSize(10);
                                                 });
-
-                                                //precios.Item().Row(row =>
-                                                //{
-                                                //    row.ConstantItem(anchoLabel).AlignLeft().Text("Total:").FontSize(10).Bold();
-                                                //    row.ConstantItem(anchoValor).AlignRight().Text(
-                                                //        ((modelo.precio_promocion != 0 ? modelo.precio_promocion : modelo.precio_lista) - modelo.descuento).ToString("N0")
-                                                //    ).FontSize(10);
-                                                //});
                                             });
                                         });
-
-                                        // Precios
-                                        //float anchoLabel = 60;
-                                        //float anchoValor = 60;
-
-                                        //col.Item().PaddingTop(5).Column(precios =>
-                                        //{
-                                        //    precios.Item().Row(row =>
-                                        //    {
-                                        //        row.ConstantItem(anchoLabel).AlignLeft().Text("Subtotal:").FontSize(10).Bold();
-                                        //        row.ConstantItem(anchoValor).AlignRight().Text((modelo.precio_promocion != 0 ? modelo.precio_promocion : modelo.precio_lista).ToString("N0")).FontSize(10);
-                                        //    });
-
-                                        //    precios.Item().Row(row =>
-                                        //    {
-                                        //        row.ConstantItem(anchoLabel).AlignLeft().Text("Descuento:").FontSize(10).Bold();
-                                        //        row.ConstantItem(anchoValor).AlignRight().Text(modelo.descuento.ToString("N0")).FontSize(10);
-                                        //    });
-
-                                        //    precios.Item().Row(row =>
-                                        //    {
-                                        //        row.ConstantItem(anchoLabel).AlignLeft().Text("Total:").FontSize(10).Bold();
-                                        //        row.ConstantItem(anchoValor).AlignRight().Text(
-                                        //            ((modelo.precio_promocion != 0 ? modelo.precio_promocion : modelo.precio_lista) - modelo.descuento).ToString("N0")
-                                        //        ).FontSize(10);
-                                        //    });
-                                        //});
                                     });
 
                                     c++;
                                 }
                             });
-
-
-                            //    string raw = modelo.caracteristicas_json;
-                            //    string descripcionSegunda = "";
-
-                            //    if (!string.IsNullOrEmpty(raw))
-                            //    {
-                            //        string patron = "\"descripcion\":\"";
-
-                            //        int firstIndex = raw.IndexOf(patron);
-                            //        if (firstIndex != -1)
-                            //        {
-                            //            int secondIndex = raw.IndexOf(patron, firstIndex + patron.Length);
-                            //            if (secondIndex != -1)
-                            //            {
-                            //                int startIndex = secondIndex + patron.Length;
-                            //                int endIndex = raw.IndexOf("\"", startIndex);
-
-                            //                if (endIndex != -1 && endIndex > startIndex)
-                            //                {
-                            //                    descripcionSegunda = raw.Substring(startIndex, endIndex - startIndex);
-                            //                }
-                            //            }
-                            //        }
-                            //    }
-
-                            //    col1.Item().PaddingTop(10).Row(row =>
-                            //    {
-                            //        var img = LimpiarBase64SiEsJson(modelo.imagen);
-                            //        var imagen = EsBase64Valido(img)
-                            //        ? ObtenerImagenDesdeBase64(img)
-                            //        : null;
-
-                            //        if (imagen != null)
-                            //        {
-                            //            row.RelativeItem(2).Column(col =>
-                            //            {
-                            //                // Texto arriba
-                            //                col.Item().AlignLeft().Text(txt =>
-                            //                {
-                            //                    txt.Span("IMAGEN DEL EQUIPO:").FontSize(9).Bold();
-                            //                });
-
-                            //                // Imagen abajo
-                            //                float anchoImagen = 180;
-                            //                float altoImagen = 180;
-
-                            //                col.Item().PaddingTop(5).AlignCenter().Height(altoImagen).Width(anchoImagen)
-                            //                    .Image(imagen);
-                            //            });
-                            //        }
-
-                            //        row.RelativeItem(2).Column(column =>
-                            //        {
-                            //            if (!string.IsNullOrEmpty(descripcionSegunda))
-                            //            {
-                            //                column.Item().Text("Puntos de valor del equipo:").FontSize(9).Bold();
-                            //                column.Item().PaddingTop(2).Text("• " + descripcionSegunda).FontSize(8);
-                            //            }
-                            //        });
-
-
-                            //    });
-                            //}
-
 
                             if (modelos.Count > 1)
                             {
@@ -589,15 +471,25 @@ namespace HD_Reporteria.Cotizaciones
                                 row.RelativeItem().Text("Estos precios son netos y de contado quedan sujetos a cambio sin previo aviso, prevaleciendo los que estén en vigor al momento de facturar.").FontSize(9);
                             });
 
-                            col1.Item().PaddingTop(100).ShowEntire().Row(row =>
+                            var terminos = detalle.First().terminos;
+
+                            // SI hay términos --> se imprime el cuadro completo con encabezado gris
+                            if (!string.IsNullOrWhiteSpace(terminos))
                             {
-                                // Firma 1
-                                //row.RelativeItem().AlignCenter().Column(col =>
-                                //{
-                                //    col.Item().Width(150).LineHorizontal(1);
-                                //    col.Item().Text("ATENTAMENTE").FontSize(9).AlignCenter();
-                                //    col.Item().Text("IVÁN LÓPEZ").FontSize(9).AlignCenter();
-                                //});
+                                col1.Item().PaddingTop(15).Border(1).BorderColor("#AFAFAF").Column(box =>
+                                {
+                                    // Encabezado gris claro
+                                    box.Item().Background("#E5E5E5").Padding(5).Text("TÉRMINOS Y CONDICIONES")
+                                        .FontSize(9).Bold().FontColor("#000").FontFamily(fontFamily);
+
+                                    // Contenido dentro del cuadro
+                                    box.Item().Padding(8).Text(terminos)
+                                        .FontSize(8).FontFamily(fontFamily).Justify();
+                                });
+                            }
+
+                            col1.Item().PaddingTop(100).ShowEntire().Row(row =>
+                            { 
 
                                 // Firma 2
                                 row.RelativeItem().AlignCenter().Column(col =>
@@ -616,7 +508,6 @@ namespace HD_Reporteria.Cotizaciones
 
                                 });
                             });
-
                         });
 
                         page.Footer().Height(60).PaddingLeft(30).PaddingRight(30).PaddingBottom(10).Row(row =>

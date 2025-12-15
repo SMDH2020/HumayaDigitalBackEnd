@@ -16,7 +16,7 @@ namespace HD.Notifications.Consultas
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_Modulos_Redireccion>> Listado()
+        public async Task<mdl_Notificaciones_Opciones_DDL> Listado()
         {
             try
             {
@@ -24,9 +24,13 @@ namespace HD.Notifications.Consultas
                 {
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_Modulos_Redireccion> result = await factory.SQL.QueryAsync<mdl_Modulos_Redireccion>("HumayaDigital_Eventos.dbo.sp_Modulos_Redireccion_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                //IEnumerable<mdl_Modulos_Redireccion> result = await factory.SQL.QueryAsync<mdl_Modulos_Redireccion>("HumayaDigital_Eventos.dbo.sp_Modulos_Redireccion_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("HumayaDigital_Eventos.dbo.sp_Modulos_Redireccion_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdl_Notificaciones_Opciones_DDL mdl = new mdl_Notificaciones_Opciones_DDL();
+                mdl.redirecciones = result.Read<mdl_Modulos_Redireccion>().ToList();
+                mdl.departamentos = result.Read<mdl_Departamentos_DDL>().ToList();
                 factory.SQL.Close();
-                return result;
+                return mdl;
             }
             catch (System.Exception ex)
             {

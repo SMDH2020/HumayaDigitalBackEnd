@@ -26,5 +26,16 @@ namespace HD.Endpoints.Controllers.Ventas
             return Ok(result);
 
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ListadoALL()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_DDLVendedor datos = new AD_DDLVendedor(CadenaConexion);
+            var result = await datos.ListadoAllEmpleados();
+            return Ok(result);
+
+        }
     }
 }
