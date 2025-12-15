@@ -92,6 +92,28 @@ namespace HD.Endpoints.Controllers.Eventos
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> PausarNotificacion(int idencabezado, bool estatus)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            HD_Notificaciones_Pausar_Notificacion datos = new HD_Notificaciones_Pausar_Notificacion(CadenaConexion);
+            var usuario = Sesion.usuario();
+            var result = await datos.Pausar(idencabezado, estatus, usuario);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> EliminarNotificacion(int idencabezado)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_HD_Notificaciones_Eliminar_Notificacion datos = new AD_HD_Notificaciones_Eliminar_Notificacion(CadenaConexion);
+            var usuario = Sesion.usuario();
+            var result = await datos.Eliminar(idencabezado);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> Modulos_Redireccion()
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
