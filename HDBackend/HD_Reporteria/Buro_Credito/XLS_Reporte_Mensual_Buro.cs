@@ -21,7 +21,7 @@ namespace HD_Reporteria.Buro_Credito
                     sheet.Style.Font.FontName = "Calibri";
                     sheet.Style.Font.FontSize = 10;
 
-                    int renglon = XLSEncabezado.Encabezado(ref sheet, sheetname, 111);
+                    int renglon = XLSEncabezado.Encabezado(ref sheet, sheetname, 108);
                     sheet.Cell(renglon, 1).Value = "Identificador";
                     sheet.Cell(renglon, 2).Value = "RFC";
                     sheet.Cell(renglon, 3).Value = "Codigo Ciudadano";
@@ -130,14 +130,12 @@ namespace HD_Reporteria.Buro_Credito
                     sheet.Cell(renglon, 106).Value = "Identificador";
                     sheet.Cell(renglon, 107).Value = "Numero de compañias";
                     sheet.Cell(renglon, 108).Value = "Cantidad";
-                    sheet.Cell(renglon, 109).Value = "Identificador";
-                    sheet.Cell(renglon, 110).Value = "Numero de Compañias";
-                    sheet.Cell(renglon, 111).Value = "Cantidad";
 
 
 
 
-                    var rango = sheet.Range(renglon, 1, renglon, 111);
+
+                    var rango = sheet.Range(renglon, 1, renglon, 108);
                     rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
                     rango.Style.Font.Bold = true;
                     rango.Style.Font.FontSize = 12;
@@ -150,7 +148,7 @@ namespace HD_Reporteria.Buro_Credito
                     foreach (mdlInformeBuroCredito mdl in lista)
                     {
                         sheet.Cell(renglon, 1).Value = "EM"; // Identificador
-                        sheet.Cell(renglon, 2).Value = mdl.rfc; // RFC
+                        sheet.Cell(renglon, 2).Value = mdl.rfc.Trim(); // RFC
                         sheet.Cell(renglon, 3).Value = ""; // Codigo Ciudadano
                         sheet.Cell(renglon, 4).Value = ""; // RAZON Numero Dun
                         sheet.Cell(renglon, 5).Value = mdl.compania; // Compañia

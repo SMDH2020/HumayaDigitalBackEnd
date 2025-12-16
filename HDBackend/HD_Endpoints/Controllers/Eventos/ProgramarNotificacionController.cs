@@ -69,6 +69,17 @@ namespace HD.Endpoints.Controllers.Eventos
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ListadoFiltrado(string? iddepartamento, string? tipo, DateTime fecha_inicio, DateTime fecha_fin)
+
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_HD_Notificaciones_Listado_Filtrado datos = new AD_HD_Notificaciones_Listado_Filtrado(CadenaConexion);
+            var result = await datos.Listado( iddepartamento, tipo, fecha_inicio, fecha_fin);
+            return Ok(result);
+        }
+
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
@@ -87,6 +98,28 @@ namespace HD.Endpoints.Controllers.Eventos
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_HD_Notificaciones_ObtenerporID datos = new AD_HD_Notificaciones_ObtenerporID(CadenaConexion);
             var result = await datos.obtenerID(iddetalle);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> PausarNotificacion(int idencabezado, bool estatus)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            HD_Notificaciones_Pausar_Notificacion datos = new HD_Notificaciones_Pausar_Notificacion(CadenaConexion);
+            var usuario = Sesion.usuario();
+            var result = await datos.Pausar(idencabezado, estatus, usuario);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> EliminarNotificacion(int idencabezado)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_HD_Notificaciones_Eliminar_Notificacion datos = new AD_HD_Notificaciones_Eliminar_Notificacion(CadenaConexion);
+            var usuario = Sesion.usuario();
+            var result = await datos.Eliminar(idencabezado);
             return Ok(result);
         }
 

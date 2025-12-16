@@ -72,7 +72,8 @@ namespace HD.Endpoints.Controllers.Credito.ReestructurarCredito
                 //enviar notificacion
                 var usuariosNotificados = string.Join(",", result.mdlSolicitud?.Select(u => u.idempleado.ToString()) ?? new List<string>());
                 var usuario = Sesion.usuario();
-                var textoCliente = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result.detail.razon_social.ToLower());
+                var textoCliente = string.IsNullOrWhiteSpace(result.detail?.razon_social)    ? "" : CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result.detail.razon_social.ToLower());
+
                 var idevento = 4;
                 var referencia = 9;
 
