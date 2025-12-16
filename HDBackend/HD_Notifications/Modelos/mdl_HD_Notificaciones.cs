@@ -18,6 +18,8 @@ namespace HD.Notifications.Modelos
         public string? dia { get; set; }
 
         public string? hora { get; set; }
+        public int iddepartamento { get; set; }
+
         //public int duracion { get; set; }
 
         public string? usuario { get; set; }
