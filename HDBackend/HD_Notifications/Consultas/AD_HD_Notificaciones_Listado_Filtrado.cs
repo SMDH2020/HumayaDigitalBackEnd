@@ -16,7 +16,7 @@ namespace HD.Notifications.Consultas
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_HD_Notificaciones_Listado>> Listado(string iddepartamento, string tipo, DateOnly fecha_inicio, DateOnly fecha_fin)
+        public async Task<IEnumerable<mdl_HD_Notificaciones_Listado>> Listado(string iddepartamento, string tipo, DateTime fecha_inicio, DateTime fecha_fin)
         {
             try
             {

@@ -14,7 +14,6 @@ namespace HD.Notifications.Modelos
         public DateTime fecha_evento { get; set; }
         public string? mensaje { get; set; }
         public int idmodulo { get; set; }
-        public int iddepartamento { get; set; }
 
         public bool estatus { get; set; }
         public string? modulo { get; set; }
@@ -31,6 +30,7 @@ namespace HD.Notifications.Modelos
         public int frecuencia { get; set; }
         public string? redireccion { get; set; }
 
-
+        public string? departamento { get; set; }
+        public int pausado { get; set; }
     }
 }
