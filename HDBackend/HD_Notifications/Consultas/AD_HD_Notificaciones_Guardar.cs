@@ -66,6 +66,7 @@ namespace HD.Notifications.Consultas
                     hora = mdl.hora,
                     //duracion = mdl.duracion,
                     usuario = mdl.usuario,
+                    @iddepartamento = mdl.iddepartamento,
                 };
                 mdl_HD_Notificaciones_Listado result = await factory.SQL.QueryFirstOrDefaultAsync<mdl_HD_Notificaciones_Listado>("HumayaDigital_Eventos.dbo.sp_HD_Notificaciones_Guardar_Nuevo", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
