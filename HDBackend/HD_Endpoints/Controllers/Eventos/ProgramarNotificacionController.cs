@@ -71,7 +71,7 @@ namespace HD.Endpoints.Controllers.Eventos
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ListadoFiltrado(string iddepartamento, string tipo, DateOnly fecha_inicio, DateOnly fecha_fin)
+        public async Task<ActionResult> ListadoFiltrado(string iddepartamento, string tipo, DateTime fecha_inicio, DateTime fecha_fin)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_HD_Notificaciones_Listado_Filtrado datos = new AD_HD_Notificaciones_Listado_Filtrado(CadenaConexion);
