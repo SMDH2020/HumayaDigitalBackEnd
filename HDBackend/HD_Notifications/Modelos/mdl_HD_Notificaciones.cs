@@ -21,6 +21,7 @@ namespace HD.Notifications.Modelos
         //public int duracion { get; set; }
 
         public string? usuario { get; set; }
+        public int iddepartamento {  get; set; }
 
     }
 }
