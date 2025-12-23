@@ -9,5 +9,6 @@ namespace Postventa.Modelos
         [Required(ErrorMessage = "El contenido es un valor requerido")]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "El campo solo debe contener números")]
         public string contacto { get; set; }
+        public int usuario { get; set; }
     }
 }

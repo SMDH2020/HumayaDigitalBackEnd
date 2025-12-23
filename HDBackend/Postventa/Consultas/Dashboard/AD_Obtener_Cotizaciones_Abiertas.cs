@@ -43,5 +43,33 @@ namespace Postventa.Consultas.Dashboard
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<bool> AgregarContactoCotizaciones(mdl_Agregar_ContactoCotizaciones mdl)
+        {
+
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    idcliente = mdl.idcliente,
+                    orden = mdl.orden,
+                    medio_contacto = mdl.medio_contacto,
+                    tipo_contacto = mdl.tipo_contacto,
+                    valor = mdl.valor,
+                    comentarios = mdl.comentarios,
+                    estatus = mdl.estatus,
+                    usuario = mdl.usuario,
+                    folio = mdl.folio
+                };
+                await factory.SQL.QueryAsync("Postventa.sp_Guardar_Contacto_Cotizaciones_Refacciones", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }
