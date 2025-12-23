@@ -47,13 +47,70 @@ namespace Postventa.Consultas.Dashboard
                 var parametros = new
                 {
                     id_registro = mdl.id_registro,
-                    contacto = mdl.contacto
+                    contacto = mdl.contacto,
+                    usuario = mdl.usuario
                 };
                 await factory.SQL.QueryAsync("Postventa.sp_Añadir_Contacto_Servicios_Pendientes", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return true;
             }
             catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<bool> CambiarSucursalServicio(mdl_Cambiar_Sucursal_Servicio mdl)
+        {
+
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    id_registro = mdl.id_registro,
+                    idsucursal = mdl.idsucursal,
+                    usuario = mdl.usuario
+                };
+                await factory.SQL.QueryAsync("Postventa.sp_Cambiar_Sucursal_Rastro_Productos", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<mdl_Cambiar_Sucursal_Servicio> GetSucursalServicio(int id_registro)
+        {
+            try
+            {
+                var parametros = new DynamicParameters();
+                parametros.Add("id_registro", id_registro, System.Data.DbType.Int16);
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                mdl_Cambiar_Sucursal_Servicio result = await factory.SQL.QueryFirstOrDefaultAsync<mdl_Cambiar_Sucursal_Servicio>("Postventa.sp_Get_Sucursal_Rastro_Productos", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<mdl_Agregar_Contacto_Servicios_Pendientes> GetTelefonoServicio(int id_registro)
+        {
+            try
+            {
+                var parametros = new DynamicParameters();
+                parametros.Add("id_registro", id_registro, System.Data.DbType.Int16);
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                mdl_Agregar_Contacto_Servicios_Pendientes result = await factory.SQL.QueryFirstOrDefaultAsync<mdl_Agregar_Contacto_Servicios_Pendientes>("Postventa.sp_Get_Telefono_Servicios", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
             {
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
