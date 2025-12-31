@@ -54,6 +54,9 @@
         public string? estado { get; set; }
         public string? mensaje1 { get; set; }
         public string? mensaje2 { get; set; }
+        public string? mensaje3 { get; set; }
+        public int mensajes_enviados { get; set; }
+
         public string? facturado { get; set; }
     }
 }
