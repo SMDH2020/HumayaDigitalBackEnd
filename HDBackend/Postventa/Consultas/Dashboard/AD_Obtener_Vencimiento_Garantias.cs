@@ -37,13 +37,14 @@ namespace Postventa.Consultas.Dashboard
             }
         }
 
-        public async Task<IEnumerable<mdl_Dashboard_Vencimiento_Garantias>> ActualizarNumero(Int64 numero, int id_garantia)
+        public async Task<IEnumerable<mdl_Dashboard_Vencimiento_Garantias>> ActualizarNumero(Int64 numero, int id_garantia, int usuario)
         {
             try
             {
                 var parametros = new DynamicParameters();
                 parametros.Add("numero", numero, System.Data.DbType.Int64);
                 parametros.Add("id_garantia", id_garantia, System.Data.DbType.Int16);
+                parametros.Add("usuario", usuario, System.Data.DbType.Int16);
 
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdl_Dashboard_Vencimiento_Garantias> result = await factory.SQL.QueryAsync<mdl_Dashboard_Vencimiento_Garantias>("Postventa.sp_Numero_Garantia_Actualizar", parametros, commandType: System.Data.CommandType.StoredProcedure);

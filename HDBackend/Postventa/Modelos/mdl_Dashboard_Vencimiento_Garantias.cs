@@ -22,6 +22,10 @@ namespace Postventa.Modelos
         public string estado { get; set; }
         public string mensaje_enviado {  get; set; }
         public string contrato_adquirido { get; set; }
-        public string grupo {  get; set; }
+        public string grupo { get; set; }
+        public int mensajes_enviados {  get; set; }
+        public string comentario { get; set; }
+
+
     }
 }

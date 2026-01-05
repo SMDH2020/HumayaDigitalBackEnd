@@ -58,7 +58,8 @@ namespace HD.Endpoints.Controllers.Postventa
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Obtener_Vencimiento_Garantias datos = new AD_Obtener_Vencimiento_Garantias(CadenaConexion);
-            var result = await datos.ActualizarNumero(numero, idgarantia);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.ActualizarNumero(numero, idgarantia, usuario);
             return Ok(result);
         }
 
@@ -180,6 +181,22 @@ namespace HD.Endpoints.Controllers.Postventa
             return Ok(result);
         }
 
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> AgregarContactoCotizacionesRefacciones(mdl_Agregar_ContactoCotizaciones mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Cotizaciones_Abiertas datos = new AD_Obtener_Cotizaciones_Abiertas(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            await datos.AgregarContactoCotizaciones(mdl);
+
+            return Ok(new
+            {
+                mensaje = "Guardado Correctamente",
+            }
+            );
+        }
+
         [HttpGet]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> ExcluirModelo(string modelo, string tipo)
@@ -249,7 +266,7 @@ namespace HD.Endpoints.Controllers.Postventa
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Obtener_Servicios_Pendientes datos = new AD_Obtener_Servicios_Pendientes(CadenaConexion);
-            //mdl.usuario = int.Parse(Sesion.usuario());
+            mdl.usuario = int.Parse(Sesion.usuario());
             await datos.AgregarContactoServiciosPendientes(mdl);
 
             return Ok(new
@@ -257,6 +274,42 @@ namespace HD.Endpoints.Controllers.Postventa
                 mensaje = "Guardado Correctamente",
             }
             );
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> CambiarSucursalServicio(mdl_Cambiar_Sucursal_Servicio mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Servicios_Pendientes datos = new AD_Obtener_Servicios_Pendientes(CadenaConexion);
+            mdl.usuario = int.Parse(Sesion.usuario());
+            await datos.CambiarSucursalServicio(mdl);
+
+            return Ok(new
+            {
+                mensaje = "Guardado Correctamente",
+            }
+            );
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetSucursalServicio(int id_registro)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Servicios_Pendientes datos = new AD_Obtener_Servicios_Pendientes(CadenaConexion);
+            var result = await datos.GetSucursalServicio(id_registro);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetTelefonoServicio(int id_registro)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Servicios_Pendientes datos = new AD_Obtener_Servicios_Pendientes(CadenaConexion);
+            var result = await datos.GetTelefonoServicio(id_registro);
+            return Ok(result);
         }
 
 
