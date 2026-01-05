@@ -20,5 +20,7 @@
         public string mensaje_enviado {  get; set; }
         public int mensajes_enviados { get; set; }
         public string facturado { get; set; }
+        public string comentario { get; set; }
+
     }
 }
