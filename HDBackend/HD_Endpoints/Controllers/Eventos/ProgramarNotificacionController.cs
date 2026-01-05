@@ -1,14 +1,8 @@
-﻿using HD.Clientes.Consultas.Cultivos;
-using HD.Clientes.Modelos;
+﻿using HD.Notifications;
 using HD.Notifications.Consultas;
 using HD.Notifications.Modelos;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
-using System.Text;
-using Usados.Consultas.Inventario;
-using Usados.Modelos.Inventario;
-using HD.Notifications;
 
 namespace HD.Endpoints.Controllers.Eventos
 {
@@ -22,10 +16,6 @@ namespace HD.Endpoints.Controllers.Eventos
             Configuracion = configuration;
             Sesion = sesion;
         }
-
-
-        private const string OneSignalAppId = "04e611d6-045a-4105-af2d-04880d3c4cb9"; // Tu App ID
-        private const string OneSignalApiKey = "os_v2_app_attbdvqeljaqllznasea2pcmxhabgbplkusuiiuxlb7w5pg5jbovlhtlnmxe6jytp2ikt2czoxnetpqegavnpirw6mdho6a3syqje7i"; // ⚠️ Tu REST API Key
 
         [HttpPost]
         public async Task<ActionResult> Post(mdl_HD_Notificaciones mdl)
@@ -47,7 +37,7 @@ namespace HD.Endpoints.Controllers.Eventos
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_HD_Notificaciones_Guardar datos = new AD_HD_Notificaciones_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
-            var result =  await datos.GuardarInstantanea(mdl);
+            var result = await datos.GuardarInstantanea(mdl);
 
             //enviar notificacion
             DateTime fecha_evento = DateTime.Now;
@@ -76,7 +66,7 @@ namespace HD.Endpoints.Controllers.Eventos
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_HD_Notificaciones_Listado_Filtrado datos = new AD_HD_Notificaciones_Listado_Filtrado(CadenaConexion);
-            var result = await datos.Listado( iddepartamento, tipo, fecha_inicio, fecha_fin);
+            var result = await datos.Listado(iddepartamento, tipo, fecha_inicio, fecha_fin);
             return Ok(result);
         }
 
