@@ -266,7 +266,7 @@ namespace HD.Endpoints.Controllers.Postventa
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Obtener_Servicios_Pendientes datos = new AD_Obtener_Servicios_Pendientes(CadenaConexion);
-            mdl.usuario = int.Parse(Sesion.usuario());
+            mdl.usuario = Sesion.usuario();
             await datos.AgregarContactoServiciosPendientes(mdl);
 
             return Ok(new

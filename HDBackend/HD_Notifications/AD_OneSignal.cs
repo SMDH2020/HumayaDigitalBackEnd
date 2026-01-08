@@ -18,8 +18,8 @@ namespace HD.Notifications
             CadenaConexion = _cadenaconexion;
         }
 
-        private const string OneSignalAppId = "04e611d6-045a-4105-af2d-04880d3c4cb9"; // Tu App ID
-        private const string OneSignalApiKey = "";
+        private const string OneSignalAppId = "86b046ee-3e05-4858-b275-6affdc2d9f19"; // Tu App ID
+        private const string OneSignalApiKey = "os_v2_app_q2yen3r6avefrmtvnl75ylm7deug5aumggsu5s4ez4yvlg6iuava34cjkbcpiom6cdnf7b5a3txkmnk3rhtuubokgjq65gpilbu6l3i"; // ⚠️ Tu REST API Key
 
         public async Task<bool> EnviarTodos(int idencabezado,  DateTime fecha_evento, string usuario) {
 
