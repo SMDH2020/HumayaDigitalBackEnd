@@ -59,6 +59,8 @@
 
         public string? facturado { get; set; }
         public string? comentario { get; set; }
+        public string? tiene_orden { get; set; }
+
 
     }
 }

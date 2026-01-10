@@ -384,5 +384,16 @@ namespace HD.Endpoints.Controllers.Postventa
             }
             );
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerOrden(int folio)
+        { 
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Orden_Cotizaciones datos = new AD_Obtener_Orden_Cotizaciones(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.obtenerOrden(folio);
+            return Ok(result);
+        }
     }
 }
