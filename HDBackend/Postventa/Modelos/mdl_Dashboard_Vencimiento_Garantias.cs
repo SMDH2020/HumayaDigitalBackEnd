@@ -18,6 +18,8 @@ namespace Postventa.Modelos
         public string sucursal { get; set; }
         public int idcliente {  get; set; }
         public string razon_social { get; set; }
+        public string responsable { get; set; }
+
         public string contacto { get; set; }
         public string estado { get; set; }
         public string mensaje_enviado {  get; set; }

@@ -6,6 +6,7 @@
         public string cliente {  get; set; }
         public string direccion {  get; set; }
         public string? contacto { get; set; }
+        public string responsable { get; set; }
         public string sucursal {  get; set; }
         public string num_serie {  get; set; }
         public string registrado { get; set; }

@@ -92,7 +92,7 @@ namespace HD.Endpoints.Controllers.Eventos
         }
 
         private const string OneSignalAppId = "04e611d6-045a-4105-af2d-04880d3c4cb9"; // Tu App ID
-        private const string OneSignalApiKey = "os_v2_app_attbdvqeljaqllznasea2pcmxg3bivslzcpur34bx6g5g6i56rzp3ajx44oerbkx77useti2vmimfrjo636cikgj3axrcrqze4offja"; // ⚠️ Tu REST API Key
+        private const string OneSignalApiKey = ""; // ⚠️ Tu REST API Key
 
 
         [HttpPost]

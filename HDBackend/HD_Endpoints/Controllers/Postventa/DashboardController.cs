@@ -266,7 +266,7 @@ namespace HD.Endpoints.Controllers.Postventa
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Obtener_Servicios_Pendientes datos = new AD_Obtener_Servicios_Pendientes(CadenaConexion);
-            mdl.usuario = int.Parse(Sesion.usuario());
+            mdl.usuario = Sesion.usuario();
             await datos.AgregarContactoServiciosPendientes(mdl);
 
             return Ok(new
@@ -383,6 +383,17 @@ namespace HD.Endpoints.Controllers.Postventa
                 mensaje = "Guardado Correctamente",
             }
             );
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerOrden(int folio)
+        { 
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Orden_Cotizaciones datos = new AD_Obtener_Orden_Cotizaciones(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.obtenerOrden(folio);
+            return Ok(result);
         }
     }
 }
