@@ -1,14 +1,8 @@
-﻿using HD.Clientes.Consultas.Cultivos;
-using HD.Clientes.Modelos;
+﻿using HD.Notifications;
 using HD.Notifications.Consultas;
 using HD.Notifications.Modelos;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
-using System.Text;
-using Usados.Consultas.Inventario;
-using Usados.Modelos.Inventario;
-using HD.Notifications;
 
 namespace HD.Endpoints.Controllers.Eventos
 {
@@ -43,7 +37,7 @@ namespace HD.Endpoints.Controllers.Eventos
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_HD_Notificaciones_Guardar datos = new AD_HD_Notificaciones_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
-            var result =  await datos.GuardarInstantanea(mdl);
+            var result = await datos.GuardarInstantanea(mdl);
 
             //enviar notificacion
             DateTime fecha_evento = DateTime.Now;
@@ -72,7 +66,7 @@ namespace HD.Endpoints.Controllers.Eventos
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_HD_Notificaciones_Listado_Filtrado datos = new AD_HD_Notificaciones_Listado_Filtrado(CadenaConexion);
-            var result = await datos.Listado( iddepartamento, tipo, fecha_inicio, fecha_fin);
+            var result = await datos.Listado(iddepartamento, tipo, fecha_inicio, fecha_fin);
             return Ok(result);
         }
 

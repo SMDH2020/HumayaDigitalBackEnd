@@ -54,10 +54,11 @@ namespace HD.Generales.Consultas
 
                 var parametros = new
                 {
+                    oneSignalID = login.oneSignalID,
                     usuario = login.usuario,
-                    oneSignalID = login.oneSignalID
+                    
                 };
-                 await factory.SQL.QueryAsync("sp_OneSignalID", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                 await factory.SQL.QueryAsync("HumayaDigital_Usuarios.dbo.sp_OneSignalID", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return true;
             }
