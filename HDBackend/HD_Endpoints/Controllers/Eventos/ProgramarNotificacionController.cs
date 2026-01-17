@@ -35,6 +35,10 @@ namespace HD.Endpoints.Controllers.Eventos
         {
 
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+
+            string OneSignalAppId = Configuracion["OneSignal:AppIDProduccion"];
+            string OneSignalApiKey = Configuracion["OneSignal:ApyKeyproduccion"];
+
             AD_HD_Notificaciones_Guardar datos = new AD_HD_Notificaciones_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.GuardarInstantanea(mdl);
@@ -42,7 +46,7 @@ namespace HD.Endpoints.Controllers.Eventos
             //enviar notificacion
             DateTime fecha_evento = DateTime.Now;
 
-            AD_OneSignal usuarios = new AD_OneSignal(CadenaConexion);
+            AD_OneSignal usuarios = new AD_OneSignal(CadenaConexion, OneSignalAppId, OneSignalApiKey);
             await usuarios.EnviarTodos(result.idencabezado, fecha_evento, mdl.usuario);
 
             return Ok(new { mensaje = "datos cargados con exito" });

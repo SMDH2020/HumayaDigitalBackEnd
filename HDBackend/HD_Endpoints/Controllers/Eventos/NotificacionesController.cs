@@ -101,7 +101,12 @@ namespace HD.Endpoints.Controllers.Eventos
         {
 
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-            AD_OneSignal datos = new AD_OneSignal(CadenaConexion);
+
+            string OneSignalAppId = Configuracion["OneSignal:AppIDProduccion"];
+            string OneSignalApiKey = Configuracion["OneSignal:ApyKeyproduccion"];
+
+
+            AD_OneSignal datos = new AD_OneSignal(CadenaConexion, OneSignalAppId, OneSignalApiKey);
             data.usuario = Sesion.usuario();
             await datos.EnviarTodos(data.idencabezado, data.fecha_evento, data.usuario);
 
