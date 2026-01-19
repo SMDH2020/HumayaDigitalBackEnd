@@ -6,6 +6,7 @@
         public string cliente {  get; set; }
         public string direccion {  get; set; }
         public string? contacto { get; set; }
+        public string responsable { get; set; }
         public string sucursal {  get; set; }
         public string num_serie {  get; set; }
         public string registrado { get; set; }
@@ -18,6 +19,9 @@
         public string estado { get; set; }
         public string motivo {  get; set; }
         public string mensaje_enviado {  get; set; }
+        public int mensajes_enviados { get; set; }
         public string facturado { get; set; }
+        public string comentario { get; set; }
+
     }
 }

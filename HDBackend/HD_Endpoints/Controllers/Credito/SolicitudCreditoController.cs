@@ -92,6 +92,8 @@ namespace HD.Endpoints.Controllers.Credito
         public async Task<ActionResult> enviarCondicionesOperacion(string folio)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            string OneSignalAppId = Configuracion["OneSignal:AppIDProduccion"];
+            string OneSignalApiKey = Configuracion["OneSignal:ApyKeyproduccion"];
             AD_SolcitudCredito_Enviar datos = new AD_SolcitudCredito_Enviar(CadenaConexion);
             var result = await datos.Enviar_Condiciones_Operacion(folio, Sesion.usuario());
             string mensaje = "Validación de condiciones en proceso";
@@ -120,7 +122,7 @@ namespace HD.Endpoints.Controllers.Credito
             AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
             var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, $"Se envio a analisis el pedido con folio: {folio}", folio, usuariosNotificados);
 
-            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion, OneSignalAppId, OneSignalApiKey);
             await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
 
             //Retornar info

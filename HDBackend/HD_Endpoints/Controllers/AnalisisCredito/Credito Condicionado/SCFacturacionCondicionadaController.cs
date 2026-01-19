@@ -22,6 +22,8 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Credito_Condicionado
         public async Task<ActionResult> Enviar(mdl_Autorizar_facturacion_View mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            string OneSignalAppId = Configuracion["OneSignal:AppIDProduccion"];
+            string OneSignalApiKey = Configuracion["OneSignal:ApyKeyproduccion"];
             mdl.usuario = Sesion.usuario();
             AD_Credito_Autorizar_Facturacion_Condicionada da = new AD_Credito_Autorizar_Facturacion_Condicionada(CadenaConexion);
             var result = await da.Guardar(mdl);
@@ -45,7 +47,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Credito_Condicionado
             AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
             var resultadoo = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, "Credito autorizado para facturacion de " + textoCliente, resultado.mdldatos.folio_solicitud, usuariosNotificados);
 
-            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion, OneSignalAppId, OneSignalApiKey);
             await notificacionPush.Enviar_Notificacion_Solicitud(resultadoo, "Humaya Digital");
 
             return Ok(new

@@ -11,16 +11,17 @@ namespace HD.Notifications.Consultas
     public class AD_HD_Notificaciones_Enviar_Push
     {
         private string CadenaConexion;
-        public AD_HD_Notificaciones_Enviar_Push(string _cadenaconexion)
+
+        private string OneSignalAppId;
+        private string OneSignalApiKey;
+
+        public AD_HD_Notificaciones_Enviar_Push(string _cadenaconexion, string _OneSignalAppId, string _OneSignalApiKey)
         {
             CadenaConexion = _cadenaconexion;
+
+            OneSignalAppId = _OneSignalAppId;
+            OneSignalApiKey = _OneSignalApiKey;
         }
-
-        private const string OneSignalAppId = "04e611d6-045a-4105-af2d-04880d3c4cb9"; // Tu App ID
-
-
-        private const string OneSignalApiKey = ""; // ⚠️ Tu REST API Key
-
 
 
         public async Task<bool> Enviar_Notificacion_Solicitud(mdl_Notificacion_Usuarios_Solicitudes_View mdl, string? titulo)

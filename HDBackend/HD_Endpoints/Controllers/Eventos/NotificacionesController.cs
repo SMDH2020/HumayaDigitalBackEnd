@@ -92,7 +92,7 @@ namespace HD.Endpoints.Controllers.Eventos
         }
 
         private const string OneSignalAppId = "04e611d6-045a-4105-af2d-04880d3c4cb9"; // Tu App ID
-        private const string OneSignalApiKey = "os_v2_app_attbdvqeljaqllznasea2pcmxg3bivslzcpur34bx6g5g6i56rzp3ajx44oerbkx77useti2vmimfrjo636cikgj3axrcrqze4offja"; // ⚠️ Tu REST API Key
+        private const string OneSignalApiKey = ""; // ⚠️ Tu REST API Key
 
 
         [HttpPost]
@@ -101,7 +101,12 @@ namespace HD.Endpoints.Controllers.Eventos
         {
 
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-            AD_OneSignal datos = new AD_OneSignal(CadenaConexion);
+
+            string OneSignalAppId = Configuracion["OneSignal:AppIDProduccion"];
+            string OneSignalApiKey = Configuracion["OneSignal:ApyKeyproduccion"];
+
+
+            AD_OneSignal datos = new AD_OneSignal(CadenaConexion, OneSignalAppId, OneSignalApiKey);
             data.usuario = Sesion.usuario();
             await datos.EnviarTodos(data.idencabezado, data.fecha_evento, data.usuario);
 
