@@ -61,6 +61,8 @@ namespace HD.Endpoints.Controllers.Credito.ReestructurarCredito
         public async Task<ActionResult> enviarRevision(string folio)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            string OneSignalAppId = Configuracion["OneSignal:AppIDProduccion"];
+            string OneSignalApiKey = Configuracion["OneSignal:ApyKeyproduccion"];
             AD_Reestructurar_Credito_Enviar_Revision datos = new AD_Reestructurar_Credito_Enviar_Revision(CadenaConexion);
             var result = await datos.Enviar_Solicitud(folio, Sesion.usuario());
             string mensaje = "Validación de condiciones en proceso";
@@ -80,7 +82,7 @@ namespace HD.Endpoints.Controllers.Credito.ReestructurarCredito
                 AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
                 var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, "Se registro una reestructura para el cliente " + textoCliente, result.detail.folio_solicitud, usuariosNotificados);
 
-                AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+                AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion, OneSignalAppId, OneSignalApiKey);
                 await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
             }
 

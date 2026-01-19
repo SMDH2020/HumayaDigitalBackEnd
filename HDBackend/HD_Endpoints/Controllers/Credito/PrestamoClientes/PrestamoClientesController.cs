@@ -39,6 +39,8 @@ namespace HD.Endpoints.Controllers.Credito.PrestamoClientes
         public async Task<ActionResult> Crear_Timeline(mdlPrestamoClientesView mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            string OneSignalAppId = Configuracion["OneSignal:AppIDProduccion"];
+            string OneSignalApiKey = Configuracion["OneSignal:ApyKeyproduccion"];
             AD_Prestamo_Clientes_Guardar datos = new AD_Prestamo_Clientes_Guardar(CadenaConexion);
             mdl.usuario = int.Parse(Sesion.usuario());
             var result = await datos.Crear_Timeline(mdl);
@@ -53,7 +55,7 @@ namespace HD.Endpoints.Controllers.Credito.PrestamoClientes
             AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
             var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, "Se registro un prestamo a cliente para " + textoCliente, mdl.folio_prestamo, usuariosNotificados);
 
-            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion, OneSignalAppId, OneSignalApiKey);
             await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
 
             var response = new mdlAnalisis_Mhusa_Resultado
