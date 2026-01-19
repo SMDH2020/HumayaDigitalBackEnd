@@ -25,9 +25,6 @@ namespace HD.Notifications
             OneSignalApiKey = _OneSignalApiKey;
         }
 
-        //private const string OneSignalAppId = "04e611d6-045a-4105-af2d-04880d3c4cb9"; // Tu App ID
-
-        //private const string OneSignalApiKey = ""; // ⚠️ Tu REST API Key
 
 
         public async Task<bool> EnviarTodos(int idencabezado,  DateTime fecha_evento, string usuario) {
