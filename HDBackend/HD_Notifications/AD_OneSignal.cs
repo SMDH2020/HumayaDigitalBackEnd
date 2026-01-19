@@ -13,14 +13,18 @@ namespace HD.Notifications
     {
 
         private string CadenaConexion;
-        public AD_OneSignal(string _cadenaconexion)
+
+        private string OneSignalAppId;
+        private string OneSignalApiKey;
+
+        public AD_OneSignal(string _cadenaconexion, string _OneSignalAppId, string _OneSignalApiKey)
         {
             CadenaConexion = _cadenaconexion;
+
+            OneSignalAppId = _OneSignalAppId;
+            OneSignalApiKey = _OneSignalApiKey;
         }
 
-        private const string OneSignalAppId = ""; // Tu App ID
-
-        private const string OneSignalApiKey = ""; // ⚠️ Tu REST API Key
 
 
         public async Task<bool> EnviarTodos(int idencabezado,  DateTime fecha_evento, string usuario) {

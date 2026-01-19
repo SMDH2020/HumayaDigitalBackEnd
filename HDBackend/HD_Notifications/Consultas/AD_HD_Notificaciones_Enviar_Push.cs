@@ -16,8 +16,6 @@ namespace HD.Notifications.Consultas
             CadenaConexion = _cadenaconexion;
         }
 
-        private const string OneSignalAppId = ""; // Tu App ID
-        private const string OneSignalApiKey = "";
 
         public async Task<bool> Enviar_Notificacion_Solicitud(mdl_Notificacion_Usuarios_Solicitudes_View mdl, string? titulo)
         {

@@ -56,6 +56,10 @@ namespace HD.Endpoints.Controllers.ProductoAliado.Inventario
         public async Task<ActionResult> ActualizarListadoPrecio(IEnumerable<mdl_Inventario_Producto_Aliado> mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+
+            string OneSignalAppId = Configuracion["OneSignal:AppIDProduccion"];
+            string OneSignalApiKey = Configuracion["OneSignal:ApyKeyproduccion"];
+
             var usuario = Sesion.usuario();
             AD_Listado_Precio_Producto_Aliado_Guardar datos = new AD_Listado_Precio_Producto_Aliado_Guardar(CadenaConexion);
             foreach (mdl_Inventario_Producto_Aliado data in mdl)
@@ -66,7 +70,7 @@ namespace HD.Endpoints.Controllers.ProductoAliado.Inventario
             //enviar notificacion
             DateTime fecha_evento = DateTime.Now;
 
-            AD_OneSignal usuarios = new AD_OneSignal(CadenaConexion);
+            AD_OneSignal usuarios = new AD_OneSignal(CadenaConexion, OneSignalAppId, OneSignalApiKey);
             await usuarios.EnviarTodos(8, fecha_evento, usuario);
 
             return Ok(new
