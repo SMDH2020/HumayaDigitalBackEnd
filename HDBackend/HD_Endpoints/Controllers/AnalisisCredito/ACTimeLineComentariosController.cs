@@ -24,6 +24,9 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
         public async Task<ActionResult> Post(mdlSCAnalisis_Comentarios mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            string OneSignalAppId = Configuracion["OneSignal:AppIDProduccion"];
+            string OneSignalApiKey = Configuracion["OneSignal:ApyKeyproduccion"];
+
             ADAnalisis_Comentarios datos = new ADAnalisis_Comentarios(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.Guardar(mdl);
@@ -72,7 +75,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
                     AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
                     var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, mensaje, mdl.folio, usuariosNotificados);
 
-                    AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+                    AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion, OneSignalAppId, OneSignalApiKey);
                     await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
                 }
 
@@ -94,6 +97,8 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
         public async Task<ActionResult> EnviarModificar(mdlSCAnalisis_Comentarios mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            string OneSignalAppId = Configuracion["OneSignal:AppIDProduccion"];
+            string OneSignalApiKey = Configuracion["OneSignal:ApyKeyproduccion"];
             ADAnalisis_Comentarios datos = new ADAnalisis_Comentarios(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.EnviarModificacion(mdl);
@@ -132,7 +137,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
                 var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, "Modificacion de pedido de " + textoCliente, mdl.folio, usuariosNotificados);
 
 
-                AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+                AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion, OneSignalAppId, OneSignalApiKey);
                 await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
 
                 var response = new mdlAnalisis_Mhusa_Resultado
@@ -203,6 +208,8 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
         public async Task<ActionResult> GuardarComentario(mdlSCAnalisis_Comentarios mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            string OneSignalAppId = Configuracion["OneSignal:AppIDProduccion"];
+            string OneSignalApiKey = Configuracion["OneSignal:ApyKeyproduccion"];
             ADAnalisis_Comentarios_JDF_Condicionado datos = new ADAnalisis_Comentarios_JDF_Condicionado(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.Guardar(mdl);
@@ -259,7 +266,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
                     AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
                     var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, mensaje,mdl.folio, usuariosNotificados);
 
-                    AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+                    AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion, OneSignalAppId, OneSignalApiKey);
                     await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
                 }
 

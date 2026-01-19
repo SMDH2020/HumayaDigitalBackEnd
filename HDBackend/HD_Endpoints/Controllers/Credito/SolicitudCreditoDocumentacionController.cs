@@ -376,6 +376,8 @@ namespace HD.Endpoints.Controllers.Credito
         {
 
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            string OneSignalAppId = Configuracion["OneSignal:AppIDProduccion"];
+            string OneSignalApiKey = Configuracion["OneSignal:ApyKeyproduccion"];
             ADSolicitud_Credito_Documentacion_JDF_Guardar datos = new ADSolicitud_Credito_Documentacion_JDF_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.Guardar(mdl);
@@ -394,7 +396,7 @@ namespace HD.Endpoints.Controllers.Credito
                 AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
                 var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, result.notificar.vendedor + " cargo toda la documentación del cliente " + textoCliente, mdl.folio, usuariosNotificados);
 
-                AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+                AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion, OneSignalAppId, OneSignalApiKey);
                 await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
             }
 

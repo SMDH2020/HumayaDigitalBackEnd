@@ -69,6 +69,8 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
         public async Task<ActionResult> EnviarAnalisisDocumentacion(mdl_Analisis_Documentacion mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            string OneSignalAppId = Configuracion["OneSignal:AppIDProduccion"];
+            string OneSignalApiKey = Configuracion["OneSignal:ApyKeyproduccion"];
             ADAnalisiCreditoMhusa datos = new ADAnalisiCreditoMhusa(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.GuardarAnalisis(mdl);
@@ -93,7 +95,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
                 var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, "Se aprobo toda la documentación del cliente " + textoCliente, mdl.folio, usuariosNotificados);
 
 
-                AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+                AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion, OneSignalAppId, OneSignalApiKey);
                 await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
             }
 
@@ -106,7 +108,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
                 AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
                 var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, "Modificar " + mdl.nombreDocumento.ToLower() + " del cliente " + textoCliente, mdl.folio, usuariosNotificados);
 
-                AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+                AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion, OneSignalAppId, OneSignalApiKey);
                 await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
             }
 

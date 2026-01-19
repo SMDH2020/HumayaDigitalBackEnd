@@ -25,6 +25,8 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
         public async Task<ActionResult> Guardar(mdlJDFAnalisis_Datos_Facturacion_Guardar mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            string OneSignalAppId = Configuracion["OneSignal:AppIDProduccion"];
+            string OneSignalApiKey = Configuracion["OneSignal:ApyKeyproduccion"];
             ADJDF_Analisis_Cargar_Factura datos = new ADJDF_Analisis_Cargar_Factura(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.Guardar(mdl);
@@ -43,7 +45,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
             AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
             var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, "Solicitud facturada de " + textoCliente, mdl.folio, usuariosNotificados);
 
-            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion, OneSignalAppId, OneSignalApiKey);
             await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
 
             return Ok(new
@@ -58,6 +60,8 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
         public async Task<ActionResult> GuardarMhusaDetalle(mdlJDFAnalisis_Datos_Facturacion_Guardar mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            string OneSignalAppId = Configuracion["OneSignal:AppIDProduccion"];
+            string OneSignalApiKey = Configuracion["OneSignal:ApyKeyproduccion"];
             ADJDF_Analisis_Cargar_Factura datos = new ADJDF_Analisis_Cargar_Factura(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             foreach (mdl_documentos_facturados_EQUIP fac in mdl.documentos)
@@ -80,7 +84,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
             AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
             var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, "Se cargo pagare equip de la solicitud: " + mdl.folio, mdl.folio, usuariosNotificados);
 
-            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion, OneSignalAppId, OneSignalApiKey);
             await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
             return Ok(new {socket=socket});
         }
@@ -90,6 +94,8 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
         public async Task<ActionResult> GuardarFacturaCompleta(mdlJDFAnalisis_Datos_Facturacion_Guardar mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            string OneSignalAppId = Configuracion["OneSignal:AppIDProduccion"];
+            string OneSignalApiKey = Configuracion["OneSignal:ApyKeyproduccion"];
             ADJDF_Analisis_Cargar_Factura datos = new ADJDF_Analisis_Cargar_Factura(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.Guardar(mdl);
@@ -108,7 +114,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
             AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
             var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, "Solicitud facturada del cliente " + textoCliente, mdl.folio, usuariosNotificados);
 
-            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion, OneSignalAppId, OneSignalApiKey);
             await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
 
             return Ok(new
@@ -144,6 +150,8 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
         public async Task<ActionResult> GuardarMhusaDetalleCondicionadoMhusa(mdlJDFAnalisis_Datos_Facturacion_Guardar mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            string OneSignalAppId = Configuracion["OneSignal:AppIDProduccion"];
+            string OneSignalApiKey = Configuracion["OneSignal:ApyKeyproduccion"];
             ADJDF_Analisis_Cargar_Factura datos = new ADJDF_Analisis_Cargar_Factura(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             foreach (mdl_documentos_facturados_EQUIP fac in mdl.documentos)
@@ -169,7 +177,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
             AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
             var resultadoo = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, "Se cargo pagare equip de la solicitud: " + resultado.mdldatos.folio_solicitud, resultado.mdldatos.folio_solicitud, usuariosNotificados);
 
-            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion, OneSignalAppId, OneSignalApiKey);
             await notificacionPush.Enviar_Notificacion_Solicitud(resultadoo, "Humaya Digital");
             return Ok(new { socket = resultado.mdlSolicitud });
         }
@@ -179,6 +187,8 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
         public async Task<ActionResult> GuardarMhusa(mdlJDFAnalisis_Datos_Facturacion_Guardar mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            string OneSignalAppId = Configuracion["OneSignal:AppIDProduccion"];
+            string OneSignalApiKey = Configuracion["OneSignal:ApyKeyproduccion"];
             ADJDF_Analisis_Cargar_Factura datos = new ADJDF_Analisis_Cargar_Factura(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.GuardarMhusa(mdl);
@@ -198,7 +208,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
             AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
             var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, "Solicitud facturada de" + textoCliente , mdl.folio, usuariosNotificados);
 
-            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion, OneSignalAppId, OneSignalApiKey);
             await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
 
             return Ok(result);

@@ -11,9 +11,16 @@ namespace HD.Notifications.Consultas
     public class AD_HD_Notificaciones_Enviar_Push
     {
         private string CadenaConexion;
-        public AD_HD_Notificaciones_Enviar_Push(string _cadenaconexion)
+
+        private string OneSignalAppId;
+        private string OneSignalApiKey;
+
+        public AD_HD_Notificaciones_Enviar_Push(string _cadenaconexion, string _OneSignalAppId, string _OneSignalApiKey)
         {
             CadenaConexion = _cadenaconexion;
+
+            OneSignalAppId = _OneSignalAppId;
+            OneSignalApiKey = _OneSignalApiKey;
         }
 
 

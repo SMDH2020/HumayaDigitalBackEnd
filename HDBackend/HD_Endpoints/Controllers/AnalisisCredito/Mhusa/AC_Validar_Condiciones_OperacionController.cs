@@ -35,6 +35,8 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Mhusa
         public async Task<ActionResult> EnviarComentario(mdlSCAnalisis_Comentarios mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            string OneSignalAppId = Configuracion["OneSignal:AppIDProduccion"];
+            string OneSignalApiKey = Configuracion["OneSignal:ApyKeyproduccion"];
             ADAnalisiCreditoMhusa datos = new ADAnalisiCreditoMhusa(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.GuardarValidacion(mdl);
@@ -69,7 +71,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Mhusa
             AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
             var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, mensaje,mdl.folio.Substring(0, 2) == "CC" ? result.mdldatos.folio :  mdl.folio, usuariosNotificados);
 
-            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion, OneSignalAppId, OneSignalApiKey);
             await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
 
             return Ok(response);
@@ -85,6 +87,8 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Mhusa
         public async Task<ActionResult> EnviarModificacion(mdlSCAnalisis_Comentarios mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            string OneSignalAppId = Configuracion["OneSignal:AppIDProduccion"];
+            string OneSignalApiKey = Configuracion["OneSignal:ApyKeyproduccion"];
             ADAnalisiCreditoMhusa datos = new ADAnalisiCreditoMhusa(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.EnviarModificacion(mdl);
@@ -104,7 +108,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Mhusa
             AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
             var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, "Modificacion de pedido de " + textoCliente, mdl.folio, usuariosNotificados);
 
-            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion);
+            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion, OneSignalAppId, OneSignalApiKey);
             await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
 
             var response = new mdlAnalisis_Mhusa_Resultado
