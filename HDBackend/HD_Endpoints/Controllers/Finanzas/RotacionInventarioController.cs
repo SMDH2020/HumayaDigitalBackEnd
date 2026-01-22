@@ -37,14 +37,22 @@ namespace HD.Endpoints.Controllers.Finanzas
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Rotacion_Inventario_Reporte datos = new AD_Rotacion_Inventario_Reporte(CadenaConexion);
             var result = await datos.reporte(ejercicio, periodo, adr, sucursales);
-            // 👉 Convertir periodo a mes en letra (español)
-            string mes = CultureInfo
-                            .GetCultureInfo("es-MX")
-                            .DateTimeFormat
-                            .GetMonthName(periodo)
-                            .ToUpper();
+            var culture = CultureInfo.GetCultureInfo("es-MX");
 
-            var titulo = $"ROTACION INVENTARIO {mes} - {ejercicio}";
+            // Mes final (periodo actual)
+            string mesFinal = culture.DateTimeFormat
+                                     .GetMonthName(periodo)
+                                     .ToUpper();
+            int anioFinal = ejercicio;
+
+            // Mes inicial = mes siguiente del año anterior
+            int mesInicialNumero = periodo == 12 ? 1 : periodo + 1;
+            string mesInicial = culture.DateTimeFormat
+                                       .GetMonthName(mesInicialNumero)
+                                       .ToUpper();
+            int anioInicial = ejercicio - 1;
+
+            var titulo = $"ROTACION DE INVENTARIO {mesInicial} {anioInicial} - {mesFinal} {anioFinal}";
 
             var docresult = await RPT_Rotacion_Inventario_XLS.GenerarExcel(result, titulo);
             return Ok(docresult);
