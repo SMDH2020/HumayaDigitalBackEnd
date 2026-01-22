@@ -5,12 +5,18 @@
 
 
 # =====================
+
 # Secrets / Credentials
+
 # =====================
+
 **/app.secrets.json
+
 **/appsettings.json
+
 **/*.secrets.json
 
+ 
 
 
 # User-specific files

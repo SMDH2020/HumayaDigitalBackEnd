@@ -77,19 +77,21 @@ namespace HD_Cobranza.Reportes
 
                     sheet.Cell(renglon, 1).Value = "CLIENTE";
                     sheet.Cell(renglon, 2).Value = "VENCIMIENTO";
-                    sheet.Cell(renglon, 3).Value = "OBJETIVO";
-                    sheet.Cell(renglon, 4).Value = "CAPITAL";
-                    sheet.Cell(renglon, 5).Value = "INT. NORMAL";
-                    sheet.Cell(renglon, 6).Value = "INT. MORATORIO";
-                    sheet.Cell(renglon, 7).Value = "TOTAL";
-                    sheet.Cell(renglon, 8).Value = "RECUERADO";
-                    sheet.Cell(renglon, 9).Value = "FECHA RECUPERACION";
-                    sheet.Cell(renglon, 10).Value = "FECHA CONTACTO";
-                    sheet.Cell(renglon, 11).Value = "FECHA COMPROMISO";
-                    sheet.Cell(renglon, 12).Value = "CONVENIO";
-                    sheet.Cell(renglon, 13).Value = "OBJECION";
-                    sheet.Cell(renglon, 14).Value = "OBSERVACIONES";
-                    sheet.Cell(renglon, 15).Value = "RESPONSABLE";
+                    sheet.Cell(renglon, 3).Value = "CAPITAL";
+                    sheet.Cell(renglon, 4).Value = "INT. NORMAL";
+                    sheet.Cell(renglon, 5).Value = "INT. MORATORIO";
+                    sheet.Cell(renglon, 6).Value = "TOTAL";
+                    sheet.Cell(renglon, 7).Value = "OBJETIVO";
+                    sheet.Cell(renglon, 8).Value = "RECUPERADO";
+                    sheet.Cell(renglon, 9).Value = "SALDO";
+                    sheet.Cell(renglon, 10).Value = "FECHA RECUPERACION";
+                    sheet.Cell(renglon, 11).Value = "FECHA CONTACTO";
+                    sheet.Cell(renglon, 12).Value = "FECHA COMPROMISO";
+                    sheet.Cell(renglon, 13).Value = "CONVENIO";
+                    sheet.Cell(renglon, 14).Value = "COMENTARIO";
+                    sheet.Cell(renglon, 15).Value = "OBJECION";
+                    sheet.Cell(renglon, 16).Value = "OBSERVACIONES";
+                    sheet.Cell(renglon, 17).Value = "RESPONSABLE";
 
                     // Estilo para los encabezados de la tabla
                     var rango = sheet.Range(renglon, 1, renglon, 15);
@@ -106,19 +108,21 @@ namespace HD_Cobranza.Reportes
                     {
                         sheet.Cell(renglon, 1).Value = det.razon_social?.ToUpper();
                         sheet.Cell(renglon, 2).Value = det.vencimiento;
-                        sheet.Cell(renglon, 3).Value = det.objetivo;
-                        sheet.Cell(renglon, 4).Value = det.capital;
-                        sheet.Cell(renglon, 5).Value = det.interes_normal;
-                        sheet.Cell(renglon, 6).Value = det.interes_moratorio;
-                        sheet.Cell(renglon, 7).Value = det.saldo_total;
+                        sheet.Cell(renglon, 3).Value = det.capital;
+                        sheet.Cell(renglon, 4).Value = det.interes_normal;
+                        sheet.Cell(renglon, 5).Value = det.interes_moratorio;
+                        sheet.Cell(renglon, 6).Value = det.saldo_total;
+                        sheet.Cell(renglon, 7).Value = det.objetivo;
                         sheet.Cell(renglon, 8).Value = det.recuperado;
-                        sheet.Cell(renglon, 9).Value = det.fecha_recuperacion;
-                        sheet.Cell(renglon, 10).Value = det.fecha_contacto;
-                        sheet.Cell(renglon, 11).Value = det.fecha_compromiso;
-                        sheet.Cell(renglon, 12).Value = det.convenio;
-                        sheet.Cell(renglon, 13).Value = det.objecion;
-                        sheet.Cell(renglon, 14).Value = det.observaciones;
-                        sheet.Cell(renglon, 15).Value = det.nombre_responsable?.ToUpper();
+                        sheet.Cell(renglon, 9).Value = det.saldo;
+                        sheet.Cell(renglon, 10).Value = det.fecha_recuperacion;
+                        sheet.Cell(renglon, 11).Value = det.fecha_contacto;
+                        sheet.Cell(renglon, 12).Value = det.fecha_compromiso;
+                        sheet.Cell(renglon, 13).Value = det.convenio;
+                        sheet.Cell(renglon, 14).Value = det.comentario;
+                        sheet.Cell(renglon, 15).Value = det.objecion;
+                        sheet.Cell(renglon, 16).Value = det.observaciones;
+                        sheet.Cell(renglon, 17).Value = det.nombre_responsable?.ToUpper();
                         renglon++;
                     }
 
@@ -127,6 +131,8 @@ namespace HD_Cobranza.Reportes
                     sheet.Column(5).Style.NumberFormat.Format = "#,##0.00";
                     sheet.Column(6).Style.NumberFormat.Format = "#,##0.00";
                     sheet.Column(7).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(8).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(9).Style.NumberFormat.Format = "#,##0.00";
 
                     //sheet.Column(6).Style.NumberFormat.Format = "#,##0.00";
                     //sheet.Column(7).Style.NumberFormat.Format = "0.0 %";
