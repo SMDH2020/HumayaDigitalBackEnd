@@ -16,5 +16,7 @@ namespace Postventa.Modelos
         public double horometro { get; set; }
         public string? recordatorio { get; set; }
         public string? comentario { get; set; }
+        public string? documento_factura { get; set; }
+
     }
 }

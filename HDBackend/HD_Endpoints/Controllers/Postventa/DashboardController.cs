@@ -31,23 +31,23 @@ namespace HD.Endpoints.Controllers.Postventa
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> Dashboard(int ejercicio, int periodo_inicio, int periodo_fin, string adr, string sucursal)
+        public async Task<ActionResult> Dashboard(int ejercicio_inicio, int ejercicio_fin, int periodo_inicio, int periodo_fin, string adr, string sucursal)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Dashboard_Postventa_Info datos = new AD_Dashboard_Postventa_Info(CadenaConexion);
             int usuario = int.Parse(Sesion.usuario());
-            var result = await datos.ObtenerDashboard(ejercicio, periodo_inicio, periodo_fin, adr, sucursal, usuario);
+            var result = await datos.ObtenerDashboard(ejercicio_inicio, ejercicio_fin, periodo_inicio, periodo_fin, adr, sucursal, usuario);
             return Ok(result);
         }
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> VencimientosGarantias(int ejercicio, int periodo_inicio, int periodo_fin,string facturado, string whatsapp, string estado, string adr, string sucursal)
+        public async Task<ActionResult> VencimientosGarantias(int ejercicio_inicio, int ejercicio_fin, int periodo_inicio, int periodo_fin,string facturado, string whatsapp, string estado, string adr, string sucursal)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Obtener_Vencimiento_Garantias datos = new AD_Obtener_Vencimiento_Garantias(CadenaConexion);
             int usuario = int.Parse(Sesion.usuario());
-            var result = await datos.ObtenerVencimientos(ejercicio, periodo_inicio, periodo_fin,facturado, whatsapp, estado, adr, sucursal, usuario);
+            var result = await datos.ObtenerVencimientos(ejercicio_inicio, ejercicio_fin, periodo_inicio, periodo_fin,facturado, whatsapp, estado, adr, sucursal, usuario);
             return Ok(result);
         }
 
@@ -172,12 +172,12 @@ namespace HD.Endpoints.Controllers.Postventa
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> CotizacionesAbiertas(int ejercicio, int periodo_inicio, int periodo_fin,string facturado, string whatsapp, string estado, string motivo, string adr, string sucursal)
+        public async Task<ActionResult> CotizacionesAbiertas(int ejercicio_inicio, int ejercicio_fin, int periodo_inicio, int periodo_fin,string facturado, string whatsapp, string estado, string motivo, string adr, string sucursal)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Obtener_Cotizaciones_Abiertas datos = new AD_Obtener_Cotizaciones_Abiertas(CadenaConexion);
             int usuario = int.Parse(Sesion.usuario());
-            var result = await datos.ObtenerCotizaciones(ejercicio, periodo_inicio, periodo_fin,facturado, whatsapp, estado, motivo, adr, sucursal, usuario);
+            var result = await datos.ObtenerCotizaciones(ejercicio_inicio, ejercicio_fin, periodo_inicio, periodo_fin,facturado, whatsapp, estado, motivo, adr, sucursal, usuario);
             return Ok(result);
         }
 
@@ -220,12 +220,12 @@ namespace HD.Endpoints.Controllers.Postventa
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ServiciosPendientes(int ejercicio, int periodo_inicio, int periodo_fin, string adr, string sucursal, int hrsuso, string msj_estatus, string motivo, string facturado)
+        public async Task<ActionResult> ServiciosPendientes(int ejercicio_inicio, int ejercicio_fin, int periodo_inicio, int periodo_fin, string adr, string sucursal, int hrsuso, string msj_estatus, string motivo, string facturado)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Obtener_Servicios_Pendientes datos = new AD_Obtener_Servicios_Pendientes(CadenaConexion);
             int usuario = int.Parse(Sesion.usuario());
-            var result = await datos.ObtenerServicios(ejercicio, periodo_inicio, periodo_fin, adr, sucursal, hrsuso, msj_estatus, motivo, facturado, usuario);
+            var result = await datos.ObtenerServicios(ejercicio_inicio, ejercicio_fin, periodo_inicio, periodo_fin, adr, sucursal, hrsuso, msj_estatus, motivo, facturado, usuario);
             return Ok(result);
         }
 
