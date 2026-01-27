@@ -11,12 +11,13 @@ namespace Postventa.Consultas.Dashboard
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_Servicios_Pendientes>> ObtenerServicios(int ejercicio, int periodo_inicio, int periodo_fin, string adr, string sucursal, int hrsuso, string msj_estatus, string motivo, string facturado, int usuario)
+        public async Task<IEnumerable<mdl_Servicios_Pendientes>> ObtenerServicios(int ejercicio_inicio, int ejercicio_fin, int periodo_inicio, int periodo_fin, string adr, string sucursal, int hrsuso, string msj_estatus, string motivo, string facturado, int usuario)
         {
             try
             {
                 var parametros = new DynamicParameters();
-                parametros.Add("ejercicio", ejercicio, System.Data.DbType.Int16);
+                parametros.Add("ejercicio_inicio", ejercicio_inicio, System.Data.DbType.Int16);
+                parametros.Add("ejercicio_fin", ejercicio_fin, System.Data.DbType.Int16);
                 parametros.Add("periodo_inicio", periodo_inicio, System.Data.DbType.Int16);
                 parametros.Add("periodo_fin", periodo_fin, System.Data.DbType.Int16);
                 parametros.Add("adr", adr, System.Data.DbType.String);
@@ -28,7 +29,7 @@ namespace Postventa.Consultas.Dashboard
                 parametros.Add("usuario", usuario, System.Data.DbType.Int16);
 
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_Servicios_Pendientes> result = await factory.SQL.QueryAsync<mdl_Servicios_Pendientes>("Postventa.sp_Obtener_Listado_Servicios_Pendientes", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Servicios_Pendientes> result = await factory.SQL.QueryAsync<mdl_Servicios_Pendientes>("Postventa.sp_Obtener_Listado_Servicios_Pendientes_nuevo", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

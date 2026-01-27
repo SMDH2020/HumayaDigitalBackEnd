@@ -164,5 +164,31 @@ namespace HD.Endpoints.Controllers.Ventas
             var result = await datos.GetFase(folio);
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerSolicitudes(int idcliente)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Solicitudes datos = new AD_Obtener_Solicitudes(CadenaConexion);
+            var result = await datos.Listado(idcliente);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarFacturacion(mdl_Facturacion_Guardar mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Guardar_Facturacion_Cotizacion datos = new AD_Guardar_Facturacion_Cotizacion(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            await datos.ModificarCotizacion(mdl);
+
+            return Ok(new
+            {
+                mensaje = "Guardado Correctamente",
+            }
+            );
+        }
     }
 }
