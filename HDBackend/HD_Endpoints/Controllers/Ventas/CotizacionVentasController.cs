@@ -161,5 +161,16 @@ namespace HD.Endpoints.Controllers.Ventas
             var result = await datos.ObtenerComentarios(folio);
             return Ok(result);
         }
+
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> CultivosListado(int adr)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Cultivos_Listado datos = new AD_Cultivos_Listado(CadenaConexion);
+            var result = await datos.Listado(adr);
+            return Ok(result);
+        }
     }
 }
