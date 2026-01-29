@@ -9,6 +9,7 @@ using Postventa.Consultas.Dashboard;
 using Ventas.Consultas.CotizacionesVentas;
 using Ventas.Modelos.CotizacionesVentas;
 using Ventas.Reportes;
+using HD.AccesoDatos;
 
 namespace HD.Endpoints.Controllers.Ventas
 {
@@ -71,6 +72,7 @@ namespace HD.Endpoints.Controllers.Ventas
             usuario = int.Parse(Sesion.usuario());
             var result = await datos.Listado(usuario, comparacion, periodoinicio, periodofin, adr, sucursal, asesor, cliente, esquema, fase);
             var docresult = await XLSVen_Listado_Cotizaciones.GenerarExcel(result, titulo);
+            var servicio = await Conexion_Servicio_Mensajeria.send("home", new { });
             return Ok(docresult);
         }
 
