@@ -16,7 +16,7 @@ namespace Postventa.Consultas.Dashboard
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<mdl_Dashboard_View> ObtenerDashboard(int ejercicio, int periodo_inicio, int periodo_fin, string adr, string sucursal, int usuario)
+        public async Task<mdl_Dashboard_View> ObtenerDashboard(int ejercicio_inicio, int ejercicio_fin, int periodo_inicio, int periodo_fin, string adr, string sucursal, int usuario)
         {
             try
             {
@@ -28,14 +28,15 @@ namespace Postventa.Consultas.Dashboard
                 //};
 
                 var parametros = new DynamicParameters();
-                parametros.Add("ejercicio", ejercicio, System.Data.DbType.Int16);
+                parametros.Add("ejercicio_inicio", ejercicio_inicio, System.Data.DbType.Int16);
+                parametros.Add("ejercicio_fin", ejercicio_fin, System.Data.DbType.Int16);
                 parametros.Add("periodo_inicio", periodo_inicio, System.Data.DbType.Int16);
                 parametros.Add("periodo_fin", periodo_fin, System.Data.DbType.Int16);
                 parametros.Add("adr", adr, System.Data.DbType.String);
                 parametros.Add("sucursal", sucursal, System.Data.DbType.String);
                 parametros.Add("usuario", usuario, System.Data.DbType.Int16);
 
-                var result = await factory.SQL.QueryMultipleAsync("Postventa.sp_dashboard", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("Postventa.sp_dashboard_nuevo", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 var view = new mdl_Dashboard_View();
                 view.dashboard_titulo = result.Read<string>().FirstOrDefault();
                 view.proyecciones = result.Read<mdl_Dashboard_Proyecciones>().ToList();

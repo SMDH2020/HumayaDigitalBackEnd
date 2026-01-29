@@ -32,6 +32,7 @@ namespace Postventa.Consultas.Dashboard
                     recordatorio = mdl.recordatorio,
                     comentario = mdl.comentario,
                     horometro = mdl.horometro,
+                    documento_factura = mdl.documento_factura,
                     usuario = mdl.usuario,
                 };
                 IEnumerable<mdl_Comentarios_Timeline_Mensajeria_Listado> result = await factory.SQL.QueryAsync<mdl_Comentarios_Timeline_Mensajeria_Listado>("Postventa.sp_Comentarios_Timeline_Mensajeria_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
