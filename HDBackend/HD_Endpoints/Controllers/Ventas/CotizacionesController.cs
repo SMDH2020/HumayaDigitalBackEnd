@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProductoAliado.Modelos.Inventario;
 using HD_Reporteria;
 using HD_Reporteria.Cotizaciones;
+using HD.AccesoDatos;
 
 
 namespace HD.Endpoints.Controllers.Ventas
@@ -181,14 +182,59 @@ namespace HD.Endpoints.Controllers.Ventas
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Guardar_Facturacion_Cotizacion datos = new AD_Guardar_Facturacion_Cotizacion(CadenaConexion);
+
             mdl.usuario = Sesion.usuario();
-            await datos.ModificarCotizacion(mdl);
+            var result = await datos.ModificarCotizacion(mdl);
+
+
+            if (mdl.entregado == "S")
+            {
+
+                // ✅ Crear la lista
+                List<mdl_Envio_Whatsapp> lista = new List<mdl_Envio_Whatsapp>();
+
+                if (mdl.contacto_servicio != mdl.contacto_refacciones)
+                {
+                    lista.Add(new mdl_Envio_Whatsapp()
+                    {
+                        telefono = mdl.contacto_servicio,
+                        nombre = "result"
+                    });
+
+                    lista.Add(new mdl_Envio_Whatsapp()
+                    {
+                        telefono = mdl.contacto_refacciones,
+                        nombre = "result"
+                    });
+                }
+                else
+                {
+                    lista.Add(new mdl_Envio_Whatsapp()
+                    {
+                        telefono = mdl.contacto_servicio,
+                        nombre = "result"
+                    });
+                }
+
+                var data = new
+                {
+                    usuarios = lista,
+                    options = new
+                    {
+                        contentSid = "HX6171a6d47822aeea653bff9ad76dbc19",
+                        coleccion = "sesiones-chatbot-central",
+                        campos = new string[] { "nombre" }
+                    }
+                };
+
+                string respuestaServicio = await Conexion_Servicio_Mensajeria.send("enviar_mensajes", data);
+            }
 
             return Ok(new
             {
-                mensaje = "Guardado Correctamente",
-            }
-            );
+                mensaje = "Guardado Correctamente"
+            });
         }
+
     }
 }

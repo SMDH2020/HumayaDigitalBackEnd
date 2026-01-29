@@ -17,5 +17,11 @@
         public string vigencia {  get; set; }
         public string createdate {  get; set; }
         public int createuser { get; set; }
+        public string fecha_entrega { get; set; }
+        public string entregado { get; set; }
+        public string folio_solicitud { get; set; }
+        public string contacto_servicio { get; set; }
+        public string contacto_refacciones { get; set; }
+
     }
 }

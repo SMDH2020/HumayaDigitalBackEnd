@@ -17,7 +17,7 @@ namespace HD_Ventas.Consultas
             CadenaConexion = _cadenaconexion;
         }
 
-        public async Task<bool> ModificarCotizacion(mdl_Facturacion_Guardar mdl)
+        public async Task<string> ModificarCotizacion(mdl_Facturacion_Guardar mdl)
         {
 
             try
@@ -35,9 +35,9 @@ namespace HD_Ventas.Consultas
                     fase = mdl.fase,
                     idcliente = mdl.idcliente
                 };
-                await factory.SQL.QueryAsync("Ventas.sp_Guardar_Factura_Cotizacion", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                string? nombre_cliente = await factory.SQL.QueryFirstOrDefaultAsync<string>("Ventas.sp_Guardar_Factura_Cotizacion", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
-                return true;
+                return nombre_cliente;
             }
             catch (Exception ex)
             {
