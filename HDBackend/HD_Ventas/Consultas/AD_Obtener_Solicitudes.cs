@@ -35,7 +35,8 @@ namespace HD_Ventas.Consultas
                 {
                     Solicitudes = await multi.ReadAsync<mdl_datos_Solicitud>(),
                     Contacto_servicio = await multi.ReadAsync<string>(),
-                    Contacto_refacciones = await multi.ReadAsync<string>()
+                    Contacto_refacciones = await multi.ReadAsync<string>(),
+                    Contacto_ventas = await multi.ReadAsync<string>()
                 };
 
                 return model;
