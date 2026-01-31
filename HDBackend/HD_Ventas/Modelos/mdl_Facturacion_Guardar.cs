@@ -27,14 +27,14 @@ namespace HD_Ventas.Modelos
         [StringLength(13, MinimumLength = 13, ErrorMessage = "El campo folio debe estar formado por 13 digitos")]
         public string folio_solicitud { get; set; }
 
-        [Required(ErrorMessage = "El contacto servicio es un valor requerido")]
-        [RegularExpression(@"^[0-9]+$", ErrorMessage = "El campo contacto servicio debe estar formado solo por caracteres numericos")]
-        [StringLength(10, MinimumLength = 10, ErrorMessage = "El campo folio debe estar formado por 10 digitos")]
+        //[Required(ErrorMessage = "El contacto servicio es un valor requerido")]
+        //[RegularExpression(@"^[0-9]+$", ErrorMessage = "El campo contacto servicio debe estar formado solo por caracteres numericos")]
+        //[StringLength(10, MinimumLength = 10, ErrorMessage = "El campo folio debe estar formado por 10 digitos")]
         public string contacto_servicio { get; set; }
 
-        [Required(ErrorMessage = "El contacto refacciones es un valor requerido")]
-        [RegularExpression(@"^[0-9]+$", ErrorMessage = "El campo contacto refacciones debe estar formado solo por caracteres numericos")]
-        [StringLength(10, MinimumLength = 10, ErrorMessage = "El campo folio debe estar formado por 10 digitos")]
+        //[Required(ErrorMessage = "El contacto refacciones es un valor requerido")]
+        //[RegularExpression(@"^[0-9]+$", ErrorMessage = "El campo contacto refacciones debe estar formado solo por caracteres numericos")]
+        //[StringLength(10, MinimumLength = 10, ErrorMessage = "El campo folio debe estar formado por 10 digitos")]
         public string contacto_refacciones { get; set; }
 
         public string contacto_ventas { get; set; }
