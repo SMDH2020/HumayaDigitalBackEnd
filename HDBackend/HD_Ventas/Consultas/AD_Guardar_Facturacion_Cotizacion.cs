@@ -31,6 +31,7 @@ namespace HD_Ventas.Consultas
                     folio_solicitud = mdl.folio_solicitud,
                     contacto_servicio = mdl.contacto_servicio,
                     contacto_refacciones = mdl.contacto_refacciones,
+                    contacto_ventas = mdl.contacto_ventas,
                     usuario = mdl.usuario,
                     fase = mdl.fase,
                     idcliente = mdl.idcliente

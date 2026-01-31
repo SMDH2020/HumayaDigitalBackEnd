@@ -12,6 +12,8 @@ namespace HD_Ventas.Modelos
         
         public IEnumerable<string> Contacto_servicio { get; set; }
         public IEnumerable<string> Contacto_refacciones { get; set; }
+        public IEnumerable<string> Contacto_ventas { get; set; }
+
 
 
     }

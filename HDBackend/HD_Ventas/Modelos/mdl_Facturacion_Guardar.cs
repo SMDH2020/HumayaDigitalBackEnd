@@ -23,7 +23,7 @@ namespace HD_Ventas.Modelos
         public string entregado { get; set; }
 
         [Required(ErrorMessage = "El folio es un valor requerido")]
-        [RegularExpression(@"^[SC0-9]+$", ErrorMessage = "El campo folio debe estar formado solo por caracteres numericos e iniciales CT")]
+        [RegularExpression(@"^[SC0-9]+$", ErrorMessage = "El campo folio debe estar formado solo por caracteres numericos e iniciales SC")]
         [StringLength(13, MinimumLength = 13, ErrorMessage = "El campo folio debe estar formado por 13 digitos")]
         public string folio_solicitud { get; set; }
 
@@ -36,6 +36,9 @@ namespace HD_Ventas.Modelos
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "El campo contacto refacciones debe estar formado solo por caracteres numericos")]
         [StringLength(10, MinimumLength = 10, ErrorMessage = "El campo folio debe estar formado por 10 digitos")]
         public string contacto_refacciones { get; set; }
+
+        public string contacto_ventas { get; set; }
+
         public string?  fase { get; set; }
         public int idcliente { get; set; }
 

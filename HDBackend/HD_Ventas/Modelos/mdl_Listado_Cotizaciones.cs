@@ -22,6 +22,8 @@
         public string folio_solicitud { get; set; }
         public string contacto_servicio { get; set; }
         public string contacto_refacciones { get; set; }
+        public string contacto_ventas { get; set; }
+
 
     }
 }
