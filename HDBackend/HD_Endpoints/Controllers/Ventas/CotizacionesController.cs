@@ -227,7 +227,7 @@ namespace HD.Endpoints.Controllers.Ventas
                     }
                 };
 
-                string respuestaServicio = await Conexion_Servicio_Mensajeria.send("enviar_mensajes", data);
+                string respuestaServicio = await HD_Ventas.Consultas.Conexion_Servicio_Mensajeria.send("enviar_mensajes", data);
             }
 
             return Ok(new
