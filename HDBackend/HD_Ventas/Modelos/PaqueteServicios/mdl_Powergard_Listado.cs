@@ -22,6 +22,7 @@ namespace HD_Ventas.Modelos.PaqueteServicios
         public int idvendedor { get; set; }
         public string? vendedor { get; set; }
         public string? cobertura { get; set; }
+        public string? contrato { get; set; }
 
     }
 }
