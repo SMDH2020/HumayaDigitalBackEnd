@@ -35,6 +35,7 @@ namespace HD_Ventas.Consultas.PaqueteServicios
                     num_ot = mdl.num_ot ,
                     vendedor = mdl.idvendedor ,
                     cobertura = mdl.cobertura ,
+                    contrato = mdl.contrato,
                     usuario = mdl.usuario 
                 };
                 await factory.SQL.ExecuteAsync("Ventas.sp_Powergard_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);

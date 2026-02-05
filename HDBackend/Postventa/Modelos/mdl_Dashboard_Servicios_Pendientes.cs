@@ -7,6 +7,8 @@
         public float pendientes_porcentaje {  get; set; }
         public int enviados { get; set; }
         public float enviados_porcentaje { get; set; }
+        public int leidos { get; set; }
+        public float leidos_porcentaje { get; set; }
         public int facturados { get; set; }
         public float facturados_porcentaje { get; set; }
         public int esperando_respuesta { get; set; }
