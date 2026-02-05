@@ -7,6 +7,7 @@ using HD_Finanzas.Modelos.Estado_Resultados;
 using HD_Finanzas.Modelos.NivelInventario;
 using HD_Finanzas.Modelos.RazonesFinancieras;
 using HD_Finanzas.Modelos.ResultadosSucursal;
+using HD_Finanzas.Modelos.RotacionInventario;
 
 namespace HD_Finanzas.AccesoDatos
 {
@@ -50,6 +51,7 @@ namespace HD_Finanzas.AccesoDatos
                 dashboard.ActualizacionUsuario = result.Read<Fmdl_Actualizacion_Usuario>().ToList();
                 dashboard.Permisos = result.Read<mdl_Permisos_Dashboard_Financiero>().ToList();
                 dashboard.sucursalesPermiso = result.Read<mdl_Permisos_Dashboard_Sucursales>().ToList();
+                dashboard.rotacioninventario = result.Read<mdl_Rotacion_Inventario_Dashboard>().FirstOrDefault();
                 factory.SQL.Close();
                 return dashboard;
             }
