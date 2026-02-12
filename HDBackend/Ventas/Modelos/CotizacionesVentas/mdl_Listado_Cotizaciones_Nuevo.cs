@@ -29,5 +29,7 @@ namespace Ventas.Modelos.CotizacionesVentas
         public int createuser { get; set; }
         public string? comentario {  get; set; }
         public string? cultivo { get; set; }
+        public string? entregado { get; set; }
+
     }
 }
