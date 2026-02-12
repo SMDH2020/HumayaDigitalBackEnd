@@ -221,7 +221,7 @@ namespace HD.Endpoints.Controllers.Ventas
                     usuarios = lista,
                     options = new
                     {
-                        contentSid = "HX6171a6d47822aeea653bff9ad76dbc19",
+                        contentSid = "HXe9ac52eca337f1b93acbc67f4d00a9a8",
                         coleccion = "sesiones-chatbot-central",
                         campos = new string[] { "nombre" }
                     }
