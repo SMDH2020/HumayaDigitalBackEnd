@@ -11,5 +11,6 @@ namespace Postventa.Modelos
         public int iddepartamento { get; set; }
         public string? departamento { get; set; }
         public double proyeccion { get; set; }
+        public double margen {  get; set; }
     }
 }

@@ -45,7 +45,9 @@ namespace Postventa.Consultas.Dashboard
                 view.cotizaciones = result.Read<mdl_Dashboard_Cotizaciones>().FirstOrDefault();
                 view.vencimiento_garantias_grafica = result.Read<mdl_Dashboard_Grafica_Garantia>().ToList();
                 view.servicios_pendientes = result.Read<mdl_Dashboard_Servicios_Pendientes>().FirstOrDefault();
-
+                view.power_venta_temprana = result.Read<mdl_Dashboard_Garantias>().FirstOrDefault();
+                view.power_venta_tardia = result.Read<mdl_Dashboard_Garantias>().FirstOrDefault();
+                view.power_venta_checklist = result.Read<mdl_Dashboard_Garantias>().FirstOrDefault();
 
 
                 //view.tipo_cartera = result.Read<string>().FirstOrDefault();

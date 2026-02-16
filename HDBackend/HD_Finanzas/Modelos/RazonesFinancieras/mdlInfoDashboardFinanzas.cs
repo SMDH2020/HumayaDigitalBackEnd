@@ -3,6 +3,7 @@ using HD_Finanzas.Modelos.CostoFinanciamiento;
 using HD_Finanzas.Modelos.Estado_Resultados;
 using HD_Finanzas.Modelos.NivelInventario;
 using HD_Finanzas.Modelos.ResultadosSucursal;
+using HD_Finanzas.Modelos.RotacionInventario;
 
 namespace HD_Finanzas.Modelos.RazonesFinancieras
 {
@@ -25,5 +26,6 @@ namespace HD_Finanzas.Modelos.RazonesFinancieras
         public List<Fmdl_Actualizacion_Usuario>? ActualizacionUsuario { get; set; }
         public List<mdl_Permisos_Dashboard_Financiero>? Permisos {  get; set; }
         public List<mdl_Permisos_Dashboard_Sucursales>? sucursalesPermiso {  get; set; }
+        public  mdl_Rotacion_Inventario_Dashboard rotacioninventario { get; set; }
     }
 }
