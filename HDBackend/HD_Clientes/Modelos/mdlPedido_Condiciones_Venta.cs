@@ -52,6 +52,9 @@ namespace HD.Clientes.Modelos
         public string? moneda { get; set; }
         public int tipo_tasa { get; set; }
         public int tipo_esquema { get; set; }
+        public double monto { get; set; }
+        public string? fecha_pagare { get; set; }
+
         public string? usuario { get; set; }
     }
 }

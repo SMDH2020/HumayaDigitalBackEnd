@@ -8,6 +8,8 @@ using HD.Clientes.Consultas.SolicitudCredito;
 using HD.Notifications.Analisis;
 using HD.Notifications.Consultas;
 using System.Globalization;
+using HD.Clientes.Consultas.PedidoCondicionesCredito;
+using HD.Clientes.Consultas.PedidoFinanciamiento;
 
 namespace HD.Endpoints.Controllers.Credito.ReestructurarCredito
 {
@@ -29,6 +31,65 @@ namespace HD.Endpoints.Controllers.Credito.ReestructurarCredito
             AD_Reestructurar_Credito_Listado_Solicitudes datos = new AD_Reestructurar_Credito_Listado_Solicitudes(CadenaConexion);
             var usuario = int.Parse(Sesion.usuario());
             var result = await datos.Listado(usuario, idcliente);
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ListadoCondiciones(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Reestructura__Credito_Condiciones_Credito datos = new AD_Reestructura__Credito_Condiciones_Credito(CadenaConexion);
+            var result = await datos.Obtener(folio);
+            return Ok(result);
+
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarCondiciones(mdlPedido_Condiciones_Venta mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Reestructura_Credito_Condiciones_Credito_Guardar datos = new AD_Reestructura_Credito_Condiciones_Credito_Guardar(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            await datos.Guardar(mdl);
+            //AD_ClientesDatosPersonaFisica_Guardar datosfisica = new AD_ClientesDatosPersonaFisica_Guardar(CadenaConexion);
+            //await datosfisica.Guardar(mdl);
+            return Ok(new { mensaje = "datos cargados con exito" });
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> DetalleFinanciamiento(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Reestructura_Credito_Detalle_Financiamiento_Info datos = new AD_Reestructura_Credito_Detalle_Financiamiento_Info(CadenaConexion);
+            var result = await datos.Get(folio);
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> Delete(string folio, int docto)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Reestructura_Credito_Detalle_Financiamiento_Borrar datos = new AD_Reestructura_Credito_Detalle_Financiamiento_Borrar(CadenaConexion);
+
+            var result = await datos.Delete(folio, docto, Sesion.usuario());
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> DeleteAll(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Reestructura_Credito_Detalle_Financiamiento_Borrar datos = new AD_Reestructura_Credito_Detalle_Financiamiento_Borrar(CadenaConexion);
+
+            var result = await datos.DeleteAll(folio);
             return Ok(result);
 
         }
