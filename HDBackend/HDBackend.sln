@@ -43,7 +43,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Usados", "Usados\Usados.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductoAliado", "ProductoAliado\ProductoAliado.csproj", "{22F7592F-FB5E-45C4-808B-3D08C9ED437C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Postventa", "Postventa\Postventa.csproj", "{DA54A6A9-C1A7-4464-9F25-C3F174E7812C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Postventa", "Postventa\Postventa.csproj", "{DA54A6A9-C1A7-4464-9F25-C3F174E7812C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HD_Mensajeria", "HD_Mensajeria\HD_Mensajeria.csproj", "{F769DD86-D79D-45E0-B6AB-E2BF648E2B4E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -135,6 +137,10 @@ Global
 		{DA54A6A9-C1A7-4464-9F25-C3F174E7812C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA54A6A9-C1A7-4464-9F25-C3F174E7812C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA54A6A9-C1A7-4464-9F25-C3F174E7812C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F769DD86-D79D-45E0-B6AB-E2BF648E2B4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F769DD86-D79D-45E0-B6AB-E2BF648E2B4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F769DD86-D79D-45E0-B6AB-E2BF648E2B4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F769DD86-D79D-45E0-B6AB-E2BF648E2B4E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
