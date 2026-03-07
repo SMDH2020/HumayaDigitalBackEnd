@@ -37,7 +37,7 @@ namespace HD_Ventas.Consultas
             }
         }
 
-        public async Task<bool> ModificarFase(string folio, string fase, int usuario)
+        public async Task<bool> ModificarFase(string folio, string fase, int usuario, string comentario)
         {
 
             try
@@ -47,7 +47,8 @@ namespace HD_Ventas.Consultas
                 {
                     folio = folio,
                     fase = fase,
-                    usuario = usuario
+                    usuario = usuario,
+                    comentario = comentario
                 };
                 await factory.SQL.QueryAsync("Ventas.sp_Editar_Fase_Cotizacion", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();

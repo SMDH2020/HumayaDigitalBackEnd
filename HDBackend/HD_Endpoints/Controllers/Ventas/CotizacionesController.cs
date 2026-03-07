@@ -147,12 +147,12 @@ namespace HD.Endpoints.Controllers.Ventas
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> EditarFase(string folio, string fase)
+        public async Task<ActionResult> EditarFase(string folio, string fase, string comentario)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Modificar_Cotizacion datos = new AD_Modificar_Cotizacion(CadenaConexion);
             int usuario = int.Parse(Sesion.usuario());
-            var result = await datos.ModificarFase(folio, fase, usuario);
+            var result = await datos.ModificarFase(folio, fase, usuario, comentario);
             return Ok(result);
         }
 
