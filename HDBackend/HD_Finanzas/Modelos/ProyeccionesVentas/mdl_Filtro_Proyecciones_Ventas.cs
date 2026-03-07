@@ -10,6 +10,7 @@ namespace HD_Finanzas.Modelos.ProyeccionesVentas
     {
         public int ejercicio { get; set; }
         public int ejercicioant { get; set; }
+        public string escenario {  get; set; }
         public string comparar { get; set; }
         public string periodo { get; set; }
         public string adr { get; set; }

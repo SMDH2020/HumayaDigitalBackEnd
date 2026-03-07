@@ -191,32 +191,41 @@ namespace HD_Reporteria.Finanzas
 
                                 tabla.Header(header =>
                                 {
+                                    // PRIMERA FILA
                                     header.Cell().ColumnSpan(1).Height(25).Background("#275027").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("").FontSize(12).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().ColumnSpan(4).Height(25).Background("#275027").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text(resumen.periodoactual).FontSize(10).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().ColumnSpan(3).Height(25).Background("#275027").AlignMiddle()
-                                    .Padding(1).Text(resumen.periodoanterior).FontSize(10).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                });
+                                        .Padding(1).Text("").FontSize(12).Bold().FontFamily(fontFamily).FontColor("#fff");
 
-                                tabla.Header(header =>
-                                {
+                                    header.Cell().ColumnSpan(4).Height(25).Background("#275027").AlignCenter().AlignMiddle()
+                                        .Padding(1).Text(resumen.periodoactual).FontSize(10).Bold().FontFamily(fontFamily).FontColor("#fff");
+
+                                    header.Cell().ColumnSpan(3).Height(25).Background("#275027").AlignMiddle()
+                                        .Padding(1).Text(resumen.periodoanterior).FontSize(10).Bold().FontFamily(fontFamily).FontColor("#fff");
+
+
+                                    // SEGUNDA FILA
                                     header.Cell().Background("#275027").AlignCenter().Height(20).AlignMiddle()
-                                    .Padding(1).Text("CONCEPTO").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        .Padding(1).Text("CONCEPTO").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+
                                     header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("REAL").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        .Padding(1).Text("REAL").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+
                                     header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("PROYECCION").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        .Padding(1).Text("PROYECCION").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+
                                     header.Cell().Background("#275027").AlignRight().AlignMiddle()
-                                    .Padding(1).Text("%").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        .Padding(1).Text("%").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+
                                     header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("DIF").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        .Padding(1).Text("DIF").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+
                                     header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("REAL").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        .Padding(1).Text("REAL").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+
                                     header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("%").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        .Padding(1).Text("%").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+
                                     header.Cell().Background("#275027").AlignCenter().AlignMiddle()
-                                    .Padding(1).Text("DIF").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        .Padding(1).Text("DIF").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
                                 });
 
                                 string tipoActual = "";

@@ -22,6 +22,7 @@ namespace HD_Finanzas.AccesoDatos
                 {
                     Ejercicio = vm.ejercicio,
                     Ejercicioant = vm.ejercicioant,
+                    escenario = vm.escenario,
                     comparar = vm.comparar,
                     Periodos = vm.periodo,
                     Departamentos = vm.departamento,
@@ -30,7 +31,7 @@ namespace HD_Finanzas.AccesoDatos
                     Usuario = usuario
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_Proyecciones_Gastos> result = await factory.SQL.QueryAsync<mdl_Proyecciones_Gastos>("PixelCode.dbo.sp_Revision_ProyeccionGastos_HumayaDigital", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Proyecciones_Gastos> result = await factory.SQL.QueryAsync<mdl_Proyecciones_Gastos>("PixelCode.dbo.sp_Revision_ProyeccionGastos_HumayaDigital_Escenarios", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
@@ -39,16 +40,17 @@ namespace HD_Finanzas.AccesoDatos
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
-        public async Task<IEnumerable<mdl_Poryeccion_Gasto_Anual>> ObtenerExcel(int ejercicio)
+        public async Task<IEnumerable<mdl_Poryeccion_Gasto_Anual>> ObtenerExcel(int ejercicio, string escenario)
         {
             try
             {
                 var parametros = new
                 {
                   ejercicio = ejercicio,
+                  escenario = escenario
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_Poryeccion_Gasto_Anual> result = await factory.SQL.QueryAsync<mdl_Poryeccion_Gasto_Anual>("PixelCode.dbo.sp_Obtener_Excel_ProyeccionGastos", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Poryeccion_Gasto_Anual> result = await factory.SQL.QueryAsync<mdl_Poryeccion_Gasto_Anual>("PixelCode.dbo.sp_Obtener_Excel_ProyeccionGastos_Escenarios", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
