@@ -1,5 +1,7 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
+using HD.Clientes.Modelos.SC_Analisis.Modal;
+using HD.Clientes.Modelos;
 using Ventas.Modelos.CotizacionesVentas;
 
 namespace Ventas.Consultas.CotizacionesVentas
@@ -93,6 +95,37 @@ namespace Ventas.Consultas.CotizacionesVentas
                 IEnumerable<mdl_Listado_Cotizaciones_Nuevo> result = await factory.SQL.QueryAsync<mdl_Listado_Cotizaciones_Nuevo>("Ventas.sp_Obtener_Listado_Cotizaciones_Nuevo", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<mdl_Listado_Cotizaciones_View> ListadoMultiplataforma(int usuario, string comparacion, string periodoinicio, string periodofin, string adr, string sucursal, int asesor, int cliente, int esquema, string fase)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    usuario = usuario,
+                    comparacion = comparacion,
+                    periodoinicio = periodoinicio,
+                    periodofin = periodofin,
+                    adr = adr,
+                    sucursal = sucursal,
+                    asesor = asesor,
+                    cliente = cliente,
+                    esquema = esquema,
+                    fase = fase
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var result = await factory.SQL.QueryMultipleAsync("Ventas.sp_Obtener_Listado_Cotizaciones_Multiplataforma", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdl_Listado_Cotizaciones_View mhusa = new mdl_Listado_Cotizaciones_View();
+                mhusa.roles = result.Read<mdl_Listado_Cotizaciones_Roles>().FirstOrDefault();
+                mhusa.cotizaciones = result.Read<mdl_Listado_Cotizaciones_Nuevo>().ToList();
+                factory.SQL.Close();
+                return mhusa;
             }
             catch (System.Exception ex)
             {
