@@ -12,7 +12,7 @@ namespace HD_Ventas.Modelos
         [Required(ErrorMessage = "El folio es un valor requerido")]
         [RegularExpression(@"^[RCT0-9]+$", ErrorMessage = "El campo folio debe estar formado solo por caracteres numericos e iniciales CT")]
         [StringLength(13, MinimumLength = 13, ErrorMessage = "El campo folio debe estar formado por 13 digitos")]
-        public string folio_cotizacion { get; set; }
+        public string? folio_cotizacion { get; set; }
 
         [Required(ErrorMessage = "La fecha de entrega es un valor requerido")]
         public string fecha_entrega { get; set; }
@@ -22,9 +22,9 @@ namespace HD_Ventas.Modelos
         [StringLength(1, MinimumLength = 1, ErrorMessage = "El campo folio debe estar formado por 1 valor")]
         public string entregado { get; set; }
 
-        [Required(ErrorMessage = "El folio es un valor requerido")]
-        [RegularExpression(@"^[SC0-9]+$", ErrorMessage = "El campo folio debe estar formado solo por caracteres numericos e iniciales SC")]
-        [StringLength(13, MinimumLength = 13, ErrorMessage = "El campo folio debe estar formado por 13 digitos")]
+        //[Required(ErrorMessage = "El folio es un valor requerido")]
+        //[RegularExpression(@"^[SC0-9]+$", ErrorMessage = "El campo folio debe estar formado solo por caracteres numericos e iniciales SC")]
+        //[StringLength(13, MinimumLength = 13, ErrorMessage = "El campo folio debe estar formado por 13 digitos")]
         public string folio_solicitud { get; set; }
 
         //[Required(ErrorMessage = "El contacto servicio es un valor requerido")]
