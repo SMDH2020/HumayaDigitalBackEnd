@@ -64,7 +64,7 @@ namespace Ventas.Consultas.CotizacionesVentas
                     terminos = mdl.terminos,
                     detalle = mdl.detalle
                 };
-                await factory.SQL.QueryAsync("Ventas.sp_Guardar_Cotizacion_Nuevo", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                await factory.SQL.QueryAsync("Ventas.sp_Guardar_Cotizacion_Multiplataforma", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return true;
             }
