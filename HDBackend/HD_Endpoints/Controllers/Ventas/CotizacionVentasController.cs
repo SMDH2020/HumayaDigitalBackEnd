@@ -73,6 +73,17 @@ namespace HD.Endpoints.Controllers.Ventas
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> DetalleCotizacionesMultiplataforma(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_CotizacionVentas datos = new AD_CotizacionVentas(CadenaConexion);
+            var usuario = int.Parse(Sesion.usuario());
+            var result = await datos.DetalleMultiplataforma(folio, usuario);
+            return Ok(result);
+        }
+
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]

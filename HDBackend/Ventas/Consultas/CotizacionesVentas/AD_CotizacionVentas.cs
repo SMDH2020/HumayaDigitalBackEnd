@@ -64,7 +64,7 @@ namespace Ventas.Consultas.CotizacionesVentas
                     terminos = mdl.terminos,
                     detalle = mdl.detalle
                 };
-                await factory.SQL.QueryAsync("Ventas.sp_Guardar_Cotizacion_Nuevo", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                await factory.SQL.QueryAsync("Ventas.sp_Guardar_Cotizacion_Multiplataforma", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return true;
             }
@@ -124,6 +124,30 @@ namespace Ventas.Consultas.CotizacionesVentas
                 mdl_Listado_Cotizaciones_View mhusa = new mdl_Listado_Cotizaciones_View();
                 mhusa.roles = result.Read<mdl_Listado_Cotizaciones_Roles>().FirstOrDefault();
                 mhusa.cotizaciones = result.Read<mdl_Listado_Cotizaciones_Nuevo>().ToList();
+                factory.SQL.Close();
+                return mhusa;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<mdl_Detalle_Cotizaciones_View> DetalleMultiplataforma(string folio, int usuario)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    folio = folio,
+                    usuario = usuario
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var result = await factory.SQL.QueryMultipleAsync("Ventas.sp_Obtener_Cotizaciones_Multiplataforma_Detalle", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdl_Detalle_Cotizaciones_View mhusa = new mdl_Detalle_Cotizaciones_View();
+                mhusa.roles = result.Read<mdl_Listado_Cotizaciones_Roles>().FirstOrDefault();
+                mhusa.infoCotizacion = result.Read<mdl_Listado_Cotizaciones_Nuevo>().FirstOrDefault();
+                mhusa.detalleCotizacion = result.Read<mdl_Listado_Cotizaciones_Nuevo>().ToList();
                 factory.SQL.Close();
                 return mhusa;
             }
