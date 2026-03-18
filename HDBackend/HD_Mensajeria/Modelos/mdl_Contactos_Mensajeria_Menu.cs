@@ -6,5 +6,7 @@
         public string ultimo_mensaje {  get; set; }
         public string cliente { get; set; }
         public bool alerta { get; set; }
+        public bool atendido { get; set; }
+        public bool sin_respuesta { get; set; }
     }
 }
