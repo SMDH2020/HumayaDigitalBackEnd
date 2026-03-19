@@ -29,6 +29,7 @@ namespace Ventas.Modelos.CotizacionesVentas
 
         public string fecha_venta { get; set; }
         public string vigencia { get; set; }
+        public string vigencia_info { get; set; }
         public string createdate { get; set; }
         public int createuser { get; set; }
         public string? comentario {  get; set; }
