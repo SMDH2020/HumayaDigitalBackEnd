@@ -54,7 +54,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
                 }
                 await NotificacionComentarios.Enviar_Mhusa(result);
 
-                if(mdl.idproceso == 29 || mdl.idproceso == 38 || mdl.idproceso == 1520 )
+                if (mdl.idproceso == 29 || mdl.idproceso == 38 || mdl.idproceso == 1520 )
                 {
                     //enviar notificacion
                     var usuariosNotificados = string.Join(",", result.mdlSolicitud.Select(u => u.idempleado.ToString()) ?? new List<string>());

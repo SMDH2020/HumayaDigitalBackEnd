@@ -6,6 +6,7 @@
         public  int orden { get; set; }
         public string linea { get; set; }
         public string modelo { get; set; }
+        public string idmodelo { get; set; }
         public string descripcion { get; set; }
         public double precio_lista { get; set; }
         public double descuento_promocion { get; set; }
