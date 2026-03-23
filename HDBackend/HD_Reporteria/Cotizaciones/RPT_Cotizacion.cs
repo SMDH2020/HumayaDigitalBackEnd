@@ -331,15 +331,36 @@ namespace HD_Reporteria.Cotizaciones
 
                                         col.Item().PaddingTop(3).Text("Características del equipo:").FontSize(9).FontFamily(fontFamily);
 
-                                        // Característica principal
                                         string raw = modelo.caracteristicas_json;
+
                                         int startIndex = raw.IndexOf("\"descripcion\":\"") + "\"descripcion\":\"".Length;
                                         int endIndex = raw.IndexOf("\"", startIndex);
-                                        string descripcionSolo = (startIndex > -1 && endIndex > startIndex) ? raw.Substring(startIndex, endIndex - startIndex) : "";
+
+                                        string descripcionSolo = (startIndex > -1 && endIndex > startIndex)
+                                            ? raw.Substring(startIndex, endIndex - startIndex)
+                                            : "";
+
+                                        descripcionSolo = descripcionSolo
+                                            .Replace("\\n", "\n")
+                                            .Replace("\\r", "");
 
                                         if (!string.IsNullOrEmpty(descripcionSolo))
                                         {
-                                            col.Item().PaddingVertical(2).Text("• " + descripcionSolo).FontSize(8).Justify();
+                                            // Dividir por salto de línea y poner • en cada línea
+                                            var lineas = descripcionSolo.Split('\n');
+
+                                            col.Item().Column(c =>
+                                            {
+                                                foreach (var linea in lineas)
+                                                {
+                                                    if (!string.IsNullOrWhiteSpace(linea))
+                                                    {
+                                                        c.Item().Text("• " + linea.Trim())
+                                                            .FontSize(8)
+                                                            .Justify();
+                                                    }
+                                                }
+                                            });
                                         }
 
                                         col.Item().PaddingTop(5).Row(row =>
