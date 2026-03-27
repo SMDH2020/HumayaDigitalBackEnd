@@ -16,5 +16,7 @@ namespace HD_Mensajeria.Modelos
         public int createuser { get; set; }
         public string origino { get; set; }
         public string empleadoEnviado { get; set; }
+        public string? idresponsable { get; set; }
+        public string? responsable { get; set; }
     }
 }
