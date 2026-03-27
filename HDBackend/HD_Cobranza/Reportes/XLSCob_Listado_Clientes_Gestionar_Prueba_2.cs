@@ -54,7 +54,7 @@ namespace HD_Cobranza.Reportes
                     sheet.Style.Font.FontName = "Calibri";
                     sheet.Style.Font.FontSize = 10;
 
-                    int renglon = XLSEncabezado.Encabezado(ref sheet, $"LISTADO DE CLIENTES A GESTIONAR", 22);
+                    int renglon = XLSEncabezado.Encabezado(ref sheet, $"LISTADO DE CLIENTES A GESTIONAR", 23);
 
                     //renglon += 1;
 
@@ -97,9 +97,10 @@ namespace HD_Cobranza.Reportes
                     sheet.Cell(renglon, 20).Value = "OBJECION";
                     sheet.Cell(renglon, 21).Value = "OBSERVACIONES";
                     sheet.Cell(renglon, 22).Value = "RESPONSABLE";
+                    sheet.Cell(renglon, 23).Value = "CULTIVO";
 
                     // Estilo para los encabezados de la tabla
-                    var rango = sheet.Range(renglon, 1, renglon, 22);
+                    var rango = sheet.Range(renglon, 1, renglon, 23);
                     rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
                     rango.Style.Font.Bold = true;
                     rango.Style.Font.FontSize = 12;
@@ -133,6 +134,7 @@ namespace HD_Cobranza.Reportes
                         sheet.Cell(renglon, 20).Value = det.objecion;
                         sheet.Cell(renglon, 21).Value = det.observaciones;
                         sheet.Cell(renglon, 22).Value = det.nombre_responsable?.ToUpper();
+                        sheet.Cell(renglon, 23).Value = det.cultivo?.ToUpper();
                         renglon++;
                     }
 
