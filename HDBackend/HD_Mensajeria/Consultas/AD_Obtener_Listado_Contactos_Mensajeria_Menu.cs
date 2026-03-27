@@ -12,18 +12,21 @@ namespace HD_Mensajeria.Consultas
             CadenaConexion = _cadenaconexion;
         }
 
-        public async Task<IEnumerable<mdl_Contactos_Mensajeria_Menu>> obtenerContactos(int usuario)
+        public async Task<mdl_Contactos_Mensajeria_View> obtenerContactos(int idusuario)
         {
             try
             {
                 var parametros = new
                 {
-                    usuario = usuario
+                    idusuario = idusuario
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_Contactos_Mensajeria_Menu> result = await factory.SQL.QueryAsync<mdl_Contactos_Mensajeria_Menu>("HD_Mensajeria.dbo.sp_Obtener_Listado_Clientes_Contactados", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("HD_Mensajeria.dbo.sp_Obtener_Listado_Clientes_Contactados_2", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdl_Contactos_Mensajeria_View mdl = new mdl_Contactos_Mensajeria_View();
+                mdl.postventa = result.Read<mdl_Contactos_Mensajeria_Menu>().ToList();
+                mdl.cobranza = result.Read<mdl_Contactos_Mensajeria_Menu>().ToList();
                 factory.SQL.Close();
-                return result;
+                return mdl;
             }
             catch (System.Exception ex)
             {
