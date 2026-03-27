@@ -6,6 +6,11 @@
         public int periodo { get; set; }
         public int idcliente { get; set; }
         public string? razon_social { get; set; }
+        public string? adr { get; set; }
+        public string? sucursal { get; set; }
+        public string? linea_credito { get; set; }
+        public string? documento { get; set; }
+        public int dias_vencidos { get; set; }
         public string? vencimiento { get; set; }
         public float objetivo { get; set; }
         public float capital {  get; set; }
