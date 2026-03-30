@@ -53,7 +53,7 @@ namespace HD_Cobranza.Reportes
                     var sheet = workbook.Worksheets.Add(sheetname);
                     sheet.Style.Font.FontName = "Calibri";
                     sheet.Style.Font.FontSize = 10;
-
+                  
                     int renglon = XLSEncabezado.Encabezado(ref sheet, $"LISTADO DE CLIENTES A GESTIONAR", 23);
 
                     //renglon += 1;
