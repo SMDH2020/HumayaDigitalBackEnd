@@ -10,6 +10,7 @@
         public string? sucursal { get; set; }
         public string? linea_credito { get; set; }
         public string? documento { get; set; }
+        public string? cultivo { get; set; }
         public int dias_vencidos { get; set; }
         public string? vencimiento { get; set; }
         public float objetivo { get; set; }

@@ -2,6 +2,7 @@
 using HD_Cobranza.Modelos.AgregarContacto;
 using HD_Mensajeria.Consultas;
 using Microsoft.AspNetCore.Mvc;
+using Ventas.Consultas.CotizacionesVentas;
 
 namespace HD.Endpoints.Controllers.Mensajeria
 {
