@@ -5,6 +5,7 @@
         public string folio{ get; set; }
         public  int orden { get; set; }
         public string linea { get; set; }
+        public string idlinea { get; set; }
         public string modelo { get; set; }
         public string idmodelo { get; set; }
         public string descripcion { get; set; }

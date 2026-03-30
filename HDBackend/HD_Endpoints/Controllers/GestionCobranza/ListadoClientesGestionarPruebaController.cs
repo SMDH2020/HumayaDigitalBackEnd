@@ -28,11 +28,11 @@ namespace HD.Endpoints.Controllers.GestionCobranza
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ListadoClientes2(string adr, string sucursal, string responsable, string linea, string cartera, string gestion, int ejercicio, int periodo)
+        public async Task<ActionResult> ListadoClientes2(string adr, string sucursal, string responsable, string linea, string cartera, string gestion, int ejercicio, int periodo, string reporte)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Listado_Clientes_Gestionar_2 datos = new AD_Listado_Clientes_Gestionar_2(CadenaConexion);
-            var result = await datos.Clientes(adr, sucursal, responsable, linea, cartera, gestion, ejercicio, periodo);
+            var result = await datos.Clientes(adr, sucursal, responsable, linea, cartera, gestion, ejercicio, periodo, reporte);
             return Ok(result);
         }
 
@@ -49,11 +49,11 @@ namespace HD.Endpoints.Controllers.GestionCobranza
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ImprimirExcel2(string adr, string sucursal, string responsable, string linea, string cartera, string gestion, int ejercicio, int periodo)
+        public async Task<ActionResult> ImprimirExcel2(string adr, string sucursal, string responsable, string linea, string cartera, string gestion, int ejercicio, int periodo, string reporte)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Listado_Clientes_Gestionar_2 datos = new AD_Listado_Clientes_Gestionar_2(CadenaConexion);
-            var result = await datos.Clientes(adr, sucursal, responsable, linea, cartera, gestion, ejercicio, periodo);
+            var result = await datos.Clientes(adr, sucursal, responsable, linea, cartera, gestion, ejercicio, periodo, reporte);
             var docresult = await XLSCob_Listado_Clientes_Gestionar_Prueba_2.GenerarExcel(result);
             return Ok(docresult);
         }
@@ -93,11 +93,11 @@ namespace HD.Endpoints.Controllers.GestionCobranza
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ImprimirPDF2(string adr, string sucursal, string responsable, string linea, string cartera, string gestion, int ejercicio, int periodo)
+        public async Task<ActionResult> ImprimirPDF2(string adr, string sucursal, string responsable, string linea, string cartera, string gestion, int ejercicio, int periodo, string reporte)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Listado_Clientes_Gestionar_2 datos = new AD_Listado_Clientes_Gestionar_2(CadenaConexion);
-            var result = await datos.Clientes(adr, sucursal, responsable, linea, cartera, gestion, ejercicio, periodo);
+            var result = await datos.Clientes(adr, sucursal, responsable, linea, cartera, gestion, ejercicio, periodo, reporte);
 
             try
             {
