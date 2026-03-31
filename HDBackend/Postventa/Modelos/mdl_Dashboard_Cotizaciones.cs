@@ -58,8 +58,11 @@
         public int mensajes_enviados { get; set; }
 
         public string? facturado { get; set; }
+        public string? cupon { get; set; }
         public string? comentario { get; set; }
         public string? tiene_orden { get; set; }
+        public string fecha_comentario { get; set; }
+        public string creador_comentario { get; set; }
 
 
     }

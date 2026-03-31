@@ -27,7 +27,8 @@ namespace Postventa.Modelos
         public string grupo { get; set; }
         public int mensajes_enviados {  get; set; }
         public string comentario { get; set; }
-
+        public string creador_comentario { get; set; }
+        public string fecha_comentario { get; set; }
 
     }
 }

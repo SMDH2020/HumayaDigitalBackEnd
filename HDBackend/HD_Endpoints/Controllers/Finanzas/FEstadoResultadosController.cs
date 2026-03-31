@@ -6,6 +6,7 @@ using HD_Reporteria;
 using HD_Reporteria.Finanzas;
 using HD_Reporteria.Finanzas.Excel;
 using Microsoft.AspNetCore.Mvc;
+using Postventa.Consultas.Dashboard;
 
 namespace HD.Endpoints.Controllers.Finanzas
 {
@@ -18,6 +19,17 @@ namespace HD.Endpoints.Controllers.Finanzas
             Configuracion = configuration;
             Sesion = sesion;
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> FiltroEscenariosER()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            FAD_EstadoResultados datos = new FAD_EstadoResultados(CadenaConexion);
+            var result = await datos.Get_Filtro_Escenarios();
+            return Ok(result);
+        }
+
 
         [HttpPost]
         [Route("/api/[controller]/[action]")]

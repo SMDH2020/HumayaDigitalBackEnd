@@ -16,19 +16,15 @@ namespace HD.Notifications.Consultas
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_HD_Notificaciones_Listado>> Listado(string iddepartamento, string tipo, DateTime fecha_inicio, DateTime fecha_fin)
+        public async Task<IEnumerable<mdl_HD_Notificaciones_Listado>> Listado()
         {
             try
             {
                 var parametros = new
                 {
-                    iddepartamento = iddepartamento,
-                    tipo = tipo,
-                    fecha_inicio = fecha_inicio,
-                    fecha_fin = fecha_fin
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_HD_Notificaciones_Listado> result = await factory.SQL.QueryAsync<mdl_HD_Notificaciones_Listado>("HumayaDigital_Eventos.dbo.sp_HD_Notificaciones_Filtrado", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_HD_Notificaciones_Listado> result = await factory.SQL.QueryAsync<mdl_HD_Notificaciones_Listado>("HumayaDigital_Eventos.dbo.sp_HD_Notificaciones_Filtrado_Nuevo", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

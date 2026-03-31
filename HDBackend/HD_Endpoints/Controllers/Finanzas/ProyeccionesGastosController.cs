@@ -34,12 +34,12 @@ namespace HD.Endpoints.Controllers.Finanzas
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> PGConsolidadoExcel(int ejercicio)
+        public async Task<ActionResult> PGConsolidadoExcel(int ejercicio, string escenario)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Proyeccion_Gastos nvl = new AD_Proyeccion_Gastos(CadenaConexion);
             string usuario = Sesion.usuario();
-            var result = await nvl.ObtenerExcel(ejercicio);
+            var result = await nvl.ObtenerExcel(ejercicio,escenario);
             return Ok(await XLS_Proyeccion_Gastos.GenerarExcel(result,ejercicio));
         }
     }

@@ -276,6 +276,33 @@ namespace HD.Endpoints.Controllers.Postventa
             );
         }
 
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetTelefonoGarantia(int idgarantia)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Añadir_Numero_Cotizaciones datos = new AD_Añadir_Numero_Cotizaciones(CadenaConexion);
+            var result = await datos.GetTelefonoGarantias(idgarantia);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> AgregarContactoGarantias(mdl_Agregar_Contacto_Cotizaciones mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Añadir_Numero_Cotizaciones datos = new AD_Añadir_Numero_Cotizaciones(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            await datos.AgregarContactoGarantias(mdl);
+
+            return Ok(new
+            {
+                mensaje = "Guardado Correctamente",
+            }
+            );
+        }
+
+
         [HttpPost]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> CambiarSucursalServicio(mdl_Cambiar_Sucursal_Servicio mdl)
