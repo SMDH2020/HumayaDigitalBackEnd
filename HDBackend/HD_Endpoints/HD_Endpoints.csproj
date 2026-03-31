@@ -1,11 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>$(MSBuildProjectName.Replace("_", "."))</RootNamespace>
     <UserSecretsId>21236b0a-37f5-46b4-a274-57b1560c177d</UserSecretsId>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,6 +30,7 @@
     <ProjectReference Include="..\HD_Dashboard\HD_Dashboard.csproj" />
     <ProjectReference Include="..\HD_Finanzas\HD_Finanzas.csproj" />
     <ProjectReference Include="..\HD_Generales\HD_Generales.csproj" />
+    <ProjectReference Include="..\HD_GestionActividades\HD_GestionActividades.csproj" />
     <ProjectReference Include="..\HD_Helpers\HD_Helpers.csproj" />
     <ProjectReference Include="..\HD_Mensajeria\HD_Mensajeria.csproj" />
     <ProjectReference Include="..\HD_Notifications\HD_Notifications.csproj" />
