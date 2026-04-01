@@ -16,6 +16,7 @@ namespace HD_Finanzas.Modelos.ProyeccionesVentas
         public double por { get; set; }
         public double proyimporte { get; set; }
         public double proypor { get; set; }
+        public string indicador {  get; set; }
         public double diffimporte { get; set; }
         public double diffpor { get; set; }
         public double lastimporte { get; set; }

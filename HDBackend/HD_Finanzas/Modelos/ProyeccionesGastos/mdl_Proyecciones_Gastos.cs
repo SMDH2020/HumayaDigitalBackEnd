@@ -12,6 +12,7 @@ namespace HD_Finanzas.Modelos.ProyeccionesGastos
         public string concepto { get; set; }
         public string tipo { get; set; }
         public double proy { get; set; }
+        public string indicador { get; set; }
         public double total { get; set; }
         public double diferencia { get; set; }
         public double por { get; set; }
