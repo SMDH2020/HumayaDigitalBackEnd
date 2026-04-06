@@ -54,6 +54,7 @@ namespace HD_Finanzas.AccesoDatos
                     obj.importe = objER is null ? 0 : Math.Round(objER.importe, 2);
                     obj.por = objER is null ? 0 : Math.Round(objER.por, 2);
 
+                    obj.indicador = ObtenerIndicador(obj.concepto, obj.proyimporte, obj.importe);
                     obj.diffimporte = Math.Round(obj.importe - obj.proyimporte, 2);
                     obj.diffpor = obj.importe == 0 || obj.proyimporte == 0 ? 0
                         : Math.Round((obj.importe - obj.proyimporte) / obj.proyimporte * 100, 2);
@@ -75,6 +76,7 @@ namespace HD_Finanzas.AccesoDatos
                     importe = Math.Round(ProyVentasNetas, 2),
                     por = 100,
                     proyimporte = Math.Round(RealVentasNetas, 2),
+                    indicador = ObtenerIndicador("Total Ventas Netas", RealVentasNetas, ProyVentasNetas),
                     proypor = 100,
                     diffimporte = Math.Round(ProyVentasNetas - RealVentasNetas, 2),
                     diffpor = ProyVentasNetas == 0 || RealVentasNetas == 0 ? 0
@@ -93,6 +95,7 @@ namespace HD_Finanzas.AccesoDatos
                     proyimporte = Math.Round(realCostoVenta, 2),
                     proypor = RealVentasNetas == 0 || realCostoVenta == 0 ? 0
                     : Math.Round(realCostoVenta / RealVentasNetas * 100, 2),
+                    indicador = ObtenerIndicador("Costos de Venta", realCostoVenta, proyCostoVenta),
                     diffimporte = Math.Round(proyCostoVenta - realCostoVenta, 2),
                     diffpor = proyCostoVenta == 0 || realCostoVenta == 0 ? 0
                         : Math.Round((proyCostoVenta - realCostoVenta) / realCostoVenta * 100, 2)
@@ -114,6 +117,7 @@ namespace HD_Finanzas.AccesoDatos
                     proyimporte = Math.Round(realutilidad, 2),
                     proypor = RealVentasNetas == 0 || realutilidad == 0 ? 0
                     : Math.Round(realutilidad / RealVentasNetas * 100, 2),
+                    indicador = ObtenerIndicador("Utilidad Bruta", realutilidad, proyutilidad),
                     diffimporte = Math.Round(proyutilidad - realutilidad, 2),
                     diffpor = proyutilidad == 0 || realutilidad == 0 ? 0
                         : Math.Round((proyutilidad - realutilidad) / realutilidad * 100, 2)
@@ -136,6 +140,7 @@ namespace HD_Finanzas.AccesoDatos
                     proyimporte = Math.Round(realGastos, 2),
                     proypor = RealVentasNetas == 0 || realGastos == 0 ? 0
                     : Math.Round(realGastos / RealVentasNetas * 100, 2),
+                    indicador = ObtenerIndicador("Gastos de Departamento", realGastos, proyGastos),
                     diffimporte = Math.Round(proyGastos - realGastos, 2),
                     diffpor = proyGastos == 0 || realGastos == 0 ? 0
                         : Math.Round((proyGastos - realGastos) / realGastos * 100, 2)
@@ -158,6 +163,8 @@ namespace HD_Finanzas.AccesoDatos
                     vgst.proyimporte = gst.importe;
                     vgst.proypor = RealVentasNetas == 0 || vgst.proyimporte == 0 ? 0
                         : Math.Round(vgst.proyimporte / RealVentasNetas * 100, 2);
+
+                    vgst.indicador = ObtenerIndicador("Gastos de Departamento", vgst.proyimporte, vgst.importe);
 
                     vgst.diffimporte = vgst.importe - vgst.proyimporte;
                     vgst.diffpor = vgst.diffimporte == 0 || vgst.proyimporte == 0 ? 0
@@ -184,6 +191,7 @@ namespace HD_Finanzas.AccesoDatos
                     proyimporte = Math.Round(realOperacion, 2),
                     proypor = RealVentasNetas == 0 || realOperacion == 0 ? 0
                     : Math.Round(realOperacion / RealVentasNetas * 100, 2),
+                    indicador = ObtenerIndicador("Utilidad de Operación", realOperacion, proyOperacion),
                     diffimporte = Math.Round(proyOperacion - realOperacion, 2),
                     diffpor = proyOperacion == 0 || realOperacion == 0 ? 0
                         : Math.Round((proyOperacion - realOperacion) / realOperacion * 100, 2)
@@ -205,6 +213,8 @@ namespace HD_Finanzas.AccesoDatos
                     viewfin.proyimporte = importefinanciero is null ? 0 : importefinanciero.importe;
                     viewfin.proypor = viewfin.proyimporte == 0 || RealVentasNetas == 0 ? 0 :
                         Math.Round(viewfin.proyimporte / RealVentasNetas * 100, 2);
+
+                    viewfin.indicador = ObtenerIndicador(viewfin.departamento, viewfin.proyimporte, viewfin.importe);
                     viewfin.diffimporte = viewfin.importe - viewfin.proyimporte;
                     viewfin.diffpor = viewfin.proyimporte == 0 || viewfin.diffimporte == 0 ? 0 :
                         Math.Round(viewfin.diffimporte / viewfin.proyimporte * 100, 2);
@@ -230,6 +240,7 @@ namespace HD_Finanzas.AccesoDatos
                 viewoi.proyimporte = realimportefinancieroOI;
                 viewoi.proypor = viewoi.proyimporte == 0 || RealVentasNetas == 0 ? 0 :
                     Math.Round(viewoi.proyimporte / RealVentasNetas * 100, 2);
+                viewoi.indicador = ObtenerIndicador("Total Otros Ingresos", viewoi.proyimporte, viewoi.importe);
                 viewoi.diffimporte = viewoi.importe - viewoi.proyimporte;
                 viewoi.diffpor = viewoi.proyimporte == 0 || viewoi.diffimporte == 0 ? 0 :
                     Math.Round(viewoi.diffimporte / viewoi.proyimporte * 100, 2);
@@ -247,6 +258,7 @@ namespace HD_Finanzas.AccesoDatos
                 viewog.proyimporte = realimportefinancieroOG;
                 viewog.proypor = viewog.proyimporte == 0 || RealVentasNetas == 0 ? 0 :
                     Math.Round(viewog.proyimporte / RealVentasNetas * 100, 2);
+                viewog.indicador = ObtenerIndicador("Gastos de Departamento", viewog.proyimporte, viewog.importe);
                 viewog.diffimporte = viewog.importe - viewog.proyimporte;
                 viewog.diffpor = viewog.proyimporte == 0 || viewog.diffimporte == 0 ? 0 :
                     Math.Round(viewog.diffimporte / viewog.proyimporte * 100, 2);
@@ -264,6 +276,8 @@ namespace HD_Finanzas.AccesoDatos
                 viewuo.proyimporte = realOperacion + realimportefinancieroOI - realimportefinancieroOG;
                 viewuo.proypor = viewuo.proyimporte == 0 || RealVentasNetas == 0 ? 0 :
                     Math.Round(viewuo.proyimporte / RealVentasNetas * 100, 2);
+                viewuo.indicador = ObtenerIndicador("Utilidad", viewuo.proyimporte, viewuo.importe);
+
                 viewuo.diffimporte = viewuo.importe - viewuo.proyimporte;
                 viewuo.diffpor = viewuo.proyimporte == 0 || viewuo.diffimporte == 0 ? 0 :
                     Math.Round(viewuo.diffimporte / viewuo.proyimporte * 100, 2);
@@ -277,6 +291,25 @@ namespace HD_Finanzas.AccesoDatos
             {
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, ex.Message);
             }
+        }
+
+        private string ObtenerIndicador(string concepto, double importe, double proyimporte)
+        {
+            if (proyimporte == 0) return "R";
+
+            double porcentaje = (importe / proyimporte) * 100;
+
+            if (!string.IsNullOrEmpty(concepto) &&
+                concepto.IndexOf("gasto", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                if (porcentaje < 95) return "V";
+                if (porcentaje <= 105) return "A";
+                return "R";
+            }
+
+            if (porcentaje > 85) return "V";
+            if (porcentaje >= 60) return "A";
+            return "R";
         }
     }
 }

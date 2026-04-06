@@ -9,6 +9,7 @@
         public double importe { get; set; }
         public double por { get; set; }
         public double proyimporte { get; set; }
+        public string indicador { get; set; }
         public double proypor { get; set; }
         public double diffimporte { get; set; }
         public double diffpor { get; set; }
