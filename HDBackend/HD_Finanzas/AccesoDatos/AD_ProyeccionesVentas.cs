@@ -327,6 +327,7 @@ namespace HD_Finanzas.AccesoDatos
                 return "R";
 
             double porcentaje = (1 + (importe - proyimporte) / Math.Abs(proyimporte)) * 100;
+ 
 
             bool esVentasOGastos =
              conceptoLower.Contains("ventas netas") ||
@@ -344,7 +345,13 @@ namespace HD_Finanzas.AccesoDatos
                 if (porcentaje >= 60) return "A";
                 return "R";
             }
+            if(conceptoLower.Contains("costo"))
+            {
+                if (porcreal > porcproy)
+                    return "R";
 
+                return "V";
+            }
             if (porcreal < porcproy)
                 return "R";
 

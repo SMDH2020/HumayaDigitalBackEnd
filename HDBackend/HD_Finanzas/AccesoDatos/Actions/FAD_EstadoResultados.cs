@@ -601,6 +601,13 @@ namespace HD_Finanzas.AccesoDatos.Actions
                 return "R";
             }
 
+            if (conceptoLower.Contains("costo"))
+            {
+                if (porcreal > porcproy)
+                    return "R";
+
+                return "V";
+            }
             if (porcreal < porcproy)
                 return "R";
 
