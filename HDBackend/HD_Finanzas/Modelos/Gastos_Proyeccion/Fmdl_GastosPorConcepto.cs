@@ -8,6 +8,7 @@
         public double total { get; set; }
         public double proyeccion { get; set; }
         public double porc { get; set; }
+        public string indicador { get; set; }
         public double dif { get; set; }
         public double oldtotal { get; set; }
         public double oldproyeccion { get; set; }

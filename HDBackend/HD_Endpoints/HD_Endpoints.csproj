@@ -28,6 +28,7 @@
     <ProjectReference Include="..\HD_Cobranza\HD_Cobranza.csproj" />
     <ProjectReference Include="..\HD_Dashboard\HD_Dashboard.csproj" />
     <ProjectReference Include="..\HD_Finanzas\HD_Finanzas.csproj" />
+    <ProjectReference Include="..\HD_Fiscal\HD_Fiscal.csproj" />
     <ProjectReference Include="..\HD_Generales\HD_Generales.csproj" />
     <ProjectReference Include="..\HD_Helpers\HD_Helpers.csproj" />
     <ProjectReference Include="..\HD_Mensajeria\HD_Mensajeria.csproj" />

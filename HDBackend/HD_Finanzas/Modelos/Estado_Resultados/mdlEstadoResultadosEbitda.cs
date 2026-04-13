@@ -10,6 +10,7 @@
         public float por { get; set; }
         public float proyimporte { get; set; }
         public float proypor { get; set; }
+        public string indicador { get; set; }
         public float diffimporte { get; set; }
         public float diffpor { get; set; }
         public float lastimporte { get; set; }
