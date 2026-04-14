@@ -15,5 +15,6 @@ namespace HD.Fiscal.Modelos
         public string folio_fiscal { get; set; }
         public float importe { get; set; }
         public int batch { get; set; }
+        public string uuid { get; set; }
     }
 }
