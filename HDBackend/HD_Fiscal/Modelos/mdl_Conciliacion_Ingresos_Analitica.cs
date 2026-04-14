@@ -28,7 +28,8 @@ namespace HD.Fiscal.Modelos
         public string rfc { get; set; }
         public string condicionPago { get; set; }
         public string v_desc { get; set; }
-        public int v_ref { get; set; }
+        public string v_ref { get; set; }
         public string v_usuario { get; set; }
+        public string equip { get; set; }
     }
 }

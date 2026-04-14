@@ -17,6 +17,7 @@ namespace HD.Fiscal.Modelos
         public float importe { get; set; }
         public string fecha { get; set; }
         public int batch { get; set; }
+        public string usuario { get; set; }
         public bool chk { get; set; }
         public bool bloqueado { get; set; }
     }

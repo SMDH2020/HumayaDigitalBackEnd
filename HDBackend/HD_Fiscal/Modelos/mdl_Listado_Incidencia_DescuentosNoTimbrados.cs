@@ -20,6 +20,7 @@ namespace HD.Fiscal.Modelos
         public string departamento { get; set; }
         public string cuenta { get; set; }
         public float importe { get; set; }
+        public string tipoComprobante { get; set; }
         public string UUID { get; set; }
     }
 }

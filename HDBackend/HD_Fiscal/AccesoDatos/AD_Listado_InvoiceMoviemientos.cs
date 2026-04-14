@@ -50,6 +50,7 @@ namespace HD.Fiscal.AccesoDatos
                 view.Descuentos_Notimbrados = result.Read<mdl_Listado_Incidencia_DescuentosNoTimbrados>().ToList();
                 view.Facturacion_NoRegistrada = result.Read<mdl_Listado_Incidencia_Facturacion_NoRegistrada_EnVentas>().ToList();
                 view.Facturación_SinUuid = result.Read<mdl_Listado_Incidencia_Facturacion_SinUuid>().ToList();
+                view.Reversas = result.Read<mdl_Reversas_UUID_Vigente>().ToList();
                 factory.SQL.Close();
                 return view;
             }
