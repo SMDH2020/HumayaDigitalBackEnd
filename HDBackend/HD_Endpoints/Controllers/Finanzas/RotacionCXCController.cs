@@ -29,6 +29,16 @@ namespace HD.Endpoints.Controllers.Finanzas
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ReporteSucursal(int ejercicio, int periodo, string adr, string sucursales, int idlinea)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_RotacionCXC_Reporte datos = new AD_RotacionCXC_Reporte(CadenaConexion);
+            var result = await datos.reporteSucursal(ejercicio, periodo, adr, sucursales, idlinea);
+            return Ok(result);
+        }
+
         [HttpPost]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> GuardarGuiaCXC(mdl_GuiaCXC_Guardar mdl)

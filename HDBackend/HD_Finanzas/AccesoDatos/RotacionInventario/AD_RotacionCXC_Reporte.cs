@@ -1,5 +1,7 @@
 ﻿using Dapper;
+using DocumentFormat.OpenXml.Drawing.Charts;
 using HD.AccesoDatos;
+using HD_Finanzas.Modelos.RotacionCXC;
 using HD_Finanzas.Modelos.RotacionInventario;
 using System;
 using System.Collections.Generic;
@@ -39,6 +41,30 @@ namespace HD_Finanzas.AccesoDatos.RotacionInventario
                 reporte.rotacion = result.Read<mdl_RotacionCXC>().ToList();
                 factory.SQL.Close();
                 return reporte;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+
+        public async Task<IEnumerable<mdl_RotacionCXC_Sucursal>> reporteSucursal(int ejercicio, int periodo, string adr, string sucursales, int idlinea)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    ejercicio = ejercicio,
+                    periodo = periodo,
+                    adr = adr,
+                    sucursales = sucursales,
+                    idlinea = idlinea
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_RotacionCXC_Sucursal> result = await factory.SQL.QueryAsync<mdl_RotacionCXC_Sucursal>("PixelCode.dbo.sp_Rotacion_CXC_Sucursal", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
             }
             catch (System.Exception ex)
             {
