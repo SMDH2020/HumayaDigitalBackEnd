@@ -18,7 +18,7 @@ namespace HD_Finanzas.AccesoDatos.RotacionInventario
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<mdl_RotacionCXC_View> reporte(int ejercicio, int periodo, string adr, string sucursales, string? usuario)
+        public async Task<mdl_RotacionCXC_View> reporte(int ejercicio, int periodo, string adr, string sucursales, string departamentos, string? usuario, string tipoReporte)
         {
             try
             {
@@ -28,14 +28,13 @@ namespace HD_Finanzas.AccesoDatos.RotacionInventario
                     periodo = periodo,
                     adr = adr,
                     sucursales = sucursales,
-                    usuario = usuario
+                    departamentos = departamentos,
+                    usuario = usuario,
+                    tipo_reporte = tipoReporte
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                //mdl_RotacionCXC_View result = await factory.SQL.QueryAsync<mdl_RotacionCXC_View>("PixelCode.dbo.sp_Rotacion_CXC", parametros, commandType: System.Data.CommandType.StoredProcedure);
-                //factory.SQL.Close();
-                //return result;
 
-                var result = await factory.SQL.QueryMultipleAsync("PixelCode.dbo.sp_Rotacion_CXC", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("EQUIP.fiscal.sp_get_rotacion_cxc", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 mdl_RotacionCXC_View reporte = new mdl_RotacionCXC_View();
                 reporte.editor_guia = result.Read<bool>().FirstOrDefault();
                 reporte.rotacion = result.Read<mdl_RotacionCXC>().ToList();
@@ -49,7 +48,7 @@ namespace HD_Finanzas.AccesoDatos.RotacionInventario
         }
 
 
-        public async Task<IEnumerable<mdl_RotacionCXC_Sucursal>> reporteSucursal(int ejercicio, int periodo, string adr, string sucursales, int idlinea)
+        public async Task<IEnumerable<mdl_RotacionCXC>> reporteSucursal(int ejercicio, int periodo, string adr, string sucursales, string departamentos, string? usuario, string tipoReporte)
         {
             try
             {
@@ -59,10 +58,12 @@ namespace HD_Finanzas.AccesoDatos.RotacionInventario
                     periodo = periodo,
                     adr = adr,
                     sucursales = sucursales,
-                    idlinea = idlinea
+                    departamentos = departamentos,
+                    usuario = usuario,
+                    tipo_reporte = tipoReporte
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_RotacionCXC_Sucursal> result = await factory.SQL.QueryAsync<mdl_RotacionCXC_Sucursal>("PixelCode.dbo.sp_Rotacion_CXC_Sucursal", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_RotacionCXC> result = await factory.SQL.QueryAsync<mdl_RotacionCXC>("EQUIP.fiscal.sp_get_rotacion_cxc", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
