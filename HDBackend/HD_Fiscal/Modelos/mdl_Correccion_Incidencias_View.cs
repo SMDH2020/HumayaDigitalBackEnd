@@ -14,7 +14,7 @@ namespace HD.Fiscal.Modelos
         public IEnumerable<mdl_Listado_Incidencia_Facturacion_NoRegistrada_EnVentas> Facturacion_NoRegistrada { get; set; }
         public IEnumerable<mdl_Listado_Incidencia_Facturacion_SinUuid> Facturación_SinUuid { get; set; }
         public IEnumerable<mdl_Reversas_UUID_Vigente> Reversas { get; set; }
-
+        public mdl_Conciliacion_Ingresos_Analitica_Botones botones { get; set; }
 
     }
 }

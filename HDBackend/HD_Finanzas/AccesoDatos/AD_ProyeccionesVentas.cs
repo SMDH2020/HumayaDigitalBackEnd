@@ -330,13 +330,14 @@ namespace HD_Finanzas.AccesoDatos
 
             bool esVentasOGastos =
              conceptoLower.Contains("ventas netas") ||
-             conceptoLower.Contains("gasto");
+             conceptoLower.Contains("gasto") ||
+             conceptoLower.Contains("otros ingresos");
             if (esVentasOGastos)
             {
-                if (concepto.Trim().Equals("gasto", StringComparison.OrdinalIgnoreCase))
+                if (conceptoLower.Contains("gasto", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (porcentaje < 95) return "V";
-                    if (porcentaje <= 105) return "A";
+                    if (importe < proyimporte) return "V";
+                    //if (porcentaje <= 105) return "A";
                     return "R";
                 }
 
@@ -345,10 +346,22 @@ namespace HD_Finanzas.AccesoDatos
                 return "R";
             }
 
-            if (porcreal < porcproy)
-                return "R";
+            if (conceptoLower.Contains("costo"))
+            {
+                if (porcreal > porcproy + 1)
+                    return "R";
+                else if (porcreal > porcproy)
+                    return "A";
+                else
+                    return "V";
+            }
 
-            return "V";
+            if (porcreal < porcproy - 1)
+                return "R";
+            else if (porcreal < porcproy)
+                return "A";
+            else
+                return "V";
         }
     }
 }

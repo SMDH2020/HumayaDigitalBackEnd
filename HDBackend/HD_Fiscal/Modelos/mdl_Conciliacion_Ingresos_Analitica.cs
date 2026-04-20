@@ -20,6 +20,7 @@ namespace HD.Fiscal.Modelos
         public string v_gl_main { get; set; }
         public string v_fecha { get; set; }
         public string v_batch { get; set; }
+        public string document_no { get; set; }
         public string serie { get; set; }
         public string folio { get; set; }
         public string uuid { get; set; }
