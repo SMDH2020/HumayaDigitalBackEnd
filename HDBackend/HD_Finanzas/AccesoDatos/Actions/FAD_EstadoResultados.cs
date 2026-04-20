@@ -1,4 +1,4 @@
-﻿using Dapper;
+using Dapper;
 using DocumentFormat.OpenXml.Spreadsheet;
 using HD.AccesoDatos;
 using HD_Finanzas.Modelos.Estado_Resultados;

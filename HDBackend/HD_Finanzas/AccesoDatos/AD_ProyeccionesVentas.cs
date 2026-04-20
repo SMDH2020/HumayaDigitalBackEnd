@@ -1,4 +1,4 @@
-﻿using Dapper;
+using Dapper;
 using HD.AccesoDatos;
 using HD_Finanzas.Modelos.ProyeccionesVentas;
 
