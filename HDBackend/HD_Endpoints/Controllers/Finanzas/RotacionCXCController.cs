@@ -40,6 +40,17 @@ namespace HD.Endpoints.Controllers.Finanzas
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> detalleCXC(int ejercicio, int periodo, string adr, string sucursales, string departamentos, string tipoReporte)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_RotacionCXC_Detalle datos = new AD_RotacionCXC_Detalle(CadenaConexion);
+            var usuario = Sesion.usuario();
+            var result = await datos.DetalleCXC(ejercicio, periodo, adr, sucursales, departamentos, usuario, tipoReporte);
+            return Ok(result);
+        }
+
         [HttpPost]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> GuardarGuiaCXC(mdl_GuiaCXC_Guardar mdl)
