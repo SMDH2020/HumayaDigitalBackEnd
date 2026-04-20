@@ -35,8 +35,8 @@ namespace HD.Endpoints.Controllers.Fiscal
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Listado_InvoiceMoviemientos datos = new AD_Listado_InvoiceMoviemientos(CadenaConexion);
-            //int usuario = int.Parse(Sesion.usuario());
-            var result = await datos.ObtenerCorreccionIncidencias(ejercicio, periodo);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.ObtenerCorreccionIncidencias(ejercicio, periodo, usuario);
             return Ok(result);
         }
 

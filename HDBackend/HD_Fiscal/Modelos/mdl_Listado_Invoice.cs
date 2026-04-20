@@ -15,5 +15,6 @@ namespace HD.Fiscal.Modelos
         public string serie_fiscal { get; set; }
         public string folio_fiscal { get; set; }
         public int batch { get; set; }
+        public string usuario { get; set; }
     }
 }

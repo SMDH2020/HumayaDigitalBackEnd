@@ -34,7 +34,7 @@ namespace HD.Fiscal.AccesoDatos
             }
         }
 
-        public async Task<mdl_Correccion_Incidencias_View> ObtenerCorreccionIncidencias(int ejercicio, int periodo)
+        public async Task<mdl_Correccion_Incidencias_View> ObtenerCorreccionIncidencias(int ejercicio, int periodo, int usuario)
         {
             try
             {
@@ -42,6 +42,7 @@ namespace HD.Fiscal.AccesoDatos
                 var parametros = new DynamicParameters();
                 parametros.Add("ejercicio", ejercicio, System.Data.DbType.Int16);
                 parametros.Add("periodo", periodo, System.Data.DbType.Int16);
+                parametros.Add("usuario", usuario, System.Data.DbType.Int16);
 
                 var result = await factory.SQL.QueryMultipleAsync("EQUIP.fiscal.sp_Obtener_Listados_Incidencias", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 var view = new mdl_Correccion_Incidencias_View();
@@ -50,6 +51,8 @@ namespace HD.Fiscal.AccesoDatos
                 view.Descuentos_Notimbrados = result.Read<mdl_Listado_Incidencia_DescuentosNoTimbrados>().ToList();
                 view.Facturacion_NoRegistrada = result.Read<mdl_Listado_Incidencia_Facturacion_NoRegistrada_EnVentas>().ToList();
                 view.Facturación_SinUuid = result.Read<mdl_Listado_Incidencia_Facturacion_SinUuid>().ToList();
+                view.Reversas = result.Read<mdl_Reversas_UUID_Vigente>().ToList();
+                view.botones = result.Read<mdl_Conciliacion_Ingresos_Analitica_Botones>().FirstOrDefault();
                 factory.SQL.Close();
                 return view;
             }
