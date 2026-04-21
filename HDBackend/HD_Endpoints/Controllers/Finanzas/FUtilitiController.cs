@@ -23,5 +23,15 @@ namespace HD.Endpoints.Controllers.Finanzas
             var result = await utilities.GetASD("1");
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetAdrSucursalDepartamentoCXC(string defaultuser)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            FAD_AdrSucursalDepto utilities = new(CadenaConexion);
+            var result = await utilities.GetASDCXC("1");
+            return Ok(result);
+        }
     }
 }

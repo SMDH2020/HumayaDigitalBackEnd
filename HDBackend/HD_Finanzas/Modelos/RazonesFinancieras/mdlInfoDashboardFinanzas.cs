@@ -27,5 +27,7 @@ namespace HD_Finanzas.Modelos.RazonesFinancieras
         public List<mdl_Permisos_Dashboard_Financiero>? Permisos {  get; set; }
         public List<mdl_Permisos_Dashboard_Sucursales>? sucursalesPermiso {  get; set; }
         public  mdl_Rotacion_Inventario_Dashboard rotacioninventario { get; set; }
+        public mdl_Rotacion_CXC rotacioncxc { get; set; }
+
     }
 }

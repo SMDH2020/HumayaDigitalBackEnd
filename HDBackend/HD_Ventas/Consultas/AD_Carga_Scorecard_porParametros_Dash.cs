@@ -63,7 +63,7 @@ namespace HD_Ventas.Consultas
             }
         }
 
-        public async Task<IEnumerable<mdlCarga_Scorecard_porVendedor_Dash_TablaAsesor>> Scorecard_TablaAsesor(string region, string? sucursal, string? usuario, int ejercicioinicio, int periodoinicio, int ejercicio, int mes_actual, int sesion)
+        public async Task<IEnumerable<mdlCarga_Scorecard_porVendedor_Dash_TablaAsesor>> Scorecard_TablaAsesor(string region, string? sucursal, string? usuario, int ejercicioinicio, int periodoinicio, int ejercicio, int mes_actual, int sesion, int comparativa)
         {
             try
             {
@@ -76,7 +76,8 @@ namespace HD_Ventas.Consultas
                     periodoinicio = periodoinicio,
                     ejercicio = ejercicio,
                     mes_actual = mes_actual,
-                    sesion = sesion
+                    sesion = sesion,
+                    comparativa = comparativa
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdlCarga_Scorecard_porVendedor_Dash_TablaAsesor> result = await factory.SQL.QueryAsync<mdlCarga_Scorecard_porVendedor_Dash_TablaAsesor>("Ventas.Obtener_Scorecard_porParametro_Tabla_Asesor_Nuevo", parametros, commandType: System.Data.CommandType.StoredProcedure);
@@ -89,7 +90,7 @@ namespace HD_Ventas.Consultas
             }
         }
 
-        public async Task<IEnumerable<mdlCarga_Scorecard_porVendedor_Dash_TablaAsesor_Importes>> Scorecard_TablaAsesor_importes(int region, string sucursal, string usuario, int ejercicioinicio, int periodoinicio, int ejercicio, int mes_actual, int sesion)
+        public async Task<IEnumerable<mdlCarga_Scorecard_porVendedor_Dash_TablaAsesor_Importes>> Scorecard_TablaAsesor_importes(int region, string sucursal, string usuario, int ejercicioinicio, int periodoinicio, int ejercicio, int mes_actual, int sesion, int comparativa)
         {
             try
             {
@@ -102,7 +103,8 @@ namespace HD_Ventas.Consultas
                     periodoinicio = periodoinicio,
                     ejercicio = ejercicio,
                     mes_actual = mes_actual,
-                    sesion = sesion
+                    sesion = sesion,
+                    comparativa = comparativa
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdlCarga_Scorecard_porVendedor_Dash_TablaAsesor_Importes> result = await factory.SQL.QueryAsync<mdlCarga_Scorecard_porVendedor_Dash_TablaAsesor_Importes>("Ventas.Obtener_Scorecard_porParametro_Tabla_Asesor_Importes", parametros, commandType: System.Data.CommandType.StoredProcedure);
