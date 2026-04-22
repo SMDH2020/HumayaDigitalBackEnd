@@ -1,4 +1,4 @@
-﻿using Dapper;
+using Dapper;
 using DocumentFormat.OpenXml.Spreadsheet;
 using HD.AccesoDatos;
 using HD_Finanzas.Modelos.Estado_Resultados;
@@ -421,6 +421,12 @@ namespace HD_Finanzas.AccesoDatos.Actions
                         conceptoFinal = "Gastos de Departamento";
                     }
 
+                    if (!string.IsNullOrWhiteSpace(oingresos.departamento) &&
+                        oingresos.departamento.Trim().Equals("OTROS INGRESOS", StringComparison.OrdinalIgnoreCase))
+                    {
+                        conceptoFinal = "OTROS INGRESOS";
+                    }
+
                     oingresos.indicador = ObtenerIndicador(false, conceptoFinal, oingresos.importe, oingresos.proyimporte, oingresos.por, oingresos.proypor);
                    
 
@@ -468,7 +474,7 @@ namespace HD_Finanzas.AccesoDatos.Actions
                 totalotrosingresos.por = totalotrosingresos.importe == 0 || VentasNetasTotales == 0 ? 0 : Math.Round((totalotrosingresos.importe / VentasNetasTotales) * 100, 2);
                 totalotrosingresos.proyimporte = Math.Round(ProyOGstNow.Where(x => x.departamento.Equals("OTROS INGRESOS")).Sum(x => x.importe), 2);
                 totalotrosingresos.proypor = totalotrosingresos.proyimporte == 0 || ProyVentasNetasTotales == 0 ? 0 : Math.Round((totalotrosingresos.proyimporte / ProyVentasNetasTotales) * 100, 2);
-                totalotrosingresos.indicador = ObtenerIndicador(false, totalotrosingresos.concepto, totalotrosingresos.importe, totalotrosingresos.proyimporte, totalotrosingresos.por, totalotrosingresos.proypor); //indicador
+                totalotrosingresos.indicador = ObtenerIndicador(false, "OTROS INGRESOS", totalotrosingresos.importe, totalotrosingresos.proyimporte, totalotrosingresos.por, totalotrosingresos.proypor); //indicador
                 totalotrosingresos.lastimporte = Math.Round(OGstLast.Where(x => x.departamento.Equals("OTROS INGRESOS")).Sum(x => x.importe), 2);
                 totalotrosingresos.lastpor = totalotrosingresos.lastimporte == 0 || VentasNetasTotalesLast == 0 ? 0 : Math.Round((totalotrosingresos.lastimporte / VentasNetasTotalesLast) * 100, 2);
                 //totalotrosingresos.lastporyimporte = ProyOGstLast.Where(x => x.departamento.Equals("OTROS INGRESOS")).Sum(x => x.importe);
@@ -586,13 +592,15 @@ namespace HD_Finanzas.AccesoDatos.Actions
 
             bool esVentasOGastos =
              conceptoLower.Contains("ventas netas") ||
-             conceptoLower.Contains("gastos");
+             conceptoLower.Contains("gastos") ||
+             conceptoLower.Contains("otros ingresos")
+             ;
             if (esVentasOGastos)
             {
                 if (concepto.Trim().Equals("Gastos de Departamento", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (porcentaje < 95) return "V";
-                    if (porcentaje <= 105) return "A";
+                    if (importe < proyimporte) return "V";
+                    //if (porcentaje <= 105) return "A";
                     return "R";
                 }
 
@@ -603,15 +611,20 @@ namespace HD_Finanzas.AccesoDatos.Actions
 
             if (conceptoLower.Contains("costo"))
             {
-                if (porcreal > porcproy)
+                if (porcreal > porcproy + 1)
                     return "R";
-
-                return "V";
+                else if (porcreal > porcproy)
+                    return "A";
+                else
+                    return "V";
             }
-            if (porcreal < porcproy)
-                return "R";
 
-            return "V";
+            if (porcreal < porcproy - 1)
+                return "R";
+            else if (porcreal < porcproy)
+                return "A";
+            else
+                return "V";
         }
     }
 }

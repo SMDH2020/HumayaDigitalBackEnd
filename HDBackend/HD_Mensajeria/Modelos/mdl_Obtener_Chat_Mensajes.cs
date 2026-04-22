@@ -19,5 +19,6 @@ namespace HD_Mensajeria.Modelos
         public string? idresponsable { get; set; }
         public string? responsable { get; set; }
         public string? modulo { get; set; }
+        public string? fecha { get; set; }
     }
 }

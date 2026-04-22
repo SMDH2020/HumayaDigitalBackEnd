@@ -1,4 +1,4 @@
-﻿using Dapper;
+using Dapper;
 using HD.AccesoDatos;
 using HD_Finanzas.Modelos.ProyeccionesVentas;
 
@@ -327,17 +327,17 @@ namespace HD_Finanzas.AccesoDatos
                 return "R";
 
             double porcentaje = (1 + (importe - proyimporte) / Math.Abs(proyimporte)) * 100;
- 
 
             bool esVentasOGastos =
              conceptoLower.Contains("ventas netas") ||
-             conceptoLower.Contains("gasto");
+             conceptoLower.Contains("gasto") ||
+             conceptoLower.Contains("otros ingresos");
             if (esVentasOGastos)
             {
-                if (concepto.Trim().Equals("gasto", StringComparison.OrdinalIgnoreCase))
+                if (conceptoLower.Contains("gasto", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (porcentaje < 95) return "V";
-                    if (porcentaje <= 105) return "A";
+                    if (importe < proyimporte) return "V";
+                    //if (porcentaje <= 105) return "A";
                     return "R";
                 }
 
@@ -345,17 +345,23 @@ namespace HD_Finanzas.AccesoDatos
                 if (porcentaje >= 60) return "A";
                 return "R";
             }
-            if(conceptoLower.Contains("costo"))
+
+            if (conceptoLower.Contains("costo"))
             {
-                if (porcreal > porcproy)
+                if (porcreal > porcproy + 1)
                     return "R";
-
-                return "V";
+                else if (porcreal > porcproy)
+                    return "A";
+                else
+                    return "V";
             }
-            if (porcreal < porcproy)
-                return "R";
 
-            return "V";
+            if (porcreal < porcproy - 1)
+                return "R";
+            else if (porcreal < porcproy)
+                return "A";
+            else
+                return "V";
         }
     }
 }
