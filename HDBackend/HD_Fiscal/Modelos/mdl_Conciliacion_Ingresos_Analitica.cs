@@ -23,6 +23,7 @@ namespace HD.Fiscal.Modelos
         public string document_no { get; set; }
         public string serie { get; set; }
         public string folio { get; set; }
+        public string fechacancelacion { get; set; }
         public string uuid { get; set; }
         public string estatus { get; set; }
         public string tipoComprobante { get; set; }
