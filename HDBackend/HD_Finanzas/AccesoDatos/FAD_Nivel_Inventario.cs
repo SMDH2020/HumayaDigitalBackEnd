@@ -14,13 +14,14 @@ namespace HD_Finanzas.AccesoDatos
         {
             try
             {
+                string sucursales = string.Join(",", filtro.sucursal.Split(",").Select(x => x.Trim()).Distinct());
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var parametros = new
                 {
                     Ejercicio = filtro.Ejercicio,
                     Periodo = filtro.Periodo,
                     //ADR = filtro.adr,
-                    Sucursales = filtro.sucursal,
+                    Sucursales = sucursales,
                     departamentos = filtro.departamentos,
                     usuario = filtro.usuario
                 };
