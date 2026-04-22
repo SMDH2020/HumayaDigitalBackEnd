@@ -23,6 +23,8 @@ namespace HD.Fiscal.Modelos
         public string tipoComprobante { get; set; }
         public string condicionPago { get; set; }
         public bool cancelado { get; set; }
-        //public string condicionPago { get; set; }
+        public string fechaCancelacion { get; set; }
+        public float total { get; set; }
+        public string batch_cancelacion { get; set; }
     }
 }

@@ -62,6 +62,28 @@ namespace HD.Endpoints.Controllers.Fiscal
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerDetalleCandidatos(int document_no, string von_no)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Listado_InvoiceMoviemientos datos = new AD_Listado_InvoiceMoviemientos(CadenaConexion);
+            //int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.obtenerDetalleCandidatos(document_no, von_no);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> BuscarDocumentoInvoice(int documento)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Listado_InvoiceMoviemientos datos = new AD_Listado_InvoiceMoviemientos(CadenaConexion);
+            //int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.buscarDocumento(documento);
+            return Ok(result);
+        }
+
         [HttpPost]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> GuardarRelacion(mdl_Guardar_Relacion_InvoiceMovimiento mdl)
@@ -70,6 +92,38 @@ namespace HD.Endpoints.Controllers.Fiscal
             AD_Listado_InvoiceMoviemientos datos = new AD_Listado_InvoiceMoviemientos(CadenaConexion);
             //mdl.usuario = int.Parse(Sesion.usuario());
             await datos.GuardarRelacion(mdl);
+
+            return Ok(new
+            {
+                mensaje = "Guardado Correctamente",
+            }
+            );
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> AplicarReversa(mdl_Aplicar_Reversa mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Listado_InvoiceMoviemientos datos = new AD_Listado_InvoiceMoviemientos(CadenaConexion);
+            //mdl.usuario = int.Parse(Sesion.usuario());
+            await datos.AplicarReversa(mdl);
+
+            return Ok(new
+            {
+                mensaje = "Guardado Correctamente",
+            }
+            );
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> AplicarRefacturacion(mdl_Aplicar_Refacturacion_Documento mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Listado_InvoiceMoviemientos datos = new AD_Listado_InvoiceMoviemientos(CadenaConexion);
+            //mdl.usuario = int.Parse(Sesion.usuario());
+            await datos.AplicarRefacturacion(mdl);
 
             return Ok(new
             {
