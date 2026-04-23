@@ -33,7 +33,24 @@ namespace HD.Fiscal.AccesoDatos
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+        public async Task<mdlObtenerXml> ObtenerXML (string document_no)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new DynamicParameters();
+                parametros.Add("documento", document_no);
 
+                var result = await factory.SQL.QueryFirstOrDefaultAsync<mdlObtenerXml>("EQUIP.fiscal.sp_obtener_xml", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                result = result is null ? new mdlObtenerXml() : result;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
         public async Task<mdl_Correccion_Incidencias_View> ObtenerCorreccionIncidencias(int ejercicio, int periodo, int usuario)
         {
             try
