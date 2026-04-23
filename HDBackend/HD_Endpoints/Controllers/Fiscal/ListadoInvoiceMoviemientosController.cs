@@ -75,12 +75,12 @@ namespace HD.Endpoints.Controllers.Fiscal
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> BuscarDocumentoInvoice(int documento)
+        public async Task<ActionResult> BuscarDocumentoInvoice(int documento, string serie, int folio)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Listado_InvoiceMoviemientos datos = new AD_Listado_InvoiceMoviemientos(CadenaConexion);
             //int usuario = int.Parse(Sesion.usuario());
-            var result = await datos.buscarDocumento(documento);
+            var result = await datos.buscarDocumento(documento, serie, folio);
             return Ok(result);
         }
 
