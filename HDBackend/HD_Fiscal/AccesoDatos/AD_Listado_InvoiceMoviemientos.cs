@@ -137,13 +137,15 @@ namespace HD.Fiscal.AccesoDatos
             }
         }
 
-        public async Task<IEnumerable<mdl_Buscar_Documento_Invoice>> buscarDocumento(int documento)
+        public async Task<IEnumerable<mdl_Buscar_Documento_Invoice>> buscarDocumento(int documento, string serie, int folio)
         {
             try
             {
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var parametros = new DynamicParameters();
                 parametros.Add("documento", documento, System.Data.DbType.Int32);
+                parametros.Add("serie", serie, System.Data.DbType.String);
+                parametros.Add("folio", folio, System.Data.DbType.Int32);
                 IEnumerable<mdl_Buscar_Documento_Invoice> result = await factory.SQL.QueryAsync<mdl_Buscar_Documento_Invoice>("EQUIP.fiscal.sp_Buscar_Documento_Invoice", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
