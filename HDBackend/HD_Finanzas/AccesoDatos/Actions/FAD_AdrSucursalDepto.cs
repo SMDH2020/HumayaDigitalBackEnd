@@ -32,7 +32,7 @@ namespace HD_Finanzas.AccesoDatos.Actions
             }
         }
 
-        public async Task<IEnumerable<FmdlADRScucursalDep>> GetASDCXC(string IdUsuario, string Tipo = "G")
+        public async Task<Fmdl_ADRSucursal_Ejercicio_View> GetASDCXC(string IdUsuario, string Tipo = "G")
         {
             try
             {
@@ -43,9 +43,13 @@ namespace HD_Finanzas.AccesoDatos.Actions
                     Tipo = Tipo
                 };
 
-                IEnumerable<FmdlADRScucursalDep> asd = await factory.SQL.QueryAsync<FmdlADRScucursalDep>("PixelCode.dbo.SP_Get_ADR_SUCURSAL_DEPARTAMENTO_CXC", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("PixelCode.dbo.SP_Get_ADR_SUCURSAL_DEPARTAMENTO_CXC", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                Fmdl_ADRSucursal_Ejercicio_View mhusa = new Fmdl_ADRSucursal_Ejercicio_View();
+                mhusa.filtro = result.Read<FmdlADRScucursalDep>().ToList();
+                mhusa.fechas = result.Read<Fmdl_Ejercicios_Conciliaciones>().ToList();
+
                 factory.SQL.Close();
-                return asd;
+                return mhusa;
             }
             catch (Exception ex)
             {
