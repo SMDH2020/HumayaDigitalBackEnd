@@ -6,7 +6,6 @@ using HD_Reporteria;
 using HD_Reporteria.Finanzas;
 using HD_Reporteria.Finanzas.Excel;
 using Microsoft.AspNetCore.Mvc;
-using Postventa.Consultas.Dashboard;
 
 namespace HD.Endpoints.Controllers.Finanzas
 {
@@ -89,5 +88,15 @@ namespace HD.Endpoints.Controllers.Finanzas
             return Ok(docresult);
 
         }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GenerarExcelAll(Fmdl_EstadoResultados_PDF vm)
+        {
+            var docresult = await XLS_EstadoResultados.EstadoResultados(vm);
+            return Ok(docresult);
+
+        }
+
     }
 }
