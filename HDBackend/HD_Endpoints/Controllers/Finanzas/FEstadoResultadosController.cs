@@ -100,24 +100,35 @@ namespace HD.Endpoints.Controllers.Finanzas
             var meses = Enumerable.Range(1, 12);
 
             var sucursales = new List<string> { "1", "11", "21", "31", "41", "51", "61", "2", "12", "22", "32", "52" };
+            var adr = new List<string> { "0","1","2" };
+            var adrNombre = new List<string> { "GRUPO", "SINALOA", "NAYARIT", };
+
+
             var sucursalesNombre = new List<string> { "NAVOLATO", "CAIMANERO", "EL DORADO", "COSTA RICA", "LA CRUZ", "EL ROSARIO", "VILLA UNION", "TEPIC", "SAN JOSE", "SANTIAGO I", "TECUALA", "SAN VICENTE" };
 
             var regionPorSucursal = new Dictionary<string, Fmdl_EstadoResultados_Region>
-    {
-        { "1", new Fmdl_EstadoResultados_Region { idadr = 1, adr = "Sinaloa" } },
-        { "11", new Fmdl_EstadoResultados_Region { idadr = 1, adr = "Sinaloa" } },
-        { "21", new Fmdl_EstadoResultados_Region { idadr = 1, adr = "Sinaloa" } },
-        { "31", new Fmdl_EstadoResultados_Region { idadr = 1, adr = "Sinaloa" } },
-        { "41", new Fmdl_EstadoResultados_Region { idadr = 1, adr = "Sinaloa" } },
-        { "51", new Fmdl_EstadoResultados_Region { idadr = 1, adr = "Sinaloa" } },
-        { "61", new Fmdl_EstadoResultados_Region { idadr = 1, adr = "Sinaloa" } },
+            {
+                { "1", new Fmdl_EstadoResultados_Region { idadr = 1, adr = "Sinaloa" } },
+                { "11", new Fmdl_EstadoResultados_Region { idadr = 1, adr = "Sinaloa" } },
+                { "21", new Fmdl_EstadoResultados_Region { idadr = 1, adr = "Sinaloa" } },
+                { "31", new Fmdl_EstadoResultados_Region { idadr = 1, adr = "Sinaloa" } },
+                { "41", new Fmdl_EstadoResultados_Region { idadr = 1, adr = "Sinaloa" } },
+                { "51", new Fmdl_EstadoResultados_Region { idadr = 1, adr = "Sinaloa" } },
+                { "61", new Fmdl_EstadoResultados_Region { idadr = 1, adr = "Sinaloa" } },
 
-        { "2", new Fmdl_EstadoResultados_Region { idadr = 2, adr = "Nayarit" } },
-        { "12", new Fmdl_EstadoResultados_Region { idadr = 2, adr = "Nayarit" } },
-        { "22", new Fmdl_EstadoResultados_Region { idadr = 2, adr = "Nayarit" } },
-        { "32", new Fmdl_EstadoResultados_Region { idadr = 2, adr = "Nayarit" } },
-        { "52", new Fmdl_EstadoResultados_Region { idadr = 2, adr = "Nayarit" } }
-    };
+                { "2", new Fmdl_EstadoResultados_Region { idadr = 2, adr = "Nayarit" } },
+                { "12", new Fmdl_EstadoResultados_Region { idadr = 2, adr = "Nayarit" } },
+                { "22", new Fmdl_EstadoResultados_Region { idadr = 2, adr = "Nayarit" } },
+                { "32", new Fmdl_EstadoResultados_Region { idadr = 2, adr = "Nayarit" } },
+                { "52", new Fmdl_EstadoResultados_Region { idadr = 2, adr = "Nayarit" } }
+            };
+
+            var regiones = new Dictionary<string, Fmdl_EstadoResultados_Region>
+            {
+                { "0", new Fmdl_EstadoResultados_Region { idadr = 0, adr = "Grupo" } },
+                { "1", new Fmdl_EstadoResultados_Region { idadr = 1, adr = "Sinaloa" } },
+                { "2", new Fmdl_EstadoResultados_Region { idadr = 2, adr = "Nayarit" } },
+            };
 
             string cadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             string usuario = Sesion.usuario();
@@ -141,14 +152,14 @@ namespace HD.Endpoints.Controllers.Finanzas
                         .ToString("MMMM", new System.Globalization.CultureInfo("es-MX"))
                         .ToUpper();
 
-                    for (int i = 0; i < sucursales.Count; i++)
+                    for (int i = 0; i < adr.Count; i++)
                     {
-                        var sucursal = sucursales[i];
-                        var nombreSucursal = sucursalesNombre[i];
+                        var region = adr[i];
+                        var regionNombre = adrNombre[i];
 
                         prm.fechainicio = fechaInicio.ToString("yyyy-MM-dd");
                         prm.fechafin = fechaFin.ToString("yyyy-MM-dd");
-                        prm.sucursal = sucursal;
+                        prm.adr = region;
 
                         var result = await estadoresultados
                             .GetEstadoResultadosByDireccionRolado(prm, usuario);
@@ -167,24 +178,17 @@ namespace HD.Endpoints.Controllers.Finanzas
                             periodoactual = $"{nombreMes} DE {ejercicio}",
                             periodoanterior = $"{nombreMes} DE {ejercicio - 1}",
                             region = new List<Fmdl_EstadoResultados_Region>
-                    {
-                        regionPorSucursal[sucursal]
-                    },
+                            {
+                                regiones[region]
+                            },
                             subtitulo = $"{nombreMes} DE {ejercicio}",
-                            sucursal = new List<Fmdl_EstadoResultados_Sucursal>
-                    {
-                        new Fmdl_EstadoResultados_Sucursal
-                        {
-                            idsucursal = int.Parse(sucursal),
-                            sucursal = nombreSucursal
-                        }
-                    },
+                            sucursal = new List<Fmdl_EstadoResultados_Sucursal>(),
                             data = dataAgrupada
                         };
 
                         // 🧹 Limpiar nombres
                         string nombreMesLimpio = nombreMes.Replace(" ", "_");
-                        string nombreSucursalLimpio = nombreSucursal.Replace(" ", "_");
+                        string nombreSucursalLimpio = regionNombre.Replace(" ", "_");
 
                         string nombreArchivo = $"{nombreMesLimpio}_{nombreSucursalLimpio}.xlsx";
 
