@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Postventa.Consultas.Dashboard;
 using static ClosedXML.Excel.XLPredefinedFormat;
 
+
 namespace HD.Endpoints.Controllers.Finanzas
 {
     public class FEstadoResultadosController : MyBase

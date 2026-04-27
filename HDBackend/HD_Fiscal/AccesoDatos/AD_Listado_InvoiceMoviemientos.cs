@@ -33,7 +33,24 @@ namespace HD.Fiscal.AccesoDatos
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+        public async Task<mdlObtenerXml> ObtenerXML (string document_no)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new DynamicParameters();
+                parametros.Add("documento", document_no);
 
+                var result = await factory.SQL.QueryFirstOrDefaultAsync<mdlObtenerXml>("EQUIP.fiscal.sp_obtener_xml", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                result = result is null ? new mdlObtenerXml() : result;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
         public async Task<mdl_Correccion_Incidencias_View> ObtenerCorreccionIncidencias(int ejercicio, int periodo, int usuario)
         {
             try
@@ -120,13 +137,15 @@ namespace HD.Fiscal.AccesoDatos
             }
         }
 
-        public async Task<IEnumerable<mdl_Buscar_Documento_Invoice>> buscarDocumento(int documento)
+        public async Task<IEnumerable<mdl_Buscar_Documento_Invoice>> buscarDocumento(int documento, string serie, int folio)
         {
             try
             {
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var parametros = new DynamicParameters();
                 parametros.Add("documento", documento, System.Data.DbType.Int32);
+                parametros.Add("serie", serie, System.Data.DbType.String);
+                parametros.Add("folio", folio, System.Data.DbType.Int32);
                 IEnumerable<mdl_Buscar_Documento_Invoice> result = await factory.SQL.QueryAsync<mdl_Buscar_Documento_Invoice>("EQUIP.fiscal.sp_Buscar_Documento_Invoice", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
