@@ -32,6 +32,9 @@ namespace HD.Fiscal.Modelos
         public string v_desc { get; set; }
         public string v_ref { get; set; }
         public string v_usuario { get; set; }
+        public string orig_invoice_no { get; set; }
+        public string document_refacturacion { get; set; }
         public string equip { get; set; }
+        
     }
 }
