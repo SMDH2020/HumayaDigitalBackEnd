@@ -10,6 +10,7 @@ namespace HD.Clientes.Modelos.PrestamoClientes
     {
         public string? folio { get; set; }
         public double? monto { get; set; }
+        public string? fecha_pagare { get; set; }
         public string? usuario { get; set; }
     }
 }

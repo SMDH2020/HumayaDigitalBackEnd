@@ -11,6 +11,26 @@ namespace HD_Finanzas.AccesoDatos.Actions
         {
             CadenaConexion = _cadenaconexion;
         }
+
+        public async Task<IEnumerable<Fmdl_Filtro_Escenarios>> Get_Filtro_Escenarios()
+        {
+            try
+            {
+
+                var parametros = new DynamicParameters();
+                //parametros.Add("usuario", usuario, System.Data.DbType.Int16);
+
+
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<Fmdl_Filtro_Escenarios> result = await factory.SQL.QueryAsync<Fmdl_Filtro_Escenarios>("PixelCode.dbo.sp_Get_escenarios_ejercicios_ER", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
         public async Task<IEnumerable<mdlEstadoResultadosEbitda>> GetEstadoResultadosEbitda(Fmdl_EstadoResultadosRolado vm,string usuario)
         {
             try
@@ -20,12 +40,13 @@ namespace HD_Finanzas.AccesoDatos.Actions
                 {
                     fechainicio = vm.fechainicio,
                     fechafin = vm.fechafin,
+                    escenario = vm.escenario,
                     Departamentos = vm.departamento,
                     Sucursales = vm.sucursal,
                     ADR = vm.adr,
                     usuario = usuario
                 };
-                var result = await conection.SQL.QueryAsync<mdlEstadoResultadosEbitda>("PixelCode..sp_Reporte_Estado_Resultados_EBITDA", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await conection.SQL.QueryAsync<mdlEstadoResultadosEbitda>("PixelCode..sp_Reporte_Estado_Resultados_EBITDA_Escenarios", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 return result;
             }
             catch (Exception ex)
@@ -42,12 +63,13 @@ namespace HD_Finanzas.AccesoDatos.Actions
                 {
                     fechainicio = vm.fechainicio,
                     fechafin = vm.fechafin,
+                    escenario = vm.escenario,
                     Departamentos = vm.departamento,
                     Sucursales = vm.sucursal,
                     ADR = vm.adr,
                     usuario = usuario
                 };
-                var result = await factory.SQL.QueryMultipleAsync("PixelCode.dbo.SP_EstadoResultadosByDireccion_Rolado_HD", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("PixelCode.dbo.SP_EstadoResultadosByDireccion_Rolado_HD_Escenarios", parametros, commandType: System.Data.CommandType.StoredProcedure);
 
                 List<Fmdl_EstadoResultados_Result> ERNow = result.Read<Fmdl_EstadoResultados_Result>().ToList();
                 List<Fmdl_EstadoResultados_Result> ERLast = result.Read<Fmdl_EstadoResultados_Result>().ToList();

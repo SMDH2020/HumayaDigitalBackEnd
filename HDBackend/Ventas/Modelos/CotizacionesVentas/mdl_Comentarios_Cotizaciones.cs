@@ -10,5 +10,8 @@ namespace Ventas.Modelos.CotizacionesVentas
     {
         public int orden {  get; set; }
         public string comentario { get; set; }
+        public string Usuario { get; set; }
+        public string fecha { get; set; }
+
     }
 }

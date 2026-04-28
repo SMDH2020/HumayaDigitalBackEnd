@@ -26,9 +26,10 @@ namespace HD.Clientes.Consultas.PrestamoClientes
                 {
                     folio = mdl.folio,
                     monto = mdl.monto,
+                    fecha_pagare = mdl.fecha_pagare,
                     usuario = mdl.usuario
                 };
-                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Crear_Solicitud_Credito_Prestamos", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Crear_Solicitud_Credito_Prestamos_Nuevo", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 mdlPrestamo_Clientes_ObtenerDetalle clienteDetalle = new mdlPrestamo_Clientes_ObtenerDetalle();
                 clienteDetalle.info = result.Read<mdlPrestamo_Cliente_Info>().FirstOrDefault();
                 clienteDetalle.detallefinanciamiento = result.Read<mdlPedido_Detalle_Financiamiento>().ToList();

@@ -11,7 +11,8 @@ namespace HD_Ventas.Consultas
     {
         public static async Task<string> send(string endpoint, object data)
         {
-            string url = "https://53df-187-237-186-166.ngrok-free.app/" + endpoint;
+                          
+            string url = "https://321a-187-237-186-166.ngrok-free.app/" + endpoint;
 
             var handler = new HttpClientHandler
             {

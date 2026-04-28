@@ -62,6 +62,28 @@ namespace HD.Endpoints.Controllers.Ventas
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ListadoCotizacionesMultiplataforma(int usuario, string comparacion, string periodoinicio, string periodofin, string adr, string sucursal, int asesor, int cliente, int esquema, string fase)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_CotizacionVentas datos = new AD_CotizacionVentas(CadenaConexion);
+            usuario = int.Parse(Sesion.usuario());
+            var result = await datos.ListadoMultiplataforma(usuario, comparacion, periodoinicio, periodofin, adr, sucursal, asesor, cliente, esquema, fase);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> DetalleCotizacionesMultiplataforma(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_CotizacionVentas datos = new AD_CotizacionVentas(CadenaConexion);
+            var usuario = int.Parse(Sesion.usuario());
+            var result = await datos.DetalleMultiplataforma(folio, usuario);
+            return Ok(result);
+        }
+
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]

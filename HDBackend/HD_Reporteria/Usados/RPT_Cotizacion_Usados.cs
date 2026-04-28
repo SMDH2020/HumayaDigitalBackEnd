@@ -2,6 +2,7 @@
 using ProductoAliado.Modelos.Inventario;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 using SkiaSharp;
 using System;
 using Usados.Consultas.Inventario;
@@ -257,14 +258,21 @@ namespace HD_Reporteria.Usados
                                     col.Item().AlignCenter().Container().AlignCenter().Row(row =>
                                     {
                                         row.Spacing(40);
-
-                                        row.ConstantItem(anchoImagen).Height(altoImagen)
-                                            .Container().AlignCenter().AlignMiddle().Image(imagenes[i]);
+                                        row.ConstantItem(anchoImagen)
+                                            .Height(altoImagen)
+                                            .AlignCenter()
+                                            .AlignMiddle()
+                                            .Image(imagenes[i])
+                                            .FitArea();
 
                                         if (i + 1 < imagenes.Count)
                                         {
-                                            row.ConstantItem(anchoImagen).Height(altoImagen)
-                                                .Container().AlignCenter().AlignMiddle().Image(imagenes[i + 1]);
+                                            row.ConstantItem(anchoImagen)
+                                                .Height(altoImagen)
+                                                .AlignCenter()
+                                                .AlignMiddle()
+                                                .Image(imagenes[i + 1])
+                                                .FitArea();
                                         }
                                         else
                                         {

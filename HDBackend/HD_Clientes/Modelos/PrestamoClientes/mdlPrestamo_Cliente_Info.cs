@@ -11,6 +11,8 @@ namespace HD.Clientes.Modelos.PrestamoClientes
         public string? folio_prestamo { get; set; }
         public double importe { get; set; }
         public string? cliente { get; set; }
+        public string? fecha_pagare { get; set; }
+
 
     }
 }
