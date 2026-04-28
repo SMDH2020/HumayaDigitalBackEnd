@@ -37,5 +37,8 @@ namespace HD_GestionActividades.Modelos
         public string? folio { get; set; }
         public string? prioridad { get; set; }
         public int? esResponsable { get; set; }
+        public int? calificacion { get; set; }                 // 1 a 5 estrellas
+        public string? comentarioCalificacion { get; set; }   // comentario si < 5
+        public bool? calificado { get; set; }
     }
 }

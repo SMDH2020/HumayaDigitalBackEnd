@@ -74,12 +74,31 @@ namespace HD.Endpoints.Controllers.GestionActividades
                 if (seguimiento == null || seguimiento.idSolicitud == 0)
                     return BadRequest(new { mensaje = "Datos inválidos" });
 
-                seguimiento.usuario = int.Parse(_session.usuario());
+                int usuarioActual = int.Parse(_session.usuario());
+                seguimiento.usuario = usuarioActual;
 
                 string cadenaConexion = _configuracion["ConnectionStrings:Servicio"];
                 AD_SeguimientoAct ad = new AD_SeguimientoAct(cadenaConexion);
 
                 await ad.EditarAsync(seguimiento);
+
+                var data = await ad.ObtenerAsync(seguimiento.idSolicitud, usuarioActual);
+
+                var modeloCorreo = new mdlSeguimiento_Email
+                {
+                    idSala = data.idSala,
+                    actividad = data.nombreActividad,
+                    comentarios = data.comentarios,
+                    estatus = data.estatus,
+                    usuario = data.usuarioNombre
+                };
+
+                Console.WriteLine("ANTES DE ENVIAR CORREO EDITAR");
+
+                
+                await NotificacionSeguimientoAct.Enviar(modeloCorreo, cadenaConexion);
+
+                Console.WriteLine("DESPUES DE ENVIAR CORREO EDITAR");
 
                 return Ok(new { mensaje = "Seguimiento editado correctamente" });
             }
@@ -131,6 +150,34 @@ namespace HD.Endpoints.Controllers.GestionActividades
                     return NotFound(new { mensaje = "Seguimiento no encontrado" });
 
                 return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { mensaje = ex.Message });
+            }
+        }
+
+        [HttpPost("Calificar")]
+        public async Task<IActionResult> Calificar([FromBody] mdl_SeguimientoAct model)
+        {
+            try
+            {
+                int usuarioActual = int.Parse(_session.usuario());
+
+                string cadenaConexion = _configuracion["ConnectionStrings:Servicio"];
+                AD_SeguimientoAct ad = new AD_SeguimientoAct(cadenaConexion);
+
+                if (model.calificacion == null || model.calificacion == 0)
+                    return BadRequest(new { mensaje = "Calificación inválida" });
+
+                await ad.CalificarAsync(
+                    model.idSolicitud,
+                    model.calificacion.Value,
+                    model.comentario,
+                    usuarioActual
+                );
+
+                return Ok(new { mensaje = "Calificado correctamente" });
             }
             catch (Exception ex)
             {
@@ -203,6 +250,32 @@ namespace HD.Endpoints.Controllers.GestionActividades
             }
         }
 
+        [HttpGet("Notificaciones")]
+        public async Task<IActionResult> Notificaciones()
+        {
+            int usuarioActual = int.Parse(_session.usuario());
+
+            string cadenaConexion = _configuracion["ConnectionStrings:Servicio"];
+            AD_SeguimientoAct ad = new AD_SeguimientoAct(cadenaConexion);
+
+            int total = await ad.ConteoNoRevisadosAsync(usuarioActual);
+
+            return Ok(new { total });
+        }
+
+        [HttpPost("MarcarRevisado")]
+        public async Task<IActionResult> MarcarRevisado()
+        {
+            int usuarioActual = int.Parse(_session.usuario());
+
+            string cadenaConexion = _configuracion["ConnectionStrings:Servicio"];
+            AD_SeguimientoAct ad = new AD_SeguimientoAct(cadenaConexion);
+
+            await ad.MarcarRevisadoAsync(usuarioActual);
+
+            return Ok(new { mensaje = "Notificaciones marcadas como revisadas" });
+        }
+
 
         [HttpPost("AgregarComentario")]
         public async Task<IActionResult> AgregarComentario([FromBody] mdl_SeguimientoAct model)
@@ -218,9 +291,48 @@ namespace HD.Endpoints.Controllers.GestionActividades
 
                 AD_SeguimientoAct ad = new AD_SeguimientoAct(cadenaConexion);
 
+                
                 await ad.AgregarComentarioAsync(model.idSolicitud, model.comentario, usuarioActual);
+                
+                var data = await ad.ObtenerAsync(model.idSolicitud, usuarioActual);
+
+                var modeloCorreo = new mdlSeguimiento_Email
+                {
+                    idSala = data.idSala,
+                    actividad = data.nombreActividad,
+                    comentarios = model.comentario,
+                    estatus = "M", 
+                    usuario = data.usuarioNombre
+                };
+
+                Console.WriteLine("ENVIANDO CORREO DE COMENTARIO");
+
+                await NotificacionSeguimientoActComentario.Enviar(modeloCorreo, cadenaConexion);
+
+                Console.WriteLine("CORREO ENVIADO");
 
                 return Ok(new { mensaje = "Comentario agregado correctamente" });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR: " + ex.Message);
+                return BadRequest(new { mensaje = ex.Message });
+            }
+        }
+
+        [HttpPost("Reactivar")]
+        public async Task<IActionResult> Reactivar([FromBody] mdl_SeguimientoAct model)
+        {
+            try
+            {
+                int usuarioActual = int.Parse(_session.usuario());
+
+                string cadenaConexion = _configuracion["ConnectionStrings:Servicio"];
+                AD_SeguimientoAct ad = new AD_SeguimientoAct(cadenaConexion);
+
+                await ad.ReactivarAsync(model.idSolicitud, model.comentario, usuarioActual);
+
+                return Ok(new { mensaje = "Reactivado correctamente" });
             }
             catch (Exception ex)
             {

@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
 using HD_GestionActividades.Modelos;
+using System.Data;
 
 namespace HD_GestionActividades.Consultas.SeguimientoAct
 {
@@ -167,6 +168,65 @@ namespace HD_GestionActividades.Consultas.SeguimientoAct
                 commandType: System.Data.CommandType.StoredProcedure
             );
         }
+
+        public async Task<int> ConteoNoRevisadosAsync(int idUsuario)
+        {
+            FactoryConection factory = new FactoryConection(CadenaConexion);
+
+            return await factory.SQL.QueryFirstOrDefaultAsync<int>(
+                "Seguimiento_Actividades..SP_Cat_SeguimientoAct_ConteoNoRevisados",
+                new { idUsuario },
+                commandType: CommandType.StoredProcedure
+            );
+        }
+
+        public async Task MarcarRevisadoAsync(int idUsuario)
+        {
+            FactoryConection factory = new FactoryConection(CadenaConexion);
+
+            await factory.SQL.ExecuteAsync(
+                "Seguimiento_Actividades..SP_Cat_SeguimientoAct_MarcarRevisado",
+                new { idUsuario },
+                commandType: CommandType.StoredProcedure
+            );
+        }
+
+        public async Task CalificarAsync(int idSolicitud, int calificacion, string comentario, int user)
+        {
+            FactoryConection factory = new FactoryConection(CadenaConexion);
+
+            var parametros = new
+            {
+                idSolicitud,
+                calificacion,
+                comentario,
+                user
+            };
+
+            await factory.SQL.ExecuteAsync(
+                "Seguimiento_Actividades..SP_Cat_SeguimientoAct_Calificar",
+                parametros,
+                commandType: CommandType.StoredProcedure
+            );
+        }
+
+        public async Task ReactivarAsync(int idSolicitud, string comentario, int user)
+        {
+            FactoryConection factory = new FactoryConection(CadenaConexion);
+
+            var parametros = new
+            {
+                idSolicitud,
+                comentario,
+                user
+            };
+
+            await factory.SQL.ExecuteAsync(
+                "Seguimiento_Actividades..SP_Cat_SeguimientoAct_Reactivar",
+                parametros,
+                commandType: CommandType.StoredProcedure
+            );
+        }   
     }
 
 }

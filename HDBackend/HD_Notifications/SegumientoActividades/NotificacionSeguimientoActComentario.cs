@@ -4,7 +4,7 @@ using System.Net.Mail;
 
 namespace HD.Notifications.SeguimientoActividades
 {
-    public class NotificacionSeguimientoAct
+    public class NotificacionSeguimientoActComentario
     {
         public static string _Mensaje { get; private set; }
 
@@ -27,7 +27,6 @@ namespace HD.Notifications.SeguimientoActividades
 
                 objeto_mail.From = new MailAddress(_correo);
 
-
                 var correos = ObtenerCorreosResponsables(datos.idSala, conexion);
 
                 Console.WriteLine("ID SALA: " + datos.idSala);
@@ -38,6 +37,7 @@ namespace HD.Notifications.SeguimientoActividades
                     Console.WriteLine("⚠ No hay responsables para esta sala");
                     return Task.FromResult(false);
                 }
+
                 foreach (var correo in correos)
                 {
                     Console.WriteLine("CORREO: " + correo);
@@ -45,10 +45,9 @@ namespace HD.Notifications.SeguimientoActividades
                     if (!string.IsNullOrEmpty(correo))
                         objeto_mail.To.Add(new MailAddress(correo));
                 }
-                /*objeto_mail.To.Add(new MailAddress("L21170252@culiacan.tecnm.mx"));*/
-                //objeto_mail.To.Add(new MailAddress("desarrolladorti3@humaya.com.mx"));
 
-                objeto_mail.Subject = "Seguimiento de Actividad";
+                //objeto_mail.To.Add(new MailAddress("desarrolladorti3@humaya.com.mx"));
+                objeto_mail.Subject = "Nuevo comentario en actividad";
                 objeto_mail.IsBodyHtml = true;
                 objeto_mail.Body = body(datos);
 
@@ -60,7 +59,7 @@ namespace HD.Notifications.SeguimientoActividades
             catch (Exception ex)
             {
                 Console.WriteLine("ERROR CORREO: " + ex.Message);
-                throw; 
+                throw;
             }
         }
 
@@ -84,43 +83,7 @@ namespace HD.Notifications.SeguimientoActividades
 
         static string body(mdlSeguimiento_Email datos)
         {
-            byte[] logo = File.ReadAllBytes("C:\\SMDH\\logo.jpg");
-            string logo64 = Convert.ToBase64String(logo);
-
-            string estatusTexto = "";
-            string colorEstatus = "";
-
-            switch (datos.estatus)
-            {
-                case "C":
-                    estatusTexto = "ACTIVIDAD CREADA";
-                    colorEstatus = "#3498db";
-                    break;
-                case "P":
-                    estatusTexto = "ACTIVIDAD EN PROCESO";
-                    colorEstatus = "#f39c12";
-                    break;
-                case "F":
-                    estatusTexto = "ACTIVIDAD FINALIZADA";
-                    colorEstatus = "#2ecc71";
-                    break;
-                case "A":
-                    estatusTexto = "ACTIVIDAD ACEPTADA";
-                    colorEstatus = "#27ae60";
-                    break;
-                case "R":
-                    estatusTexto = "ACTIVIDAD RECHAZADA";
-                    colorEstatus = "#e74c3c";
-                    break;
-                case "M":
-                    estatusTexto = "COMENTARIO";
-                    colorEstatus = "#8e44ad";
-                    break;
-                default:
-                    estatusTexto = datos.estatus;
-                    colorEstatus = "#7f8c8d";
-                    break;
-            }
+            string color = "#8e44ad"; // morado comentario
 
             string sHtml = "<html>" +
             "<body style='margin:0;padding:0;background-color:#f4f6f7;font-family:Arial;'>"
@@ -133,16 +96,17 @@ namespace HD.Notifications.SeguimientoActividades
                     + "<h2 style='margin:0;'>SEGUIMIENTO DE ACTIVIDAD</h2>"
                     + "</div>"
 
-
-                    + "<div style='background:" + colorEstatus + ";color:#fff;text-align:center;padding:12px;font-size:18px;font-weight:bold;'>"
-                        + estatusTexto +
+                    + "<div style='background:" + color + ";color:#fff;text-align:center;padding:12px;font-size:18px;font-weight:bold;'>"
+                        + "NUEVO COMENTARIO" +
                     "</div>"
 
                     + "<div style='padding:20px;text-align:left;'>"
 
+                        + "<p style='margin:10px 0;color:#555;'>Se ha agregado un nuevo comentario a la actividad.</p>"
+
                         + "<p style='margin:10px 0;'><b>Actividad:</b><br/>" + datos.actividad + "</p>"
 
-                        + "<p style='margin:10px 0;'><b>Comentario:</b><br/>" + datos.comentarios + "</p>"
+                        + "<p style='margin:10px 0;'><b>Comentario:</b><br/>" + (datos.comentarios ?? "Sin comentario") + "</p>"
 
                         + "<p style='margin:10px 0;'><b>Usuario:</b><br/>" + datos.usuario + "</p>"
 
