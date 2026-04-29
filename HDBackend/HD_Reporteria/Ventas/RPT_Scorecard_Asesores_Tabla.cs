@@ -150,9 +150,9 @@ namespace HD_Reporteria.Ventas
                                     header.Cell().ColumnSpan(3).BorderLeft(0.6f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("P. ALIADO").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     header.Cell().ColumnSpan(3).BorderLeft(0.6f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
-                                   .Padding(1).Text("TRACTORES U.").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                   .Padding(1).Text("TRACTORES S.").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     header.Cell().ColumnSpan(3).BorderLeft(0.6f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
-                                    .Padding(1).Text("TRILLADORAS U.").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    .Padding(1).Text("TRILLADORAS S.").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
                                 });
 
                                 tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()

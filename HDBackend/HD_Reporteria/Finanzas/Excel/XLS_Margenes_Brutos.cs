@@ -846,7 +846,7 @@ namespace HD_Reporteria.Finanzas.Excel
 
                     //USADOS
 
-                    sheet.Cell(renglon, 1).Value = "Usados";
+                    sheet.Cell(renglon, 1).Value = "Seminuevos";
                     var rangoUsados = sheet.Range(renglon, 1, renglon, 17);
                     rangoUsados.Style.Fill.BackgroundColor = XLColor.FromHtml("#DAE6BE");
                     rangoUsados.Style.Font.Bold = true;
