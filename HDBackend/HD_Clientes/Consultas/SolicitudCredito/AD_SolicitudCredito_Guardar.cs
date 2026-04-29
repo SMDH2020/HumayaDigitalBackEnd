@@ -22,7 +22,8 @@ namespace HD.Clientes.Consultas.SolicitudCredito
                     idcliente = mdl.idcliente,
                     tipo_solicitud = mdl.tipo_solicitud,
                     importe = mdl.importe,
-                    usuario = mdl.usuario
+                    usuario = mdl.usuario,
+                    vendedor = mdl.vendedor,
                 };
                 var result = await factory.SQL.QueryMultipleAsync("Credito.sp_solicitud_credito_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 mdlSolicitud_Credito_Detalle? detalle = result.Read<mdlSolicitud_Credito_Detalle>().FirstOrDefault();

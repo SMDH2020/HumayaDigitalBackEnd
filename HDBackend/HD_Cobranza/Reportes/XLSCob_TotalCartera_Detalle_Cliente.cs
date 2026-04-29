@@ -1,11 +1,12 @@
 ﻿using ClosedXML.Excel;
 using HD.AccesoDatos;
+using HD_Cobranza.Modelos;
 
 namespace HD_Cobranza.Reportes
 {
     public class XLSCob_TotalCartera_Detalle_Cliente
     {
-        public static Task<DocResult> CrearExcel()
+        public static Task<DocResult> CrearExcel(IEnumerable<mdlResumenCartera_Clientes> lista)
         {
             try
             {
@@ -17,23 +18,18 @@ namespace HD_Cobranza.Reportes
                     sheet.Style.Font.FontName = "Arial";
                     sheet.Style.Font.FontSize = 10;
 
-                    int renglon = XLSEncabezado.Encabezado(ref sheet, $"RESUMEN DE CARTERA DETALLE POR CLIENTE", 13);
+                    int renglon = XLSEncabezado.Encabezado(ref sheet, $"RESUMEN DE CARTERA DETALLE POR CLIENTE", 7);
 
                     sheet.Cell(renglon, 1).Value = "Sucursal";
-                    sheet.Cell(renglon, 2).Value = "Más de 90";
-                    sheet.Cell(renglon, 3).Value = "Más de 60";
-                    sheet.Cell(renglon, 4).Value = "Más de 30";
-                    sheet.Cell(renglon, 5).Value = "Más de 15";
-                    sheet.Cell(renglon, 6).Value = "De 1 a 15";
-                    sheet.Cell(renglon, 7).Value = "Total Vencido";
-                    sheet.Cell(renglon, 8).Value = "Por vencer";
-                    sheet.Cell(renglon, 9).Value = "Total Cartera";
-                    sheet.Cell(renglon, 10).Value = "Saldo a Favor";
-                    sheet.Cell(renglon, 11).Value = "Total";
-                    sheet.Cell(renglon, 12).Value = "% Vencido";
-                    sheet.Cell(renglon, 13).Value = "% Por Vencer";
+                    sheet.Cell(renglon, 2).Value = "Documento";
+                    sheet.Cell(renglon, 3).Value = "Vencimiento";
+                    sheet.Cell(renglon, 4).Value = "Dias";
+                    sheet.Cell(renglon, 5).Value = "Importe";
+                    sheet.Cell(renglon, 6).Value = "Intereses";
+                    sheet.Cell(renglon, 7).Value = "Total";
 
-                    var rango = sheet.Range(renglon, 1, renglon, 13);
+
+                    var rango = sheet.Range(renglon, 1, renglon, 7);
                     rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
                     rango.Style.Font.Bold = true;
                     rango.Style.Font.FontSize = 12;
@@ -42,6 +38,55 @@ namespace HD_Cobranza.Reportes
                     rango.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
                     renglon++;
 
+
+                    var cliente = lista.GroupBy(item => item.linea).ToList();
+
+                    foreach (var mdl in cliente)
+                    {
+                        sheet.Cell(renglon, 1).Value = mdl.Key;
+                        rango = sheet.Range(renglon, 1, renglon, 7);
+                        rango.Style.Fill.BackgroundColor = XLColor.FromArgb(218, 230, 190);
+                        rango.Style.Font.Bold = true;
+                        rango.Style.Font.FontSize = 10;
+                        //rango.RangeUsed().SetAutoFilter();
+                        rango.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                        rango.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+                        renglon++;
+                        foreach (mdlResumenCartera_Clientes activos in lista.Where(item => item.linea == mdl.Key))
+                        {
+                            sheet.Cell(renglon, 1).Value = activos.sucursal;
+                            sheet.Cell(renglon, 2).Value = activos.documento;
+                            sheet.Cell(renglon, 3).Value = activos.vencimiento;
+                            sheet.Cell(renglon, 4).Value = activos.diasvencido;
+                            sheet.Cell(renglon, 5).Value = activos.saldo;
+                            sheet.Cell(renglon, 6).Value = activos.interesbase;
+                            sheet.Cell(renglon, 7).Value = activos.importe;
+                            renglon++;
+                        }
+
+                    }
+
+
+                    rango = sheet.Range(renglon - 1, 1, renglon - 1, 7);
+                    rango.Style.Font.Bold = true;
+                    rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#e5e6e6");
+
+                    //sheet.Column(2).Style.NumberFormat.Format = "#,##0.00";
+                    //sheet.Column(3).Style.NumberFormat.Format = "#,##0.00";
+                    //sheet.Column(4).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(5).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(6).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(7).Style.NumberFormat.Format = "#,##0.00";
+                    //sheet.Column(8).Style.NumberFormat.Format = "0.0 %";
+                    //sheet.Column(9).Style.NumberFormat.Format = "#,##0.00";
+                    //sheet.Column(10).Style.NumberFormat.Format = "0.0 %";
+                    //sheet.Column(11).Style.NumberFormat.Format = "#,##0.00";
+                    //sheet.Column(12).Style.NumberFormat.Format = "0.0 %";
+                    //sheet.Column(13).Style.NumberFormat.Format = "#,##0.00";
+                    //sheet.Column(14).Style.NumberFormat.Format = "#,##0.00";
+                    //sheet.Column(15).Style.NumberFormat.Format = "#,##0.00";
+                    //sheet.Column(16).Style.NumberFormat.Format = "#,##0.00";
+                    //sheet.Column(17).Style.NumberFormat.Format = "#,##0.00";
 
                     sheet.Columns().AdjustToContents();
                     workbook.SaveAs(ruta);

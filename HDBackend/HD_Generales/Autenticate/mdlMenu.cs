@@ -8,6 +8,7 @@
         public string descripcion { get; set; } = "";
         public string nomenclatura { get; set; } = "";
         public bool estatus { get; set; }
+        public string? ruta { get; set; } = "";
         public string? usuario { get; set; } = "";
     }
 }

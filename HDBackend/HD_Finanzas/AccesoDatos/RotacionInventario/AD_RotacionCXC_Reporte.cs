@@ -1,0 +1,76 @@
+﻿using Dapper;
+using DocumentFormat.OpenXml.Drawing.Charts;
+using HD.AccesoDatos;
+using HD_Finanzas.Modelos.RotacionCXC;
+using HD_Finanzas.Modelos.RotacionInventario;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HD_Finanzas.AccesoDatos.RotacionInventario
+{
+    public class AD_RotacionCXC_Reporte
+    {
+        private string CadenaConexion;
+        public AD_RotacionCXC_Reporte(string _cadenaconexion)
+        {
+            CadenaConexion = _cadenaconexion;
+        }
+        public async Task<mdl_RotacionCXC_View> reporte(int ejercicio, int periodo, string adr, string sucursales, string departamentos, string? usuario, string tipoReporte)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    ejercicio = ejercicio,
+                    periodo = periodo,
+                    adr = adr,
+                    sucursales = sucursales,
+                    departamentos = departamentos,
+                    usuario = usuario,
+                    tipo_reporte = tipoReporte
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+
+                var result = await factory.SQL.QueryMultipleAsync("EQUIP.fiscal.sp_get_rotacion_cxc", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdl_RotacionCXC_View reporte = new mdl_RotacionCXC_View();
+                reporte.editor_guia = result.Read<bool>().FirstOrDefault();
+                reporte.rotacion = result.Read<mdl_RotacionCXC>().ToList();
+                factory.SQL.Close();
+                return reporte;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+
+        public async Task<IEnumerable<mdl_RotacionCXC>> reporteSucursal(int ejercicio, int periodo, string adr, string sucursales, string departamentos, string? usuario, string tipoReporte)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    ejercicio = ejercicio,
+                    periodo = periodo,
+                    adr = adr,
+                    sucursales = sucursales,
+                    departamentos = departamentos,
+                    usuario = usuario,
+                    tipo_reporte = tipoReporte
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_RotacionCXC> result = await factory.SQL.QueryAsync<mdl_RotacionCXC>("EQUIP.fiscal.sp_get_rotacion_cxc", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+    }
+}

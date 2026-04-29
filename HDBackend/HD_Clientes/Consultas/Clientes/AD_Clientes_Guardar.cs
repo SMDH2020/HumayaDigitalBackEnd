@@ -28,6 +28,7 @@ namespace HD.Clientes.Consultas.Clientes
                     tiempo_agricultor = mdl.tiempo_agricultor,
                     agrupacion = mdl.agrupacion,
                     regimen_fiscal = mdl.regimen_fiscal,
+                    idvendedor= mdl.idvendedor, 
                     tipo_venta = mdl.tipo_venta,
                     estatus = mdl.estatus,
                     usuario = mdl.usuario
@@ -58,6 +59,7 @@ namespace HD.Clientes.Consultas.Clientes
                     tiempo_agricultor = mdl.tiempo_agricultor,
                     agrupacion = mdl.agrupacion,
                     regimen_fiscal = mdl.regimen_fiscal,
+                    idvendedor=mdl.idvendedor,
                     tipo_venta = mdl.tipo_venta,
                     estatus = mdl.estatus,
                     usuario = mdl.usuario
@@ -78,6 +80,26 @@ namespace HD.Clientes.Consultas.Clientes
             {
                 //factory.transaccion.Rollback();
                 factory.SQL.Close();
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<bool> GuardarRel(mdl_Rel_Cliente_Vendedor mdl)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    idcliente = mdl.idcliente,
+                    usuario = mdl.usuario
+                };
+                await factory.SQL.QueryAsync("Credito.sp_Rel_Cliente_Vendedor_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }

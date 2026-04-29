@@ -19,7 +19,7 @@ namespace HD.Endpoints.Controllers.Credito
         }
         [HttpPost]
         public async Task<ActionResult> Post(mdlInteres_Mensual mdl)
-        {
+            {
 
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_InteresMensual_Guardar datos = new AD_InteresMensual_Guardar(CadenaConexion);

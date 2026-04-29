@@ -4,6 +4,7 @@ using HD.Clientes.Modelos;
 using HD.Generales.Autenticate;
 using HD.Generales.Consultas;
 using HD.Security;
+using HD_Cobranza.Capturas.ConvenioPago;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HD.Endpoints.Controllers.Authenticate

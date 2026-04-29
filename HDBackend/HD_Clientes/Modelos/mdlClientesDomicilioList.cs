@@ -22,6 +22,7 @@
         public string? direccion { get; set; } = "";
 
         public string? tipodomicilio { get; set; } = "";
+        public string? idtipodomicilio { get; set; }
 
         public bool principal { get; set; }
 

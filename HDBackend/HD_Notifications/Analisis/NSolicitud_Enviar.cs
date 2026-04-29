@@ -24,10 +24,21 @@ namespace HD.Notifications.Analisis
                 client.UseDefaultCredentials = false;
                 client.Credentials = new System.Net.NetworkCredential(_correo, password);
                 objeto_mail.From = new MailAddress(_correo);
-                objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_responsable_credito));
-                objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_gerente_sucursal));
-                objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_vendedor));
-                objeto_mail.To.Add(new MailAddress("desarrolladorti@humaya.com.mx"));
+                foreach (mdlSolicitudCredito_Enviar mdlSolicitudCredito_Enviar in datos_correo.mdlSolicitud)
+                {
+                    objeto_mail.To.Add(new MailAddress(mdlSolicitudCredito_Enviar.correo));
+                }
+                //objeto_mail.To.Add(new MailAddress("Guadalupeolivas@humaya.com.mx"));
+                //objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_gerente_sucursal));
+                //objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_vendedor));
+                //if (datos_correo.mdlSolicitud.correo_responsable_credito2 != null)
+                //{
+                //    objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_responsable_credito2));
+                //}
+                //if (datos_correo.mdlSolicitud.correo_responsable_credito3 != null)
+                //{
+                //    objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_responsable_credito3));
+                //}
 
                 objeto_mail.Subject = "Nueva solicitud de credito";
                 objeto_mail.IsBodyHtml = true;
@@ -49,7 +60,7 @@ namespace HD.Notifications.Analisis
 
         {
 
-            byte[] logo = File.ReadAllBytes("C:\\SMDH\\logo-reports.jpg");
+            byte[] logo = File.ReadAllBytes("C:\\SMDH\\logo.jpg");
 
             string logo64 = Convert.ToBase64String(logo);
 
@@ -58,54 +69,128 @@ namespace HD.Notifications.Analisis
             sHtml = "<HTML>\n" +
                "<HEAD>\n" +
                "<TITLE>SOLICITUD DE CREDITO</TITLE>\n" +
+               "<style> \n" +
+                ".text-container{ \n" +
+                    "margin-top:50px; \n" +
+                    "font-size:20px;\n" +
+                    "text-align:justify;\n" +
+                "}\n" +
+                ".tabla-documentacion-vencida {\n" +
+                    "border-collapse: collapse;\n" +
+                    "width: 100%;\n" +
+                    "border: 2px solid #275027;\n" +
+                    "max-width:1200px;\n" +
+                    "margin: 0 auto;\n" +
+                    "border-spacing:0;\n" +
+                "}\n" +
+
+                    ".head-documentacion{\n" +
+                        "background-color:#275027;\n" +
+                        "color:#fff;\n" +
+                        "border-bottom:3px solid #fedb05;\n" +
+                    "}\n" +
+                    ".celda-cliente-informacion{\n" +
+                        "padding:4px;\n" +
+                        "border-bottom:1px solid #afb69d;\n" +
+                    "}\n" +
+                    ".celda-cliente-titulo{\n" +
+                        "padding:4px;\n" +
+                        "border-bottom: 4px solid #fedb05;\n" +
+                        "background-color:#275027;\n" +
+                        "color:#fff;\n" +
+                        "text-align:center;\n" +
+                    "}\n" +
+                "</style>\n" +
                "</HEAD>\n" +
                "<BODY style=\"text-align:center;\"><P>\n" +
-                "<div style=\"\">\n" +
-                    "<img width='150' src='data:image/png;base64," + logo64 + "'/>\n" +
-                "</div>\n" +
-                "<div style=\"background-color: #477c2c; height: 57px; margin - top:51px; ; text - align:center; display: flex; align - items:center; justify - content:center; margin - bottom:60px\">\n" +
-                "<h1  style =\"font-size:20px;margin-left:40pxpx;color:#fff\"> SOLICITUD DE CREDITO </h1>\n" +
-                "</div>\n" +
-               "<h1 style=\"font-size:16;\"><Font Color='#235B34'>" + datos_Correo.detail.tipo_credito + "</Font></h1></P>\n" +
-              "<table style=\"border: 1px solid green;border-radius:5px; padding: 10px; spacing:0; display: flex; align - items:center; justify - content:center; margin - left:80px; margin - right:80px; '\">\n" +
-              " <tr\">\n" +
-               "   <td style=\"text-align:center; width:50%;\">FOLIO:\n" +
-               "   </td>\n" +
-               "   <td style=\"text-align: left; width:50%;\">" + datos_Correo.detail.folio + "\n" +
-               "   </td>\n " +
-               " </tr>\n" +
-               " <tr>\n" +
-               "   <td style=\"text-align:center; width: 50 %;\">VENDEDOR:\n" +
-               "   </td>\n" +
-               "   <td style=\"text-align: left; width:50%\">" + datos_Correo.detail.vendedor + "\n" +
-               "   </td>\n" +
-               " </tr>\n" +
-               " <tr>\n" +
-               "   <td width= 200px>CLIENTE:\n" +
-               "   </td>\n" +
-               "   <td style=\"text-align: left;\">" + datos_Correo.detail.razon_social + "\n" +
-               "   </td>\n" +
-               " </tr>\n" +
-               " <tr>\n" +
-               "   <td width= 200px>LINEA:\n" +
-               "   </td>\n" +
-               "   <td style=\"text-align: left;\">" + datos_Correo.detail.linea_credito + "\n" +
-               "   </td>\n" +
-               " </tr>\n" +
-               " <tr>\n" +
-               "   <td width= 200px>MONTO:\n" +
-               "   </td>\n" +
-               "   <td style=\"text-align: left;\">" + datos_Correo.detail.importe + "\n" +
-               "   </td>\n" +
-               " </tr>\n" +
-               " <tr>\n" +
-               "   <td colspan='2' height=30>" +
-               "   </td>\n" +
-               " </tr>\n" +
-               " <tr>\n" +
-               "   <td colspan='2'> <Font>El presente correo es de carácter informativo.</ Font > \n" +
-            "   </td>\n" +
-            " </tr>\n" +
+                "<div>\n" +
+                    "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" role=\"presentation\">\n" +
+                        "<tr>\n" +
+                            "<td width=\"10%\" style=\"padding: 0;\"> \n" +
+                                "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" role=\"presentation\">\n" +
+                                    "<tr>\n" +
+                                        "<td style=\"background-color: #477c2c;\" height=\"70\">\n" +
+                                            "<div style=\"margin: 0 auto;\">\n" +
+                                            "</div>\n" +
+                                        "</td>\n" +
+                                    "</tr>\n" +
+                                "</table>\n" +
+                            "</td>\n" +
+                            "<td width=\"1%\" style=\"padding: 0;\">\n" +
+                                "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" role=\"presentation\">\n" +
+                                    "<tr>\n" +
+                                        "<td style=\"padding: 0;\">\n" +
+                                            "<div style=\"margin: 0;\">\n" +
+                                                  "<img width=\"150\" height=\"150\" src='data:image/png;base64," + logo64 + "' style=\"display: block;\"/>\n" +
+                                            "</div>\n" +
+                                        "</td>\n" +
+                                    "</tr>\n" +
+                                "</table>\n" +
+                            "</td>\n" +
+                            "<td width=\"auto\" style=\"padding: 0;\">\n" +
+                                "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" role=\"presentation\">\n" +
+                                    "<tr>\n" +
+                                        "<td style=\"display: flex; align-items: center;font-size:24px;color:#fff; background-color: #477c2c;\" height=\"70\">\n" +
+                                            "<div style=\"margin-left: 50px; \">\n" +
+                                                "SOLICITUD DE CREDITO \n" +
+                                            "</div>\n" +
+                                        "</td>\n" +
+                                    "</tr>\n" +
+                                "</table>\n" +
+                            "</td>\n" +
+                        "</tr>\n" +
+                    "</table>\n" +
+                "</div>\n"+
+            "<table class=\"tabla-documentacion-vencida\">\n" +
+                "<thead>\n" +
+                    "<tr>\n" +
+                        "<th colspan=\"2\" class=\"celda-cliente-titulo\">\n" +
+                           "<div style=\"font-size:18px;\">" + datos_Correo.detail.tipo_credito + "</div>\n" +
+                        "</th>\n" +
+                    "</tr>\n" +
+                "</thead>\n"+
+               "<tbody>\n" +
+                    "<tr>\n" +
+                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d\">\n" +
+                        "FOLIO \n" +
+                        "</td>\n" +
+                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d;text-align:left;\">\n" +
+                        datos_Correo.detail.folio +
+                        "</td>\n" +
+                    "</tr>\n" +
+                    "<tr>\n" +
+                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d\">\n" +
+                        "VENDEDOR \n" +
+                        "</td>\n" +
+                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d;text-align:left\">\n" +
+                        datos_Correo.detail.vendedor.ToUpper() +
+                        "</td>\n" +
+                    "</tr>\n" +
+                    "<tr>\n" +
+                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d\">\n" +
+                        "CLIENTE \n" +
+                        "</td>\n" +
+                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d; text-align:left\">\n" +
+                        datos_Correo.detail.razon_social.ToUpper() +
+                        "</td>\n" +
+                    "</tr>\n" +
+                    "<tr>\n" +
+                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d\">\n" +
+                        "LINEA \n" +
+                        "</td>\n" +
+                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d;text-align:left\">\n" +
+                        datos_Correo.detail.linea_credito +
+                        "</td>\n" +
+                    "</tr>\n" +
+                    "<tr>\n" +
+                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d\">\n" +
+                        "MONTO \n" +
+                        "</td>\n" +
+                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d;text-align:right\">\n" +
+                        datos_Correo.detail.importe.ToString("N2") +
+                        "</td>\n" +
+                    "</tr>\n" +
+               "</tbody>\n" +
             "</table>\n" +
             "</BODY>\n" +
             "</HTML>";

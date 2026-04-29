@@ -9,7 +9,7 @@ namespace HD.Clientes.Modelos
         public int idcliente { get; set; }
 
         [Required(ErrorMessage = "El Orden es un valor requerido")]
-        [RegularExpression(@"^[0-9]|-1$", ErrorMessage = "El campo Orden debe estar formado solo por numeros")]
+        [RegularExpression(@"^([0-9]+|-1)$", ErrorMessage = "El campo Orden debe estar formado solo por números")]
         public int orden { get; set; }
 
         [Required(ErrorMessage = "El Medio de Contacto es un valor requerido")]
@@ -17,10 +17,13 @@ namespace HD.Clientes.Modelos
         [StringLength(1, MinimumLength = 1, ErrorMessage = "El campo medio de contacto debe estar formado por 1 digitos")]
         public string? medio_contacto { get; set; } = "";
 
+        public string? idmedio_contacto { get; set; }
+
         [Required(ErrorMessage = "El Tipo de Contacto es un valor requerido")]
-        [RegularExpression(@"^[COVE]+$", ErrorMessage = "El campo tipo de contacto debe estar formado  por las siguientes opciones [CO][VE]")]
+        [RegularExpression(@"^(CO|VE|CR|PO|SE|RE)$", ErrorMessage = "El campo tipo de contacto debe estar formado  por las siguientes opciones [CO][VE][CR][PO][SE][RE]")]
         [StringLength(2, MinimumLength = 2, ErrorMessage = "El campo tipo de contacto debe estar formado por 2 digitos")]
         public string? tipo_contacto { get; set; }="";
+        public string? idtipo_contacto { get; set; }
 
         [Required(ErrorMessage = "El Valor es un valor requerido")]
         [RegularExpression(@"^[a-zA-Z0-9@-_.]+$", ErrorMessage = "El campo Tipo de Contacto debe estar formado  por las siguientes opciones [CO][VE]")]
@@ -28,12 +31,14 @@ namespace HD.Clientes.Modelos
         public string? valor { get; set; } = "";
 
   
-        [RegularExpression(@"^[a-zA-Z0-9 ]+$", ErrorMessage = "El campo comentarios debe estar formado por valores alfanumericos")]
+        [RegularExpression(@"^[ ñÑa-zA-Z0-9 ]+$", ErrorMessage = "El campo comentarios debe estar formado por valores alfanumericos")]
         [StringLength(maximumLength:500, ErrorMessage = "El campo comentarios debe de contener una longitud maxima de 500 caracteres")]
         public string? comentarios { get; set; } = "";
 
         public bool estatus { get; set; }
 
         public string? usuario { get; set; } = "";
+
+        public string? contactos { get; set; }
     }
 }

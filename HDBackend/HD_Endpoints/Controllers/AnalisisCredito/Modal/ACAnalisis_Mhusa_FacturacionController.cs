@@ -24,6 +24,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Modal
             var result = await datos.Guardar(mdl);
             return Ok(result);
         }
+
         [HttpGet]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> Get(string folio)

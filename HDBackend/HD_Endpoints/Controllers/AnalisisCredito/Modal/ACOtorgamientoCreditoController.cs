@@ -23,5 +23,15 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Modal
             return Ok(result);
 
         }
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetMhusa(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADAnalisis_Otorgamiento_Credito datos = new ADAnalisis_Otorgamiento_Credito(CadenaConexion);
+            var result = await datos.GetMhusa(folio, Sesion.usuario());
+            return Ok(result);
+
+        }
     }
 }

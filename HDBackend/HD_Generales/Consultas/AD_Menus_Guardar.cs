@@ -28,6 +28,7 @@ namespace HD.Generales.Consultas
                     @descripcion = mdl.descripcion,
                     @nomenclatura = mdl.nomenclatura,
                     @estatus = mdl.estatus,
+                    @ruta=mdl.ruta,
                     @usuario = mdl.usuario
                 };
 

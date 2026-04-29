@@ -14,5 +14,6 @@
         public string? estado { get; set; }
         public bool aprovo_gerencia { get; set; }
         public bool aprovo_cedito { get; set; }
+        public double importe { get; set; }
     }
 }

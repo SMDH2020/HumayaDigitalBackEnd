@@ -6,7 +6,7 @@ namespace HD.Clientes.Modelos
     {
 
         [Required(ErrorMessage = "El folio es un valor requerido")]
-        [RegularExpression(@"^[SC0-9]+$", ErrorMessage = "El campo folio debe estar formado solo por caracteres numericos e iniciales SC")]
+        [RegularExpression(@"^[RPSC0-9]+$", ErrorMessage = "El campo folio debe estar formado solo por caracteres numericos e iniciales SC")]
         [StringLength(13, MinimumLength = 13, ErrorMessage = "El campo folio debe estar formado por 13 digitos")]
         public string? folio { get; set; }
 
@@ -16,6 +16,10 @@ namespace HD.Clientes.Modelos
         public DateTime vencimiento { get; set; }
         public string? svencimiento => vencimiento.ToString("dd-MM-yyyy");
         public string? dvencimiento => vencimiento.ToString("yyyy-MM-dd");
+
+        public DateTime inicio_interes { get; set; }
+        public string? sinicio_interes => inicio_interes.ToString("dd-MM-yyyy");
+        public string? dinicio_interes => inicio_interes.ToString("yyyy-MM-dd");
 
         [Required(ErrorMessage = "El campo dias es un valor requerido")]
         [Range(0, 2200, ErrorMessage = "El campo dias esta fuera de rango")]
@@ -38,5 +42,8 @@ namespace HD.Clientes.Modelos
         public double totalpagar { get; set; }
         public string? usuario { get; set; }
         public double importe_solicitado { get; set; }
+        public string? tipo_amortizacion { get; set; }
+        public double valor_insoluto { get; set; }
+
     }
 }

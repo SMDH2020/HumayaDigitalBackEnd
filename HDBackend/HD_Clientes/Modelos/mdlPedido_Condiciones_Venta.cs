@@ -5,7 +5,7 @@ namespace HD.Clientes.Modelos
     public class mdlPedido_Condiciones_Venta
     {
         [Required(ErrorMessage = "El folio es un valor requerido")]
-        [RegularExpression(@"^[SC0-9]+$", ErrorMessage = "El campo folio debe estar formado solo por caracteres numericos e iniciales SC")]
+        [RegularExpression(@"^[RSC0-9]+$", ErrorMessage = "El campo folio debe estar formado solo por caracteres numericos e iniciales SC")]
         [StringLength(13, MinimumLength = 13, ErrorMessage = "El campo folio debe estar formado por 13 digitos")]
         public string? folio { get; set; }
 
@@ -23,8 +23,8 @@ namespace HD.Clientes.Modelos
         [Range(0, double.MaxValue, ErrorMessage = "El campo deposito esta fuera de rango")]
         public double deposito { get; set; }
 
-        [Required(ErrorMessage = "La taza es un valor requerido")]
-        [Range(0, double.MaxValue, ErrorMessage = "El campo taza esta fuera de rango")]
+        //[Required(ErrorMessage = "La taza es un valor requerido")]
+        //[Range(0, double.MaxValue, ErrorMessage = "El campo taza esta fuera de rango")]
         public double taza { get; set; }
 
         [Required(ErrorMessage = "El anticipo es un valor requerido")]
@@ -46,6 +46,15 @@ namespace HD.Clientes.Modelos
         [Required(ErrorMessage = "El campo enganche es un valor requerido")]
         [Range(0, double.MaxValue, ErrorMessage = "El campo enganche esta fuera de rango")]
         public double enganche { get; set; }
+        [Required(ErrorMessage = "La moneda es un valor requerido")]
+        [RegularExpression(@"^[MXN|USD]+$", ErrorMessage = "Favor de seleccionar una moneda")]
+        [StringLength(3, MinimumLength = 3, ErrorMessage = "El campo medio de contacto debe estar formado por 3 digitos")]
+        public string? moneda { get; set; }
+        public int tipo_tasa { get; set; }
+        public int tipo_esquema { get; set; }
+        public double monto { get; set; }
+        public string? fecha_pagare { get; set; }
+
         public string? usuario { get; set; }
     }
 }

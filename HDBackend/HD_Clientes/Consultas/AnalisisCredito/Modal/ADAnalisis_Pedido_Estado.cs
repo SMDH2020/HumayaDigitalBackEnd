@@ -21,7 +21,7 @@ namespace HD.Clientes.Consultas.AnalisisCredito.Modal
                     folio,
                     usuario
                 };
-                mdlSCAnalisis_Pedido_Estado result = await factory.SQL.QueryFirstOrDefaultAsync<mdlSCAnalisis_Pedido_Estado>("Credito.sp_Analisis_Pedido_Estado", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlSCAnalisis_Pedido_Estado result = await factory.SQL.QueryFirstOrDefaultAsync<mdlSCAnalisis_Pedido_Estado>("Credito.sp_Analisis_Pedido_Estado_2", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

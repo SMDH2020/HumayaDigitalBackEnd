@@ -5,7 +5,7 @@ namespace HD.Clientes.Modelos
     public class mdlSolicitudCredito_Documentacion_View
     {
         [Required(ErrorMessage = "El folio es un valor requerido")]
-        [RegularExpression(@"^[SC0-9]+$", ErrorMessage = "El campo folio debe estar formado solo por caracteres numericos e iniciales SC")]
+        [RegularExpression(@"^[RPSC0-9]+$", ErrorMessage = "El campo folio debe estar formado solo por caracteres numericos e iniciales SC")]
         [StringLength(13, MinimumLength = 13, ErrorMessage = "El campo folio debe estar formado por 13 digitos")]
         public string? folio { get; set; }
 
@@ -15,6 +15,8 @@ namespace HD.Clientes.Modelos
 
         [Required(ErrorMessage = "El documento es un valor requerido")]
         public string? documento { get; set; }
+
+        public string? nombreDocumento { get; set; }
 
         public string? comentarios { get; set; }
 

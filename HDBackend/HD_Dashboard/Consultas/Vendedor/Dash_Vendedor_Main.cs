@@ -31,7 +31,7 @@ namespace HD_Dashboard.Consultas.Vendedor
                 result_vendedor3 = result.Read<mdlDashboard_Vendedor_Byte>().FirstOrDefault();
                 //if (result_vendedor1 == null || result_vendedor2 == null || result_vendedor3 == null)
                 //{
-                //isDataInDB = VendedorDelMes./*ObtenerVendedorDelMesExcel*/(factory);
+                //VendedorDelMes.ObtenerVendedorDelMesExcel(factory);
                 //}
                 //else
                 //{

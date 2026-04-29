@@ -20,11 +20,12 @@ namespace HD_Reporteria.Solicitud_Credito
                         //string imagePath = Path.Combine(desktopPath, "proyecto C#", "Logo.jpg");
 
 
-                        page.Header().Height(120).Row(row =>
+
+                        page.Header().Height(70).Row(row =>
                         {
 
                             //row.ConstantItem(140).Border(1).Placeholder();
-                            row.RelativeItem().PaddingTop(35).Height(50).Background("#477c2c").Row(row2 =>
+                            row.RelativeItem().PaddingTop(20).Height(30).Background("#477c2c").Row(row2 =>
                             {
 
                             });
@@ -33,11 +34,11 @@ namespace HD_Reporteria.Solicitud_Credito
                             {
                                 var rutaImagen = Path.Combine("C:\\Nube\\HumayaDigital\\HumayaDigitalBackEnd\\HDBackend\\HD_Reporteria\\Imagenes\\Logo.jpg");
                                 byte[] imageData = System.IO.File.ReadAllBytes(rutaImagen);
-                                row.ConstantItem(120).Image(imageData);
+                                row.ConstantItem(70).Image(imageData);
 
-                                row.ConstantColumn(450).PaddingTop(35).Height(50).Background("#477c2c").Row(row2 =>
+                                row.ConstantColumn(450).PaddingTop(20).Height(30).Background("#477c2c").Row(row2 =>
                                 {
-                                    row2.RelativeItem().Padding(10).PaddingLeft(30).Text("PEDIDO DE MAQUINARIA").FontColor("#fff").FontSize(20).Bold().FontFamily(fontFamily);
+                                    row2.RelativeItem().Padding(5).PaddingTop(3).PaddingLeft(60).Text("PEDIDO DE MAQUINARIA").FontColor("#fff").FontSize(12).Bold().FontFamily(fontFamily);
                                 });
                             });
 
@@ -61,7 +62,8 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().AlignCenter().AlignBottom().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span("14-11-2023").FontSize(08).FontFamily(fontFamily);
+                                        string formattedDate = mdl.solicitante.fecha_elaboracion_pedido;
+                                        txt2.Span(formattedDate).FontSize(08).FontFamily(fontFamily);
                                     });
                                 });
                             });
@@ -79,7 +81,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().AlignCenter().AlignBottom().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span("NAVOLATO").FontSize(08).FontFamily(fontFamily);
+                                        txt2.Span(mdl.solicitante.unidad_facturar).FontSize(08).FontFamily(fontFamily);
                                     });
                                 });
                             });
@@ -102,6 +104,24 @@ namespace HD_Reporteria.Solicitud_Credito
                                 });
                             });
 
+                            col1.Item().AlignRight().Row(row1 =>
+                            {
+                                row1.ConstantItem(120).Column(txt1 =>
+                                {
+                                    txt1.Item().Height(15).Text(txt2 =>
+                                    {
+                                        txt2.Span("MONEDA: ").Bold().FontSize(08).FontFamily(fontFamily);
+                                    });
+                                });
+                                row1.ConstantItem(080).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
+                                {
+                                    txt1.Item().AlignCenter().AlignBottom().Height(15).Text(txt2 =>
+                                    {
+                                        txt2.Span(mdl.condiciones.moneda).FontSize(08).FontFamily(fontFamily);
+                                    });
+                                });
+                            });
+
                             //col1.Item().LineHorizontal(0.5f);
 
 
@@ -118,7 +138,7 @@ namespace HD_Reporteria.Solicitud_Credito
 
                                 row1.ConstantItem(240).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
                                 {
-                                    txt1.Item().AlignBottom().Height(15).Text(txt2 =>
+                                    txt1.Item().AlignBottom().Text(txt2 =>
                                     {
                                         txt2.Span(mdl.solicitante?.solicitante).FontSize(8).FontFamily(fontFamily);
                                     });
@@ -155,7 +175,7 @@ namespace HD_Reporteria.Solicitud_Credito
 
                                 row1.ConstantItem(220).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
                                 {
-                                    txt1.Item().Height(15).Text(txt2 =>
+                                    txt1.Item().Text(txt2 =>
                                     {
                                         txt2.Span(mdl.solicitante?.solicitante).FontSize(8).FontFamily(fontFamily);
                                     });
@@ -228,7 +248,7 @@ namespace HD_Reporteria.Solicitud_Credito
 
                                 row1.ConstantItem(365).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
                                 {
-                                    txt1.Item().Height(15).Text(txt2 =>
+                                    txt1.Item().Text(txt2 =>
                                     {
                                         txt2.Span(mdl.solicitante?.condicionescredito).FontSize(8).FontFamily(fontFamily);
                                     });
@@ -295,7 +315,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.solicitante?.domicilio).FontSize(8).FontFamily(fontFamily);
+                                        txt2.Span("BLVD. DIAZ ORDAZ NO.500, COL. LA LEONA, SAN PEDRO GARZA GARCIA, NUEVO LEON. C.P. 66210").FontSize(8).FontFamily(fontFamily);
                                     });
                                 });
 
@@ -311,7 +331,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                     });
                                 });
 
-                                row1.ConstantItem(435).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
+                                row1.ConstantItem(170).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
                                 {
                                     txt1.Item().Height(15).Text(txt2 =>
                                     {
@@ -319,6 +339,21 @@ namespace HD_Reporteria.Solicitud_Credito
                                     });
                                 });
 
+                                row1.ConstantItem(90).Column(txt1 =>
+                                {
+                                    txt1.Item().PaddingLeft(10).Height(15).Text(txt2 =>
+                                    {
+                                        txt2.Span("Uso del CFDI: ").Bold().FontSize(10).FontFamily(fontFamily);
+                                    });
+                                });
+
+                                row1.ConstantItem(175).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
+                                {
+                                    txt1.Item().Height(15).Text(txt2 =>
+                                    {
+                                        txt2.Span(mdl.solicitante?.usocfdi).FontSize(8).FontFamily(fontFamily);
+                                    });
+                                });
                             });
 
                             col1.Item().PaddingTop(02).Row(row1 =>
@@ -332,7 +367,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                     });
                                 });
 
-                                row1.ConstantItem(435).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
+                                row1.ConstantItem(170).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
                                 {
                                     txt1.Item().Height(15).Text(txt2 =>
                                     {
@@ -340,39 +375,15 @@ namespace HD_Reporteria.Solicitud_Credito
                                     });
                                 });
 
-                            });
-
-                            col1.Item().PaddingTop(02).Row(row1 =>
-                            {
-                                row1.ConstantItem(100).Column(txt1 =>
+                                row1.ConstantItem(90).Column(txt1 =>
                                 {
-                                    txt1.Item().Height(15).Text(txt2 =>
-                                    {
-                                        txt2.Span("Uso del CFDI: ").Bold().FontSize(10).FontFamily(fontFamily);
-                                    });
-                                });
-
-                                row1.ConstantItem(435).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
-                                {
-                                    txt1.Item().Height(15).Text(txt2 =>
-                                    {
-                                        txt2.Span(mdl.solicitante?.usocfdi).FontSize(8).FontFamily(fontFamily);
-                                    });
-                                });
-
-                            });
-
-                            col1.Item().PaddingTop(02).Row(row1 =>
-                            {
-                                row1.ConstantItem(100).Column(txt1 =>
-                                {
-                                    txt1.Item().Height(15).Text(txt2 =>
+                                    txt1.Item().Height(15).PaddingLeft(10).Text(txt2 =>
                                     {
                                         txt2.Span("Tipo de relacion: ").Bold().FontSize(10).FontFamily(fontFamily);
                                     });
                                 });
 
-                                row1.ConstantItem(435).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
+                                row1.ConstantItem(175).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
                                 {
                                     txt1.Item().PaddingTop(2).Height(15).Text(txt2 =>
                                     {
@@ -381,6 +392,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                 });
 
                             });
+
 
                             col1.Item().PaddingTop(02).Row(row1 =>
                             {
@@ -410,7 +422,7 @@ namespace HD_Reporteria.Solicitud_Credito
 
                                 row1.ConstantItem(120).BorderBottom(1).BorderColor("#afb69d").Column(txt1 =>
                                 {
-                                    txt1.Item().AlignCenter().Height(15).Text(txt2 =>
+                                    txt1.Item().Height(15).Text(txt2 =>
                                     {
                                         txt2.Span(mdl.solicitante?.foliosanticipos).FontSize(10).FontFamily(fontFamily);
                                     });
@@ -439,18 +451,17 @@ namespace HD_Reporteria.Solicitud_Credito
 
                             });
 
-                            col1.Item().PaddingVertical(10).Table(tabla =>
+                            col1.Item().PaddingTop(10).PaddingBottom(4).Table(tabla =>
                             {
                                 tabla.ColumnsDefinition(Columns =>
                                 {
                                     Columns.RelativeColumn(0.5f);
                                     Columns.RelativeColumn(1);
                                     Columns.RelativeColumn(1.5f);
+                                    Columns.RelativeColumn(1.5f);
                                     Columns.RelativeColumn(1);
                                     Columns.RelativeColumn(1);
                                     Columns.RelativeColumn(1);
-                                    Columns.RelativeColumn(1);
-
                                 });
 
                                 tabla.Header(header =>
@@ -460,7 +471,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                     header.Cell().Background("#ccc").AlignCenter()
                                     .Padding(1).Text("Modelo").FontSize(10).Bold().FontFamily(fontFamily);
                                     header.Cell().Background("#ccc").AlignCenter()
-                                    .Padding(1).Text("Estado").FontSize(10).Bold().FontFamily(fontFamily);
+                                    .Padding(1).Text("Linea").FontSize(10).Bold().FontFamily(fontFamily);
                                     header.Cell().Background("#ccc").AlignCenter()
                                     .Padding(1).Text("Serie").FontSize(10).Bold().FontFamily(fontFamily);
                                     header.Cell().Background("#ccc").AlignCenter()
@@ -470,6 +481,12 @@ namespace HD_Reporteria.Solicitud_Credito
                                     header.Cell().Background("#ccc").AlignCenter()
                                     .Padding(1).Text("Valor").FontSize(10).Bold().FontFamily(fontFamily);
                                 });
+
+                                // Variables para los totales
+                                double totalCantidad = 0;
+                                double totalPrecio = 0;
+                                double totalDescuento = 0;
+                                double totalValor = 0;
 
                                 foreach (var item in mdl.unidades)
                                 {
@@ -527,15 +544,44 @@ namespace HD_Reporteria.Solicitud_Credito
                                             .Text(item.total.ToString()).FontSize(8).FontFamily(fontFamily);
                                     }
 
+                                    // Actualiza los totales
+                                    totalCantidad += item.cantidad;
+                                    totalPrecio += item.precio;
+                                    totalDescuento += item.descuento;
+                                    totalValor += item.total;
+
                                     // tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
                                     //.Text($"{formattedTotal}").FontSize(8).FontFamily(fontFamily);
                                 }
-                            });
-                            //col1.Item().Text("Fecha de pedido:").Bold();
-                            col1.Item().Text("Condiciones para operacion de venta").FontSize(10).FontFamily(fontFamily);
-                            col1.Item().Border(1).BorderColor("#afb69d").Padding(05).Text("Acepto que se elabore la factura con los datos anteriormente proporcionados, los cuales manifiesto son correctos y acepto que dicha factura no podrá cancelarse o re-facturarse posteriormente.").FontSize(8).FontFamily(fontFamily);
 
-                            col1.Item().PaddingTop(05).Text("Observaciones").FontSize(10).FontFamily(fontFamily);
+                                // Agregar el pie de tabla
+                                tabla.Footer(footer =>
+                                {
+                                    footer.Cell().BorderTop(1).BorderColor("#afb69d").Padding(1).AlignCenter()
+                                    .Text("Total").FontSize(8).Bold().FontFamily(fontFamily);
+
+                                    footer.Cell().BorderTop(1).BorderColor("#afb69d").Padding(1).AlignCenter().Text("");
+
+                                    footer.Cell().BorderTop(1).BorderColor("#afb69d").Padding(1).AlignCenter().Text("");
+
+                                    footer.Cell().BorderTop(1).BorderColor("#afb69d").Padding(1).AlignCenter().Text("");
+
+                                    footer.Cell().BorderTop(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                    .Text(totalPrecio.ToString("N")).FontSize(8).Bold().FontFamily(fontFamily);
+
+                                    footer.Cell().BorderTop(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                    .Text(totalDescuento.ToString("N")).FontSize(8).Bold().FontFamily(fontFamily);
+
+                                    footer.Cell().BorderTop(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                    .Text(totalValor.ToString("N")).FontSize(8).Bold().FontFamily(fontFamily);
+                                });
+                            });
+
+                            //col1.Item().Text("Fecha de pedido:").Bold();
+                            col1.Item().Text("Condiciones para operacion de venta:").Bold().FontSize(10).FontFamily(fontFamily);
+                            col1.Item().Border(1).BorderColor("#afb69d").Padding(05).Text(mdl.condiciones?.condiciones).FontSize(8).FontFamily(fontFamily);
+
+                            col1.Item().PaddingTop(05).Text("Observaciones:").Bold().FontSize(10).FontFamily(fontFamily);
                             col1.Item().Border(1).BorderColor("#afb69d").Padding(05).Text(mdl.condiciones?.observaciones).FontSize(8).FontFamily(fontFamily);
 
                             col1.Item().PaddingTop(05).Row(row1 =>
@@ -607,7 +653,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                 {
                                     txt1.Item().AlignCenter().Height(15).Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.condiciones?.plazo).FontSize(10).FontFamily(fontFamily);
+                                        txt2.Span(mdl.condiciones?.tiempo_plazo + " " + mdl.condiciones?.plazo).FontSize(10).FontFamily(fontFamily);
                                     });
                                 });
 
@@ -712,7 +758,7 @@ namespace HD_Reporteria.Solicitud_Credito
 
                             });
 
-                            col1.Item().PaddingVertical(10).Table(tabla =>
+                            col1.Item().PaddingVertical(10).ShowEntire().Table(tabla =>
                             {
                                 tabla.ColumnsDefinition(Columns =>
                                 {
@@ -744,6 +790,11 @@ namespace HD_Reporteria.Solicitud_Credito
                                     .Padding(1).Text("Total a Pagar").FontSize(10).Bold().FontFamily(fontFamily);
                                 });
 
+                                // Variables para los totales
+                                double totalImporteFinanciar = 0;
+                                double totalInteres = 0;
+                                double totalPagar = 0;
+
                                 foreach (var item in mdl.financiamiento)
                                 {
                                     var cantidad = Placeholders.Random.Next(1, 10);
@@ -764,6 +815,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                     {
                                         tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
                                         .Text(item.importefinanciar.ToString("N")).FontSize(8).FontFamily(fontFamily);
+                                        totalImporteFinanciar += item.importefinanciar;
                                     }
                                     else
                                     {
@@ -781,6 +833,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                     {
                                         tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
                                         .Text(item.interes.ToString("N")).FontSize(8).FontFamily(fontFamily);
+                                        totalInteres += item.interes;
                                     }
                                     else
                                     {
@@ -792,6 +845,7 @@ namespace HD_Reporteria.Solicitud_Credito
                                     {
                                         tabla.Cell().BorderBottom(1).BorderColor("#afb69d").Padding(1).AlignRight()
                                         .Text(item.totalpagar.ToString("N")).FontSize(8).FontFamily(fontFamily);
+                                        totalPagar += item.totalpagar;
                                     }
                                     else
                                     {
@@ -799,111 +853,138 @@ namespace HD_Reporteria.Solicitud_Credito
                                         .Text(item.totalpagar.ToString()).FontSize(8).FontFamily(fontFamily);
                                     }
                                 }
+                                // Agregar el pie de tabla
+                                tabla.Footer(footer =>
+                                {
+                                    footer.Cell().BorderTop(1).BorderColor("#afb69d").Padding(1).AlignCenter().Text("");
+
+                                    footer.Cell().BorderTop(1).BorderColor("#afb69d").Padding(1).AlignCenter()
+                                    .Text("Total").FontSize(8).Bold().FontFamily(fontFamily);
+
+                                    footer.Cell().BorderTop(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                    .Text(totalImporteFinanciar.ToString("N")).FontSize(8).Bold().FontFamily(fontFamily);
+
+                                    footer.Cell().BorderTop(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                    .Text(""); // Si no necesitas total para "Dias", deja la celda en blanco.
+
+                                    footer.Cell().BorderTop(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                    .Text(""); // Si no necesitas total para "Tasa %", deja la celda en blanco.
+
+                                    footer.Cell().BorderTop(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                    .Text(totalInteres.ToString("N")).FontSize(8).Bold().FontFamily(fontFamily);
+
+                                    footer.Cell().BorderTop(1).BorderColor("#afb69d").Padding(1).AlignRight()
+                                    .Text(totalPagar.ToString("N")).FontSize(8).Bold().FontFamily(fontFamily);
+                                });
                             });
 
-                            col1.Item().Text("La tasa es informativa, la tasa real a pagar en cada vencimiento será la que rija al momento de la liquidación del documento o firma de contrato JDF.").FontSize(8).FontFamily(fontFamily);
-                            col1.Item().Text("Acepto que se elabore la factura con los datos anteriormente proporcionados, los cuales manifiesto son correctos y acepto que dicha factura no podrá cancelarse o re-facturarse posteriormente.").FontSize(8).FontFamily(fontFamily);
-                            col1.Item().Text("Se firma el presente escrito como constancia, para los efectos fiscales y legales que corresponda, quitando como entendido de que no se realizará refacturación alguna. Si por algún motivo requieren cancelación de la misma, se realizará un cobro adicional del 5% por los gastos que dicha cancelación origina.").FontSize(8).FontFamily(fontFamily);
-                            col1.Item().Text("Se aceptan condiciones de operacion anteriormente descritas e incluye todo lo acordado en la negociacion, firma de comun acuerdo.").FontSize(8).FontFamily(fontFamily);
+                            col1.Item().Text("La tasa es informativa, la tasa real a pagar en cada vencimiento será la que rija al momento de la liquidación del documento o firma de contrato JDF.").FontSize(6).FontFamily(fontFamily);
+                            col1.Item().Text("Acepto que se elabore la factura con los datos anteriormente proporcionados, los cuales manifiesto son correctos y acepto que dicha factura no podrá cancelarse o re-facturarse posteriormente.").FontSize(6).FontFamily(fontFamily);
+                            col1.Item().Text("Se firma el presente escrito como constancia, para los efectos fiscales y legales que corresponda, quitando como entendido de que no se realizará refacturación alguna. Si por algún motivo requieren cancelación de la misma, se realizará un cobro adicional del 5% por los gastos que dicha cancelación origina.").FontSize(6).FontFamily(fontFamily);
+                            col1.Item().Text("Se aceptan condiciones de operacion anteriormente descritas e incluye todo lo acordado en la negociacion, firma de comun acuerdo.").FontSize(6).FontFamily(fontFamily);
+
+                            col1.Item().Extend().ShowEntire().AlignBottom().Column(innerCol =>
+                            {
+                                // Contenido que deseas alinear al fondo
+                                innerCol.Item().PaddingTop(0).Row(row1 =>
+                                {
+                                    row1.ConstantItem(180).AlignCenter().Column(txt1 =>
+                                    {
+                                        txt1.Item().Height(15).Text(txt2 =>
+                                        {
+                                            txt2.Span("Cliente").FontSize(08).FontFamily(fontFamily);
+                                        });
+                                    });
+
+                                    row1.ConstantItem(180).AlignCenter().Column(txt1 =>
+                                    {
+                                        txt1.Item().Height(15).Text(txt2 =>
+                                        {
+                                            txt2.Span("Vendedor").FontSize(08).FontFamily(fontFamily);
+                                        });
+                                    });
+
+                                    row1.ConstantItem(175).AlignCenter().Column(txt1 =>
+                                    {
+                                        txt1.Item().Height(15).Text(txt2 =>
+                                        {
+                                            txt2.Span("Autoriza").FontSize(08).FontFamily(fontFamily);
+                                        });
+                                    });
+                                });
+
+                                // Firmas
+                                innerCol.Item().PaddingTop(5).Row(row1 =>
+                                {
+                                    row1.ConstantItem(180).BorderBottom(1).Column(txt1 =>
+                                    {
+                                        txt1.Item().AlignCenter()
+                                        .AlignBottom()
+                                        .Text(txt2 =>
+                                        {
+                                            txt2.Span(mdl.firmas?.firma_Cliente.ToUpper()).FontSize(10).Bold().FontFamily(fontFamily);
+                                        });
+                                    });
+
+                                    row1.ConstantItem(180).PaddingLeft(15).BorderBottom(1).Column(txt1 =>
+                                    {
+                                        txt1.Item()
+                                        .AlignCenter()
+                                        .AlignBottom()
+                                        .Text(txt2 =>
+                                        {
+                                            txt2.Span(mdl.firmas?.firma_vendedor.ToUpper()).FontSize(10).Bold().FontFamily(fontFamily);
+                                        });
+                                    });
+
+                                    row1.ConstantItem(175).PaddingLeft(15).BorderBottom(1).Column(txt1 =>
+                                    {
+                                        txt1.Item()
+                                        .AlignCenter()
+                                        .AlignBottom()
+                                        .Text(txt2 =>
+                                        {
+                                            txt2.Span(mdl.firmas?.firma_autoriza.ToUpper()).FontSize(10).Bold().FontFamily(fontFamily);
+                                        });
+                                    });
+                                });
+
+                                // Nombres y Firmas
+                                innerCol.Item().PaddingTop(0).Row(row1 =>
+                                {
+                                    row1.ConstantItem(180).AlignCenter().Column(txt1 =>
+                                    {
+                                        txt1.Item().Height(15).Text(txt2 =>
+                                        {
+                                            txt2.Span("Nombre y Firma").FontSize(08).FontFamily(fontFamily);
+                                        });
+                                    });
+
+                                    row1.ConstantItem(180).AlignCenter().Column(txt1 =>
+                                    {
+                                        txt1.Item().Height(15).Text(txt2 =>
+                                        {
+                                            txt2.Span("Nombre y Firma").FontSize(08).FontFamily(fontFamily);
+                                        });
+                                    });
+
+                                    row1.ConstantItem(175).AlignCenter().Column(txt1 =>
+                                    {
+                                        txt1.Item().Height(15).Text(txt2 =>
+                                        {
+                                            txt2.Span("Nombre y Firma").FontSize(08).FontFamily(fontFamily);
+                                        });
+                                    });
+                                });
+                            });
                         });
 
                         page.Footer().Height(80).PaddingLeft(30).PaddingRight(30).Column(col1 =>
                         {
-                            col1.Item().PaddingTop(00).Row(row1 =>
+                            col1.Item().AlignRight().PaddingTop(40).Text(txt =>
                             {
-                                row1.ConstantItem(180).AlignCenter().Column(txt1 =>
-                                {
-                                    txt1.Item().Height(15).Text(txt2 =>
-                                    {
-                                        txt2.Span("Cliente").FontSize(08).FontFamily(fontFamily);
-                                    });
-                                });
-
-
-                                row1.ConstantItem(180).AlignCenter().Column(txt1 =>
-                                {
-                                    txt1.Item().Height(15).Text(txt2 =>
-                                    {
-                                        txt2.Span("Vendedor").FontSize(08).FontFamily(fontFamily);
-                                    });
-                                });
-
-
-                                row1.ConstantItem(175).AlignCenter().Column(txt1 =>
-                                {
-                                    txt1.Item().Height(15).Text(txt2 =>
-                                    {
-                                        txt2.Span("Autoriza").FontSize(08).FontFamily(fontFamily);
-                                    });
-                                });
-                            });
-
-                            col1.Item().PaddingTop(15).Row(row1 =>
-                            {
-                                row1.ConstantItem(180).BorderBottom(1).Column(txt1 =>
-                                {
-                                    txt1.Item().Height(30).AlignCenter()
-                                    .AlignBottom()
-                                    .Text(txt2 =>
-                                    {
-                                        txt2.Span(mdl.firmas?.firma_Cliente.ToUpper()).FontSize(10).Bold().FontFamily(fontFamily);
-                                        //txt2.Span("NAVOLATO").FontSize(10);
-                                    });
-                                });
-
-
-                                row1.ConstantItem(180).PaddingLeft(15).BorderBottom(1).Column(txt1 =>
-                                {
-                                    txt1.Item().Height(30)
-                                    .AlignCenter()
-                                    .AlignBottom()
-                                    .Text(txt2 =>
-                                    {
-                                        txt2.Span(mdl.firmas?.firma_vendedor.ToUpper()).FontSize(10).Bold().FontFamily(fontFamily);
-                                        //txt2.Span("NAVOLATO").FontSize(10);
-                                    });
-                                });
-
-
-                                row1.ConstantItem(175).PaddingLeft(15).BorderBottom(1).Column(txt1 =>
-                                {
-                                    txt1.Item().Height(30)
-                                    .AlignCenter()
-                                    .AlignBottom()
-                                    .Text(txt2 =>
-                                    {
-                                        txt2.Span(mdl.firmas?.firma_autoriza.ToUpper()).FontSize(10).Bold().FontFamily(fontFamily);
-                                    });
-                                });
-                            });
-
-                            col1.Item().PaddingTop(00).Row(row1 =>
-                            {
-                                row1.ConstantItem(180).AlignCenter().Column(txt1 =>
-                                {
-                                    txt1.Item().Height(15).Text(txt2 =>
-                                    {
-                                        txt2.Span("Nombre y Firma").FontSize(08).FontFamily(fontFamily);
-                                    });
-                                });
-
-
-                                row1.ConstantItem(180).AlignCenter().Column(txt1 =>
-                                {
-                                    txt1.Item().Height(15).Text(txt2 =>
-                                    {
-                                        txt2.Span("Nombre y Firma").FontSize(08).FontFamily(fontFamily);
-                                    });
-                                });
-
-
-                                row1.ConstantItem(175).AlignCenter().Column(txt1 =>
-                                {
-                                    txt1.Item().Height(15).Text(txt2 =>
-                                    {
-                                        txt2.Span("Nombre y Firma").FontSize(08).FontFamily(fontFamily);
-                                    });
-                                });
+                                txt.Span("Página #").FontSize(10).FontFamily("arial");
+                                txt.CurrentPageNumber().FontSize(10).Bold().FontFamily("arial");
                             });
                         });
 

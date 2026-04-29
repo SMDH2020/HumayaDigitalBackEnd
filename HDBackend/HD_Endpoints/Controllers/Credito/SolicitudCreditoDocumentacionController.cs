@@ -1,7 +1,16 @@
-﻿using HD.Clientes.Consultas.SolicitudCreditoDocumento;
+﻿using HD.Clientes.Consultas.AnalisisCredito.JDF_Condicionado;
+using HD.Clientes.Consultas.Pagares;
+using HD.Clientes.Consultas.PedidoImpresion;
+using HD.Clientes.Consultas.SolicitudCreditoDocumento;
 using HD.Clientes.Modelos;
+using HD.Notifications.Analisis;
+using HD.Notifications.Consultas;
+using HD.Notifications.NotificacionesApp;
 using HD.Security;
+using HD_Reporteria.Pagares;
+using HD_Reporteria.Solicitud_Credito;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 
 namespace HD.Endpoints.Controllers.Credito
 {
@@ -22,6 +31,14 @@ namespace HD.Endpoints.Controllers.Credito
             ADSolicitudCredito_Documentacion_Guardar datos = new ADSolicitudCredito_Documentacion_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.Guardar(mdl);
+
+            string origen = Sesion.origen();
+            if (Sesion.generarLog() == true && origen == "APP")
+            {
+                NE_Logs_App_HD log = new NE_Logs_App_HD(CadenaConexion);
+                await log.Guardar($"Se cargo el documento {mdl.iddocumento} de la siguiente solicitud: {mdl.folio}", origen, Sesion.usuario());
+            }
+
             return Ok(result);
 
         }
@@ -42,10 +59,364 @@ namespace HD.Endpoints.Controllers.Credito
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             ADSolicitudCredito_Documentacion_ObtenerDocumento datos = new ADSolicitudCredito_Documentacion_ObtenerDocumento(CadenaConexion);
             var result = await datos.Obtener(folio, iddocumento);
+
+            string origen = Sesion.origen();
+            if (Sesion.generarLog() == true && origen == "APP")
+            {
+                NE_Logs_App_HD log = new NE_Logs_App_HD(CadenaConexion);
+                await log.Guardar($"Descargo el documento {iddocumento} del folio: {folio}", origen, Sesion.usuario());
+            }
+
             if (result is null)
-                return BadRequest(new {mensaje= "Documento no encontrado. Favor de comunicarse con el administrador del sistema" });
+                return BadRequest(new { mensaje = "Documento no encontrado. Favor de comunicarse con el administrador del sistema" });
             return Ok(result);
 
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerDocumentoResultadoOperacion(string folio, int iddocumento)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADSolicitudCredito_Documentacion_ObtenerDocumento datos = new ADSolicitudCredito_Documentacion_ObtenerDocumento(CadenaConexion);
+            var result = await datos.ObtenerResultadoOperacion(folio, iddocumento);
+            if (result is null)
+                return BadRequest(new { mensaje = "Documento no encontrado. Favor de comunicarse con el administrador del sistema" });
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerFactura(string folio, int registro, int iddocumento)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADSolicitudCredito_Documentacion_ObtenerDocumento datos = new ADSolicitudCredito_Documentacion_ObtenerDocumento(CadenaConexion);
+            var result = await datos.ObtenerFactura(folio, registro, iddocumento);
+            if (result is null)
+                return BadRequest(new { mensaje = "Documento no encontrado. Favor de comunicarse con el administrador del sistema" });
+            return Ok(result);
+
+        }
+
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerDocumentoValidacionF(string folio, int iddocumento)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Solicitud_Credito_Documentos_Validar_Factura datos = new AD_Solicitud_Credito_Documentos_Validar_Factura(CadenaConexion);
+            var result = await datos.Obtener(folio, iddocumento);
+            if (result is null)
+                return BadRequest(new { mensaje = "Documento no encontrado. Favor de comunicarse con el administrador del sistema" });
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerDocumentoPedido(string folio, int iddocumento)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADSolicitudCredito_Documentacion_ObtenerDocumento datos = new ADSolicitudCredito_Documentacion_ObtenerDocumento(CadenaConexion);
+            var result = await datos.ObtenerPEdido(folio, iddocumento);
+            if (result is null)
+            {
+                ADPedido_Impresion_View pdf = new ADPedido_Impresion_View(CadenaConexion);
+                var resultpdf = await pdf.Get(folio);
+                if (resultpdf.condiciones is null || resultpdf.condiciones is null || resultpdf.unidades.Count == 0)
+                {
+                    return BadRequest(new { mensaje = "Para poder imprimir el Pedido es necesario completar toda la información solicitada" });
+                }
+
+                try
+                {
+                    var documento = resultpdf.condiciones.mhusajdf == "JDF" ? RPT_Pedido_JDF.Generar(resultpdf) : RPT_Pedido.Generar(resultpdf);
+                    documento.documento = "data:application/pdf;base64," + documento.documento;
+                    return Ok(documento);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest("Error de servidor");
+
+                }
+            }
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerDocumentoPedidoFirmado(string folio, int iddocumento)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADSolicitudCredito_Documentacion_ObtenerDocumento datos = new ADSolicitudCredito_Documentacion_ObtenerDocumento(CadenaConexion);
+            var result = await datos.ObtenerPedidoOriginal(folio, iddocumento);
+            if (result is null)
+            {
+                ADPedido_Impresion_View pdf = new ADPedido_Impresion_View(CadenaConexion);
+                var resultpdf = await pdf.Get(folio);
+                if (resultpdf.condiciones is null || resultpdf.condiciones is null || resultpdf.unidades.Count == 0)
+                {
+                    return BadRequest(new { mensaje = "Para poder imprimir el Pedido es necesario completar toda la información solicitada" });
+                }
+
+                try
+                {
+                    var documento = resultpdf.condiciones.mhusajdf == "JDF" ? RPT_Pedido_JDF.Generar(resultpdf) : RPT_Pedido.Generar(resultpdf);
+                    documento.documento = "data:application/pdf;base64," + documento.documento;
+                    return Ok(documento);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest("Error de servidor");
+
+                }
+            }
+            return Ok(result);
+        }
+
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerPedidoFacturado(string folio, int iddocumento)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADSolicitudCredito_Documentacion_ObtenerDocumento datos = new ADSolicitudCredito_Documentacion_ObtenerDocumento(CadenaConexion);
+            var result = await datos.ObtenerResultadoOperacion(folio, iddocumento);
+            if (result is null)
+            {
+                if (iddocumento == 1)
+                {
+                    ADPedido_Impresion_View pdf = new ADPedido_Impresion_View(CadenaConexion);
+                    var resultpdf = await pdf.Get(folio);
+                    if (resultpdf.condiciones is null || resultpdf.condiciones is null || resultpdf.unidades.Count == 0)
+                    {
+                        return BadRequest(new { mensaje = "Para poder imprimir el Pedido es necesario completar toda la información solicitada" });
+                    }
+
+                    try
+                    {
+                        var documento = resultpdf.condiciones.mhusajdf == "JDF" ? RPT_Pedido_JDF.Generar(resultpdf) : RPT_Pedido.Generar(resultpdf);
+                        documento.documento = "data:application/pdf;base64," + documento.documento;
+                        mdlSolicitudCredito_Documentacion_View view = new mdlSolicitudCredito_Documentacion_View();
+                        view.documento = "PEDIDO";
+                        view.folio = folio;
+                        view.iddocumento = iddocumento;
+                        view.extension = "pdf";
+                        view.comentarios = documento.documento;
+                        return Ok(view);
+                    }
+                    catch
+                    {
+                        return BadRequest(new { mensaje = "Error de servidor" });
+
+                    }
+                }
+                else if (iddocumento == 2)
+                {
+                    AD_Pagare_Dos_Amortizaciones_Suscripcion pagare = new AD_Pagare_Dos_Amortizaciones_Suscripcion(CadenaConexion);
+                    var resultpagare = await pagare.Get(folio);
+                    List<HD_Reporteria.RPT_Result> documento = new List<HD_Reporteria.RPT_Result>();
+
+                    try
+                    {
+                        // Agrupar por tasas diferentes
+                        var gruposTasas = resultpagare.financiamientocerodias.GroupBy(f => f.tasa);
+                        var gruposTasasmas = resultpagare.financiamientomasdias.GroupBy(f => f.tasa);
+
+
+                        foreach (var grupo in gruposTasas)
+                        {
+                            if (grupo.Count() > 1)
+                            {
+                                HD_Reporteria.RPT_Result reporte = RPT_Pagare_Dos_Amortizaciones_Vencimiento.Generar(resultpagare, grupo.ToList());
+                                documento.Add(reporte);
+                            }
+                            else
+                            {
+                                HD_Reporteria.RPT_Result reporte = RPT_Pagare_Vencimiento.Generar(resultpagare, grupo.First());
+                                documento.Add(reporte);
+                            }
+                        }
+
+                        foreach (var grupo in gruposTasasmas)
+                        {
+                            if (grupo.Count() > 1)
+                            {
+                                HD_Reporteria.RPT_Result reporte = RPT_Pagare_Dos_Amortizaciones_Suscripcion.Generar(resultpagare, grupo.ToList());
+                                documento.Add(reporte);
+                            }
+                            else
+                            {
+                                HD_Reporteria.RPT_Result reporte = RPT_Pagare_Suscripcion.Generar(resultpagare, grupo.First());
+                                documento.Add(reporte);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        return NotFound(new { mensaje = "Error de servidor: " + ex.Message });
+                    }
+
+                    return Ok(documento);
+                }
+                else
+                {
+                    return BadRequest(new { mensaje = "Factura no disponible" });
+                }
+            }
+            return Ok(result);
+        }
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerDocumentoPagare(string folio, int iddocumento)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADSolicitudCredito_Documentacion_ObtenerDocumento datos = new ADSolicitudCredito_Documentacion_ObtenerDocumento(CadenaConexion);
+            var result = await datos.ObtenerPagare(folio, iddocumento);
+            if (result is null)
+            {
+                AD_Pagare_Dos_Amortizaciones_Suscripcion datoss = new AD_Pagare_Dos_Amortizaciones_Suscripcion(CadenaConexion);
+                var results = await datoss.Get(folio);
+                List<HD_Reporteria.RPT_Result> documento = new List<HD_Reporteria.RPT_Result>();
+
+                try
+                {
+                    // Agrupar por tasas diferentes
+                    var gruposTasas = results.financiamientocerodias.GroupBy(f => f.tasa);
+                    var gruposTasasmas = results.financiamientomasdias.GroupBy(f => f.tasa);
+
+
+                    foreach (var grupo in gruposTasas)
+                    {
+                        if (grupo.Count() > 1)
+                        {
+                            HD_Reporteria.RPT_Result reporte = RPT_Pagare_Dos_Amortizaciones_Vencimiento.Generar(results, grupo.ToList());
+                            documento.Add(reporte);
+                        }
+                        else
+                        {
+                            HD_Reporteria.RPT_Result reporte = RPT_Pagare_Vencimiento.Generar(results, grupo.First());
+                            documento.Add(reporte);
+                        }
+                    }
+
+                    foreach (var grupo in gruposTasasmas)
+                    {
+                        if (grupo.Count() > 1)
+                        {
+                            HD_Reporteria.RPT_Result reporte = RPT_Pagare_Dos_Amortizaciones_Suscripcion.Generar(results, grupo.ToList());
+                            documento.Add(reporte);
+                        }
+                        else
+                        {
+                            HD_Reporteria.RPT_Result reporte = RPT_Pagare_Suscripcion.Generar(results, grupo.First());
+                            documento.Add(reporte);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest("Error de servidor: " + ex.Message);
+                }
+
+                return Ok(documento);
+            }
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarDocumentoCondicionado(mdlSolicitudCredito_Documentacion_View mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADSolicitud_Credito_Documentacion_Condicionada_Guardar datos = new ADSolicitud_Credito_Documentacion_Condicionada_Guardar(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.Guardar(mdl);
+            return Ok(result);
+
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarDocumentoAceptadoCondicionado(mdlSolicitudCredito_Documentacion_View mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADSolicitud_Credito_Documentacion_Condicionada_Guardar datos = new ADSolicitud_Credito_Documentacion_Condicionada_Guardar(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.GuardarDocumentacionAceptada(mdl);
+            if (result.mdldatos is null)
+            {
+                return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
+            }
+            if (result.completado.completado == 1)
+            {
+                await NotificacionComentarios.EnviarCargaDocumentosAprobadosCondicionado(result);
+            }
+            if (result.completado.completado == 0)
+            {
+                // Crear un solo objeto mdlSolicitud con idusuario igual a 0
+                result.mdlSolicitud = new List<mdlSolicitudCredito_Enviar>
+                      {
+                        new mdlSolicitudCredito_Enviar {
+                            idempleado = 0,
+                            nombre = "",
+                            correo = ""
+                        }
+
+                      };
+            }
+            return Ok(result);
+
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarDocumentoJDF(mdlSolicitudCredito_Documentacion_View mdl)
+        {
+
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            string OneSignalAppId = Configuracion["OneSignal:AppIDProduccion"];
+            string OneSignalApiKey = Configuracion["OneSignal:ApyKeyproduccion"];
+            ADSolicitud_Credito_Documentacion_JDF_Guardar datos = new ADSolicitud_Credito_Documentacion_JDF_Guardar(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.Guardar(mdl);
+
+            if (result.notificar.notificar == 1)
+            {
+                await NotificacionComentarios.EnviarCargaDocumentosVendedor(result, mdl.folio);
+
+                //enviar notificacion
+                var usuariosNotificados = string.Join(",", result.mdlSolicitud?.Select(u => u.idempleado.ToString()) ?? new List<string>());
+                var usuario = Sesion.usuario();
+                var textoCliente = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result.notificar.cliente.ToLower());
+                var idevento = mdl.folio.Substring(0, 2) == "PC" ? 3 : 1;
+                var referencia = 9;
+
+                AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
+                var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, result.notificar.vendedor + " cargo toda la documentación del cliente " + textoCliente, mdl.folio, usuariosNotificados);
+
+                AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion, OneSignalAppId, OneSignalApiKey);
+                await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
+            }
+
+            return Ok(result);
+
+
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarDocumentoReestructuracion(mdlSolicitudCredito_Documentacion_View mdl)
+        {
+
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADSolicitud_Credito_Documentacion_JDF_Guardar datos = new ADSolicitud_Credito_Documentacion_JDF_Guardar(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.GuardarDocumentoReestructuracionNotificar(mdl);
+            return Ok(result);
+
+        }
+
     }
 }

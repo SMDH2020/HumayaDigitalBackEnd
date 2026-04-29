@@ -8,5 +8,10 @@
         public string? tiempoestimado { get; set; }
         public string? tiempotranscurrido { get; set; }
         public string? pantallacompleta { get; set; }
+        public Boolean habilitarcondicionado { get; set; }
+        public string? folio_condicionado { get; set; }
+        public string? precalificacion { get; set; }
+        public bool creadorsolicitud { get; set; }
+
     }
 }

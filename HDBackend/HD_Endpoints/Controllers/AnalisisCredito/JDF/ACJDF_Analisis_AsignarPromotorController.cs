@@ -1,5 +1,6 @@
 ﻿using HD.Clientes.Consultas.AnalisisCredito.JDF;
 using HD.Clientes.Modelos.SC_Analisis.JDF;
+using HD.Notifications.Analisis;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +23,12 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
             mdl.usuario = Sesion.usuario();
             ADJDF_Analisis_Asignar_promotor_comentario datos = new ADJDF_Analisis_Asignar_promotor_comentario(CadenaConexion);
             var result = await datos.Get(mdl);
+
+            //ADJDF_Asignacion_Promotor_Notificacion notificacion = new ADJDF_Asignacion_Promotor_Notificacion(CadenaConexion);
+            //var body = await notificacion.GetBody(mdl);
+            //await NotificacionComentarios.Enviar(body);
             return Ok(result);
+
 
         }
         [HttpGet]

@@ -70,6 +70,20 @@ namespace HD_Cobranza.Capturas
                 var result = await factory.SQL.QueryAsync<mdlResumenCartera_Clientes>("Equip.Credito.sp_Obtener_TotalCartera_Detalle_Cliente", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 List<mdlResumenCartera_Clientes> listado = result.ToList();
+                if (result.Count() > 0)
+                    listado.Add(new mdlResumenCartera_Clientes()
+                    {
+                        //idsucursal = result.First().idsucursal,
+                        linea = result.First().linea,
+                        //departamento = "TOTAL",
+                        sucursal = result.First().sucursal,
+                        documento = result.First().documento,
+                        vencimiento = result.First().vencimiento,
+                        diasvencido = result.First().diasvencido,
+                        saldo = result.Sum(x => x.saldo),
+                        interesbase = result.Sum(x => x.interesbase),
+                        importe = result.Sum(x => x.importe),
+                    });
                 return listado;
             }
             catch (System.Exception ex)

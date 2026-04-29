@@ -23,9 +23,9 @@ namespace HD.Clientes.Modelos
         [StringLength(50, ErrorMessage = "El campo Apellido Materno debe de contener una longitud maxima de 50 caracteres")]
         public string? apellido_materno { get; set; }
 
-        [Required(ErrorMessage = "El CURP es un valor requerido")]
+        //[Required(ErrorMessage = "El CURP es un valor requerido")]
         [RegularExpression(@"^[a-zA-Z0-9Ñ]+$", ErrorMessage = "El campo CURP debe estar formado por caracteres alfanumericos")]
-        [StringLength(18, MinimumLength = 18, ErrorMessage = "El campo CURP debe estar formado por 18 digitos")]
+        //[StringLength(18, MinimumLength = 18, ErrorMessage = "El campo CURP debe estar formado por 18 digitos")]
         public string? curp { get; set; }
 
         [Required(ErrorMessage = "El Sexo es un valor requerido")]

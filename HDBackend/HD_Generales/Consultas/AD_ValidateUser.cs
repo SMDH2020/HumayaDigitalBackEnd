@@ -30,6 +30,14 @@ namespace HD.Generales.Consultas
 
                 if (usuario == null) { usuario = new mdlLoginResult(); }
 
+
+
+                if (modulos.Count() == 0 || menus.Count() == 0)
+                {
+                    throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { mensaje = "No cuenta con permisos para acceder a la aplicación, favor de comunicarse con el administrador del sistema" });
+                }
+
+
                 return new mdlDatosSesion()
                 {
                     usuario = usuario,

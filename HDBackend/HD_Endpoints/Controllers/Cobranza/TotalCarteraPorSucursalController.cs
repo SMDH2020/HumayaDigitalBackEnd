@@ -19,33 +19,87 @@ namespace HD.Endpoints.Controllers.Cobranza
         }
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> Listado()
+        public async Task<ActionResult> Listado(string adr, string sucursal)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             ADCob_TotalCarteraPorSucursal datos = new ADCob_TotalCarteraPorSucursal(CadenaConexion);
-            var result = await datos.Listado();
+            string usuario = Sesion.usuario();
+            var result = await datos.Listado(adr, sucursal, usuario);
             return Ok(result);
 
         }
+
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> GenerarExcel()
+        public async Task<ActionResult> ListadoDetalle(string adr, string sucursal, int ejercicio, int periodo, string linea)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-            ADCob_TotalCarteraPorSucursal datos = new ADCob_TotalCarteraPorSucursal(CadenaConexion);
-            var result = await datos.Listado();
-            var docresult = await XLSCob_TotalCartera_Sucursal.CrearResumenPorSucursal(result);
+            ADCob_Total_Cartera_Detalle datos = new ADCob_Total_Cartera_Detalle(CadenaConexion);
+            string usuario = Sesion.usuario();
+            var result = await datos.Listado(adr, sucursal, ejercicio, periodo, linea, usuario);
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GenerarExcelDetalle(string adr, string sucursal, int ejercicio, int periodo, string linea)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADCob_Total_Cartera_Detalle datos = new ADCob_Total_Cartera_Detalle(CadenaConexion);
+            string usuario = Sesion.usuario();
+            var result = await datos.Listado(adr, sucursal, ejercicio, periodo, linea, usuario);
+            var docresult = await XLSFacturacionVencidas.CrearExcelTotalCartera(result);
             return Ok(docresult);
 
         }
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ReporteSucursalPDF()
+        public async Task<ActionResult> ListadoDetalleMensual(string adr, string sucursal, int ejercicio, int periodo, string linea)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADCob_Total_Cartera_Detalle datos = new ADCob_Total_Cartera_Detalle(CadenaConexion);
+            string usuario = Sesion.usuario();
+            var result = await datos.ListadoMensual(adr, sucursal, ejercicio, periodo, linea);
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GenerarExcelDetalleMensual(string adr, string sucursal, int ejercicio, int periodo, string linea)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADCob_Total_Cartera_Detalle datos = new ADCob_Total_Cartera_Detalle(CadenaConexion);
+            string usuario = Sesion.usuario();
+            var result = await datos.ListadoMensual(adr, sucursal, ejercicio, periodo, linea);
+            var docresult = await XLSFacturacionVencidas.CrearExcelTotalCartera(result);
+            return Ok(docresult);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GenerarExcel(string adr, string sucursal)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             ADCob_TotalCarteraPorSucursal datos = new ADCob_TotalCarteraPorSucursal(CadenaConexion);
-            var result = await datos.Listado();
+            string usuario = Sesion.usuario();
+            var result = await datos.Listado(adr, sucursal, usuario);
+            var docresult = await XLSCob_TotalCartera_Sucursal.CrearResumenPorSucursal(result);
+            return Ok(docresult);
+        }
+
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ReporteSucursalPDF(string adr, string sucursal)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADCob_TotalCarteraPorSucursal datos = new ADCob_TotalCarteraPorSucursal(CadenaConexion);
+            string usuario = Sesion.usuario();
+            var result = await datos.Listado(adr, sucursal, usuario);
 
             try
             {

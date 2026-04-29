@@ -23,16 +23,40 @@ namespace HD.Clientes.Consultas.SolicitudCredito
                 };
                 var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Solicitud_Credito_Enviar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 mdlSolicitudCredito_Enviar_View view = new mdlSolicitudCredito_Enviar_View();
-                view.mdlSolicitud = result.Read<mdlSolicitudCredito_Enviar>().FirstOrDefault();
+                view.mdlSolicitud = result.Read<mdlSolicitudCredito_Enviar>().ToList();
                 view.detail = result.Read<mdlSolicitudCredito_Enviar_Details>().FirstOrDefault();
                 factory.SQL.Close();
-                if (view.mdlSolicitud == null) view.mdlSolicitud = new mdlSolicitudCredito_Enviar();
+                //if (view.mdlSolicitud == null) view.mdlSolicitud = new mdlSolicitudCredito_Enviar();
                 if (view.detail == null) view.detail = new mdlSolicitudCredito_Enviar_Details();
                 return view;
             }
             catch (System.Exception ex)
             {
-                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { mensaje = ex.Message });
+            }
+        }
+        public async Task<mdlSolicitudCredito_Enviar_View> Enviar_Condiciones_Operacion(string folio, string usuario)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    folio,
+                    usuario
+                };
+                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Pedido_Enviar_Solicitud_Revision", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlSolicitudCredito_Enviar_View view = new mdlSolicitudCredito_Enviar_View();
+                view.mdlSolicitud = result.Read<mdlSolicitudCredito_Enviar>().ToList();
+                view.detail = result.Read<mdlSolicitudCredito_Enviar_Details>().FirstOrDefault();
+                factory.SQL.Close();
+                //if (view.mdlSolicitud == null) view.mdlSolicitud = new mdlSolicitudCredito_Enviar();
+                if (view.detail == null) view.detail = new mdlSolicitudCredito_Enviar_Details();
+                return view;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { mensaje = ex.Message });
             }
         }
     }

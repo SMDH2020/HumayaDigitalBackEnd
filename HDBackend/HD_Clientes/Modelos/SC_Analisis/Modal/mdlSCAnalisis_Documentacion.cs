@@ -3,6 +3,7 @@
     public class mdlSCAnalisis_Documentacion
     {
         public int iddocumento { get; set; }
+        public bool creo_solicitud { get; set; }
         public string? documento { get; set; }
         public bool habilitar { get; set; }
         public string? comentarios { get; set; }

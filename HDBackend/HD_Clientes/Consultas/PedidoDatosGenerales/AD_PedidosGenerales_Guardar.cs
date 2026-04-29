@@ -31,6 +31,8 @@ namespace HD.Clientes.Consultas.PedidoDatosGenerales
                     tiporelacion = mdl.tiporelacion,
                     anticipos = mdl.anticipos,
                     foliosanticipos = mdl.foliosanticipos,
+                    nombre_aval = mdl.nombre_aval,
+                    direccion_aval = mdl.direccion_aval,
                     usuario = mdl.usuario
                 };
                 await factory.SQL.QueryAsync("Credito.sp_Pedidos_Datos_Solicitante_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
