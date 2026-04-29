@@ -52,6 +52,8 @@ namespace HD_Finanzas.AccesoDatos
                 dashboard.Permisos = result.Read<mdl_Permisos_Dashboard_Financiero>().ToList();
                 dashboard.sucursalesPermiso = result.Read<mdl_Permisos_Dashboard_Sucursales>().ToList();
                 dashboard.rotacioninventario = result.Read<mdl_Rotacion_Inventario_Dashboard>().FirstOrDefault();
+                dashboard.rotacioncxc = result.Read<mdl_Rotacion_CXC>().FirstOrDefault();
+
                 factory.SQL.Close();
                 return dashboard;
             }

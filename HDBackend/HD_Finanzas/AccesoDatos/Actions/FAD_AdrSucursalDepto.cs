@@ -31,5 +31,30 @@ namespace HD_Finanzas.AccesoDatos.Actions
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { errores = ex.Message });
             }
         }
+
+        public async Task<Fmdl_ADRSucursal_Ejercicio_View> GetASDCXC(string IdUsuario, string Tipo = "G")
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    IdUsuario = IdUsuario,
+                    Tipo = Tipo
+                };
+
+                var result = await factory.SQL.QueryMultipleAsync("PixelCode.dbo.SP_Get_ADR_SUCURSAL_DEPARTAMENTO_CXC", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                Fmdl_ADRSucursal_Ejercicio_View mhusa = new Fmdl_ADRSucursal_Ejercicio_View();
+                mhusa.filtro = result.Read<FmdlADRScucursalDep>().ToList();
+                mhusa.fechas = result.Read<Fmdl_Ejercicios_Conciliaciones>().ToList();
+
+                factory.SQL.Close();
+                return mhusa;
+            }
+            catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { errores = ex.Message });
+            }
+        }
     }
 }
