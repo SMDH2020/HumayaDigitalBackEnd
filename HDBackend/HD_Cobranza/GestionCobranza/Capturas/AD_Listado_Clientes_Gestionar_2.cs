@@ -11,7 +11,7 @@ namespace HD_Cobranza.GestionCobranza.Capturas
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_Listado_Clientes_Gestionar_Prueba_2>> Clientes(string adr, string sucursal, string responsable, string linea, string cartera, string gestion, int ejercicio, int periodo)
+        public async Task<IEnumerable<mdl_Listado_Clientes_Gestionar_Prueba_2>> Clientes(string adr, string sucursal, string responsable, string linea, string cartera, string gestion, int ejercicio, int periodo, string reporte)
         {
             try
             {
@@ -24,11 +24,11 @@ namespace HD_Cobranza.GestionCobranza.Capturas
                     @cartera = cartera,
                     @gestion = gestion,
                     @ejercicio = ejercicio,
-                    @periodo = periodo
-
+                    @periodo = periodo,
+                    @reporte = reporte
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_Listado_Clientes_Gestionar_Prueba_2> result = await factory.SQL.QueryAsync<mdl_Listado_Clientes_Gestionar_Prueba_2>("Cartera_Clientes.Cobranza.sp_Obtener_Gestion_3", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Listado_Clientes_Gestionar_Prueba_2> result = await factory.SQL.QueryAsync<mdl_Listado_Clientes_Gestionar_Prueba_2>("Cartera_Clientes.Cobranza.sp_obtener_Gestion_Cobranza_Reporte", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

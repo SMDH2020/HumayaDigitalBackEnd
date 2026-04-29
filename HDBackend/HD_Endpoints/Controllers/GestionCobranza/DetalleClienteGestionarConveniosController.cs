@@ -34,37 +34,37 @@ namespace HD.Endpoints.Controllers.GestionCobranza
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ListadoParametros(int ejercicio, int periodo, string adr, string sucursal, int responsable)
+        public async Task<ActionResult> ListadoParametros(string? fechainicio, string? fechafin, string adr, string sucursal, int responsable, int objecion)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Detalle_Cliente_Gestionar_Convenios_Parametros datos = new AD_Detalle_Cliente_Gestionar_Convenios_Parametros(CadenaConexion);
-            var result = await datos.Get(ejercicio, periodo, adr, sucursal, responsable);
+            var result = await datos.Get(fechainicio, fechafin, adr, sucursal, responsable, objecion);
             return Ok(result);
         }
 
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ImprimirExcelReporte(int ejercicio, int periodo, string adr, string sucursal, int responsable)
+        public async Task<ActionResult> ImprimirExcelReporte(string? fechainicio, string? fechafin, string adr, string sucursal, int responsable, string? titulo, int objecion)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Detalle_Cliente_Gestionar_Convenios_Parametros datos = new AD_Detalle_Cliente_Gestionar_Convenios_Parametros(CadenaConexion);
-            var result = await datos.Get(ejercicio, periodo, adr, sucursal, responsable);
-            var docresult = await XLSCob_Listado_Convenios_Realizados.GenerarExcel(result, ejercicio, periodo);
+            var result = await datos.Get(fechainicio, fechafin, adr, sucursal, responsable, objecion);
+            var docresult = await XLSCob_Listado_Convenios_Realizados.GenerarExcel(result, titulo);
             return Ok(docresult);
         }
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ImprimirPDFReporte(int ejercicio, int periodo, string adr, string sucursal, int responsable)
+        public async Task<ActionResult> ImprimirPDFReporte(string? fechainicio, string? fechafin, string adr, string sucursal, int responsable, string? titulo, int objecion)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Detalle_Cliente_Gestionar_Convenios_Parametros datos = new AD_Detalle_Cliente_Gestionar_Convenios_Parametros(CadenaConexion);
-            var result = await datos.Get(ejercicio, periodo, adr, sucursal, responsable);
+            var result = await datos.Get(fechainicio, fechafin, adr, sucursal, responsable, objecion);
 
             try
             {
-                RPT_Result documento = RPT_Listado_Convenios_Realizados.GenerarPDF(result, ejercicio, periodo);
+                RPT_Result documento = RPT_Listado_Convenios_Realizados.GenerarPDF(result, titulo);
 
                 return Ok(documento);
             }

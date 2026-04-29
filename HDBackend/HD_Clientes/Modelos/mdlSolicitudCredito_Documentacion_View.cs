@@ -16,6 +16,8 @@ namespace HD.Clientes.Modelos
         [Required(ErrorMessage = "El documento es un valor requerido")]
         public string? documento { get; set; }
 
+        public string? nombreDocumento { get; set; }
+
         public string? comentarios { get; set; }
 
         [Required(ErrorMessage = "La existencia es un valor requerido")]

@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
 using HD_Cobranza.GestionCobranza.Modelos;
+using HD_Cobranza.Modelos;
 
 namespace HD_Cobranza.GestionCobranza.Capturas
 {
@@ -62,6 +63,27 @@ namespace HD_Cobranza.GestionCobranza.Capturas
 
                 IEnumerable<mdl_Obtener_Convenios_Cliente_Gestionar> result = await factory.SQL.QueryAsync<mdl_Obtener_Convenios_Cliente_Gestionar>("GestionCobranza.sp_Obtener_Convenios_Cliente_Gestionar_Revolvente", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<mdlPedidos_Facturados> ObtenerInformacionCreditoFactura(string folio,string documento)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    folio, documento
+                };
+
+                mdlPedidos_Facturados result = await factory.SQL.QueryFirstOrDefaultAsync<mdlPedidos_Facturados>("GestionCobranza.sp_Facturas_Obtener_Informacion_Credito", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                if (result is null) result = new mdlPedidos_Facturados();
                 return result;
             }
             catch (System.Exception ex)

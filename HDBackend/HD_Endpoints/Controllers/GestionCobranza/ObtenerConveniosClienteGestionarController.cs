@@ -43,5 +43,15 @@ namespace HD.Endpoints.Controllers.GestionCobranza
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerInfoCredito(string folio,string documento)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Convenios_Cliente_Gestionar datos = new AD_Obtener_Convenios_Cliente_Gestionar(CadenaConexion);
+            var result = await datos.ObtenerInformacionCreditoFactura(folio,documento);
+            return Ok(result);
+        }
+
     }
 }

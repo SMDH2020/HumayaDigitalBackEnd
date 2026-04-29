@@ -4,10 +4,13 @@ using HD.Clientes.Consultas.PedidoImpresion;
 using HD.Clientes.Consultas.SolicitudCreditoDocumento;
 using HD.Clientes.Modelos;
 using HD.Notifications.Analisis;
+using HD.Notifications.Consultas;
+using HD.Notifications.NotificacionesApp;
 using HD.Security;
 using HD_Reporteria.Pagares;
 using HD_Reporteria.Solicitud_Credito;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 
 namespace HD.Endpoints.Controllers.Credito
 {
@@ -28,6 +31,14 @@ namespace HD.Endpoints.Controllers.Credito
             ADSolicitudCredito_Documentacion_Guardar datos = new ADSolicitudCredito_Documentacion_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.Guardar(mdl);
+
+            string origen = Sesion.origen();
+            if (Sesion.generarLog() == true && origen == "APP")
+            {
+                NE_Logs_App_HD log = new NE_Logs_App_HD(CadenaConexion);
+                await log.Guardar($"Se cargo el documento {mdl.iddocumento} de la siguiente solicitud: {mdl.folio}", origen, Sesion.usuario());
+            }
+
             return Ok(result);
 
         }
@@ -48,6 +59,14 @@ namespace HD.Endpoints.Controllers.Credito
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             ADSolicitudCredito_Documentacion_ObtenerDocumento datos = new ADSolicitudCredito_Documentacion_ObtenerDocumento(CadenaConexion);
             var result = await datos.Obtener(folio, iddocumento);
+
+            string origen = Sesion.origen();
+            if (Sesion.generarLog() == true && origen == "APP")
+            {
+                NE_Logs_App_HD log = new NE_Logs_App_HD(CadenaConexion);
+                await log.Guardar($"Descargo el documento {iddocumento} del folio: {folio}", origen, Sesion.usuario());
+            }
+
             if (result is null)
                 return BadRequest(new { mensaje = "Documento no encontrado. Favor de comunicarse con el administrador del sistema" });
             return Ok(result);
@@ -357,10 +376,32 @@ namespace HD.Endpoints.Controllers.Credito
         {
 
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            string OneSignalAppId = Configuracion["OneSignal:AppIDProduccion"];
+            string OneSignalApiKey = Configuracion["OneSignal:ApyKeyproduccion"];
             ADSolicitud_Credito_Documentacion_JDF_Guardar datos = new ADSolicitud_Credito_Documentacion_JDF_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.Guardar(mdl);
+
+            if (result.notificar.notificar == 1)
+            {
+                await NotificacionComentarios.EnviarCargaDocumentosVendedor(result, mdl.folio);
+
+                //enviar notificacion
+                var usuariosNotificados = string.Join(",", result.mdlSolicitud?.Select(u => u.idempleado.ToString()) ?? new List<string>());
+                var usuario = Sesion.usuario();
+                var textoCliente = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result.notificar.cliente.ToLower());
+                var idevento = mdl.folio.Substring(0, 2) == "PC" ? 3 : 1;
+                var referencia = 9;
+
+                AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
+                var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, result.notificar.vendedor + " cargo toda la documentación del cliente " + textoCliente, mdl.folio, usuariosNotificados);
+
+                AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion, OneSignalAppId, OneSignalApiKey);
+                await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
+            }
+
             return Ok(result);
+
 
         }
 

@@ -24,12 +24,12 @@ namespace HD.Clientes.Modelos
         public string dfechaentrega => fechaentrega.ToString("yyyy-MM-dd");
 
         [Required(ErrorMessage = "El domicilio es un valor requerido")]
-        [RegularExpression(@"^[ , ñÑ. #  A-Za-z0-9]+$", ErrorMessage = "El campo domicilio debe estar formado por letras y numeros")]
+        [RegularExpression(@"^[ á í ó é ú , ñÑ. #  A-Za-z0-9]+$", ErrorMessage = "El campo domicilio debe estar formado por letras y numeros")]
         [StringLength(100, MinimumLength = 1, ErrorMessage = "El campo domicilio admite como maximo 100 caracteres")]
         public string? domicilio { get; set; }
 
         [Required(ErrorMessage = "El lugar de entrega es un valor requerido")]
-        [RegularExpression(@"^[  ñÑ, . #  A-Za-z0-9]+$", ErrorMessage = "El campo lugar de entrega debe estar formado por letras y numeros")]
+        [RegularExpression(@"^[  á í ó ú é  ñÑ, . #  A-Za-z0-9]+$", ErrorMessage = "El campo lugar de entrega debe estar formado por letras y numeros")]
         [StringLength(100, MinimumLength = 1, ErrorMessage = "El campo lugar de entrega admite como maximo 100 caracteres")]
         public string? lugarentrega { get; set; }
 
@@ -51,7 +51,7 @@ namespace HD.Clientes.Modelos
 
 
         [Required(ErrorMessage = "El uso de CFDI es un valor requerido")]
-        [RegularExpression(@"^[0-9GIP]+$", ErrorMessage = "El campo uso de cfdi debe estar formado por 3 numeros")]
+        [RegularExpression(@"^[0-9SGIP]+$", ErrorMessage = "El campo uso de cfdi debe estar formado por 3 numeros")]
         [StringLength(3, MinimumLength = 3, ErrorMessage = "El campo uso de cfdi debe estar formado por 3 digitos")]
         public string? usocfdi { get; set; }
 

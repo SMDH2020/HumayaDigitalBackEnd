@@ -9,6 +9,8 @@ namespace HD.Clientes.Modelos.SC_Analisis.Credito_Condicionados
     public class mdlSCCredito_Condicionado
     {
         public string? folio { get; set; }
+        public string? cliente { get; set; }
+
         public string? usuario { get; set; }
 
     }

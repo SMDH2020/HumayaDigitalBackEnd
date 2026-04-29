@@ -3,6 +3,7 @@
     public class mdlSolicitudCredito_Enviar_Details
     {
         public string? folio { get; set; }
+        public string? folio_solicitud { get; set; }
         public int idvendedor { get; set; }
         public string? vendedor { get; set; }
         public string? fecha { get; set; }

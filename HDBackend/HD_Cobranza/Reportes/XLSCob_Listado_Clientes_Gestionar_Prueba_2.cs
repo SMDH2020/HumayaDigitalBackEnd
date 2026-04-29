@@ -53,8 +53,8 @@ namespace HD_Cobranza.Reportes
                     var sheet = workbook.Worksheets.Add(sheetname);
                     sheet.Style.Font.FontName = "Calibri";
                     sheet.Style.Font.FontSize = 10;
-
-                    int renglon = XLSEncabezado.Encabezado(ref sheet, $"LISTADO DE CLIENTES A GESTIONAR", 15);
+                  
+                    int renglon = XLSEncabezado.Encabezado(ref sheet, $"LISTADO DE CLIENTES A GESTIONAR", 23);
 
                     //renglon += 1;
 
@@ -76,23 +76,31 @@ namespace HD_Cobranza.Reportes
                     //renglon++;
 
                     sheet.Cell(renglon, 1).Value = "CLIENTE";
-                    sheet.Cell(renglon, 2).Value = "VENCIMIENTO";
-                    sheet.Cell(renglon, 3).Value = "OBJETIVO";
-                    sheet.Cell(renglon, 4).Value = "CAPITAL";
-                    sheet.Cell(renglon, 5).Value = "INT. NORMAL";
-                    sheet.Cell(renglon, 6).Value = "INT. MORATORIO";
-                    sheet.Cell(renglon, 7).Value = "TOTAL";
-                    sheet.Cell(renglon, 8).Value = "RECUERADO";
-                    sheet.Cell(renglon, 9).Value = "FECHA RECUPERACION";
-                    sheet.Cell(renglon, 10).Value = "FECHA CONTACTO";
-                    sheet.Cell(renglon, 11).Value = "FECHA COMPROMISO";
-                    sheet.Cell(renglon, 12).Value = "CONVENIO";
-                    sheet.Cell(renglon, 13).Value = "OBJECION";
-                    sheet.Cell(renglon, 14).Value = "OBSERVACIONES";
-                    sheet.Cell(renglon, 15).Value = "RESPONSABLE";
+                    sheet.Cell(renglon, 2).Value = "ESTADO";
+                    sheet.Cell(renglon, 3).Value = "SUCURSAL";
+                    sheet.Cell(renglon, 4).Value = "CREDITO";
+                    sheet.Cell(renglon, 5).Value = "DOCUMENTO";
+                    sheet.Cell(renglon, 6).Value = "DIAS VENCIDOS";
+                    sheet.Cell(renglon, 7).Value = "VENCIMIENTO";
+                    sheet.Cell(renglon, 8).Value = "CAPITAL";
+                    sheet.Cell(renglon, 9).Value = "INT. NORMAL";
+                    sheet.Cell(renglon, 10).Value = "INT. MORATORIO";
+                    sheet.Cell(renglon, 11).Value = "TOTAL";
+                    sheet.Cell(renglon, 12).Value = "OBJETIVO";
+                    sheet.Cell(renglon, 13).Value = "RECUPERADO";
+                    sheet.Cell(renglon, 14).Value = "SALDO";
+                    sheet.Cell(renglon, 15).Value = "FECHA RECUPERACION";
+                    sheet.Cell(renglon, 16).Value = "FECHA CONTACTO";
+                    sheet.Cell(renglon, 17).Value = "FECHA COMPROMISO";
+                    sheet.Cell(renglon, 18).Value = "CONVENIO";
+                    sheet.Cell(renglon, 19).Value = "COMENTARIO";
+                    sheet.Cell(renglon, 20).Value = "OBJECION";
+                    sheet.Cell(renglon, 21).Value = "OBSERVACIONES";
+                    sheet.Cell(renglon, 22).Value = "RESPONSABLE";
+                    sheet.Cell(renglon, 23).Value = "CULTIVO";
 
                     // Estilo para los encabezados de la tabla
-                    var rango = sheet.Range(renglon, 1, renglon, 15);
+                    var rango = sheet.Range(renglon, 1, renglon, 23);
                     rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
                     rango.Style.Font.Bold = true;
                     rango.Style.Font.FontSize = 12;
@@ -105,28 +113,38 @@ namespace HD_Cobranza.Reportes
                     foreach (var det in detalle)
                     {
                         sheet.Cell(renglon, 1).Value = det.razon_social?.ToUpper();
-                        sheet.Cell(renglon, 2).Value = det.vencimiento;
-                        sheet.Cell(renglon, 3).Value = det.objetivo;
-                        sheet.Cell(renglon, 4).Value = det.capital;
-                        sheet.Cell(renglon, 5).Value = det.interes_normal;
-                        sheet.Cell(renglon, 6).Value = det.interes_moratorio;
-                        sheet.Cell(renglon, 7).Value = det.saldo_total;
-                        sheet.Cell(renglon, 8).Value = det.recuperado;
-                        sheet.Cell(renglon, 9).Value = det.fecha_recuperacion;
-                        sheet.Cell(renglon, 10).Value = det.fecha_contacto;
-                        sheet.Cell(renglon, 11).Value = det.fecha_compromiso;
-                        sheet.Cell(renglon, 12).Value = det.convenio;
-                        sheet.Cell(renglon, 13).Value = det.objecion;
-                        sheet.Cell(renglon, 14).Value = det.observaciones;
-                        sheet.Cell(renglon, 15).Value = det.nombre_responsable?.ToUpper();
+                        sheet.Cell(renglon, 2).Value = det.adr;
+                        sheet.Cell(renglon, 3).Value = det.sucursal;
+                        sheet.Cell(renglon, 4).Value = det.linea_credito == "R" ? "REVOLVENTE" : "OPERACION";
+                        sheet.Cell(renglon, 5).Value = det.documento == "0" ? "-" : det.documento;
+                        sheet.Cell(renglon, 6).Value = det.dias_vencidos;
+                        sheet.Cell(renglon, 7).Value = det.vencimiento;
+                        sheet.Cell(renglon, 8).Value = det.capital;
+                        sheet.Cell(renglon, 9).Value = det.interes_normal;
+                        sheet.Cell(renglon, 10).Value = det.interes_moratorio;
+                        sheet.Cell(renglon, 11).Value = det.saldo_total;
+                        sheet.Cell(renglon, 12).Value = det.objetivo;
+                        sheet.Cell(renglon, 13).Value = det.recuperado;
+                        sheet.Cell(renglon, 14).Value = det.saldo;
+                        sheet.Cell(renglon, 15).Value = det.fecha_recuperacion;
+                        sheet.Cell(renglon, 16).Value = det.fecha_contacto;
+                        sheet.Cell(renglon, 17).Value = det.fecha_compromiso;
+                        sheet.Cell(renglon, 18).Value = det.convenio;
+                        sheet.Cell(renglon, 19).Value = det.comentario;
+                        sheet.Cell(renglon, 20).Value = det.objecion;
+                        sheet.Cell(renglon, 21).Value = det.observaciones;
+                        sheet.Cell(renglon, 22).Value = det.nombre_responsable?.ToUpper();
+                        sheet.Cell(renglon, 23).Value = det.cultivo?.ToUpper();
                         renglon++;
                     }
 
-                    sheet.Column(3).Style.NumberFormat.Format = "#,##0.00";
-                    sheet.Column(4).Style.NumberFormat.Format = "#,##0.00";
-                    sheet.Column(5).Style.NumberFormat.Format = "#,##0.00";
-                    sheet.Column(6).Style.NumberFormat.Format = "#,##0.00";
-                    sheet.Column(7).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(8).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(9).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(10).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(11).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(12).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(13).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(14).Style.NumberFormat.Format = "#,##0.00";
 
                     //sheet.Column(6).Style.NumberFormat.Format = "#,##0.00";
                     //sheet.Column(7).Style.NumberFormat.Format = "0.0 %";

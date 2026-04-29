@@ -1,8 +1,12 @@
 ﻿using HD.Clientes.Consultas.SolicitudCredito;
 using HD.Clientes.Modelos;
+using HD.Endpoints.Controllers.Eventos;
 using HD.Notifications.Analisis;
+using HD.Notifications.Consultas;
+using HD.Notifications.NotificacionesApp;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
+using static HD.Endpoints.Controllers.Eventos.NotificacionesController;
 
 namespace HD.Endpoints.Controllers.Credito
 {
@@ -23,6 +27,14 @@ namespace HD.Endpoints.Controllers.Credito
             AD_SolicitudCredito_Guardar datos = new AD_SolicitudCredito_Guardar(CadenaConexion);
             mdl.usuario = mdl.usuario == "" ? Sesion.usuario() : mdl.usuario;
             var result = await datos.Guardar(mdl);
+
+            string origen = Sesion.origen();
+            if (Sesion.generarLog() == true && origen == "APP" )
+            {
+                NE_Logs_App_HD log = new NE_Logs_App_HD(CadenaConexion);
+                await log.Guardar($"Creo una solicitud de credito con folio:  {result.solicitud_credito.folio}", origen, Sesion.usuario());
+            }
+
             return Ok(result);
         }
 
@@ -80,15 +92,40 @@ namespace HD.Endpoints.Controllers.Credito
         public async Task<ActionResult> enviarCondicionesOperacion(string folio)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            string OneSignalAppId = Configuracion["OneSignal:AppIDProduccion"];
+            string OneSignalApiKey = Configuracion["OneSignal:ApyKeyproduccion"];
             AD_SolcitudCredito_Enviar datos = new AD_SolcitudCredito_Enviar(CadenaConexion);
             var result = await datos.Enviar_Condiciones_Operacion(folio, Sesion.usuario());
             string mensaje = "Validación de condiciones en proceso";
 
+            //enviar correo
             if (result != null)
             {
                 await NSolicitud_Enviar.Enviar(result);
             }
 
+            //guardar log de actividad en app
+            string origen = Sesion.origen();
+            if (Sesion.generarLog() == true && origen == "APP")
+            {
+                NE_Logs_App_HD log = new NE_Logs_App_HD(CadenaConexion);
+                await log.Guardar($"Se envio a analisis el pedido con folio: {folio}", origen, Sesion.usuario());
+            }
+
+
+            //enviar notificacion
+            var usuariosNotificados = string.Join(",",result.mdlSolicitud?.Select(u => u.idempleado.ToString())?? new List<string>());
+            var usuario = Sesion.usuario();
+            var idevento = 1;
+            var referencia = 9;
+
+            AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
+            var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, $"Se envio a analisis el pedido con folio: {folio}", folio, usuariosNotificados);
+
+            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion, OneSignalAppId, OneSignalApiKey);
+            await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
+
+            //Retornar info
             var response = new mdlAnalisis_Mhusa_Resultado
             {
                 socket = result.mdlSolicitud

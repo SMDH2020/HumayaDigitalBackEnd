@@ -18,6 +18,11 @@ builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Limits.MaxRequestBodySize = 104857600; // 100 MB
+});
+
 // Register HttpClient
 builder.Services.AddHttpClient();
 
@@ -75,12 +80,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
 app.UseRouting();
+app.UseCors("corsApp");
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseHttpsRedirection();
+
+
+
 app.UseMiddleware<ManejadorMiddlewares>();
-app.UseCors("corsApp");
+
 
 app.UseEndpoints(endpoints =>
 {

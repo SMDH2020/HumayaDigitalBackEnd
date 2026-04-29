@@ -6,6 +6,9 @@ using HD.Clientes.Modelos.SC_Analisis.Credito_Condicionados;
 using HD.Notifications.Analisis;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
+using HD.Notifications.Consultas;
+using System.Globalization;
+using System.Net.Sockets;
 
 namespace HD.Endpoints.Controllers.AnalisisCredito.Credito_Condicionado
 {
@@ -34,9 +37,26 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Credito_Condicionado
         public async Task<ActionResult> CrearCondicionado(mdlSCCredito_Condicionado mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            string OneSignalAppId = Configuracion["OneSignal:AppIDProduccion"];
+            string OneSignalApiKey = Configuracion["OneSignal:ApyKeyproduccion"];
             AD_Credito_Condicionado_Enviar datos = new AD_Credito_Condicionado_Enviar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.BuscarFolio(mdl);
+
+
+            //enviar notificacion
+            var usuariosNotificados = string.Join(",", result.mdlSolicitud.Select(u => u.idempleado.ToString()) ?? new List<string>());
+            var usuario = Sesion.usuario();
+            var textoCliente = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(mdl.cliente.ToLower());
+            var idevento = 2;
+            var referencia = 9;
+
+            AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
+            var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, "Se habilito credito condicionado para " + textoCliente, mdl.folio, usuariosNotificados);
+
+            AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion, OneSignalAppId, OneSignalApiKey);
+            await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
+
             return Ok(result);
 
         }
@@ -57,6 +77,8 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Credito_Condicionado
         public async Task<ActionResult> FinalizaCreditoCondicionado(mdlSCAnalisis_Comentarios mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            string OneSignalAppId = Configuracion["OneSignal:AppIDProduccion"];
+            string OneSignalApiKey = Configuracion["OneSignal:ApyKeyproduccion"];
             AD_Finaliza_Credito_Condicionado_Guardar datos = new AD_Finaliza_Credito_Condicionado_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.Guardar(mdl);
@@ -67,6 +89,19 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Credito_Condicionado
             else
             {
                 await NotificacionComentarios.Enviar_Mhusa(result);
+
+                //enviar notificacion
+                var usuariosNotificados = string.Join(",", result.mdlSolicitud.Select(u => u.idempleado.ToString()) ?? new List<string>());
+                var usuario = Sesion.usuario();
+                var textoCliente = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result.mdldatos.cliente.ToLower());
+                var idevento = mdl.folio.Substring(0, 2) == "CC" ? 2 : mdl.folio.Substring(0, 2) == "RC" ? 4 : 1;
+                var referencia = 9;
+
+                AD_Conseguir_Mensaje_Manual usuarios = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
+                var resultado = await usuarios.GuardarNotificacionSolicitud(idevento, referencia, "Se finalizo timeline de " + textoCliente, idevento == 2 ? result.mdldatos.folio_solicitud : mdl.folio, usuariosNotificados);
+
+                AD_HD_Notificaciones_Enviar_Push notificacionPush = new AD_HD_Notificaciones_Enviar_Push(CadenaConexion, OneSignalAppId, OneSignalApiKey);
+                await notificacionPush.Enviar_Notificacion_Solicitud(resultado, "Humaya Digital");
 
             }
             var response = new mdlAnalisis_Mhusa_Resultado

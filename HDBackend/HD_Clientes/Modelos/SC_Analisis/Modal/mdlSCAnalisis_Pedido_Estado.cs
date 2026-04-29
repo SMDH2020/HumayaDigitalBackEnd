@@ -10,6 +10,7 @@
         public string? icono { get; set; }
         public  bool creador { get; set; }
         public int idproceso { get; set; }
+        public DateTime fecha_pagare { get; set; }
 
     }
 }

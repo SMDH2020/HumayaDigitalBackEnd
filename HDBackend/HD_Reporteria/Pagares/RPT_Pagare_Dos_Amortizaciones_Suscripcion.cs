@@ -233,7 +233,7 @@ namespace HD_Reporteria.Pagares
                                         {
                                             DateTime fechaActual = DateTime.Now;
                                             string ciudad = mdl.ubicacion.sucursal == "SANTIAGO I." ? "SANTIAGO IXCUINTLA" : mdl.ubicacion.sucursal;
-                                            txt2.Span(ciudad + ", " + mdl.ubicacion?.estado + " " + fechaActual.ToString("dd 'DE' MMMM 'DEL' yyyy").ToUpper()).FontSize(10).FontFamily("arial");
+                                            txt2.Span(ciudad + ", " + mdl.ubicacion?.estado + " " + mdl.ubicacion?.fecha_pagare.ToString("dd 'DE' MMMM 'DEL' yyyy").ToUpper()).FontSize(10).FontFamily("arial");
                                         });
                                     }
                                 });
@@ -267,7 +267,7 @@ namespace HD_Reporteria.Pagares
                                 {
                                     txt1.Item().Height(15).AlignCenter().Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.firmas.suscriptor).FontSize(10).FontFamily(fontFamily);
+                                        txt2.Span(mdl.firmas.suscriptor).FontSize(08).FontFamily(fontFamily);
                                         //txt2.Span("NAVOLATO").FontSize(10);
                                     });
                                 });
@@ -277,7 +277,7 @@ namespace HD_Reporteria.Pagares
                                 {
                                     txt1.Item().Height(15).AlignCenter().Text(txt2 =>
                                     {
-                                        txt2.Span(mdl.firmas.aval).FontSize(10).FontFamily(fontFamily);
+                                        txt2.Span(mdl.firmas.aval).FontSize(08).FontFamily(fontFamily);
                                         //txt2.Span("NAVOLATO").FontSize(10);
                                     });
                                 });

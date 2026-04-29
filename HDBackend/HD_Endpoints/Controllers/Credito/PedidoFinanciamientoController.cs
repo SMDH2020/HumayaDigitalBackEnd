@@ -1,6 +1,7 @@
 ﻿using HD.Clientes.Consultas.PedidoFinanciamiento;
 using HD.Clientes.Consultas.PedidoUnidades;
 using HD.Clientes.Modelos;
+using HD.Notifications.NotificacionesApp;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,8 +25,29 @@ namespace HD.Endpoints.Controllers.Credito
             await datos.Guardar(mdl);
             //AD_ClientesDatosPersonaFisica_Guardar datosfisica = new AD_ClientesDatosPersonaFisica_Guardar(CadenaConexion);
             //await datosfisica.Guardar(mdl);
+            string origen = Sesion.origen();
+            if (Sesion.generarLog() == true && origen == "APP")
+            {
+                NE_Logs_App_HD log = new NE_Logs_App_HD(CadenaConexion);
+                await log.Guardar($"Se registro una amortizacion del pedido con folio: {mdl.folio}", origen, Sesion.usuario());
+            }
+
             return Ok(new { mensaje = "datos cargados con exito" });
         }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> TablaAmortizaciones(mdlTabla_Amortizaciones mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_PedidoFinanciamiento_Guardar datos = new AD_PedidoFinanciamiento_Guardar(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.CrearTablaAmortizacion(mdl);
+            //AD_ClientesDatosPersonaFisica_Guardar datosfisica = new AD_ClientesDatosPersonaFisica_Guardar(CadenaConexion);
+            //await datosfisica.Guardar(mdl);
+            return Ok(result);
+        }
+
         [HttpGet]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> Listado(string folio)
@@ -44,6 +66,18 @@ namespace HD.Endpoints.Controllers.Credito
             AD_PedidoFinanciamiento_DeleteRow datos = new AD_PedidoFinanciamiento_DeleteRow(CadenaConexion);
 
             var result = await datos.Delete(folio, docto, Sesion.usuario());
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> DeleteAll(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_PedidoFinanciamiento_DeleteRow datos = new AD_PedidoFinanciamiento_DeleteRow(CadenaConexion);
+
+            var result = await datos.DeleteAll(folio);
             return Ok(result);
 
         }

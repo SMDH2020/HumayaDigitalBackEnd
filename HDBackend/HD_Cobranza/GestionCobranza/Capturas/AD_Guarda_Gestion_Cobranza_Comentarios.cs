@@ -32,6 +32,7 @@ namespace HD_Cobranza.GestionCobranza.Capturas
                     @razon_descuento = mdl.razon_descuento,
                     @usuario = mdl.usuario,
                     @detalle = mdl.detalle,
+                    @categoria = mdl.categoria,
                     @gestion = mdl.gestion,
                     @objecion = mdl.objecion,
                     @comentarios = mdl.comentarios,

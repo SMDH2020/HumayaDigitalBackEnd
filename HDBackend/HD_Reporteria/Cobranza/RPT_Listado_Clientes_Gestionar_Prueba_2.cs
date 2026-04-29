@@ -109,6 +109,7 @@ namespace HD_Reporteria.Cobranza
                                         Columns.RelativeColumn(0.6f);
                                         Columns.RelativeColumn(0.6f);
                                         Columns.RelativeColumn(0.8f);
+                                        Columns.RelativeColumn(0.6f);
                                         Columns.RelativeColumn(0.8f);
                                         Columns.RelativeColumn(0.8f);
                                         Columns.RelativeColumn(0.8f);
@@ -125,8 +126,6 @@ namespace HD_Reporteria.Cobranza
                                         header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("VENCIMIENTO").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
-                                        .Padding(1).Text("OBJETIVO").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                        header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("CAPITAL").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("INT. NORMAL").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
@@ -135,7 +134,11 @@ namespace HD_Reporteria.Cobranza
                                         header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("TOTAL").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                       .Padding(1).Text("OBJETIVO").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("RECUPERADO").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                       .Padding(1).Text("SALDO").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("FECHA REC.").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
@@ -143,7 +146,7 @@ namespace HD_Reporteria.Cobranza
                                         header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("FECHA COMP.").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
-                                        .Padding(1).Text("CONVENIO").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                        .Padding(1).Text("CONV.").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("OBJECION").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
                                         header.Cell().BorderBottom(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
@@ -162,9 +165,6 @@ namespace HD_Reporteria.Cobranza
                                        .Text(det.vencimiento).FontSize(8).FontFamily(fontFamily);
 
                                         tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
-                                       .Text(det.objetivo.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-
-                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
                                        .Text(det.capital.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                         tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
@@ -177,7 +177,13 @@ namespace HD_Reporteria.Cobranza
                                        .Text(det.saldo_total.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                         tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                       .Text(det.objetivo.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
                                        .Text(det.recuperado.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
+                                       .Text(det.saldo.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                         tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignCenter().AlignMiddle().PaddingRight(3).PaddingVertical(3).ShowEntire()
                                        .Text(det.fecha_recuperacion).FontSize(8).FontFamily(fontFamily);

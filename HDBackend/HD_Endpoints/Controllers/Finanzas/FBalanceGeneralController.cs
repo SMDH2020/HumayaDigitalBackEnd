@@ -5,6 +5,9 @@ using HD_Finanzas.Modelos;
 using HD_Finanzas.Modelos.Balance_General;
 using Enlace.Dapper.Reportes;
 using HD_Finanzas.AccesoDatos.BalanceGeneral.Complementos;
+using HD_Reporteria.Cobranza;
+using HD_Reporteria.Finanzas;
+using HD_Reporteria;
 
 namespace HD.Endpoints.Controllers.Finanzas
 {
@@ -45,6 +48,27 @@ namespace HD.Endpoints.Controllers.Finanzas
             AD_BalanceGeneral bg = new AD_BalanceGeneral(CadenaConexion);
             var result = await bg.GetBalanceConsolidado(vm);
             return Ok(await DocBalanceGeneralConsolidado.CrearExcel(result, vm));
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> BalanceGeneralPDF(vmBalanceGeneral vm)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_BalanceGeneral bg = new AD_BalanceGeneral(CadenaConexion);
+            var result = await bg.GetBalanceGeneral(vm);
+
+            try
+            {
+                RPT_Result documento = RPT_Balanze_General_PDF.Generar(result, vm.periodo, vm.Ejercicio);
+
+                return Ok(documento);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error de servidor");
+
+            }
         }
     }
 }

@@ -324,7 +324,8 @@ namespace HD_Reporteria.GestionCobranza
                                                 //        Columns.RelativeColumn(1.4f);
                                                 //    });
 
-                                                col1.Item().ShowEntire().Column(column =>
+                                                //col1.Item().ShowEntire().Column(column =>
+                                                col1.Item().Column(column =>
                                                 {
                                                     column.Item().PaddingTop(10).Text(txt =>
                                                     {
@@ -433,61 +434,6 @@ namespace HD_Reporteria.GestionCobranza
                                             }
                                         }
                                     });
-                                    //col1.Item().PaddingTop(10).Table(tablaCliente =>
-                                    //{
-                                    //    var referenciasUnicas = registrosRefaccionesYTaller.Select(x => x.referencia).Distinct();
-                                    //    var primeraReferencia = registrosRefaccionesYTaller.Select(x => x.referencia).First();
-                                    //    var registrosVencidos1a30 = registrosRefaccionesYTaller.Where(x => x.diasvencido >= 1 && x.diasvencido <= 30);
-                                    //    var registrosVencidos31a60 = registrosRefaccionesYTaller.Where(x => x.diasvencido >= 31 && x.diasvencido <= 60);
-                                    //    var registrosVencidos61a90 = registrosRefaccionesYTaller.Where(x => x.diasvencido >= 61 && x.diasvencido <= 90);
-                                    //    var registrosVencidosmas90 = registrosRefaccionesYTaller.Where(x => x.diasvencido >= 91);
-                                    //    var registrosporVencer = registrosRefaccionesYTaller.Where(x => x.diasvencido <= 0);
-
-                                    //    double sumaVencidos1a30 = registrosVencidos1a30.Sum(x => x.saldo);
-                                    //    double sumaVencidos31a60 = registrosVencidos31a60.Sum(x => x.saldo);
-                                    //    double sumaVencidos61a90 = registrosVencidos61a90.Sum(x => x.saldo);
-                                    //    double sumaVencidosmas90 = registrosVencidosmas90.Sum(x => x.saldo);
-                                    //    double sumaporVencer = registrosporVencer.Sum(x => x.saldo);
-
-
-
-                                    //    double sumaVencidoTotal = sumaVencidos1a30 + sumaVencidos31a60 + sumaVencidos61a90 + sumaVencidosmas90;
-                                    //    double sumaVencidoporVencer = sumaporVencer + sumaVencidoTotal;
-                                    //    double sumaTotalPagado = registrosRefaccionesYTaller.Sum(x => x.importepagado);
-
-                                    //    tablaCliente.ColumnsDefinition(columns =>
-                                    //    {
-                                    //        columns.RelativeColumn(1f);
-                                    //        columns.RelativeColumn(1f);
-                                    //        //columns.RelativeColumn(1f);
-                                    //        //columns.RelativeColumn(1f);
-                                    //        //columns.RelativeColumn(1f);
-                                    //    });
-
-                                    //    //tablaCliente.Header(header =>
-                                    //    //{
-                                    //    //    header.Cell().Border(1).BorderColor("#D3D3D3").Background("#275027").AlignCenter().AlignMiddle()
-                                    //    //        .Padding(1).Text("NÚMERO DE REFERENCIA").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    //    //    header.Cell().Border(1).BorderColor("#D3D3D3").AlignCenter().AlignMiddle()
-                                    //    //          .Padding(1).Text(primeraReferencia).FontSize(8).FontFamily(fontFamily).FontColor("#000");
-                                    //    //    //header.Cell().Border(1).BorderColor("#D3D3D3").Background("#275027").AlignCenter().AlignMiddle()
-                                    //    //    //    .Padding(1).Text("NOMBRE DEL CLIENTE").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    //    //    //header.Cell().ColumnSpan(2).Border(1).BorderColor("#D3D3D3").AlignCenter().AlignMiddle()
-                                    //    //    //    .Padding(1).Text(registrosRefaccionesYTaller.FirstOrDefault().razonsocial).FontSize(8).FontFamily(fontFamily).FontColor("#000");
-                                    //    //});
-
-                                    //    //tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("VENCIDO DE UNO A 30 DIAS\n" + sumaVencidos1a30.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                    //    //tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("VENCIDO DE 31 A 60 DIAS\n" + sumaVencidos31a60.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                    //    //tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("VENCIDO DE 61 A 90 DIAS\n" + sumaVencidos61a90.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                    //    //tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("VENCIDO MÁS DE 90 DIAS\n" + sumaVencidosmas90.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                    //    //tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("TOTAL VENCIDO\n" + sumaVencidoTotal.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-
-                                    //    //tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("POR VENCER\n" + sumaporVencer.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                    //    //tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("VENCIDO Y POR VENCER\n" + sumaVencidoporVencer.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                    //    //tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("SALDO A FAVOR\n" + "0").FontSize(8).FontFamily(fontFamily);
-                                    //    //tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("SALDO NETO + INTS.\n" + sumaImporteTotal.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                    //    //tablaCliente.Cell().Border(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("TOTAL PAGADO\n" + sumaTotalPagado.ToString("N2")).FontSize(8).FontFamily(fontFamily);
-                                    //});
                                 }
 
                                 if (registrosOtros.Any() && registrosRefaccionesYTaller.Any())
@@ -594,7 +540,8 @@ namespace HD_Reporteria.GestionCobranza
                                         txt.Span(CapitalizeWords(registrosOtros.FirstOrDefault().sucursal)).FontSize(10);
                                     });
 
-                                    col1.Item().PaddingVertical(4).ShowEntire().Table(tabla =>
+                                    //col1.Item().PaddingVertical(4).ShowEntire().Table(tabla =>
+                                    col1.Item().PaddingVertical(4).Table(tabla =>
                                     {
                                         tabla.ColumnsDefinition(Columns =>
                                         {
@@ -722,24 +669,25 @@ namespace HD_Reporteria.GestionCobranza
                                                     sumaImporteTotalsucursal += importetotal;
                                                 };
 
-                                            //col1.Item().PaddingVertical(4).ShowEntire().Table(tabla =>
-                                            //{
-                                            //    tabla.ColumnsDefinition(Columns =>
-                                            //    {
-                                            //        Columns.RelativeColumn(1.4f);
-                                            //        Columns.RelativeColumn(1.4f);
-                                            //        Columns.RelativeColumn(1.2f);
-                                            //        Columns.RelativeColumn(1.2f);
-                                            //        Columns.RelativeColumn(1.4f);
-                                            //        Columns.RelativeColumn(1.4f);
-                                            //        Columns.RelativeColumn(1.4f);
-                                            //        Columns.RelativeColumn(1.4f);
-                                            //        Columns.RelativeColumn(1.4f);
-                                            //        Columns.RelativeColumn(1.4f);
-                                            //    });
+                                                //col1.Item().PaddingVertical(4).ShowEntire().Table(tabla =>
+                                                //{
+                                                //    tabla.ColumnsDefinition(Columns =>
+                                                //    {
+                                                //        Columns.RelativeColumn(1.4f);
+                                                //        Columns.RelativeColumn(1.4f);
+                                                //        Columns.RelativeColumn(1.2f);
+                                                //        Columns.RelativeColumn(1.2f);
+                                                //        Columns.RelativeColumn(1.4f);
+                                                //        Columns.RelativeColumn(1.4f);
+                                                //        Columns.RelativeColumn(1.4f);
+                                                //        Columns.RelativeColumn(1.4f);
+                                                //        Columns.RelativeColumn(1.4f);
+                                                //        Columns.RelativeColumn(1.4f);
+                                                //    });
 
-                                            col1.Item().ShowEntire().Column(column =>
-                                            {
+                                                //col1.Item().ShowEntire().Column(column =>
+                                                col1.Item().Column(column =>
+                                                {
                                                 column.Item().PaddingTop(10).Text(txt =>
                                                 {
                                                     txt.Span("Sucursal: ").Bold().FontSize(10);
@@ -752,10 +700,11 @@ namespace HD_Reporteria.GestionCobranza
                                                     {
                                                         Columns.RelativeColumn(1.4f);
                                                         Columns.RelativeColumn(1.4f);
-                                                        Columns.RelativeColumn(1f);
-                                                        Columns.RelativeColumn(1f);
-                                                        Columns.RelativeColumn(1f);
-                                                        Columns.RelativeColumn(1.5f);
+                                                        Columns.RelativeColumn(1.2f);
+                                                        Columns.RelativeColumn(1.2f);
+                                                        Columns.RelativeColumn(1.4f);
+                                                        Columns.RelativeColumn(1.4f);
+                                                        Columns.RelativeColumn(1.4f);
                                                         Columns.RelativeColumn(1.4f);
                                                         Columns.RelativeColumn(1.4f);
                                                         Columns.RelativeColumn(1.4f);
@@ -1303,11 +1252,6 @@ namespace HD_Reporteria.GestionCobranza
                                     tablaDatos.Cell().BorderBottom(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("1219732793").FontSize(10).FontFamily(fontFamily);
                                     tablaDatos.Cell().BorderBottom(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("005516").FontSize(10).FontFamily(fontFamily);
                                     tablaDatos.Cell().BorderRight(1).BorderBottom(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("072730012197327937").FontSize(10).FontFamily(fontFamily);
-
-                                    tablaDatos.Cell().BorderLeft(1).BorderBottom(1).BorderColor("#D3D3D3").Background("#f0f0f0").Padding(1).AlignCenter().Text("HSBC").FontSize(10).FontFamily(fontFamily);
-                                    tablaDatos.Cell().BorderBottom(1).BorderColor("#D3D3D3").Background("#f0f0f0").Padding(1).AlignCenter().Text("4068669746").FontSize(10).FontFamily(fontFamily);
-                                    tablaDatos.Cell().BorderBottom(1).BorderColor("#D3D3D3").Background("#f0f0f0").Padding(1).AlignCenter().Text("").FontSize(10).FontFamily(fontFamily);
-                                    tablaDatos.Cell().BorderRight(1).BorderBottom(1).BorderColor("#D3D3D3").Background("#f0f0f0").Padding(1).AlignCenter().Text("021730040686697463").FontSize(10).FontFamily(fontFamily);
 
                                     tablaDatos.Cell().BorderLeft(1).BorderBottom(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("BANCOPPEL").FontSize(10).FontFamily(fontFamily);
                                     tablaDatos.Cell().BorderBottom(1).BorderColor("#D3D3D3").Padding(1).AlignCenter().Text("12000010160").FontSize(10).FontFamily(fontFamily);

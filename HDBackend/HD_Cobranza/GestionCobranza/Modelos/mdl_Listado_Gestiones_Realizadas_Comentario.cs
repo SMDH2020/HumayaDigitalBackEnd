@@ -11,7 +11,9 @@ namespace HD_Cobranza.GestionCobranza.Modelos
         public string? sucursal { get; set; }
         public int idcliente { get; set; }
         public string? RazonSocial { get; set; }
+        //public DateTime? vencimiento { get; set; }
         public string? comentarios { get; set; }
+        public string? objecion { get; set; }
         public int idresponsable { get; set; }
         public string? responsable { get; set; }
         public string? volvercontactar { get; set; }
