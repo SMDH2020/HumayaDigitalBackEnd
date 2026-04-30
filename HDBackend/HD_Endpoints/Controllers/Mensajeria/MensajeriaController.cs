@@ -28,6 +28,17 @@ namespace HD.Endpoints.Controllers.Mensajeria
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetRolMensajeria()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Chat_Mensajes datos = new AD_Obtener_Chat_Mensajes(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.GetRolMensajeria(usuario);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> apartarChat(string numeroTelefono)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
