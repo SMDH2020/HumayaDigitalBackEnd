@@ -23,6 +23,11 @@ namespace HD_Finanzas.Modelos.RotacionInventario
         public double dif_minima { get; set; }
         public double dif_maxima { get; set; }
         public double rotacion { get; set; }
+        public double inventariomes { get; set; }
+        public double dif_minima_mes { get; set; }
+        public double dif_maxima_mes { get; set; }
+        public double rotacionmes { get; set; }
+
 
     }
 }
