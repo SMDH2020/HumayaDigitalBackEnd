@@ -35,5 +35,24 @@ namespace HD_Mensajeria.Consultas
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<mdl_Get_Rol_Mensajeria> GetRolMensajeria(int usuario)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    usuario = usuario
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var result = await factory.SQL.QueryFirstOrDefaultAsync<mdl_Get_Rol_Mensajeria>("HD_Mensajeria.dbo.sp_get_rol_mensajeria", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }
