@@ -25,7 +25,7 @@ namespace HD_Reporteria.Finanzas
                     sheet.Style.Font.FontName = "Calibri";
                     sheet.Style.Font.FontSize = 10;
 
-                    int renglon = XLSEncabezado.Encabezado(ref sheet, titulo, 14);
+                    int renglon = XLSEncabezado.Encabezado(ref sheet, titulo, 15);
 
 
                     sheet.Cell(renglon, 1).Value = "LINEA";
@@ -42,10 +42,11 @@ namespace HD_Reporteria.Finanzas
                     sheet.Cell(renglon, 12).Value = "INVENTARIO MES";
                     sheet.Cell(renglon, 13).Value = "DIREFENCIA MAX MES";
                     sheet.Cell(renglon, 14).Value = "DIFERENCIA MIN MES";
+                    sheet.Cell(renglon, 15).Value = "ROTACION MES";
 
 
                     // Estilo para los encabezados de la tabla
-                    var rango = sheet.Range(renglon, 1, renglon, 14);
+                    var rango = sheet.Range(renglon, 1, renglon, 15);
                     rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
                     rango.Style.Font.Bold = true;
                     rango.Style.Font.FontSize = 12;
@@ -71,11 +72,12 @@ namespace HD_Reporteria.Finanzas
                         sheet.Cell(renglon, 12).Value = det.inventariomes;
                         sheet.Cell(renglon, 13).Value = det.dif_maxima_mes;
                         sheet.Cell(renglon, 14).Value = det.dif_minima_mes;
+                        sheet.Cell(renglon, 15).Value = det.rotacionmes;
 
                         // 👉 Estilo especial para TOTALES y ROTACION TOTAL
                         if (det.linea == "TOTALES" || det.linea == "ROTACION TOTAL")
                         {
-                            var fila = sheet.Range(renglon, 1, renglon, 14);
+                            var fila = sheet.Range(renglon, 1, renglon, 15);
                             fila.Style.Font.Bold = true;
                             fila.Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
                         }
@@ -94,6 +96,7 @@ namespace HD_Reporteria.Finanzas
                     sheet.Column(12).Style.NumberFormat.Format = "#,##0.00";
                     sheet.Column(13).Style.NumberFormat.Format = "#,##0.00";
                     sheet.Column(14).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(15).Style.NumberFormat.Format = "#,##0.00";
 
 
                     sheet.Columns().AdjustToContents();
