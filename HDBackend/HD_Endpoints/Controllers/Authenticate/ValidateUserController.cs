@@ -31,7 +31,7 @@ namespace HD.Endpoints.Controllers.Authenticate
                     await log.Guardar("Se inicio sesion en aplicacion",origen,Sesion.usuario());
                 }
 
-                return Ok(new { usuario = result.usuario, modulos = result.modulos, menus = result.menus, presas=result.presas});
+                return Ok(new { usuario = result.usuario, modulos = result.modulos, menus = result.menus, presas=result.presas, roles = result.roles});
             }
         }
     }
