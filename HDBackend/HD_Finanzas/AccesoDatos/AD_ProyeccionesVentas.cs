@@ -324,7 +324,7 @@ namespace HD_Finanzas.AccesoDatos
 
             // 🔹 Validación división
             if (proyimporte == 0)
-                return "R";
+                return "V";
 
             double porcentaje = (1 + (importe - proyimporte) / Math.Abs(proyimporte)) * 100;
 
