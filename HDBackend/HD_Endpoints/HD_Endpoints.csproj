@@ -40,7 +40,7 @@
 	<ProjectReference Include="..\Teletrabajo\Teletrabajo.csproj" />
 	<ProjectReference Include="..\Usados\Usados.csproj" />
     <ProjectReference Include="..\Ventas\Ventas.csproj" />
-
+    <ProjectReference Include="..\Ventas\Ventas.csproj" />
   </ItemGroup>
 
   <ItemGroup>
