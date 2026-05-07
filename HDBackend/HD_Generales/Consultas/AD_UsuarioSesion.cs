@@ -23,11 +23,12 @@ namespace HD.Generales.Consultas
                     codigoautenticacion = login.codigoseguridad,
                     oneSignalID = login.oneSignalID
                 };
-                var result = await factory.SQL.QueryMultipleAsync("sp_Usuario_Sesion", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("sp_Usuario_Sesion_Nuevo", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 mdlLoginResult? usuario = result.Read<mdlLoginResult>().FirstOrDefault();
                 IEnumerable<mdlModulo> modulos = result.Read<mdlModulo>().ToList();
                 IEnumerable<mdlMenu> menus = result.Read<mdlMenu>().ToList();
                 IEnumerable<mdlPresas_Niveles> presas = result.Read<mdlPresas_Niveles>().ToList();
+                IEnumerable<mdlRoles> roles = result.Read<mdlRoles>().ToList();
                 factory.SQL.Close();
 
                 if(usuario == null) { usuario = new mdlLoginResult(); }
@@ -37,7 +38,8 @@ namespace HD.Generales.Consultas
                     usuario = usuario,
                     menus = menus,
                     modulos = modulos,
-                    presas = presas
+                    presas = presas,
+                    roles = roles
                 };
 
             }

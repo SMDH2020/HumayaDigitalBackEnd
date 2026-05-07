@@ -47,7 +47,7 @@ namespace HD.Endpoints.Controllers.Credito
             AD_Clientes_Guardar datos = new AD_Clientes_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             mdl.idcliente = await datos.Guardar_Persona_Moral(mdl);
-            return Ok(new { mensaje = "datos cargados con exito" });
+            return Ok(mdl.idcliente);
         }
 
         [HttpPost]
