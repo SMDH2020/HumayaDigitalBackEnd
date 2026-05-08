@@ -76,7 +76,7 @@ namespace HD_Finanzas.AccesoDatos
                     importe = Math.Round(ProyVentasNetas, 2),
                     por = 100,
                     proyimporte = Math.Round(RealVentasNetas, 2),
-                    indicador = ObtenerIndicador(false, "Total Ventas Netas", ProyVentasNetas, RealVentasNetas, 100, 100),
+                    indicador = ObtenerIndicador(false, "Ventas Netas", ProyVentasNetas, RealVentasNetas, 100, 100),
                     proypor = 100,
                     diffimporte = Math.Round(ProyVentasNetas - RealVentasNetas, 2),
                     diffpor = ProyVentasNetas == 0 || RealVentasNetas == 0 ? 0
@@ -95,7 +95,7 @@ namespace HD_Finanzas.AccesoDatos
                     proyimporte = Math.Round(realCostoVenta, 2),
                     proypor = RealVentasNetas == 0 || realCostoVenta == 0 ? 0
                     : Math.Round(realCostoVenta / RealVentasNetas * 100, 2),
-                    indicador = ObtenerIndicador(false, "Costos de Venta", proyCostoVenta, realCostoVenta, ProyVentasNetas == 0 || proyCostoVenta == 0 ? 0
+                    indicador = ObtenerIndicador(false, "Costo de Venta", proyCostoVenta, realCostoVenta, ProyVentasNetas == 0 || proyCostoVenta == 0 ? 0
                     : Math.Round(proyCostoVenta / ProyVentasNetas * 100, 2), RealVentasNetas == 0 || realCostoVenta == 0 ? 0
                     : Math.Round(realCostoVenta / RealVentasNetas * 100, 2)),
                     diffimporte = Math.Round(proyCostoVenta - realCostoVenta, 2),
@@ -331,6 +331,7 @@ namespace HD_Finanzas.AccesoDatos
             bool esVentasOGastos =
              conceptoLower.Contains("ventas netas") ||
              conceptoLower.Contains("gasto") ||
+             conceptoLower.Contains("costo") ||
              conceptoLower.Contains("otros ingresos");
             if (esVentasOGastos)
             {
