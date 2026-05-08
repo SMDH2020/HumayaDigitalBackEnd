@@ -29,5 +29,25 @@ namespace HD.Endpoints.Controllers.Auditoria.Carga_Archivos
             var result = await datos.Carga_Inventario_Fisico(mdl);
             return Ok(result);
         }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<IActionResult> CargarInventarioAjustes(mdl_Cargar_Inventario_Ajustes mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Carga_Inventario_Ajustes datos = new AD_Carga_Inventario_Ajustes(CadenaConexion);
+            var result = await datos.Carga_Inventario_Ajustes(mdl);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<IActionResult> AsignaPasillo(mdl_Asignacion_Pasillos mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Asignacion_Pasillos datos = new AD_Asignacion_Pasillos(CadenaConexion);
+            var result = await datos.Asignacion_Pasillos(mdl);
+            return Ok(result);
+        }
     }
 }

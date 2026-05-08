@@ -172,7 +172,7 @@ namespace HD_Finanzas.AccesoDatos.Actions
                     diffimporte = Math.Round(VentasNetasTotales - ProyVentasNetasTotales, 2),
                     diffpor = ((VentasNetasTotales - ProyVentasNetasTotales) == 0 || ProyVentasNetasTotales == 0) ? 0
                         : Math.Round(((VentasNetasTotales - ProyVentasNetasTotales) / ProyVentasNetasTotales) * 100, 2),
-                    indicador = ObtenerIndicador(false, "Ventas Totales", VentasNetasTotales, ProyVentasNetasTotales, 100, 100), //indicador
+                    indicador = ObtenerIndicador(false, "Ventas Netas", VentasNetasTotales, ProyVentasNetasTotales, 100, 100), //indicador
                     //diffpor =0,// Math.Round((VentasNetasTotales - ProyVentasNetasTotales) / ProyVentasNetasTotales, 2),
                     lastimporte = Math.Round(VentasNetasTotalesLast, 2),
                     lastpor = 100,
@@ -197,7 +197,7 @@ namespace HD_Finanzas.AccesoDatos.Actions
                     por = (CostosVentasTotales == 0 || VentasNetasTotales == 0) ? 0
                     : Math.Round((CostosVentasTotales / VentasNetasTotales) * 100, 2),
                     proyimporte = Math.Round(ProyCostosVentasTotales, 2),
-                    indicador = ObtenerIndicador(false, "Costos de Venta", CostosVentasTotales, ProyCostosVentasTotales, (CostosVentasTotales == 0 || VentasNetasTotales == 0) ? 0
+                    indicador = ObtenerIndicador(false, "Costo de Venta", CostosVentasTotales, ProyCostosVentasTotales, (CostosVentasTotales == 0 || VentasNetasTotales == 0) ? 0
                     : Math.Round((CostosVentasTotales / VentasNetasTotales) * 100, 2), (ProyCostosVentasTotales == 0 || ProyVentasNetasTotales == 0) ? 0
                     : Math.Round((ProyCostosVentasTotales / ProyVentasNetasTotales) * 100, 2)),
                     proypor = (ProyCostosVentasTotales == 0 || ProyVentasNetasTotales == 0) ? 0
@@ -593,6 +593,7 @@ namespace HD_Finanzas.AccesoDatos.Actions
             bool esVentasOGastos =
              conceptoLower.Contains("ventas netas") ||
              conceptoLower.Contains("gastos") ||
+             conceptoLower.Contains("costo") ||
              conceptoLower.Contains("otros ingresos")
              ;
             if (esVentasOGastos)
