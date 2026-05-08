@@ -10,11 +10,11 @@ using Usados.Consultas.Usados;
 
 namespace HD.Endpoints.Controllers.Auditoria.Carga_Archivos
 {
-    public class CargaInventarioFisicoController : MyBase
+    public class CargaInventarioController : MyBase
     {
         private readonly IConfiguration Configuracion;
         private readonly ISesion Sesion;
-        public CargaInventarioFisicoController(IConfiguration configuration, ISesion sesion)
+        public CargaInventarioController(IConfiguration configuration, ISesion sesion)
         {
             Configuracion = configuration;
             Sesion = sesion;
