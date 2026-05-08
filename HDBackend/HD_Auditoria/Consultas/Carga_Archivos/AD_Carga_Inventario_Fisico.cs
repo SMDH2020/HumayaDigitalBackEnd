@@ -16,7 +16,7 @@ namespace HD_Auditoria.Consultas.Carga_Archivos
         {
             try
             {
-                // --- Construir un DataTable que representa al TVP ---
+                //Se construye un DataTable para pasarlo al TVP del stored
                 var dt = new System.Data.DataTable();
                 dt.Columns.Add("familia", typeof(string));
                 dt.Columns.Add("codigo", typeof(string));
