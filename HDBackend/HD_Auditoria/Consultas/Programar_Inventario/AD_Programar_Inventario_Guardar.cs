@@ -31,7 +31,7 @@ namespace HD_Auditoria.Consultas.Programar_Inventario
                 parametros.Add("@fecha_fin", mdl.fecha_fin, System.Data.DbType.String, System.Data.ParameterDirection.Input, 10);
                 parametros.Add("@fecha_limite_just", mdl.fecha_limite_just, System.Data.DbType.String, System.Data.ParameterDirection.Input, 10);
                 parametros.Add("@id_encargado_alm", mdl.id_encargado_alm, System.Data.DbType.Int16, System.Data.ParameterDirection.Input);
-                parametros.Add("@id_auditor_ppal", mdl.auditores_adicionales, System.Data.DbType.Int16, System.Data.ParameterDirection.Input);
+                parametros.Add("@id_auditor_ppal", mdl.id_auditor_ppal, System.Data.DbType.Int16, System.Data.ParameterDirection.Input);
                 parametros.Add("@observaciones", mdl.observaciones, System.Data.DbType.String, System.Data.ParameterDirection.Input, 500);
                 parametros.Add("@auditores_adicionales", mdl.auditores_adicionales, System.Data.DbType.String, System.Data.ParameterDirection.Input);
                 parametros.Add("@categorias", mdl.categorias, System.Data.DbType.String, System.Data.ParameterDirection.Input);
