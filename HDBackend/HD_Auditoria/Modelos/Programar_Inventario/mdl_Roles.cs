@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace HD_Auditoria.Modelos.Programar_Inventario
 {
-    internal class mdl_Roles
+    public class mdl_Roles
     {
+
     }
 }
