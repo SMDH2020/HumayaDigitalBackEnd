@@ -17,6 +17,17 @@ namespace HD.Endpoints.Controllers.Auditoria.Programar_Inventario
             Sesion = sesion;
         }
 
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<IActionResult> Listado()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Programar_Inventario_Listado datos = new AD_Programar_Inventario_Listado(CadenaConexion);
+            var usuario = Sesion.usuario();
+            var result = await datos.Listado(usuario);
+            return Ok(result);
+
+        }
         [HttpPost]
         [Route("/api/[controller]/[action]")]
         public async Task<IActionResult> Guardar(mdl_Programar_Inventario mdl)
