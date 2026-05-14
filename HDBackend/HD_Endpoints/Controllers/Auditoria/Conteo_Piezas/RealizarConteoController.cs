@@ -27,5 +27,27 @@ namespace HD.Endpoints.Controllers.Auditoria.Conteo_Piezas
             var result = await datos.RegistrarConteo(mdl);
             return Ok(result);
         }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<IActionResult> Justificar(mdl_Justificar_Piezas_Conteo mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Conteo_Piezas_Online datos = new AD_Conteo_Piezas_Online(CadenaConexion);
+            //mdl.id_auditor = int.Parse(Sesion.usuario());
+            var result = await datos.Justificar(mdl);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetJustificacion(int id_inv_fisico)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Conteo_Piezas_Online datos = new AD_Conteo_Piezas_Online(CadenaConexion);
+            var result = await datos.GetJustificacion(id_inv_fisico);
+            return Ok(result);
+
+        }
     }
 }

@@ -55,5 +55,42 @@ namespace HD_Auditoria.Consultas.Conteo_Piezas
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<bool> Justificar(mdl_Justificar_Piezas_Conteo mdl)
+        {
+            try
+            {
+                var parametros = new DynamicParameters();
+                parametros.Add("@id_inv_fisico", mdl.id_inv_fisico, System.Data.DbType.Int32);
+                parametros.Add("@justificadas", mdl.justificadas, System.Data.DbType.Single);
+                parametros.Add("@justificacion", mdl.justificacion, System.Data.DbType.String);
+
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                await factory.SQL.QueryAsync("Auditoria.sp_Justificar_Piezas_Conteo", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return true;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<mdl_Justificar_Piezas_Conteo> GetJustificacion(int id_inv_fisico)
+        {
+            try
+            {
+                var parametros = new DynamicParameters();
+                parametros.Add("@id_inv_fisico", id_inv_fisico, System.Data.DbType.Int32);
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                mdl_Justificar_Piezas_Conteo result = await factory.SQL.QueryFirstOrDefaultAsync<mdl_Justificar_Piezas_Conteo>("Auditoria.sp_Obtener_Justificacion_Pieza_Conteo", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }
