@@ -36,7 +36,30 @@ namespace HD_Auditoria.Consultas.Carga_Archivos
                 using (var stream = new MemoryStream(fileBytes))
                 using (var workbook = new XLWorkbook(stream))
                 {
+
                     var worksheet = workbook.Worksheet(1);
+
+                    // VALIDAR ENCABEZADOS
+                    var headers = worksheet.Row(1);
+
+                    string hFamilia = headers.Cell(5).GetValue<string>()?.Trim();
+                    string hCodigo = headers.Cell(6).GetValue<string>()?.Trim();
+                    string hDescripcion = headers.Cell(8).GetValue<string>()?.Trim();
+                    string hExistencia = headers.Cell(11).GetValue<string>()?.Trim();
+                    string hCosto = headers.Cell(12).GetValue<string>()?.Trim();
+                    string hPosicion = headers.Cell(9).GetValue<string>()?.Trim();
+
+                    if (
+                        !hFamilia.ToLower().Contains("franchise") ||
+                        !hCodigo.ToLower().Contains("part_no") ||
+                        !hDescripcion.ToLower().Contains("part_desc") ||
+                        !hExistencia.ToLower().Contains("inmaster_oh_qty") ||
+                        !hCosto.ToLower().Contains("unit_cost") ||
+                        !hPosicion.ToLower().Contains("bin_location") 
+                    )
+                    {
+                        throw new Exception("El archivo no corresponde a un formato de INVENTARIO válido.");
+                    }
 
                     var rows = worksheet.RangeUsed().RowsUsed();
 
@@ -67,10 +90,10 @@ namespace HD_Auditoria.Consultas.Carga_Archivos
                             "PZ",
                             row.Cell(12).GetValue<float>(),
                             string.IsNullOrWhiteSpace(posicion)
-                                ? "Des"
+                                ? "SIN"
                                 : posicion.PadRight(3).Substring(0, 3),
                             string.IsNullOrWhiteSpace(posicion)
-                                ? "Desconocida"
+                                ? "SIN LOCALIZACION"
                                 : posicion
                         );
                     }
