@@ -23,8 +23,8 @@ namespace HD_Auditoria.Modelos.Programar_Inventario
         public bool cargado_surtida { get; set; }
         public string? estatus { get; set; }
 
-        public double diferencias { get; set; }
-        public double confiabilidad { get; set; }
+        public int diferencias { get; set; }
+        public int justificadas { get; set; }
         public double avance { get; set; }
 
     }

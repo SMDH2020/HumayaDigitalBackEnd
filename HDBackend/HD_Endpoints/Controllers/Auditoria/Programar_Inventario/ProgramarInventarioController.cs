@@ -127,5 +127,16 @@ namespace HD.Endpoints.Controllers.Auditoria.Programar_Inventario
             return Ok(result);
 
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<IActionResult> RevisionConteo(string? folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_ProgramarInventrario_RevisarInventario datos = new AD_ProgramarInventrario_RevisarInventario(CadenaConexion);
+            var result = await datos.folio(folio);
+            return Ok(result);
+
+        }
     }
 }
