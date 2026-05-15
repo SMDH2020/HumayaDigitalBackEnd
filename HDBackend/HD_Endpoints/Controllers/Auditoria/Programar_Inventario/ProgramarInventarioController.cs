@@ -116,5 +116,16 @@ namespace HD.Endpoints.Controllers.Auditoria.Programar_Inventario
             var result = await datos.GuardarAsignaciones(mdl);
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<IActionResult> IniciarConteo(string? folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_ProgramarInventario_IniciarConteo datos = new AD_ProgramarInventario_IniciarConteo(CadenaConexion);
+            var result = await datos.folio(folio);
+            return Ok(result);
+
+        }
     }
 }
