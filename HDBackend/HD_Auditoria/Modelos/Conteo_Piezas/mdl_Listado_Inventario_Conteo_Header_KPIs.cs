@@ -1,14 +1,7 @@
 ﻿namespace HD_Auditoria.Modelos.Conteo_Piezas
 {
-    public class mdl_Conteo_Piezas_Online_Response
+    public class mdl_Listado_Inventario_Conteo_Header_KPIs
     {
-        public int id_conteo {  get; set; }
-        public float diferencia { get; set;  }
-        public string tipo_dif {  get; set; }
-        public int resultado { get; set; }
-        public string mensaje { get; set; }
-
-        //KPIS
         public float total_inventario_sku { get; set; }
         public float registros_contados { get; set; }
         public float registros_diferencias { get; set; }

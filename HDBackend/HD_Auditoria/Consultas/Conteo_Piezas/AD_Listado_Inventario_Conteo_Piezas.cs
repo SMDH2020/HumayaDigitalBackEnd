@@ -12,16 +12,18 @@ namespace HD_Auditoria.Consultas.Conteo_Piezas
             CadenaConexion = _cadenaconexion;
         }
 
-        public async Task<mdl_Listado_Inventario_Conteo_View> Inventario(string folio)
+        public async Task<mdl_Listado_Inventario_Conteo_View> Inventario(string folio, int id_auditor)
         {
             try
             {
                 var parametros = new DynamicParameters();
                 parametros.Add("folio", folio, System.Data.DbType.String);
+                parametros.Add("id_auditor", id_auditor, System.Data.DbType.Int16);
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var result = await factory.SQL.QueryMultipleAsync("Auditoria.sp_Obtener_Listado_Inventario_Conteo_Folio", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 mdl_Listado_Inventario_Conteo_View mdl = new mdl_Listado_Inventario_Conteo_View();
                 mdl.header = result.Read<mdl_Listado_Inventario_Conteo_Header>().FirstOrDefault();
+                mdl.kpis = result.Read<mdl_Listado_Inventario_Conteo_Header_KPIs>().FirstOrDefault();
                 mdl.listado_inv = result.Read<mdl_Listado_Inventario_Conteo_Piezas>().ToList();
                 factory.SQL.Close();
                 return mdl;

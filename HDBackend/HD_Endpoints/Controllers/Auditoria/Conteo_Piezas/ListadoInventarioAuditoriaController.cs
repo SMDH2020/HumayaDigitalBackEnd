@@ -21,7 +21,8 @@ namespace HD.Endpoints.Controllers.Auditoria.Conteo_Piezas
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Listado_Inventario_Conteo_Piezas datos = new AD_Listado_Inventario_Conteo_Piezas(CadenaConexion);
-            var result = await datos.Inventario(folio);
+            int id_auditor = int.Parse(Sesion.usuario());
+            var result = await datos.Inventario(folio, id_auditor);
             return Ok(result);
 
         }
