@@ -95,5 +95,37 @@ namespace HD.Endpoints.Controllers.Auditoria.Programar_Inventario
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<IActionResult> AsignacionPasillosListado(string? folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_AsignacionPasillos_Listado datos = new AD_AsignacionPasillos_Listado(CadenaConexion);
+            var result = await datos.Listado(folio);
+            return Ok(result);
+
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<IActionResult> GuardarAsignacionPasillos(mdl_AsignacionesPasillo mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Asignacion_Pasillos_Guardar datos = new AD_Asignacion_Pasillos_Guardar(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.GuardarAsignaciones(mdl);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<IActionResult> IniciarConteo(string? folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_ProgramarInventario_IniciarConteo datos = new AD_ProgramarInventario_IniciarConteo(CadenaConexion);
+            var result = await datos.folio(folio);
+            return Ok(result);
+
+        }
     }
 }

@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace HD_Auditoria.Modelos.Programar_Inventario
 {
-    public class mdl_Usuarios
+    public class mdl_AsignacionesPasillo
     {
-        public int idusuario { get; set; }
+        public string? folio { get; set; }
+        public string? asignaciones { get; set; }
         public string? usuario { get; set; }
-        public int idsucursal { get; set; }
-
-
     }
 }
