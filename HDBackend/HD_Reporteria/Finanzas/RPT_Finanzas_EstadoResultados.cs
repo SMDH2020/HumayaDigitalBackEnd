@@ -13,7 +13,7 @@ namespace HD_Reporteria.Finanzas
                 "V" => "#28a745",
                 "A" => "#ffc107",
                 "R" => "#dc3545",
-                _ => "#cccccc"
+                _ => ""
             };
         }
         // color rojo para negativos FontColor("#ff2037")
@@ -193,9 +193,13 @@ namespace HD_Reporteria.Finanzas
                                             .Text(ln.importe.ToString("N2")).FontSize(8).FontFamily(fontFamily).FontColor("#333333");
 
                                         // 🚦 Semáforo — círculo unicode coloreado
-                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d")
-                                            .AlignCenter().Height(20).AlignMiddle()
-                                            .Text("●").FontSize(14).FontColor(semaforoColor).FontFamily(fontFamily);
+                                        if (!string.IsNullOrEmpty(semaforoColor))
+                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d")
+                                                .AlignCenter().Height(20).AlignMiddle()
+                                                .Text("●").FontSize(14).FontColor(semaforoColor).FontFamily(fontFamily);
+                                        else
+                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d")
+                                                .Height(20).Element(e => { });
 
                                         // % Real
                                         tabla.Cell().BorderBottom(1).BorderColor("#afb69d")
