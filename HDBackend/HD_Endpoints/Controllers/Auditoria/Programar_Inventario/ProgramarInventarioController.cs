@@ -123,7 +123,32 @@ namespace HD.Endpoints.Controllers.Auditoria.Programar_Inventario
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_ProgramarInventario_IniciarConteo datos = new AD_ProgramarInventario_IniciarConteo(CadenaConexion);
-            var result = await datos.folio(folio);
+            var usuario = Sesion.usuario();
+            var result = await datos.folio(folio, usuario);
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<IActionResult> RevisionConteo(string? folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_ProgramarInventrario_RevisarInventario datos = new AD_ProgramarInventrario_RevisarInventario(CadenaConexion);
+            var usuario = Sesion.usuario();
+            var result = await datos.folio(folio, usuario);
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<IActionResult> FinalizarConteo(string? folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_ProgramarInventario_FinalizarInventario datos = new AD_ProgramarInventario_FinalizarInventario(CadenaConexion);
+            var usuario = Sesion.usuario();
+            var result = await datos.folio(folio, usuario);
             return Ok(result);
 
         }

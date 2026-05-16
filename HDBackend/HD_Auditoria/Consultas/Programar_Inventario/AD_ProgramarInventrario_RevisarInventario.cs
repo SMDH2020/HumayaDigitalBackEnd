@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
-using HD_Auditoria.Modelos.Conteo_Piezas;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace HD_Auditoria.Consultas.Programar_Inventario
 {
-    public class AD_ProgramarInventario_IniciarConteo
+    public class AD_ProgramarInventrario_RevisarInventario
     {
         private string CadenaConexion;
-        public AD_ProgramarInventario_IniciarConteo(string _cadenaconexion)
+        public AD_ProgramarInventrario_RevisarInventario(string _cadenaconexion)
         {
             CadenaConexion = _cadenaconexion;
         }
@@ -25,7 +24,7 @@ namespace HD_Auditoria.Consultas.Programar_Inventario
                 parametros.Add("folio", folio, System.Data.DbType.String);
                 parametros.Add("usuario", folio, System.Data.DbType.String);
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                await factory.SQL.QueryAsync("Auditoria.SP_PROG_AUDITORIA_INIIAR_CONTEO", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                await factory.SQL.QueryAsync("Auditoria.SP_PROG_AUDITORIA_REVISAR_CONTEO", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return true;
             }
