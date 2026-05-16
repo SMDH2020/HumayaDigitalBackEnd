@@ -175,7 +175,7 @@ namespace HD_Reporteria.Finanzas
                                     // Fila de título de departamento — ahora 12 columnas
                                     tabla.Cell().ColumnSpan(12).BorderTop(1).BorderColor("#afb69d")
                                         .Background("#e8f0e8").PaddingLeft(15).Height(20).AlignMiddle()
-                                        .Text(mdl.depto).FontColor("#1a2e1a").FontSize(8).FontFamily(fontFamily).Bold().LetterSpacing(0.6f);
+                                        .Text(mdl.depto).FontColor("#1a2e1a").FontSize(8).FontFamily(fontFamily).Bold();
 
                                     for (int i = 0; i < mdl.data.Count; i++)
                                     {
