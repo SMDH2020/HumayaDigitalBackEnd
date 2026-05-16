@@ -6,6 +6,17 @@ namespace HD_Reporteria.Finanzas
 {
     public class RPT_Finanzas_EstadoResultados
     {
+        private static string GetIndicadorColor(string indicador)
+        {
+            return indicador switch
+            {
+                "V" => "#28a745",
+                "A" => "#ffc107",
+                "R" => "#dc3545",
+                _ => "#cccccc"
+            };
+        }
+        // color rojo para negativos FontColor("#ff2037")
         public static RPT_Result Generar(Fmdl_EstadoResultados_PDF resumen)
         {
             try
@@ -17,15 +28,10 @@ namespace HD_Reporteria.Finanzas
                     {
                         page.Size(PageSizes.A4.Landscape());
 
-
-
                         page.Header().Height(120).Row(row =>
                         {
-
-                            //row.ConstantItem(140).Border(1).Placeholder();
                             row.RelativeItem().PaddingTop(35).Height(50).Background("#477c2c").Row(row2 =>
                             {
-
                             });
 
                             row.ConstantColumn(0).Row(row1 =>
@@ -39,15 +45,10 @@ namespace HD_Reporteria.Finanzas
                                     row2.RelativeItem().Padding(10).PaddingLeft(30).Text("ESTADO DE RESULTADOS").FontColor("#fff").FontSize(20).Bold().FontFamily(fontFamily);
                                 });
                             });
-
-
                         });
 
                         page.Content().PaddingLeft(30).PaddingRight(30).Column(col1 =>
                         {
-
-                            //col1.Item().LineHorizontal(0.5f);
-
                             col1.Item().AlignRight().Row(row1 =>
                             {
                                 row1.AutoItem().Column(txt1 =>
@@ -59,11 +60,7 @@ namespace HD_Reporteria.Finanzas
                                 });
                             });
 
-                            if (resumen.region.Count < 1)
-                            {
-
-                            }
-                            else
+                            if (resumen.region.Count >= 1)
                             {
                                 col1.Item().AlignRight().Row(row1 =>
                                 {
@@ -79,26 +76,16 @@ namespace HD_Reporteria.Finanzas
                                         txt1.Item().Height(15).AlignMiddle().Text(txt2 =>
                                         {
                                             if (resumen.region.Count > 1)
-                                            {
                                                 txt2.Span("TODO EL GRUPO").FontSize(8).FontFamily(fontFamily);
-                                            }
                                             else
-                                            {
                                                 foreach (var reg in resumen.region)
-                                                {
                                                     txt2.Span(reg.adr).FontSize(8).FontFamily(fontFamily);
-                                                }
-                                            }
                                         });
                                     });
                                 });
                             }
 
-                            if (resumen.sucursal.Count < 1)
-                            {
-
-                            }
-                            else
+                            if (resumen.sucursal.Count >= 1)
                             {
                                 col1.Item().AlignRight().Row(row1 =>
                                 {
@@ -117,55 +104,52 @@ namespace HD_Reporteria.Finanzas
                                             for (int i = 0; i < count; i++)
                                             {
                                                 if (i < count - 1)
-                                                {
                                                     txt2.Span(resumen.sucursal[i].sucursal + ", ").FontSize(8).FontFamily(fontFamily);
-                                                }
                                                 else
-                                                {
                                                     txt2.Span(resumen.sucursal[i].sucursal).FontSize(8).FontFamily(fontFamily);
-                                                }
                                             }
                                         });
                                     });
                                 });
-
                             }
-
 
                             col1.Item().PaddingVertical(10).Border(1).BorderColor("#275027").Table(tabla =>
                             {
+                                // ← Columna extra para el semáforo (0.3f) entre Real y %
                                 tabla.ColumnsDefinition(Columns =>
                                 {
-                                    Columns.RelativeColumn(2);
-                                    Columns.RelativeColumn(1);
-                                    Columns.RelativeColumn(0.4f);
-                                    Columns.RelativeColumn(1);
-                                    Columns.RelativeColumn(0.4f);
-                                    Columns.RelativeColumn(1);
-                                    Columns.RelativeColumn(0.4f);
-                                    Columns.RelativeColumn(1);
-                                    Columns.RelativeColumn(0.4f);
-                                    Columns.RelativeColumn(1);
-                                    Columns.RelativeColumn(0.4f);
-
+                                    Columns.RelativeColumn(2);    // Concepto
+                                    Columns.RelativeColumn(1);    // Real
+                                    Columns.RelativeColumn(0.3f); // 🚦 Semáforo  ← NUEVA
+                                    Columns.RelativeColumn(0.4f); // %
+                                    Columns.RelativeColumn(1);    // Proyección
+                                    Columns.RelativeColumn(0.4f); // %
+                                    Columns.RelativeColumn(1);    // Desviación
+                                    Columns.RelativeColumn(0.4f); // %
+                                    Columns.RelativeColumn(1);    // Real anterior
+                                    Columns.RelativeColumn(0.4f); // %
+                                    Columns.RelativeColumn(1);    // Desviación anterior
+                                    Columns.RelativeColumn(0.4f); // %
                                 });
-
 
                                 tabla.Header(header =>
                                 {
-                                    // Primera fila del encabezado
+                                    // Fila 1 — spans ajustados: periodo actual ahora cubre 7 cols (sumó la del semáforo)
                                     header.Cell().ColumnSpan(1).Height(25).Background("#275027").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("").FontSize(12).Bold().FontFamily(fontFamily).FontColor("#fff");
-                                    header.Cell().ColumnSpan(6).Height(25).Background("#275027").AlignCenter().AlignMiddle()
+                                    header.Cell().ColumnSpan(7).Height(25).Background("#275027").AlignCenter().AlignMiddle()
                                         .Padding(1).Text(resumen.periodoactual).FontSize(10).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     header.Cell().ColumnSpan(4).Height(25).Background("#275027").AlignMiddle()
                                         .Padding(1).Text(resumen.periodoanterior).FontSize(10).Bold().FontFamily(fontFamily).FontColor("#fff");
 
-                                    // Segunda fila del encabezado
+                                    // Fila 2 — etiquetas de columna
                                     header.Cell().Background("#275027").AlignCenter().Height(20).AlignMiddle()
                                         .Padding(1).Text("CONCEPTO").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     header.Cell().Background("#275027").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("REAL").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    // Encabezado semáforo — icono unicode de círculo
+                                    header.Cell().Background("#275027").AlignCenter().AlignMiddle()
+                                        .Padding(1).Text("●").FontSize(10).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     header.Cell().Background("#275027").AlignCenter().AlignMiddle()
                                         .Padding(1).Text("%").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     header.Cell().Background("#275027").AlignRight().AlignMiddle()
@@ -186,95 +170,95 @@ namespace HD_Reporteria.Finanzas
                                         .Padding(1).Text("%").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
                                 });
 
-
-                                string tipoActual = "";
-
-                                decimal totalReal = 0;
-                                decimal totalProyeccion = 0;
-                                decimal totalPorcentaje = 0;
-                                decimal totalDif = 0;
-                                decimal totalOldTotal = 0;
-                                decimal totalOldPorc = 0;
-                                decimal totalOldDif = 0;
-
-                                decimal totalRealGeneral = 0;
-                                decimal totalProyeccionGeneral = 0;
-                                decimal totalPorcentajeGeneral = 0;
-                                decimal totalDifGeneral = 0;
-                                decimal totalOldTotalGeneral = 0;
-                                decimal totalOldPorcGeneral = 0;
-                                decimal totalOldDifGeneral = 0;
-
                                 foreach (var mdl in resumen.data)
                                 {
-
-                                    tabla.Cell().ColumnSpan(11).BorderTop(1).BorderColor("#afb69d").Background("#ccc").PaddingLeft(15).Height(20).AlignCenter().AlignMiddle()
-                                        .Text(mdl.depto).FontSize(8).FontFamily(fontFamily).Bold();
+                                    // Fila de título de departamento — ahora 12 columnas
+                                    tabla.Cell().ColumnSpan(12).BorderTop(1).BorderColor("#afb69d")
+                                        .Background("#e8f0e8").PaddingLeft(15).Height(20).AlignMiddle()
+                                        .Text(mdl.depto).FontColor("#1a2e1a").FontSize(8).FontFamily(fontFamily).Bold().LetterSpacing(0.6f);
 
                                     for (int i = 0; i < mdl.data.Count; i++)
                                     {
                                         var ln = mdl.data[i];
-                                        //var isLastRow = (i == mdl.data.Count - 1); // Check if it's the last row
+                                        string semaforoColor = GetIndicadorColor(ln.indicador);
 
-                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").PaddingLeft(15).Height(20).AlignMiddle()
-                                            .Text(ln.concepto).FontSize(8).FontFamily(fontFamily);
+                                        // Concepto
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d")
+                                            .PaddingLeft(15).Height(20).AlignMiddle()
+                                            .Text(ln.concepto).FontSize(8).FontFamily(fontFamily).FontColor("#333333");
 
-                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").PaddingLeft(20).AlignLeft().Height(20).AlignMiddle()
-                                            .Text(ln.importe.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        // Real
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d")
+                                            .PaddingLeft(20).AlignLeft().Height(20).AlignMiddle()
+                                            .Text(ln.importe.ToString("N2")).FontSize(8).FontFamily(fontFamily).FontColor("#333333");
 
-                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).PaddingRight(10).AlignMiddle()
-                                            .Text((ln.por).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        // 🚦 Semáforo — círculo unicode coloreado
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d")
+                                            .AlignCenter().Height(20).AlignMiddle()
+                                            .Text("●").FontSize(14).FontColor(semaforoColor).FontFamily(fontFamily);
 
-                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                            .Text(ln.proyimporte.ToString("N2")).FontSize(8).FontColor("#ff2037").FontFamily(fontFamily);
+                                        // % Real
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d")
+                                            .AlignRight().Height(20).PaddingRight(10).AlignMiddle()
+                                            .Text(ln.por.ToString("N2")).FontSize(8).FontFamily(fontFamily).FontColor("#333333");
 
-                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                            .Text((ln.proypor).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        // Proyección
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d")
+                                            .AlignRight().Height(20).AlignMiddle()
+                                            .Text(ln.proyimporte.ToString("N2")).FontSize(8).FontColor("#333333").FontFamily(fontFamily);
 
-                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                            .Text(ln.diffimporte.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        // % Proyección
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d")
+                                            .AlignRight().Height(20).AlignMiddle()
+                                            .Text(ln.proypor.ToString("N2")).FontSize(8).FontFamily(fontFamily).FontColor("#333333");
 
-                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                            .Text((ln.diffpor).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        // Desviación
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d")
+                                            .AlignRight().Height(20).AlignMiddle()
+                                            .Text(ln.diffimporte.ToString("N2")).FontSize(8).FontFamily(fontFamily).FontColor("#333333");
 
-                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                            .Text(ln.lastimporte.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        // % Desviación
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d")
+                                            .AlignRight().Height(20).AlignMiddle()
+                                            .Text(ln.diffpor.ToString("N2")).FontSize(8).FontFamily(fontFamily).FontColor("#333333");
 
-                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                            .Text(ln.lastpor.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        // Real anterior
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d")
+                                            .AlignRight().Height(20).AlignMiddle()
+                                            .Text(ln.lastimporte.ToString("N2")).FontSize(8).FontFamily(fontFamily).FontColor("#333333");
 
-                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                            .Text(ln.lastdiffimporte.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        // % Real anterior
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d")
+                                            .AlignRight().Height(20).AlignMiddle()
+                                            .Text(ln.lastpor.ToString("N2")).FontSize(8).FontFamily(fontFamily).FontColor("#333333");
 
-                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                            .Text(ln.lastdiffpor.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                        // Desviación anterior
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d")
+                                            .AlignRight().Height(20).AlignMiddle()
+                                            .Text(ln.lastdiffimporte.ToString("N2")).FontSize(8).FontFamily(fontFamily).FontColor("#333333");
+
+                                        // % Desviación anterior
+                                        tabla.Cell().BorderBottom(1).BorderColor("#afb69d")
+                                            .AlignRight().Height(20).AlignMiddle()
+                                            .Text(ln.lastdiffpor.ToString("N2")).FontSize(8).FontFamily(fontFamily).FontColor("#333333");
                                     }
-
                                 }
                             });
-
                         });
-
                     });
-
                 }).GeneratePdf();
-                RPT_Result result = new RPT_Result();
-                result.extension = "pdf";
-                result.nombredocumento = "ESTADO DE RESULTADOS";
-                result.documento = Convert.ToBase64String(doc);
-                return result;
 
-
+                return new RPT_Result
+                {
+                    extension = "pdf",
+                    nombredocumento = "ESTADO DE RESULTADOS",
+                    documento = Convert.ToBase64String(doc)
+                };
             }
-
             catch (Exception ex)
             {
-
                 throw ex;
             }
-
-
         }
     }
 }
-
