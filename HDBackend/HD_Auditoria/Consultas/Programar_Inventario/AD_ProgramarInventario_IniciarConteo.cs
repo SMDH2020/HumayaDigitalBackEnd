@@ -17,12 +17,13 @@ namespace HD_Auditoria.Consultas.Programar_Inventario
             CadenaConexion = _cadenaconexion;
         }
 
-        public async Task<bool> folio(string folio)
+        public async Task<bool> folio(string folio, string usuario)
         {
             try
             {
                 var parametros = new DynamicParameters();
                 parametros.Add("folio", folio, System.Data.DbType.String);
+                parametros.Add("usuario", folio, System.Data.DbType.String);
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 await factory.SQL.QueryAsync("Auditoria.SP_PROG_AUDITORIA_INIIAR_CONTEO", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
