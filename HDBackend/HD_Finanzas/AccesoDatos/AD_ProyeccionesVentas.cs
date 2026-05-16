@@ -331,7 +331,7 @@ namespace HD_Finanzas.AccesoDatos
             bool esVentasOGastos =
              conceptoLower.Contains("ventas netas") ||
              conceptoLower.Contains("gasto") ||
-             conceptoLower.Contains("costo") ||
+             //conceptoLower.Contains("costo") ||
              conceptoLower.Contains("otros ingresos");
             if (esVentasOGastos)
             {
