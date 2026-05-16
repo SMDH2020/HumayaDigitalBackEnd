@@ -593,7 +593,7 @@ namespace HD_Finanzas.AccesoDatos.Actions
             bool esVentasOGastos =
              conceptoLower.Contains("ventas netas") ||
              conceptoLower.Contains("gastos") ||
-             conceptoLower.Contains("costo") ||
+             //conceptoLower.Contains("costo") ||
              conceptoLower.Contains("otros ingresos")
              ;
             if (esVentasOGastos)
@@ -612,7 +612,7 @@ namespace HD_Finanzas.AccesoDatos.Actions
 
             if (conceptoLower.Contains("costo"))
             {
-                if (porcreal > porcproy + 1)
+                if (porcreal > (porcproy + 1))
                     return "R";
                 else if (porcreal > porcproy)
                     return "A";
