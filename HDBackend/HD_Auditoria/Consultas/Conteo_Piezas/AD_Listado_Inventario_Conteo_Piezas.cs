@@ -25,6 +25,7 @@ namespace HD_Auditoria.Consultas.Conteo_Piezas
                 mdl.header = result.Read<mdl_Listado_Inventario_Conteo_Header>().FirstOrDefault();
                 mdl.kpis = result.Read<mdl_Listado_Inventario_Conteo_Header_KPIs>().FirstOrDefault();
                 mdl.listado_inv = result.Read<mdl_Listado_Inventario_Conteo_Piezas>().ToList();
+                mdl.posiciones_extra = result.Read<mdl_Posicion_Extra>().ToList();
                 factory.SQL.Close();
                 return mdl;
             }
