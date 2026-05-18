@@ -1,6 +1,9 @@
-﻿using Dapper;
+﻿using ClosedXML.Excel;
+using Dapper;
 using HD.AccesoDatos;
 using HD_Auditoria.Modelos.Carga_Archivos;
+using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 
 namespace HD_Auditoria.Consultas.Carga_Archivos
 {
@@ -16,6 +19,7 @@ namespace HD_Auditoria.Consultas.Carga_Archivos
         {
             try
             {
+
                 //Se construye un DataTable para pasarlo al TVP del stored
                 var dt = new System.Data.DataTable();
                 dt.Columns.Add("familia", typeof(string));
@@ -27,8 +31,77 @@ namespace HD_Auditoria.Consultas.Carga_Archivos
                 dt.Columns.Add("pasillo", typeof(string));
                 dt.Columns.Add("posicion", typeof(string));
 
-                foreach (var item in mdl.inventario)
-                    dt.Rows.Add(item.familia, item.codigo, item.descripcion, item.existencia_orig, item.unidad_medida, item.costo_unitario, item.pasillo, item.posicion);
+                byte[] fileBytes = Convert.FromBase64String(mdl.documento);
+
+                using (var stream = new MemoryStream(fileBytes))
+                using (var workbook = new XLWorkbook(stream))
+                {
+
+                    var worksheet = workbook.Worksheet(1);
+
+                    // VALIDAR ENCABEZADOS
+                    var headers = worksheet.Row(1);
+
+                    string hFamilia = headers.Cell(5).GetValue<string>()?.Trim();
+                    string hCodigo = headers.Cell(6).GetValue<string>()?.Trim();
+                    string hDescripcion = headers.Cell(8).GetValue<string>()?.Trim();
+                    string hExistencia = headers.Cell(11).GetValue<string>()?.Trim();
+                    string hCosto = headers.Cell(12).GetValue<string>()?.Trim();
+                    string hPosicion = headers.Cell(9).GetValue<string>()?.Trim();
+
+                    if (
+                        !hFamilia.ToLower().Contains("franchise") ||
+                        !hCodigo.ToLower().Contains("part_no") ||
+                        !hDescripcion.ToLower().Contains("part_desc") ||
+                        !hExistencia.ToLower().Contains("inmaster_oh_qty") ||
+                        !hCosto.ToLower().Contains("unit_cost") ||
+                        !hPosicion.ToLower().Contains("bin_location") 
+                    )
+                    {
+                        throw new Exception("El archivo no corresponde a un formato de INVENTARIO válido.");
+                    }
+
+                    var rows = worksheet.RangeUsed().RowsUsed();
+
+                    var lastRow = worksheet.LastRowUsed().RowNumber();
+
+                    for (int i = 2; i <= lastRow; i++)
+                    {
+                        var row = worksheet.Row(i);
+
+                        string sucursalExcel = row.Cell(4).GetValue<string>()?.Trim() ?? "";
+
+                        if (!string.IsNullOrEmpty(sucursalExcel) && sucursalExcel != mdl.id_sucursal.ToString())
+                        {
+                            throw new Exception(
+                                $"El archivo contiene sucursal {sucursalExcel}, pero la auditoría a la sucursal {mdl.id_sucursal.ToString()}."
+                            );
+                        }
+
+                        var codigo = row.Cell(6).GetValue<string>()?.Trim() ?? "";
+                        var descripcion = row.Cell(8).GetValue<string>()?.Trim() ?? "";
+                        var posicion = row.Cell(9).GetValue<string>()?.Trim();
+
+                        dt.Rows.Add(
+                            row.Cell(5).GetValue<string>()?.Trim() ?? "",
+                            codigo,
+                            descripcion,
+                            row.Cell(11).GetValue<float>(),
+                            "PZ",
+                            row.Cell(12).GetValue<float>(),
+                            string.IsNullOrWhiteSpace(posicion)
+                                ? "SIN"
+                                : posicion.PadRight(3).Substring(0, 3),
+                            string.IsNullOrWhiteSpace(posicion)
+                                ? "SIN LOCALIZACION"
+                                : posicion
+                        );
+                    }
+                }
+
+                // EN CASO DE RECIBIR JSON
+                //foreach (var item in mdl.inventario)
+                //    dt.Rows.Add(item.familia, item.codigo, item.descripcion, item.existencia_orig, item.unidad_medida, item.costo_unitario, item.pasillo, item.posicion);
 
                 //Parametros de entrada
                 var parametros = new DynamicParameters();
