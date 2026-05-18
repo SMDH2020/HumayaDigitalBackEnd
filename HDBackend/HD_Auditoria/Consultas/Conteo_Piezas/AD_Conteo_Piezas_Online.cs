@@ -131,5 +131,71 @@ namespace HD_Auditoria.Consultas.Conteo_Piezas
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<bool> Agregar_Posicion_Extra(mdl_Posicion_Extra mdl)
+        {
+            try
+            {
+                var parametros = new DynamicParameters();
+                parametros.Add("@id_inv_fisico", mdl.id_inv_fisico, System.Data.DbType.Int32);
+                parametros.Add("@folio", mdl.folio, System.Data.DbType.String);
+                parametros.Add("@posicion_extra", mdl.posicion_extra, System.Data.DbType.String);
+                parametros.Add("@conteo_fisico", mdl.conteo_fisico, System.Data.DbType.Single);
+
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                await factory.SQL.QueryAsync("Auditoria.sp_GUARDA_CONTEO_NUEVA_UBICACION", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return true;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<bool> Eliminar_Posicion_Extra(mdl_Posicion_Extra mdl)
+        {
+            try
+            {
+                var parametros = new DynamicParameters();
+                parametros.Add("@id_inv_fisico", mdl.id_inv_fisico, System.Data.DbType.Int32);
+                parametros.Add("@folio", mdl.folio, System.Data.DbType.String);
+                parametros.Add("@posicion_extra", mdl.posicion_extra, System.Data.DbType.String);
+
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                await factory.SQL.QueryAsync("Auditoria.sp_ELIMINA_CONTEO_NUEVA_UBICACION", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return true;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<bool> AgregarNuevaPieza(mdl_Agregar_Nueva_Pieza mdl)
+        {
+            try
+            {
+                var parametros = new DynamicParameters();
+                parametros.Add("@folio", mdl.folio, System.Data.DbType.String);
+                parametros.Add("@familia", mdl.familia, System.Data.DbType.String);
+                parametros.Add("@codigo", mdl.codigo, System.Data.DbType.String);
+                parametros.Add("@descripcion", mdl.descripcion, System.Data.DbType.String);
+                parametros.Add("@unidad_medida", mdl.unidad_medida, System.Data.DbType.String);
+                parametros.Add("@costo_unitario", mdl.costo_unitario, System.Data.DbType.Single);
+                parametros.Add("@posicion", mdl.posicion, System.Data.DbType.String);
+                parametros.Add("@id_auditor", mdl.id_auditor, System.Data.DbType.Int16);
+
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                await factory.SQL.QueryAsync("Auditoria.AGREGAR_NUEVA_PIEZA_INVENTARIO", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return true;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }
