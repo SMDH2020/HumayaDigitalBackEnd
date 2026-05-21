@@ -11,6 +11,8 @@ namespace HD_Finanzas.Modelos.RotacionCXC
         public int idlinea { get; set; }
         public string? linea { get; set; }
         public int ejercicio { get; set; }
+        public string tipo_ubi { get; set; }
+        public int ubicacion { get; set; }
         public double enero { get; set; }
         public double febrero { get; set; }
         public double marzo { get; set; }
@@ -23,7 +25,7 @@ namespace HD_Finanzas.Modelos.RotacionCXC
         public double octubre { get; set; }
         public double noviembre { get; set; }
         public double diciembre { get; set; }
-
+        public double anual { get; set; }
 
     }
 }
