@@ -23,7 +23,7 @@ namespace HD_Auditoria.Consultas.Programar_Inventario
             {
                 var parametros = new DynamicParameters();
                 parametros.Add("folio", folio, System.Data.DbType.String);
-                parametros.Add("usuario", folio, System.Data.DbType.String);
+                parametros.Add("usuario", usuario, System.Data.DbType.String);
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 await factory.SQL.QueryAsync("Auditoria.SP_PROG_AUDITORIA_INIIAR_CONTEO", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
