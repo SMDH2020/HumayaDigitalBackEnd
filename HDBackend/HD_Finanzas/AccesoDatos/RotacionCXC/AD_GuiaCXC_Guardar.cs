@@ -22,11 +22,13 @@ namespace HD_Finanzas.AccesoDatos.RotacionCXC
             {
                 var parametros = new
                 {
+                   tipo_ubi = mdl.tipo_ubi,
+                   ubicacion = mdl.ubicacion,
                    detalle = mdl.detalle,
                    usuario = mdl.usuario
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                await factory.SQL.QueryAsync("PixelCode.dbo.sp_Guia_CXC_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                await factory.SQL.QueryAsync("PixelCode.dbo.sp_Guia_CXC_Guardar_P", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return true;
             }
