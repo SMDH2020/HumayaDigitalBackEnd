@@ -23,7 +23,7 @@ namespace HD_Finanzas.Modelos.RotacionInventario
         public int documento_interno { get; set; }
         public int documento_factura { get; set; }
         public string? fecha_factura { get; set; }
-
+        public string? fecha_vencimiento { get; set; }
         public int dias_vencido { get; set; }
         public int batch { get; set; }
 

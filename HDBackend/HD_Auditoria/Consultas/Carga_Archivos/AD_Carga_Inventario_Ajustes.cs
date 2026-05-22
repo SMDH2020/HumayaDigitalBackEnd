@@ -71,9 +71,11 @@ namespace HD_Auditoria.Consultas.Carga_Archivos
                             }
 
                             string sucursalExcel = System.Text.RegularExpressions.Regex.Match(
-                                    row.Cell(6).GetValue<string>() ?? "",
-                                    @"\((\d+)\)"
-                                ).Groups[1].Value ?? "";
+                                row.Cell(6).GetValue<string>() ?? "",
+                                @"\((\d+)\)"
+                            ).Groups[1].Value ?? "";
+
+                            sucursalExcel = sucursalExcel.TrimStart('0');
 
                             if (!string.IsNullOrEmpty(sucursalExcel) && sucursalExcel != mdl.id_sucursal.ToString())
                             {
@@ -151,9 +153,11 @@ namespace HD_Auditoria.Consultas.Carga_Archivos
                             }
 
                             string sucursalExcel = System.Text.RegularExpressions.Regex.Match(
-                                    row.Cell(6).GetValue<string>() ?? "",
-                                    @"\((\d+)\)"
-                                ).Groups[1].Value ?? "";
+                                row.Cell(6).GetValue<string>() ?? "",
+                                @"\((\d+)\)"
+                            ).Groups[1].Value ?? "";
+
+                            sucursalExcel = sucursalExcel.TrimStart('0');
 
                             if (!string.IsNullOrEmpty(sucursalExcel) && sucursalExcel != mdl.id_sucursal.ToString())
                             {
