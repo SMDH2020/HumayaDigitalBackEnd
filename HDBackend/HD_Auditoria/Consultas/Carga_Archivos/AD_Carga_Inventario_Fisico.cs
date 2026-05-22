@@ -69,7 +69,9 @@ namespace HD_Auditoria.Consultas.Carga_Archivos
                     {
                         var row = worksheet.Row(i);
 
-                        string sucursalExcel = row.Cell(4).GetValue<string>()?.Trim() ?? "";
+                        string sucursalExcel = (row.Cell(4).GetValue<string>() ?? "").Trim();
+
+                        sucursalExcel = sucursalExcel.TrimStart('0');
 
                         if (!string.IsNullOrEmpty(sucursalExcel) && sucursalExcel != mdl.id_sucursal.ToString())
                         {

@@ -30,7 +30,8 @@ namespace HD.Endpoints.Controllers.Finanzas
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             FAD_AdrSucursalDepto utilities = new(CadenaConexion);
-            var result = await utilities.GetASDCXC("1");
+            string usuario = Sesion.usuario();
+            var result = await utilities.GetASDCXC(usuario);
             return Ok(result);
         }
 
@@ -40,7 +41,8 @@ namespace HD.Endpoints.Controllers.Finanzas
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             FAD_AdrSucursalDepto utilities = new(CadenaConexion);
-            var result = await utilities.GetASDCXC2("1");
+            string usuario = Sesion.usuario();
+            var result = await utilities.GetASDCXC2(usuario);
             return Ok(result);
         }
     }
