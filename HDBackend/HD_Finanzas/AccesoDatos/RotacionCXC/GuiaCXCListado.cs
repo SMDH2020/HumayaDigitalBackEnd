@@ -17,16 +17,18 @@ namespace HD_Finanzas.AccesoDatos.RotacionCXC
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_GuiaCXC_Listado>> Listado(int ejercicio)
+        public async Task<IEnumerable<mdl_GuiaCXC_Listado>> Listado(int ejercicio, string tipo_ubi, int ubicacion)
         {
             try
             {
                 var parametros = new
                 {
                     ejercicio = ejercicio,
+                    tipo_ubi = tipo_ubi,
+                    ubicacion = ubicacion
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_GuiaCXC_Listado> result = await factory.SQL.QueryAsync<mdl_GuiaCXC_Listado>("PixelCode.dbo.sp_Guia_CXC_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_GuiaCXC_Listado> result = await factory.SQL.QueryAsync<mdl_GuiaCXC_Listado>("PixelCode.dbo.sp_Guia_CXC_Listado_P", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

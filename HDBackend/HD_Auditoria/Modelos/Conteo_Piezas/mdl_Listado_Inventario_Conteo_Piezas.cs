@@ -16,7 +16,7 @@
         public bool ubicacion_ok { get; set; }
         public float diferencia { get; set; }
         public string tipo_diferencia { get; set; }
-        public float conteo_fisico { get; set; }
+        public float? conteo_fisico { get; set; }
         public float justificadas { get; set; }
         public bool reg_contado { get; set; }
 

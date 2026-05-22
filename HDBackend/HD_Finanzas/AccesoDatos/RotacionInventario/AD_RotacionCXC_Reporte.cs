@@ -18,7 +18,7 @@ namespace HD_Finanzas.AccesoDatos.RotacionInventario
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<mdl_RotacionCXC_View> reporte(int ejercicio, int periodo, string adr, string sucursales, string departamentos, string? usuario, string tipoReporte)
+        public async Task<mdl_RotacionCXC_View> reporte(int ejercicio, int periodo, string tipoUbi, string id, string? usuario, string tipoReporte)
         {
             try
             {
@@ -26,15 +26,14 @@ namespace HD_Finanzas.AccesoDatos.RotacionInventario
                 {
                     ejercicio = ejercicio,
                     periodo = periodo,
-                    adr = adr,
-                    sucursales = sucursales,
-                    departamentos = departamentos,
+                    tipoubi = tipoUbi,
+                    id = id,
                     usuario = usuario,
                     tipo_reporte = tipoReporte
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
 
-                var result = await factory.SQL.QueryMultipleAsync("EQUIP.fiscal.sp_get_rotacion_cxc", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("EQUIP.fiscal.sp_get_rotacion_cxc_P", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 mdl_RotacionCXC_View reporte = new mdl_RotacionCXC_View();
                 reporte.editor_guia = result.Read<bool>().FirstOrDefault();
                 reporte.rotacion = result.Read<mdl_RotacionCXC>().ToList();
