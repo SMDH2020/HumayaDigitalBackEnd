@@ -1,6 +1,8 @@
 ﻿using DocumentFormat.OpenXml.Office2016.Excel;
+using HD.Notifications.Analisis;
 using HD.Security;
 using HD_Auditoria.Consultas.Justificaciones;
+using HD_Auditoria.Consultas.Notificacion_Correo;
 using HD_Auditoria.Consultas.Programar_Inventario;
 using HD_Auditoria.Modelos.Justificaciones;
 using HD_Auditoria.Modelos.Programar_Inventario;
@@ -129,6 +131,12 @@ namespace HD.Endpoints.Controllers.Auditoria.Justificaciones
             AD_JustificarAuditoria_Aceptar datos = new AD_JustificarAuditoria_Aceptar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.JustificacionAceptada(mdl);
+
+            if (result.estatus.completado == 1)
+            {
+                await EnvioJustificaciones.Enviar_Aceptado(result, mdl);
+            }
+
             return Ok(result.estatus);
         }
 
@@ -140,6 +148,12 @@ namespace HD.Endpoints.Controllers.Auditoria.Justificaciones
             AD_JustificarAuditoria_Modificar datos = new AD_JustificarAuditoria_Modificar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.JustificacionRechazar(mdl);
+
+            if(result.estatus.rechazado == 1)
+            {
+                await EnvioJustificaciones.Enviar_Rechazado(result, mdl);
+            }
+
             return Ok(result.estatus);
         }
 
@@ -152,6 +166,18 @@ namespace HD.Endpoints.Controllers.Auditoria.Justificaciones
             var result = await datos.Timeline(idconteo);
             return Ok(result);
 
+        }
+
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<IActionResult> ExtenderFechaJustificacion(mdl_ExtenderFecha mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_ExtenderFechaJustificacion_Guardar datos = new AD_ExtenderFechaJustificacion_Guardar(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.ExtenderFecha(mdl);
+            return Ok(result);
         }
     }
 }
