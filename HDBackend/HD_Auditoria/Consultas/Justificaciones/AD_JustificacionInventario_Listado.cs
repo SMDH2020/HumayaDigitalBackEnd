@@ -1,5 +1,7 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
+using HD_Auditoria.Modelos.Conteo_Piezas;
+using HD_Auditoria.Modelos.Justificaciones;
 using HD_Auditoria.Modelos.Programar_Inventario;
 using System;
 using System.Collections.Generic;
@@ -16,7 +18,7 @@ namespace HD_Auditoria.Consultas.Justificaciones
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_JustificacionInventario_Listado>> Listado(string folio)
+        public async Task<mdl_AuditoriaJustificacionesListado_View> Listado(string folio)
         {
             try
             {
@@ -25,9 +27,12 @@ namespace HD_Auditoria.Consultas.Justificaciones
                     @folio = folio
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_JustificacionInventario_Listado> result = await factory.SQL.QueryAsync<mdl_JustificacionInventario_Listado>("Auditoria.SP_JUSTIFICACIONES_INVENTARIO_LISTADO", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("Auditoria.SP_JUSTIFICACIONES_INVENTARIO_LISTADO", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdl_AuditoriaJustificacionesListado_View listado = new mdl_AuditoriaJustificacionesListado_View();
+                listado.header = result.Read<mdl_Listado_Inventario_Conteo_Header>().FirstOrDefault();
+                listado.Listado = result.Read<mdl_JustificacionInventario_Listado>().ToList();
                 factory.SQL.Close();
-                return result;
+                return listado;
             }
             catch (System.Exception ex)
             {
