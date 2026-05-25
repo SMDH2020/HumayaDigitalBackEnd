@@ -10,6 +10,9 @@ namespace HD_Auditoria.Modelos.Programar_Inventario
     {
         public string? folio { get; set; }
         public int resultado { get; set; }
+        public int completado { get; set; }
+        public int rechazado { get; set; }
+
         public string? mensaje { get; set; }
 
     }
