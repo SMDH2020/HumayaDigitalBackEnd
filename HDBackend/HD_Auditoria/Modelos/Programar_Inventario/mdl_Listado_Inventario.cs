@@ -29,6 +29,7 @@ namespace HD_Auditoria.Modelos.Programar_Inventario
         public int aceptadas { get; set; }
         public int rechazadas { get; set; }
         public string? fecha_justificacion { get; set; }
+        public string? fecha_creacion { get; set; }
         public double avance { get; set; }
 
     }
