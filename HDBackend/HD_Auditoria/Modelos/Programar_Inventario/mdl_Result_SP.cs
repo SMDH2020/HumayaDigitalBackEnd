@@ -12,7 +12,7 @@ namespace HD_Auditoria.Modelos.Programar_Inventario
         public int resultado { get; set; }
         public int completado { get; set; }
         public int rechazado { get; set; }
-
+        public int finalizado { get; set; }
         public string? mensaje { get; set; }
 
     }
