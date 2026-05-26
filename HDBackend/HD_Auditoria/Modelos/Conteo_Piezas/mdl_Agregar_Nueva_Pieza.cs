@@ -19,6 +19,8 @@ namespace HD_Auditoria.Modelos.Conteo_Piezas
         public string unidad_medida { get; set; }
         [Required(ErrorMessage = "El costo unitario es un valor requerido")]
         public float costo_unitario { get; set; }
+        [Required(ErrorMessage = "La cantidad es un valor requerido")]
+        public float conteo { get; set; }
         [Required(ErrorMessage = "La ubicación es un valor requerido")]
         [StringLength(30, ErrorMessage = "La ubicación no puede exceder los 30 caracteres")]
         public string posicion { get; set; }
