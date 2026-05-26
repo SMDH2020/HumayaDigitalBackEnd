@@ -6,6 +6,7 @@ using HD_Auditoria.Consultas.Notificacion_Correo;
 using HD_Auditoria.Consultas.Programar_Inventario;
 using HD_Auditoria.Modelos.Justificaciones;
 using HD_Auditoria.Modelos.Programar_Inventario;
+using HD_Auditoria.Reporteria;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -142,6 +143,32 @@ namespace HD.Endpoints.Controllers.Auditoria.Justificaciones
 
         [HttpPost]
         [Route("/api/[controller]/[action]")]
+        public async Task<IActionResult> EnviarRevisionAlmacen(mdl_Justificaciones_Acciones mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Justificacion_Auditoria_Enviar_Almacen datos = new AD_Justificacion_Auditoria_Enviar_Almacen(CadenaConexion);
+            var result = await datos.Correos(mdl.folio);
+
+             await EnviarRevision.Enviar_Almacen( result, mdl.folio);
+
+            return Ok(true);
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<IActionResult> EnviarRevisionAuditor(mdl_Justificaciones_Acciones mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Justificacion_Auditoria_Enviar_Auditor datos = new AD_Justificacion_Auditoria_Enviar_Auditor(CadenaConexion);
+            var result = await datos.Correos(mdl.folio);
+
+            await EnviarRevision.Enviar_Auditor(result, mdl.folio);
+
+            return Ok(true);
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
         public async Task<IActionResult> Rechazar(mdl_Justificaciones_Acciones mdl)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
@@ -177,6 +204,19 @@ namespace HD.Endpoints.Controllers.Auditoria.Justificaciones
             AD_ExtenderFechaJustificacion_Guardar datos = new AD_ExtenderFechaJustificacion_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.ExtenderFecha(mdl);
+
+            if (result.estatus.finalizado == 1)
+            {
+                var rpt = RPT_FinalizacionMetricas.GenerarPDF(result, mdl.folio);
+                byte[] pdf = Convert.FromBase64String(rpt.documento);
+
+                await EnvioFinalizacionInventario.Enviar_Finalizacion(
+                    datos_correo: result,          // mdl_Notificar_View con .correos
+                    folio: mdl.folio,         // folio, fecha_limite_just, diferencias
+                    pdfAdjunto: pdf,
+                    nombreArchivoPdf: $"Inventario_{mdl.folio}.pdf"
+                );
+            }
             return Ok(result);
         }
     }
