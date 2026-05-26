@@ -52,6 +52,7 @@ namespace HD.Notifications
                     redireccion = resultado.redireccion ?? "",
                     redireccionweb = resultado.redireccionweb ?? "",
                 }
+
             };
 
             var jsonPayload = JsonSerializer.Serialize(payload);
