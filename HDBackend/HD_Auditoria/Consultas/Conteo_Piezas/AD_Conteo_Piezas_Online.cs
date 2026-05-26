@@ -184,6 +184,7 @@ namespace HD_Auditoria.Consultas.Conteo_Piezas
                 parametros.Add("@descripcion", mdl.descripcion, System.Data.DbType.String);
                 parametros.Add("@unidad_medida", mdl.unidad_medida, System.Data.DbType.String);
                 parametros.Add("@costo_unitario", mdl.costo_unitario, System.Data.DbType.Single);
+                parametros.Add("@conteo", mdl.conteo, System.Data.DbType.Single);
                 parametros.Add("@posicion", mdl.posicion, System.Data.DbType.String);
                 parametros.Add("@id_auditor", mdl.id_auditor, System.Data.DbType.Int16);
 
