@@ -3,6 +3,7 @@ using HD_Auditoria.Consultas.Carga_Archivos;
 using HD_Auditoria.Consultas.Programar_Inventario;
 using HD_Auditoria.Modelos.Carga_Archivos;
 using HD_Auditoria.Modelos.Programar_Inventario;
+using HD_Auditoria.Reporteria;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HD.Endpoints.Controllers.Auditoria.Programar_Inventario
@@ -150,6 +151,21 @@ namespace HD.Endpoints.Controllers.Auditoria.Programar_Inventario
             var usuario = Sesion.usuario();
             var result = await datos.folio(folio, usuario);
             return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<IActionResult> ReporteSimplificadoPDF(string? folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_ReporteSimplificado_PDF datos = new AD_ReporteSimplificado_PDF(CadenaConexion);
+            var usuario = Sesion.usuario();
+            var result = await datos.Listado(folio);
+
+            var rpt = RPT_ReporteSimplificado_PDF.GenerarPDF(result, folio);
+
+            return Ok(rpt);
 
         }
     }

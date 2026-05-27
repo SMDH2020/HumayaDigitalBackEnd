@@ -42,12 +42,12 @@ namespace HD_Auditoria.Consultas.Notificacion_Correo
                 objeto_mail.From = new MailAddress(_correo);
 
                 // ── Destinatarios desde la lista de correos ──────────────────
-                foreach (mdl_Notificar_Correo notificacion in datos_correo.correos)
-                {
-                    objeto_mail.To.Add(new MailAddress(notificacion.Correo));
-                }
+                //foreach (mdl_Notificar_Correo notificacion in datos_correo.correos)
+                //{
+                //     objeto_mail.To.Add(new MailAddress(notificacion.Correo));
+                //}
 
-                //objeto_mail.To.Add("desarrolladorti@humaya.com.mx");
+                objeto_mail.To.Add("desarrolladorti@humaya.com.mx");
 
                 // ── Asunto ───────────────────────────────────────────────────
                 objeto_mail.Subject = $"Inventario {folio} — Finalizado";
