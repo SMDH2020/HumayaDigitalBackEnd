@@ -17,12 +17,12 @@ namespace HD.Endpoints.Controllers.Auditoria.Conteo_Piezas
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> Inventario(string folio)
+        public async Task<ActionResult> Inventario(string folio, bool resultado)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Listado_Inventario_Conteo_Piezas datos = new AD_Listado_Inventario_Conteo_Piezas(CadenaConexion);
             int id_auditor = int.Parse(Sesion.usuario());
-            var result = await datos.Inventario(folio, id_auditor);
+            var result = await datos.Inventario(folio, resultado, id_auditor);
             return Ok(result);
 
         }

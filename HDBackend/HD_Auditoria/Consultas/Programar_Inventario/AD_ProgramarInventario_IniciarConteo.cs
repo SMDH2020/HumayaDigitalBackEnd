@@ -1,11 +1,5 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
-using HD_Auditoria.Modelos.Conteo_Piezas;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HD_Auditoria.Consultas.Programar_Inventario
 {

@@ -19,6 +19,7 @@
         public float? conteo_fisico { get; set; }
         public float justificadas { get; set; }
         public bool reg_contado { get; set; }
+        public bool bloqueado { get; set; }
 
     }
 }

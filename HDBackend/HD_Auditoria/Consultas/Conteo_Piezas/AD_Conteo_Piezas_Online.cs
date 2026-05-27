@@ -184,6 +184,7 @@ namespace HD_Auditoria.Consultas.Conteo_Piezas
                 parametros.Add("@descripcion", mdl.descripcion, System.Data.DbType.String);
                 parametros.Add("@unidad_medida", mdl.unidad_medida, System.Data.DbType.String);
                 parametros.Add("@costo_unitario", mdl.costo_unitario, System.Data.DbType.Single);
+                parametros.Add("@conteo", mdl.conteo, System.Data.DbType.Single);
                 parametros.Add("@posicion", mdl.posicion, System.Data.DbType.String);
                 parametros.Add("@id_auditor", mdl.id_auditor, System.Data.DbType.Int16);
 
@@ -191,6 +192,24 @@ namespace HD_Auditoria.Consultas.Conteo_Piezas
                 await factory.SQL.QueryAsync("Auditoria.AGREGAR_NUEVA_PIEZA_INVENTARIO", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return true;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<mdl_Get_Info_Codigo?> GetInfoCodigo(string codigo, string folio)
+        {
+            try
+            {
+                var parametros = new DynamicParameters();
+                parametros.Add("codigo_pieza", codigo, System.Data.DbType.String);
+                parametros.Add("folio", folio, System.Data.DbType.String);
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                mdl_Get_Info_Codigo result = await factory.SQL.QueryFirstOrDefaultAsync<mdl_Get_Info_Codigo>("Auditoria.sp_OBTENER_PIEZA_REGISTRADA", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
             }
             catch (System.Exception ex)
             {
