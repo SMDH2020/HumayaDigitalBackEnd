@@ -44,7 +44,7 @@ namespace HD_Auditoria.Consultas.Notificacion_Correo
                 // ── Destinatarios desde la lista de correos ──────────────────
                 foreach (mdl_Notificar_Correo notificacion in datos_correo.correos)
                 {
-                     objeto_mail.To.Add(new MailAddress(notificacion.Correo));
+                    objeto_mail.To.Add(new MailAddress(notificacion.Correo));
                 }
 
                 objeto_mail.To.Add("guadalupeolivas@humaya.com.mx");
