@@ -33,64 +33,58 @@ namespace HD_Auditoria.Reporteria
 
                 var culturaMoneda = new CultureInfo("es-MX");
 
+                // ── Separar y ordenar ─────────────────────────────────────────
+                var faltantes = difs
+                    .Where(d => d.tipo_diferencia == "F" ||
+                                d.tipo_diferencia?.Contains("faltante", StringComparison.OrdinalIgnoreCase) == true)
+                    .OrderByDescending(d => Math.Abs(d.importe_dif))
+                    .ToList();
+
+                var sobrantes = difs
+                    .Where(d => d.tipo_diferencia == "S" ||
+                                d.tipo_diferencia?.Contains("sobrante", StringComparison.OrdinalIgnoreCase) == true)
+                    .OrderByDescending(d => Math.Abs(d.importe_dif))
+                    .ToList();
+
+                var correctos = difs
+                    .Where(d => d.tipo_diferencia == "C")
+                    .OrderBy(d => d.descripcion)
+                    .ToList();
+
                 byte[] doc = Document.Create(document =>
                 {
                     document.Page(page =>
                     {
-                        // ── HORIZONTAL ───────────────────────────────────────────
-                        page.Size(PageSizes.Letter.Landscape());
+                        // ── VERTICAL ─────────────────────────────────────────
+                        page.Size(PageSizes.Letter);
 
-                        // ── HEADER (igual al de referencia) ───────────────────────
-                        page.Header().Height(120).Row(row =>
+                        // ── HEADER ────────────────────────────────────────────
+                        page.Header().Height(100).Row(row =>
                         {
-                            row.RelativeItem().PaddingTop(35).Height(50).Background(verde).Row(_ => { });
-                            row.ConstantColumn(0).Row(row1 =>
-                            {
-                                byte[] logo = File.ReadAllBytes(
-                                    "C:\\Nube\\HumayaDigital\\HumayaDigitalBackEnd\\HDBackend\\HD_Reporteria\\Imagenes\\Logo.jpg");
-                                row.ConstantItem(120).Image(logo);
-                                row.ConstantColumn(600).PaddingTop(35).Height(50).Background(verde).Row(row2 =>
-                                {
-                                    row2.RelativeItem().Padding(10).PaddingLeft(10)
-                                        .Text("REPORTE SIMPLIFICADO - " + folio)
-                                        .FontColor("#fff").FontSize(20).Bold().FontFamily(font);
-                                });
-                            });
+                            byte[] logo = File.ReadAllBytes(
+                                "C:\\Nube\\HumayaDigital\\HumayaDigitalBackEnd\\HDBackend\\HD_Reporteria\\Imagenes\\Logo.jpg");
+                            row.ConstantItem(100).Image(logo);
+
+                            row.RelativeItem().PaddingTop(25).Height(50).Background(verde)
+                                .Padding(10).PaddingLeft(14)
+                                .Text("Reporte simplificado - " + folio)
+                                .FontColor("#fff").FontSize(16).Bold().FontFamily(font);
                         });
 
-                        // ── CONTENIDO ─────────────────────────────────────────────
-                        page.Content().PaddingTop(14).PaddingLeft(25).PaddingRight(25).Column(col =>
+                        // ── CONTENIDO ─────────────────────────────────────────
+                        page.Content().PaddingTop(12).PaddingLeft(20).PaddingRight(20).Column(col =>
                         {
-                            // ── 1. Encabezado folio / fecha ───────────────────────
-                            //col.Item().Border(0.5f).BorderColor(verde).Table(t =>
-                            //{
-                            //    t.ColumnsDefinition(c => { c.RelativeColumn(1); c.RelativeColumn(1); });
-                            //    t.Header(h =>
-                            //    {
-                            //        h.Cell().ColumnSpan(2)
-                            //            .Background(verdeOscuro).BorderBottom(1).BorderColor(amarillo)
-                            //            .Padding(5)
-                            //            .Text("INFORMACIÓN DEL INVENTARIO")
-                            //            .FontSize(8).Bold().FontFamily(font).FontColor("#fff");
-                            //    });
-                            //    t.Cell().Background(verdePanel).Padding(7).Column(c =>
-                            //    {
-                            //        c.Item().Text("FOLIO").FontSize(6).Bold().FontFamily(font).FontColor(verdeOscuro);
-                            //        c.Item().Text(folio ?? "-").FontSize(14).Bold().FontFamily(font).FontColor(verde);
-                            //    });
-                            //});
+                            col.Item().Height(8);
 
-                            col.Item().Height(10);
-
-                            // ── 2. Métricas ───────────────────────────────────────
+                            // ── 1. Métricas — tabla compacta de 4 columnas ────────────────────────────
                             col.Item().Border(0.5f).BorderColor(verde).Column(sec =>
                             {
                                 sec.Item().Background(verdeOscuro).BorderBottom(1).BorderColor(amarillo)
-                                    .Padding(5)
+                                    .Padding(4)
                                     .Text("MÉTRICAS DEL RESULTADO")
-                                    .FontSize(8).Bold().FontFamily(font).FontColor("#fff");
+                                    .FontSize(7f).Bold().FontFamily(font).FontColor("#fff");
 
-                                // Fila 1 — importes (4 tarjetas)
+                                // Fila 1 — los 4 importes en una sola fila
                                 sec.Item().Table(t =>
                                 {
                                     t.ColumnsDefinition(c =>
@@ -98,68 +92,73 @@ namespace HD_Auditoria.Reporteria
                                         c.RelativeColumn(1); c.RelativeColumn(1);
                                         c.RelativeColumn(1); c.RelativeColumn(1);
                                     });
-                                    KpiMonto(t, "IMPORTE TOTAL INVENTARIO", info.importe_total_inventario.ToString("C2", culturaMoneda), verde, verdePanel, grisLinea, font);
-                                    KpiMonto(t, "IMPORTE FALTANTE", info.importe_faltante.ToString("C2", culturaMoneda), "#c0392b", "#fff0f0", grisLinea, font);
-                                    KpiMonto(t, "IMPORTE SOBRANTE", info.importe_sobrante.ToString("C2", culturaMoneda) ?? "—", "#1a6fa8", "#f0f5ff", grisLinea, font);
+                                    KpiMonto(t, "IMPORTE TOTAL", info.importe_total_inventario.ToString("C2", culturaMoneda), verde, verdePanel, grisLinea, font);
                                     KpiMonto(t, "TOTAL NETO", info.total_neto.ToString("C2", culturaMoneda), verdeOscuro, verdeClaro, grisLinea, font);
+                                    KpiMonto(t, "IMP. FALTANTE", info.importe_faltante.ToString("C2", culturaMoneda), "#c0392b", "#fff0f0", grisLinea, font);
+                                    KpiMonto(t, "IMP. SOBRANTE", info.importe_sobrante.ToString("C2", culturaMoneda), "#1a6fa8", "#f0f5ff", grisLinea, font);
                                 });
 
-                                // Divisor
                                 sec.Item().Height(1).Background(amarillo);
 
-                                // Fila 2 — porcentajes y confiabilidad (5 KPIs con barra)
+                                // Fila 2 — los 5 porcentajes, último espacio vacío
                                 sec.Item().Table(t =>
                                 {
                                     t.ColumnsDefinition(c =>
                                     {
                                         c.RelativeColumn(1); c.RelativeColumn(1);
                                         c.RelativeColumn(1); c.RelativeColumn(1);
-                                        c.RelativeColumn(1); // ← quinta columna
                                     });
                                     KpiPorcentaje(t, "% FALTANTE", Math.Abs(info.porc_faltante), "#c0392b", "#fff0f0", grisLinea, font, menorEsMejor: true);
                                     KpiPorcentaje(t, "% SOBRANTE", Math.Abs(info.porc_sobrante), "#1a6fa8", "#f0f5ff", grisLinea, font, menorEsMejor: true);
                                     KpiPorcentaje(t, "% TOTAL NETO", Math.Abs(info.porc_total_neto), verdeOscuro, verdeClaro, grisLinea, font, menorEsMejor: false);
-                                    KpiPorcentaje(t, "CONFIABILIDAD DE INVENTARIO", info.confiabilidad, verde, verdePanel, grisLinea, font, menorEsMejor: false);
-                                    KpiPorcentaje(t, "CONFIABILIDAD DE UBICACIÓN", info.confiabilidad_ubi, verde, verdePanel, grisLinea, font, menorEsMejor: false);
+                                    KpiPorcentaje(t, "CONF. INVENTARIO", info.confiabilidad, verde, verdePanel, grisLinea, font, menorEsMejor: false);
+                                });
+
+                                // Fila 3 — confiabilidad ubicación sola (celda vacía de relleno)
+                                sec.Item().Table(t =>
+                                {
+                                    t.ColumnsDefinition(c =>
+                                    {
+                                        c.RelativeColumn(1); c.RelativeColumn(1);
+                                        c.RelativeColumn(1); c.RelativeColumn(1);
+                                    });
+                                    KpiPorcentaje(t, "CONF. UBICACIÓN", info.confiabilidad_ubi, verde, verdePanel, grisLinea, font, menorEsMejor: false);
+                                    // 3 celdas vacías de relleno
+                                    for (int i = 0; i < 3; i++)
+                                        t.Cell().Background(verdePanel).BorderRight(0.5f).BorderColor(grisLinea).BorderBottom(0.5f).BorderColor(grisLinea).Padding(6);
                                 });
                             });
 
                             col.Item().Height(10);
 
-                            // ── 3. Tabla de diferencias ───────────────────────────
+                            // ── 2. Tabla de diferencias ───────────────────────
                             col.Item().Border(0.5f).BorderColor(verde).Column(sec =>
                             {
                                 sec.Item().Background(verdeOscuro).BorderBottom(1).BorderColor(amarillo)
                                     .Padding(5)
-                                    .Text($"DIFERENCIAS DETECTADAS  ({difs.Count} registro{(difs.Count != 1 ? "s" : "")})")
-                                    .FontSize(8).Bold().FontFamily(font).FontColor("#fff");
-
-                                // Separar y ordenar
-                                var faltantes = difs.Where(d => d.tipo_diferencia == "F" ||
-                                                d.tipo_diferencia?.Contains("faltante", StringComparison.OrdinalIgnoreCase) == true)
-                                                .OrderByDescending(d => Math.Abs(d.importe_dif))
-                                                .ToList();
-
-                                var sobrantes = difs.Where(d => d.tipo_diferencia == "S" ||
-                                                d.tipo_diferencia?.Contains("sobrante", StringComparison.OrdinalIgnoreCase) == true)
-                                                .OrderByDescending(d => Math.Abs(d.importe_dif))
-                                                .ToList();
+                                    .Text($"DIFERENCIAS DETECTADAS  " +
+                                          $"({faltantes.Count} faltante{(faltantes.Count != 1 ? "s" : "")}, " +
+                                          $"{sobrantes.Count} sobrante{(sobrantes.Count != 1 ? "s" : "")}, " +
+                                          $"{correctos.Count} correcto{(correctos.Count != 1 ? "s" : "")})")
+                                    .FontSize(7.5f).Bold().FontFamily(font).FontColor("#fff");
 
                                 sec.Item().Table(t =>
                                 {
+                                    // 9 columnas en vertical — sin columna "TIPO"
                                     t.ColumnsDefinition(c =>
                                     {
-                                        c.RelativeColumn(0.9f);  // familia
-                                        c.RelativeColumn(1.1f);  // sku
-                                        c.RelativeColumn(2.8f);  // descripcion
-                                        c.RelativeColumn(0.8f);  // posicion
+                                        c.RelativeColumn(0.8f);  // familia
+                                        c.RelativeColumn(1.0f);  // sku
+                                        c.RelativeColumn(2.6f);  // descripcion
+                                        c.RelativeColumn(0.75f); // posicion
                                         c.RelativeColumn(0.65f); // existencia
                                         c.RelativeColumn(0.65f); // conteo
                                         c.RelativeColumn(0.65f); // diferencia
-                                        c.RelativeColumn(0.9f);  // tipo
+                                        c.RelativeColumn(1.0f);  // precio unitario
                                         c.RelativeColumn(1.0f);  // importe
                                     });
 
+                                    // Header
                                     t.Header(h =>
                                     {
                                         void TH(string txt) => h.Cell()
@@ -169,10 +168,44 @@ namespace HD_Auditoria.Reporteria
 
                                         TH("FAMILIA"); TH("SKU"); TH("DESCRIPCIÓN"); TH("POSICIÓN");
                                         TH("EXISTENCIA"); TH("CONTEO"); TH("DIFERENCIA");
-                                        TH("TIPO"); TH("IMPORTE DIF.");
+                                        TH("PRECIO UNIT."); TH("IMPORTE DIF.");
+                                        // ← sin columna TIPO
                                     });
 
-                                    // ── Subheader FALTANTES ──
+                                    // ── CORRECTOS ─────────────────────────────
+                                    if (correctos.Any())
+                                    {
+                                        t.Cell().ColumnSpan(9)
+                                            .Background("#eaf3de").BorderBottom(0.5f).BorderColor("#97c459")
+                                            .PaddingVertical(4).PaddingHorizontal(8)
+                                            .Text($"CORRECTOS — {correctos.Count} registro{(correctos.Count != 1 ? "s" : "")}")
+                                            .FontSize(7).Bold().FontFamily(font).FontColor("#27500a");
+                                    }
+
+                                    int idx = 0;
+                                    foreach (var d in correctos)
+                                    {
+                                        string bg = idx % 2 == 0 ? "#ffffff" : "#f5fbf0";
+
+                                        void TD(string? txt, string? fondo = null, string? color = null, bool centro = false) =>
+                                            t.Cell().Background(fondo ?? bg).BorderBottom(0.5f).BorderColor(grisLinea)
+                                                .PaddingVertical(3).PaddingHorizontal(4)
+                                                .Element(e => centro ? e.AlignCenter() : e.AlignLeft())
+                                                .Text(txt ?? "").FontSize(6.5f).FontFamily(font).FontColor(color ?? "#333");
+
+                                        TD(d.familia);
+                                        TD(d.sku);
+                                        TD(d.descripcion);
+                                        TD(d.posicion, centro: true);
+                                        TD(d.existencia.ToString("N2"), centro: true);
+                                        TD(d.conteo.ToString("N2"), centro: true);
+                                        TD(d.diferencias.ToString("N2"), "#eaf3de", "#27500a", centro: true);
+                                        TD(d.precio_unitario.ToString("C2", culturaMoneda), centro: true);
+                                        TD(d.importe_dif.ToString("C2", culturaMoneda), centro: true);
+                                        idx++;
+                                    }
+
+                                    // ── FALTANTES ─────────────────────────────
                                     if (faltantes.Any())
                                     {
                                         t.Cell().ColumnSpan(9)
@@ -182,8 +215,7 @@ namespace HD_Auditoria.Reporteria
                                             .FontSize(7).Bold().FontFamily(font).FontColor("#c0392b");
                                     }
 
-                                    // Filas faltantes
-                                    int idx = 0;
+                                    idx = 0;
                                     foreach (var d in faltantes)
                                     {
                                         string bg = idx % 2 == 0 ? "#ffffff" : "#fff7f7";
@@ -200,13 +232,13 @@ namespace HD_Auditoria.Reporteria
                                         TD(d.posicion, centro: true);
                                         TD(d.existencia.ToString("N2"), centro: true);
                                         TD(d.conteo.ToString("N2"), centro: true);
-                                        TD(d.diferencias.ToString("N2"), fondo: "#fff0f0", color: "#c0392b", centro: true);
-                                        TD("Faltante", fondo: "#fff0f0", color: "#c0392b", centro: true);
+                                        TD(d.diferencias.ToString("N2"), "#fff0f0", "#c0392b", centro: true);
+                                        TD(d.precio_unitario.ToString("C2", culturaMoneda), centro: true);
                                         TD(d.importe_dif.ToString("C2", culturaMoneda), centro: true);
                                         idx++;
                                     }
 
-                                    // ── Subheader SOBRANTES ──
+                                    // ── SOBRANTES ─────────────────────────────
                                     if (sobrantes.Any())
                                     {
                                         t.Cell().ColumnSpan(9)
@@ -216,7 +248,6 @@ namespace HD_Auditoria.Reporteria
                                             .FontSize(7).Bold().FontFamily(font).FontColor("#1a6fa8");
                                     }
 
-                                    // Filas sobrantes
                                     idx = 0;
                                     foreach (var d in sobrantes)
                                     {
@@ -234,47 +265,18 @@ namespace HD_Auditoria.Reporteria
                                         TD(d.posicion, centro: true);
                                         TD(d.existencia.ToString("N2"), centro: true);
                                         TD(d.conteo.ToString("N2"), centro: true);
-                                        TD(d.diferencias.ToString("N2"), fondo: "#f0f5ff", color: "#1a6fa8", centro: true);
-                                        TD("Sobrante", fondo: "#f0f5ff", color: "#1a6fa8", centro: true);
+                                        TD(d.diferencias.ToString("N2"), "#f0f5ff", "#1a6fa8", centro: true);
+                                        TD(d.precio_unitario.ToString("C2", culturaMoneda), centro: true);
                                         TD(d.importe_dif.ToString("C2", culturaMoneda), centro: true);
                                         idx++;
                                     }
 
-                                    //int idx = 0;
-                                    //foreach (var d in difs)
-                                    //{
-                                    //    string bg = idx % 2 == 0 ? "#ffffff" : "#f5f5f5";
-
-                                    //    bool esFaltante = d.tipo_diferencia?.Contains("faltante", StringComparison.OrdinalIgnoreCase) == true;
-                                    //    bool esSobrante = d.tipo_diferencia?.Contains("sobrante", StringComparison.OrdinalIgnoreCase) == true;
-                                    //    string bgTipo = esFaltante ? "#fff0f0" : esSobrante ? "#f0f5ff" : bg;
-                                    //    string colorTipo = esFaltante ? "#c0392b" : esSobrante ? "#1a6fa8" : "#333";
-
-                                    //    void TD(string? txt, string? fondo = null, string? color = null, bool centro = false) =>
-                                    //        t.Cell().Background(fondo ?? bg).BorderBottom(0.5f).BorderColor(grisLinea)
-                                    //            .PaddingVertical(3).PaddingHorizontal(4)
-                                    //            .Element(e => centro ? e.AlignCenter() : e.AlignLeft())
-                                    //            .Text(txt ?? "").FontSize(6.5f).FontFamily(font)
-                                    //            .FontColor(color ?? "#333");
-
-                                    //    TD(d.familia);
-                                    //    TD(d.sku);
-                                    //    TD(d.descripcion);
-                                    //    TD(d.posicion, centro: true);
-                                    //    TD(d.existencia.ToString("N2"), centro: true);
-                                    //    TD(d.conteo.ToString("N2"), centro: true);
-                                    //    TD(d.diferencias.ToString("N2"), fondo: bgTipo, color: colorTipo, centro: true);
-                                    //    TD(d.tipo_diferencia == "S" ? "Sobrante" : "Faltante", fondo: bgTipo, color: colorTipo, centro: true);
-                                    //    TD(d.importe_dif.ToString("C2", culturaMoneda), centro: true);
-
-                                    //    idx++;
-                                    //}
                                 });
                             });
 
                             col.Item().Height(28);
 
-                            // ── 4. Firmas ─────────────────────────────────────────
+                            // ── 3. Firmas ─────────────────────────────────────
                             col.Item().Row(r =>
                             {
                                 r.RelativeItem().Column(c =>
@@ -289,7 +291,7 @@ namespace HD_Auditoria.Reporteria
                                         .FontSize(7).FontFamily(font).FontColor("#333");
                                 });
 
-                                r.ConstantItem(80);
+                                r.ConstantItem(60);
 
                                 r.RelativeItem().Column(c =>
                                 {
@@ -305,8 +307,8 @@ namespace HD_Auditoria.Reporteria
                             });
                         });
 
-                        // ── FOOTER ────────────────────────────────────────────────
-                        page.Footer().Height(30).PaddingHorizontal(25).Row(row =>
+                        // ── FOOTER ────────────────────────────────────────────
+                        page.Footer().Height(28).PaddingHorizontal(20).Row(row =>
                         {
                             row.RelativeItem().AlignLeft().PaddingTop(8)
                                 .Text($"Generado el {DateTime.Now:dd/MM/yyyy HH:mm}")
@@ -326,41 +328,38 @@ namespace HD_Auditoria.Reporteria
                 return new RPT_Result
                 {
                     extension = "pdf",
-                    nombredocumento = $"Reporte_Simplificado_{folio}",
+                    nombredocumento = $"Reporte_simplificado_{folio}",
                     documento = Convert.ToBase64String(doc)
                 };
             }
             catch (Exception ex) { throw ex; }
         }
 
-        // ── Helpers ──────────────────────────────────────────────────────────────
+        // ── Helpers ───────────────────────────────────────────────────────────
 
-        /// Tarjeta de valor monetario/texto
         private static void KpiMonto(TableDescriptor t,
-            string etiqueta, string valor,
-            string colorValor, string fondoCelda, string gris, string font)
+     string etiqueta, string valor,
+     string colorValor, string fondoCelda, string gris, string font)
         {
             t.Cell()
                 .Background(fondoCelda)
                 .BorderRight(0.5f).BorderColor(gris)
                 .BorderBottom(0.5f).BorderColor(gris)
-                .Padding(10).Column(c =>
+                .Padding(6)          // ← era 10
+                .Column(c =>
                 {
                     c.Item().Text(etiqueta)
-                        .FontSize(6.5f).Bold().FontFamily(font).FontColor("#555");
-                    c.Item().PaddingTop(4).Text(valor)
-                        .FontSize(14).Bold().FontFamily(font).FontColor(colorValor);
+                        .FontSize(6f).Bold().FontFamily(font).FontColor("#555");  // ← era 6.5
+                    c.Item().PaddingTop(2).Text(valor)
+                        .FontSize(10).Bold().FontFamily(font).FontColor(colorValor);  // ← era 13
                 });
         }
 
-        /// Tarjeta de porcentaje con barra Skia
         private static void KpiPorcentaje(TableDescriptor t,
             string etiqueta, double valor,
             string colorBase, string fondoCelda, string gris, string font,
             bool menorEsMejor)
         {
-            // Para "menor es mejor" (faltante/sobrante): verde si < 5%, amarillo si < 15%, rojo si >= 15%
-            // Para "mayor es mejor" (confiabilidad): verde si >= 95%, amarillo si >= 80%, rojo si < 80%
             string colorValor;
             if (menorEsMejor)
                 colorValor = valor < 5 ? "#275027" : valor < 15 ? "#b8860b" : "#c0392b";
@@ -373,32 +372,42 @@ namespace HD_Auditoria.Reporteria
                 .Background(fondoCelda)
                 .BorderRight(0.5f).BorderColor(gris)
                 .BorderBottom(0.5f).BorderColor(gris)
-                .Padding(8).Column(c =>
+                .Padding(6)          // ← era 8
+                .Column(c =>
                 {
-                    c.Item().Text(etiqueta).FontSize(6.5f).Bold().FontFamily(font).FontColor("#555");
-
-                    c.Item().PaddingTop(3).Text($"{valor:N1}%")
-                        .FontSize(16).Bold().FontFamily(font).FontColor(colorValor);
-
-                    c.Item().PaddingTop(4).Height(7).SkiaSharpCanvas((canvas, size) =>
+                    c.Item().Text(etiqueta)
+                        .FontSize(6f).Bold().FontFamily(font).FontColor("#555");  // ← era 6.5
+                    c.Item().PaddingTop(2).Text($"{valor:N1}%")
+                        .FontSize(11).Bold().FontFamily(font).FontColor(colorValor);  // ← era 15
+                    c.Item().PaddingTop(3).Height(5).SkiaSharpCanvas((canvas, size) =>  // ← altura era 6
                     {
-                        // Fondo
-                        using var pFondo = new SKPaint { Color = SKColor.Parse("#d8d8d8"), Style = SKPaintStyle.Fill, IsAntialias = true };
-                        canvas.DrawRoundRect(new SKRoundRect(new SKRect(0, 0, size.Width, size.Height), 3, 3), pFondo);
-                        // Relleno
+                        using var pFondo = new SKPaint
+                        {
+                            Color = SKColor.Parse("#d8d8d8"),
+                            Style = SKPaintStyle.Fill,
+                            IsAntialias = true
+                        };
+                        canvas.DrawRoundRect(
+                            new SKRoundRect(new SKRect(0, 0, size.Width, size.Height), 3, 3), pFondo);
+
                         float w = size.Width * pct;
                         if (w > 0)
                         {
-                            using var pRelleno = new SKPaint { Color = SKColor.Parse(colorValor), Style = SKPaintStyle.Fill, IsAntialias = true };
-                            canvas.DrawRoundRect(new SKRoundRect(new SKRect(0, 0, w, size.Height), 3, 3), pRelleno);
+                            using var pRelleno = new SKPaint
+                            {
+                                Color = SKColor.Parse(colorValor),
+                                Style = SKPaintStyle.Fill,
+                                IsAntialias = true
+                            };
+                            canvas.DrawRoundRect(
+                                new SKRoundRect(new SKRect(0, 0, w, size.Height), 3, 3), pRelleno);
                         }
                     });
-
-                    c.Item().PaddingTop(2).Text(
-                        menorEsMejor
-                            ? (valor < 5 ? "ÓPTIMO" : valor < 15 ? "ACEPTABLE" : "CRÍTICO")
-                            : (valor >= 95 ? "EXCELENTE" : valor >= 80 ? "ACEPTABLE" : "REQUIERE ATENCIÓN"))
-                        .FontSize(6).FontFamily(font).FontColor(colorValor);
+                    c.Item().PaddingTop(1).Text(  // ← era PaddingTop(2)
+                            menorEsMejor
+                                ? (valor < 5 ? "ÓPTIMO" : valor < 15 ? "ACEPTABLE" : "CRÍTICO")
+                                : (valor >= 95 ? "EXCELENTE" : valor >= 80 ? "ACEPTABLE" : "REQUIERE ATENCIÓN"))
+                        .FontSize(5.5f).FontFamily(font).FontColor(colorValor);  // ← era 6
                 });
         }
     }

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace HD_Auditoria.Reporteria
 {
-    public class RPT_ReporteSegundoConteo_PDF
+    public class RPT_ReportePrimerInventario_PDF
     {
         public static RPT_Result GenerarPDF(mdl_ReporteSimplificado_View detalle, string? folio)
         {
@@ -67,7 +67,7 @@ namespace HD_Auditoria.Reporteria
 
                             row.RelativeItem().PaddingTop(25).Height(50).Background(verde)
                                 .Padding(10).PaddingLeft(14)
-                                .Text("Segundo inventario - " + folio)
+                                .Text("Primer inventario - " + folio)
                                 .FontColor("#fff").FontSize(16).Bold().FontFamily(font);
                         });
 
@@ -328,7 +328,7 @@ namespace HD_Auditoria.Reporteria
                 return new RPT_Result
                 {
                     extension = "pdf",
-                    nombredocumento = $"Segundo_inventario_{folio}",
+                    nombredocumento = $"Primer_inventario_{folio}",
                     documento = Convert.ToBase64String(doc)
                 };
             }
@@ -338,8 +338,8 @@ namespace HD_Auditoria.Reporteria
         // ── Helpers ───────────────────────────────────────────────────────────
 
         private static void KpiMonto(TableDescriptor t,
-string etiqueta, string valor,
-string colorValor, string fondoCelda, string gris, string font)
+     string etiqueta, string valor,
+     string colorValor, string fondoCelda, string gris, string font)
         {
             t.Cell()
                 .Background(fondoCelda)
@@ -410,5 +410,7 @@ string colorValor, string fondoCelda, string gris, string font)
                         .FontSize(5.5f).FontFamily(font).FontColor(colorValor);  // ← era 6
                 });
         }
+
+
     }
 }

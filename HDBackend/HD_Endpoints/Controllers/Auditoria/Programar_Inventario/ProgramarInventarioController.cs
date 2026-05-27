@@ -170,6 +170,20 @@ namespace HD.Endpoints.Controllers.Auditoria.Programar_Inventario
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
+        public async Task<IActionResult> ReportePrimerConteoPDF(string? folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_ReporteSegundoconteo_PDF datos = new AD_ReporteSegundoconteo_PDF(CadenaConexion);
+            var result = await datos.Listado(folio);
+
+            var rpt = RPT_ReportePrimerInventario_PDF.GenerarPDF(result, folio);
+
+            return Ok(rpt);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
         public async Task<IActionResult> ReporteSegundoConteoPDF(string? folio)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
