@@ -13,7 +13,7 @@ namespace HD_Auditoria.Consultas.Justificaciones
             CadenaConexion = _cadenaconexion;
         }
 
-        public async Task<mdl_Notificar_View> JustificacionAceptada(mdl_Justificaciones_Acciones mdl)
+        public async Task<mdl_Result_SP> JustificacionAceptada(mdl_Justificaciones_Acciones mdl)
         {
             try
             {
@@ -22,6 +22,8 @@ namespace HD_Auditoria.Consultas.Justificaciones
                 var parametros = new DynamicParameters();
                 parametros.Add("@folio", mdl.folio, System.Data.DbType.String, System.Data.ParameterDirection.Input, 9);
                 parametros.Add("@id_just", mdl.idjust, System.Data.DbType.Int32, System.Data.ParameterDirection.Input);
+                parametros.Add("@tipo_aceptacion", mdl.tipo_aceptacion, System.Data.DbType.String, System.Data.ParameterDirection.Input,20);
+                parametros.Add("@cantidad_aceptada", mdl.cantidad_aceptada, System.Data.DbType.Int32, System.Data.ParameterDirection.Input);
                 parametros.Add("@usuario", mdl.usuario, System.Data.DbType.String, System.Data.ParameterDirection.Input);
 
                 //Parametros de respuesta
@@ -31,17 +33,13 @@ namespace HD_Auditoria.Consultas.Justificaciones
 
 
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                var result = await factory.SQL.QueryMultipleAsync("Auditoria.SP_JUST_AUDITORIA_ACEPTAR", parametros, commandType: System.Data.CommandType.StoredProcedure);
-                mdl_Notificar_View listado = new mdl_Notificar_View();
-                listado.correos = result.Read<mdl_Notificar_Correo>().ToList();
-                listado.estatus = new mdl_Result_SP
+                await factory.SQL.ExecuteAsync("Auditoria.SP_JUST_AUDITORIA_ACEPTAR", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return new mdl_Result_SP
                 {
                     resultado = parametros.Get<int>("@resultado"),
-                    mensaje = parametros.Get<string>("@mensaje"),
-                    completado = parametros.Get<int>("@completado")
+                    mensaje = parametros.Get<string>("@mensaje")
                 };
-                factory.SQL.Close();
-                return listado;
 
             }
             catch (System.Exception ex)

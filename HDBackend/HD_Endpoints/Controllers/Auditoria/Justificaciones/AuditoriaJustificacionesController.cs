@@ -133,12 +133,7 @@ namespace HD.Endpoints.Controllers.Auditoria.Justificaciones
             mdl.usuario = Sesion.usuario();
             var result = await datos.JustificacionAceptada(mdl);
 
-            if (result.estatus.completado == 1)
-            {
-                await EnvioJustificaciones.Enviar_Aceptado(result, mdl);
-            }
-
-            return Ok(result.estatus);
+            return Ok(result);
         }
 
         [HttpPost]

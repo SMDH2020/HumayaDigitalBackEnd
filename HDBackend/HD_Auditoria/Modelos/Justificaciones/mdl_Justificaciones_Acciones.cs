@@ -13,6 +13,9 @@ namespace HD_Auditoria.Modelos.Justificaciones
         public int idjust { get; set; }
         public string? motivo { get; set; }
         public string? usuario { get; set; }
+        public string? tipo_aceptacion { get; set; }
+        public double cantidad_aceptada { get; set; }
+
 
     }
 }
