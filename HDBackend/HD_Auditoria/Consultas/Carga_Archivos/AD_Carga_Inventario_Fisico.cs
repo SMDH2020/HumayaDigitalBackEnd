@@ -92,8 +92,13 @@ namespace HD_Auditoria.Consultas.Carga_Archivos
                             "PZ",
                             row.Cell(12).GetValue<float>(),
                             string.IsNullOrWhiteSpace(posicion)
-                                ? "SIN"
-                                : posicion.PadRight(3).Substring(0, 3),
+                            ? "SIN LOCALIZACION"
+                            : (
+                                System.Text.RegularExpressions.Regex.Match(posicion.Trim(), @"^\d+") is var match
+                                && match.Success
+                                    ? match.Value.Substring(0, Math.Min(3, match.Value.Length))
+                                    : posicion.Trim()
+                              ),
                             string.IsNullOrWhiteSpace(posicion)
                                 ? "SIN LOCALIZACION"
                                 : posicion
