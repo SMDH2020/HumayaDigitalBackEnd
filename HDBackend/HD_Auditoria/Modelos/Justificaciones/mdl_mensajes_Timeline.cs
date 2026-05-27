@@ -20,6 +20,7 @@ namespace HD_Auditoria.Modelos.Justificaciones
         public int id_auditor { get; set; }
         public string? auditor { get; set; }
         public string? motivo_rechazo { get; set; }
+        public string? aceptadas { get; set; }
 
     }
 }

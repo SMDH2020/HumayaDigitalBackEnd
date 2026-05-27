@@ -22,7 +22,6 @@ namespace HD_Auditoria.Modelos.Programar_Inventario
         public string? estatus_just { get; set; }
         public string? comentario_usuario { get; set; }
         public string? motivo_rechazo { get; set; }
-
-
+        public double aceptadas { get; set; }
     }
 }
