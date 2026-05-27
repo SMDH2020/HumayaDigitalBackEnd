@@ -198,5 +198,23 @@ namespace HD_Auditoria.Consultas.Conteo_Piezas
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<mdl_Get_Info_Codigo?> GetInfoCodigo(string codigo, string folio)
+        {
+            try
+            {
+                var parametros = new DynamicParameters();
+                parametros.Add("codigo_pieza", codigo, System.Data.DbType.String);
+                parametros.Add("folio", folio, System.Data.DbType.String);
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                mdl_Get_Info_Codigo result = await factory.SQL.QueryFirstOrDefaultAsync<mdl_Get_Info_Codigo>("Auditoria.sp_OBTENER_PIEZA_REGISTRADA", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }
