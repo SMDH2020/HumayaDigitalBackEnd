@@ -81,5 +81,18 @@ namespace HD.Endpoints.Controllers.Auditoria.Conteo_Piezas
             var result = await datos.AgregarNuevaPieza(mdl);
             return Ok(result);
         }
+
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> InfoPieza(string codigo, string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Conteo_Piezas_Online datos = new AD_Conteo_Piezas_Online(CadenaConexion);
+            //int id_auditor = int.Parse(Sesion.usuario());
+            var result = await datos.GetInfoCodigo(codigo, folio);
+            return Ok(result);
+
+        }
     }
 }

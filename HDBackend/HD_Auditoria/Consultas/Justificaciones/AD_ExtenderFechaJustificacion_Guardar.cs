@@ -19,7 +19,6 @@ namespace HD_Auditoria.Consultas.Justificaciones
         {
             CadenaConexion = _cadenaconexion;
         }
-
         public async Task<mdl_Notificar_Finalizacion_View> ExtenderFecha(mdl_ExtenderFecha mdl)
         {
             try
@@ -52,6 +51,7 @@ namespace HD_Auditoria.Consultas.Justificaciones
 
                 if (!result.IsConsumed)
                     listado.firmas = result.Read<mdl_Firmas_PDF>().FirstOrDefault();
+
                 listado.estatus = new mdl_Result_SP
                 {
                     resultado = parametros.Get<int>("@resultado"),
