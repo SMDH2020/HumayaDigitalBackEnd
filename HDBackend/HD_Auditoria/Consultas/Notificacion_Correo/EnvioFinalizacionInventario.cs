@@ -47,7 +47,7 @@ namespace HD_Auditoria.Consultas.Notificacion_Correo
                      objeto_mail.To.Add(new MailAddress(notificacion.Correo));
                 }
 
-                //objeto_mail.To.Add("desarrolladorti@humaya.com.mx");
+                objeto_mail.To.Add("guadalupeolivas@humaya.com.mx");
 
                 // ── Asunto ───────────────────────────────────────────────────
                 objeto_mail.Subject = $"Inventario {folio} — Finalizado";
