@@ -17,6 +17,7 @@ namespace HD_Auditoria.Modelos.Programar_Inventario
         public double diferencias { get; set; }
         public string? tipo_diferencia { get; set; }
         public double importe_dif { get; set; }
+        public double precio_unitario { get; set; }
         public string? comentario { get; set; }
     }
 }

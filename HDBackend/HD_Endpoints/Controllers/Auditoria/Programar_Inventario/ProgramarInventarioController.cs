@@ -160,10 +160,23 @@ namespace HD.Endpoints.Controllers.Auditoria.Programar_Inventario
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_ReporteSimplificado_PDF datos = new AD_ReporteSimplificado_PDF(CadenaConexion);
-            var usuario = Sesion.usuario();
             var result = await datos.Listado(folio);
 
             var rpt = RPT_ReporteSimplificado_PDF.GenerarPDF(result, folio);
+
+            return Ok(rpt);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<IActionResult> ReporteSegundoConteoPDF(string? folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_ReporteSegundoconteo_PDF datos = new AD_ReporteSegundoconteo_PDF(CadenaConexion);
+            var result = await datos.Listado(folio);
+
+            var rpt = RPT_ReporteSegundoConteo_PDF.GenerarPDF(result, folio);
 
             return Ok(rpt);
 
