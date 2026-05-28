@@ -351,7 +351,8 @@ namespace HD_Auditoria.Reporteria
                     c.Item().Text(etiqueta)
                         .FontSize(6f).Bold().FontFamily(font).FontColor("#555");  // ← era 6.5
                     c.Item().PaddingTop(2).Text(valor)
-                        .FontSize(10).Bold().FontFamily(font).FontColor(colorValor);  // ← era 13
+                        .FontSize(10).Bold().FontFamily(font).FontColor(colorValor); // ← era 13
+
                 });
         }
 
