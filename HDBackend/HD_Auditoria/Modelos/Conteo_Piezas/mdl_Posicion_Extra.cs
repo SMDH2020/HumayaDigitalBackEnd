@@ -6,5 +6,6 @@
         public string folio { get; set; }
         public string posicion_extra { get; set; }
         public float conteo_fisico { get; set; }
+        public bool bloqueado { get; set; }
     }
 }

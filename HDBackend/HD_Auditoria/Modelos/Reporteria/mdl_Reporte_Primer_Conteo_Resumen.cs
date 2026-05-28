@@ -11,5 +11,8 @@
         public float porc_total_neto { get; set; }
         public float confiabilidad { get; set; }
         public float confiabilidad_ubi { get; set; }
+        public float conteo_faltante { get; set; }
+        public float conteo_sobrante { get; set; }
+
     }
 }
