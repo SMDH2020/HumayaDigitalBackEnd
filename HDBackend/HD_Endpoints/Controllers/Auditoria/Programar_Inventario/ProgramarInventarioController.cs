@@ -1,6 +1,7 @@
 ﻿using HD.Security;
 using HD_Auditoria.Consultas.Carga_Archivos;
 using HD_Auditoria.Consultas.Programar_Inventario;
+using HD_Auditoria.Consultas.Reporteria;
 using HD_Auditoria.Modelos.Carga_Archivos;
 using HD_Auditoria.Modelos.Programar_Inventario;
 using HD_Auditoria.Reporteria;
@@ -173,7 +174,7 @@ namespace HD.Endpoints.Controllers.Auditoria.Programar_Inventario
         public async Task<IActionResult> ReportePrimerConteoPDF(string? folio)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-            AD_ReporteSegundoconteo_PDF datos = new AD_ReporteSegundoconteo_PDF(CadenaConexion);
+            AD_Reporte_Primer_Conteo datos = new AD_Reporte_Primer_Conteo(CadenaConexion);
             var result = await datos.Listado(folio);
 
             var rpt = RPT_ReportePrimerInventario_PDF.GenerarPDF(result, folio);
