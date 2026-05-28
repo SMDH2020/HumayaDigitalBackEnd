@@ -176,7 +176,7 @@ namespace HD_Auditoria.Reporteria
                     sheet.Cell(renglon, 5).Value = view.resumen.conteo_faltante;
                     sheet.Cell(renglon, 6).Value = "FALTANTE";
                     sheet.Cell(renglon, 7).Value = view.resumen.importe_faltante;
-                    sheet.Cell(renglon, 8).Value = view.resumen.porc_faltante;
+                    sheet.Cell(renglon, 8).Value = view.resumen.porc_faltante / 100;
 
                     sheet.Cell(renglon, 7).Style.NumberFormat.Format = "$ #,##0.00";
                     sheet.Cell(renglon, 8).Style.NumberFormat.Format = "0.00%";
@@ -187,7 +187,7 @@ namespace HD_Auditoria.Reporteria
                     sheet.Cell(renglon, 5).Value = view.resumen.conteo_sobrante;
                     sheet.Cell(renglon, 6).Value = "SOBRANTE";
                     sheet.Cell(renglon, 7).Value = view.resumen.importe_sobrante;
-                    sheet.Cell(renglon, 8).Value = view.resumen.porc_sobrante;
+                    sheet.Cell(renglon, 8).Value = view.resumen.porc_sobrante / 100;
 
                     sheet.Cell(renglon, 7).Style.NumberFormat.Format = "$ #,##0.00";
                     sheet.Cell(renglon, 8).Style.NumberFormat.Format = "0.00%";
