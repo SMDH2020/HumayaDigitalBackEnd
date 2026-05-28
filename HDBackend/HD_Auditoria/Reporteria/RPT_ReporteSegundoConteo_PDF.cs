@@ -1,21 +1,21 @@
-﻿// RPT_FinalizacionMetricas.cs
-using HD_Auditoria.Modelos.Programar_Inventario;
+﻿using HD_Auditoria.Modelos.Programar_Inventario;
 using HD_Reporteria;
 using HD_Reporteria.Cobranza;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
-using QuestPDF.Infrastructure;
 using SkiaSharp;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace HD_Auditoria.Reporteria
 {
-    public class RPT_FinalizacionMetricas 
+    public class RPT_ReporteSegundoConteo_PDF
     {
-       public static RPT_Result GenerarPDF(mdl_Notificar_Finalizacion_View detalle, string? folio)
+        public static RPT_Result GenerarPDF(mdl_ReporteSimplificado_View detalle, string? folio)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace HD_Auditoria.Reporteria
 
                             row.RelativeItem().PaddingTop(25).Height(50).Background(verde)
                                 .Padding(10).PaddingLeft(14)
-                                .Text("Reporte simplificado - " + folio)
+                                .Text("Segundo inventario - " + folio)
                                 .FontColor("#fff").FontSize(16).Bold().FontFamily(font);
                         });
 
@@ -149,14 +149,16 @@ namespace HD_Auditoria.Reporteria
                                     {
                                         c.RelativeColumn(0.8f);  // familia
                                         c.RelativeColumn(1.0f);  // sku
-                                        c.RelativeColumn(3.2f);  // descripcion — más ancho al quitar precio
+                                        c.RelativeColumn(2.6f);  // descripcion
                                         c.RelativeColumn(0.75f); // posicion
-                                        c.RelativeColumn(0.7f);  // existencia
-                                        c.RelativeColumn(0.7f);  // conteo
-                                        c.RelativeColumn(0.7f);  // diferencia
-                                        c.RelativeColumn(1.1f);  // importe
+                                        c.RelativeColumn(0.65f); // existencia
+                                        c.RelativeColumn(0.65f); // conteo
+                                        c.RelativeColumn(0.65f); // diferencia
+                                        c.RelativeColumn(1.0f);  // precio unitario
+                                        c.RelativeColumn(1.0f);  // importe
                                     });
 
+                                    // Header
                                     t.Header(h =>
                                     {
                                         void TH(string txt) => h.Cell()
@@ -165,13 +167,15 @@ namespace HD_Auditoria.Reporteria
                                             .Text(txt).FontSize(6.5f).Bold().FontFamily(font).FontColor("#fff");
 
                                         TH("FAMILIA"); TH("SKU"); TH("DESCRIPCIÓN"); TH("POSICIÓN");
-                                        TH("EXISTENCIA"); TH("CONTEO"); TH("DIFERENCIA"); TH("IMPORTE DIF.");
+                                        TH("EXISTENCIA"); TH("CONTEO"); TH("DIFERENCIA");
+                                        TH("PRECIO UNIT."); TH("IMPORTE DIF.");
+                                        // ← sin columna TIPO
                                     });
 
                                     // ── CORRECTOS ─────────────────────────────
                                     if (correctos.Any())
                                     {
-                                        t.Cell().ColumnSpan(8)
+                                        t.Cell().ColumnSpan(9)
                                             .Background("#eaf3de").BorderBottom(0.5f).BorderColor("#97c459")
                                             .PaddingVertical(4).PaddingHorizontal(8)
                                             .Text($"CORRECTOS — {correctos.Count} registro{(correctos.Count != 1 ? "s" : "")}")
@@ -203,7 +207,8 @@ namespace HD_Auditoria.Reporteria
                                         TD(d.posicion, centro: true);
                                         TS(d.existencia.ToString("N2"));                                        // ← TS derecha
                                         TS(d.conteo.ToString("N2"));                                            // ← TS derecha
-                                        TS(d.diferencias.ToString("N2"), "#eaf3de", "#27500a");                 // ← TS derecha
+                                        TS(d.diferencias.ToString("N2"), "#eaf3de", "#27500a");
+                                        TS(d.precio_unitario.ToString("C2", culturaMoneda));
                                         TS(d.importe_dif.ToString("C2", culturaMoneda));
                                         idx++;
                                     }
@@ -211,7 +216,7 @@ namespace HD_Auditoria.Reporteria
                                     // ── FALTANTES ─────────────────────────────
                                     if (faltantes.Any())
                                     {
-                                        t.Cell().ColumnSpan(8)
+                                        t.Cell().ColumnSpan(9)
                                             .Background("#fff0f0").BorderBottom(0.5f).BorderColor("#f09595")
                                             .PaddingVertical(4).PaddingHorizontal(8)
                                             .Text($"FALTANTES — {faltantes.Count} registro{(faltantes.Count != 1 ? "s" : "")}")
@@ -243,7 +248,8 @@ namespace HD_Auditoria.Reporteria
                                         TD(d.posicion, centro: true);
                                         TS(d.existencia.ToString("N2"));                                        // ← TS derecha
                                         TS(d.conteo.ToString("N2"));                                            // ← TS derecha
-                                        TS(d.diferencias.ToString("N2"), "#fff0f0", "#c0392b");                 // ← TS derecha
+                                        TS(d.diferencias.ToString("N2"), "#eaf3de", "#27500a");
+                                        TS(d.precio_unitario.ToString("C2", culturaMoneda));
                                         TS(d.importe_dif.ToString("C2", culturaMoneda));
                                         idx++;
                                     }
@@ -251,7 +257,7 @@ namespace HD_Auditoria.Reporteria
                                     // ── SOBRANTES ─────────────────────────────
                                     if (sobrantes.Any())
                                     {
-                                        t.Cell().ColumnSpan(8)
+                                        t.Cell().ColumnSpan(9)
                                             .Background("#f0f5ff").BorderBottom(0.5f).BorderColor("#85b7eb")
                                             .PaddingVertical(4).PaddingHorizontal(8)
                                             .Text($"SOBRANTES — {sobrantes.Count} registro{(sobrantes.Count != 1 ? "s" : "")}")
@@ -283,7 +289,8 @@ namespace HD_Auditoria.Reporteria
                                         TD(d.posicion, centro: true);
                                         TS(d.existencia.ToString("N2"));                                        // ← TS derecha
                                         TS(d.conteo.ToString("N2"));                                            // ← TS derecha
-                                        TS(d.diferencias.ToString("N2"), "#f0f5ff", "#1a6fa8");                 // ← TS derecha
+                                        TS(d.diferencias.ToString("N2"), "#eaf3de", "#27500a");
+                                        TS(d.precio_unitario.ToString("C2", culturaMoneda));
                                         TS(d.importe_dif.ToString("C2", culturaMoneda));
                                         idx++;
                                     }
@@ -345,18 +352,18 @@ namespace HD_Auditoria.Reporteria
                 return new RPT_Result
                 {
                     extension = "pdf",
-                    nombredocumento = $"Reporte_simplificado_{folio}",
+                    nombredocumento = $"Segundo_inventario_{folio}",
                     documento = Convert.ToBase64String(doc)
                 };
             }
             catch (Exception ex) { throw ex; }
         }
 
-        // ── Helpers ──────────────────────────────────────────────────────────────
+        // ── Helpers ───────────────────────────────────────────────────────────
 
         private static void KpiMonto(TableDescriptor t,
-  string etiqueta, string valor,
-  string colorValor, string fondoCelda, string gris, string font)
+string etiqueta, string valor,
+string colorValor, string fondoCelda, string gris, string font)
         {
             t.Cell()
                 .Background(fondoCelda)
