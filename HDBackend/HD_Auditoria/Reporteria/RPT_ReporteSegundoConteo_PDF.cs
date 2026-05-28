@@ -187,21 +187,29 @@ namespace HD_Auditoria.Reporteria
                                     {
                                         string bg = idx % 2 == 0 ? "#ffffff" : "#f5fbf0";
 
+                                        // TD — texto normal, izquierda por defecto
                                         void TD(string? txt, string? fondo = null, string? color = null, bool centro = false) =>
                                             t.Cell().Background(fondo ?? bg).BorderBottom(0.5f).BorderColor(grisLinea)
                                                 .PaddingVertical(3).PaddingHorizontal(4)
                                                 .Element(e => centro ? e.AlignCenter() : e.AlignLeft())
                                                 .Text(txt ?? "").FontSize(6.5f).FontFamily(font).FontColor(color ?? "#333");
 
-                                        TD(d.familia);
+                                        // TS — cantidades/importes, derecha por defecto
+                                        void TS(string? txt, string? fondo = null, string? color = null, bool centro = false) =>
+                                            t.Cell().Background(fondo ?? bg).BorderBottom(0.5f).BorderColor(grisLinea)
+                                                .PaddingVertical(3).PaddingHorizontal(4)
+                                                .Element(e => centro ? e.AlignCenter() : e.AlignRight())  // ← derecha por defecto
+                                                .Text(txt ?? "").FontSize(6.5f).FontFamily(font).FontColor(color ?? "#333");
+
+                                        TD(d.familia, centro: true);
                                         TD(d.sku);
                                         TD(d.descripcion);
                                         TD(d.posicion, centro: true);
-                                        TD(d.existencia.ToString("N2"), centro: true);
-                                        TD(d.conteo.ToString("N2"), centro: true);
-                                        TD(d.diferencias.ToString("N2"), "#eaf3de", "#27500a", centro: true);
-                                        TD(d.precio_unitario.ToString("C2", culturaMoneda), centro: true);
-                                        TD(d.importe_dif.ToString("C2", culturaMoneda), centro: true);
+                                        TS(d.existencia.ToString("N2"));                                        // ← TS derecha
+                                        TS(d.conteo.ToString("N2"));                                            // ← TS derecha
+                                        TS(d.diferencias.ToString("N2"), "#eaf3de", "#27500a");
+                                        TS(d.precio_unitario.ToString("C2", culturaMoneda));
+                                        TS(d.importe_dif.ToString("C2", culturaMoneda));
                                         idx++;
                                     }
 
@@ -220,21 +228,29 @@ namespace HD_Auditoria.Reporteria
                                     {
                                         string bg = idx % 2 == 0 ? "#ffffff" : "#fff7f7";
 
+                                        // TD — texto normal, izquierda por defecto
                                         void TD(string? txt, string? fondo = null, string? color = null, bool centro = false) =>
                                             t.Cell().Background(fondo ?? bg).BorderBottom(0.5f).BorderColor(grisLinea)
                                                 .PaddingVertical(3).PaddingHorizontal(4)
                                                 .Element(e => centro ? e.AlignCenter() : e.AlignLeft())
                                                 .Text(txt ?? "").FontSize(6.5f).FontFamily(font).FontColor(color ?? "#333");
 
-                                        TD(d.familia);
+                                        // TS — cantidades/importes, derecha por defecto
+                                        void TS(string? txt, string? fondo = null, string? color = null, bool centro = false) =>
+                                            t.Cell().Background(fondo ?? bg).BorderBottom(0.5f).BorderColor(grisLinea)
+                                                .PaddingVertical(3).PaddingHorizontal(4)
+                                                .Element(e => centro ? e.AlignCenter() : e.AlignRight())  // ← derecha por defecto
+                                                .Text(txt ?? "").FontSize(6.5f).FontFamily(font).FontColor(color ?? "#333");
+
+                                        TD(d.familia, centro: true);
                                         TD(d.sku);
                                         TD(d.descripcion);
                                         TD(d.posicion, centro: true);
-                                        TD(d.existencia.ToString("N2"), centro: true);
-                                        TD(d.conteo.ToString("N2"), centro: true);
-                                        TD(d.diferencias.ToString("N2"), "#fff0f0", "#c0392b", centro: true);
-                                        TD(d.precio_unitario.ToString("C2", culturaMoneda), centro: true);
-                                        TD(d.importe_dif.ToString("C2", culturaMoneda), centro: true);
+                                        TS(d.existencia.ToString("N2"));                                        // ← TS derecha
+                                        TS(d.conteo.ToString("N2"));                                            // ← TS derecha
+                                        TS(d.diferencias.ToString("N2"), "#eaf3de", "#27500a");
+                                        TS(d.precio_unitario.ToString("C2", culturaMoneda));
+                                        TS(d.importe_dif.ToString("C2", culturaMoneda));
                                         idx++;
                                     }
 
@@ -253,21 +269,29 @@ namespace HD_Auditoria.Reporteria
                                     {
                                         string bg = idx % 2 == 0 ? "#ffffff" : "#f5f8ff";
 
+                                        // TD — texto normal, izquierda por defecto
                                         void TD(string? txt, string? fondo = null, string? color = null, bool centro = false) =>
                                             t.Cell().Background(fondo ?? bg).BorderBottom(0.5f).BorderColor(grisLinea)
                                                 .PaddingVertical(3).PaddingHorizontal(4)
                                                 .Element(e => centro ? e.AlignCenter() : e.AlignLeft())
                                                 .Text(txt ?? "").FontSize(6.5f).FontFamily(font).FontColor(color ?? "#333");
 
-                                        TD(d.familia);
+                                        // TS — cantidades/importes, derecha por defecto
+                                        void TS(string? txt, string? fondo = null, string? color = null, bool centro = false) =>
+                                            t.Cell().Background(fondo ?? bg).BorderBottom(0.5f).BorderColor(grisLinea)
+                                                .PaddingVertical(3).PaddingHorizontal(4)
+                                                .Element(e => centro ? e.AlignCenter() : e.AlignRight())  // ← derecha por defecto
+                                                .Text(txt ?? "").FontSize(6.5f).FontFamily(font).FontColor(color ?? "#333");
+
+                                        TD(d.familia, centro: true);
                                         TD(d.sku);
                                         TD(d.descripcion);
                                         TD(d.posicion, centro: true);
-                                        TD(d.existencia.ToString("N2"), centro: true);
-                                        TD(d.conteo.ToString("N2"), centro: true);
-                                        TD(d.diferencias.ToString("N2"), "#f0f5ff", "#1a6fa8", centro: true);
-                                        TD(d.precio_unitario.ToString("C2", culturaMoneda), centro: true);
-                                        TD(d.importe_dif.ToString("C2", culturaMoneda), centro: true);
+                                        TS(d.existencia.ToString("N2"));                                        // ← TS derecha
+                                        TS(d.conteo.ToString("N2"));                                            // ← TS derecha
+                                        TS(d.diferencias.ToString("N2"), "#eaf3de", "#27500a");
+                                        TS(d.precio_unitario.ToString("C2", culturaMoneda));
+                                        TS(d.importe_dif.ToString("C2", culturaMoneda));
                                         idx++;
                                     }
 
