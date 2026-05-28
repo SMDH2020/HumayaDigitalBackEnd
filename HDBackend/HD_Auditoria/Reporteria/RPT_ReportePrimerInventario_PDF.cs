@@ -67,7 +67,7 @@ namespace HD_Auditoria.Reporteria
 
                             row.RelativeItem().PaddingTop(25).Height(50).Background(verde)
                                 .Padding(10).PaddingLeft(14)
-                                .Text("Primer inventario - " + folio)
+                                .Text("PRIMER CONTEO - " + folio)
                                 .FontColor("#fff").FontSize(16).Bold().FontFamily(font);
                         });
 
@@ -84,7 +84,7 @@ namespace HD_Auditoria.Reporteria
                                     .Text("MÉTRICAS DEL RESULTADO")
                                     .FontSize(7f).Bold().FontFamily(font).FontColor("#fff");
 
-                                // Fila 1 — los 4 importes en una sola fila
+                                // Fila 1 — importes con porcentaje inline separado por |
                                 sec.Item().Table(t =>
                                 {
                                     t.ColumnsDefinition(c =>
@@ -92,40 +92,23 @@ namespace HD_Auditoria.Reporteria
                                         c.RelativeColumn(1); c.RelativeColumn(1);
                                         c.RelativeColumn(1); c.RelativeColumn(1);
                                     });
-                                    KpiMonto(t, "IMPORTE TOTAL", info.importe_total_inventario.ToString("C2", culturaMoneda), verde, verdePanel, grisLinea, font);
-                                    KpiMonto(t, "TOTAL NETO", info.total_neto.ToString("C2", culturaMoneda), verdeOscuro, verdeClaro, grisLinea, font);
-                                    KpiMonto(t, "IMP. FALTANTE", info.importe_faltante.ToString("C2", culturaMoneda), "#c0392b", "#fff0f0", grisLinea, font);
-                                    KpiMonto(t, "IMP. SOBRANTE", info.importe_sobrante.ToString("C2", culturaMoneda), "#1a6fa8", "#f0f5ff", grisLinea, font);
+                                    KpiMontoConPorcentaje(t, "IMPORTE TOTAL", info.importe_total_inventario.ToString("C2", culturaMoneda), null, verde, verdePanel, grisLinea, font);                       // sin estado
+                                    KpiMontoConPorcentaje(t, "TOTAL NETO", info.total_neto.ToString("C2", culturaMoneda), $"{Math.Abs(info.porc_total_neto):N1}%", verdeOscuro, verdeClaro, grisLinea, font, menorEsMejor: false); // mayor es mejor
+                                    KpiMontoConPorcentaje(t, "FALTANTE", info.importe_faltante.ToString("C2", culturaMoneda), $"{Math.Abs(info.porc_faltante):N1}%", "#c0392b", "#fff0f0", grisLinea, font, menorEsMejor: true);  // menor es mejor
+                                    KpiMontoConPorcentaje(t, "SOBRANTE", info.importe_sobrante.ToString("C2", culturaMoneda), $"{Math.Abs(info.porc_sobrante):N1}%", "#1a6fa8", "#f0f5ff", grisLinea, font, menorEsMejor: true);  // menor es mejor
                                 });
 
                                 sec.Item().Height(1).Background(amarillo);
 
-                                // Fila 2 — los 5 porcentajes, último espacio vacío
+                                // Fila 2 — confiabilidades con barra
                                 sec.Item().Table(t =>
                                 {
                                     t.ColumnsDefinition(c =>
                                     {
                                         c.RelativeColumn(1); c.RelativeColumn(1);
-                                        c.RelativeColumn(1); c.RelativeColumn(1);
                                     });
-                                    KpiPorcentaje(t, "% FALTANTE", Math.Abs(info.porc_faltante), "#c0392b", "#fff0f0", grisLinea, font, menorEsMejor: true);
-                                    KpiPorcentaje(t, "% SOBRANTE", Math.Abs(info.porc_sobrante), "#1a6fa8", "#f0f5ff", grisLinea, font, menorEsMejor: true);
-                                    KpiPorcentaje(t, "% TOTAL NETO", Math.Abs(info.porc_total_neto), verdeOscuro, verdeClaro, grisLinea, font, menorEsMejor: false);
-                                    KpiPorcentaje(t, "CONF. INVENTARIO", info.confiabilidad, verde, verdePanel, grisLinea, font, menorEsMejor: false);
-                                });
-
-                                // Fila 3 — confiabilidad ubicación sola (celda vacía de relleno)
-                                sec.Item().Table(t =>
-                                {
-                                    t.ColumnsDefinition(c =>
-                                    {
-                                        c.RelativeColumn(1); c.RelativeColumn(1);
-                                        c.RelativeColumn(1); c.RelativeColumn(1);
-                                    });
-                                    KpiPorcentaje(t, "CONF. UBICACIÓN", info.confiabilidad_ubi, verde, verdePanel, grisLinea, font, menorEsMejor: false);
-                                    // 3 celdas vacías de relleno
-                                    for (int i = 0; i < 3; i++)
-                                        t.Cell().Background(verdePanel).BorderRight(0.5f).BorderColor(grisLinea).BorderBottom(0.5f).BorderColor(grisLinea).Padding(6);
+                                    KpiPorcentaje(t, "CONFIABILIDAD DE INVENTARIO", info.confiabilidad, verde, verdePanel, grisLinea, font, menorEsMejor: false);
+                                    KpiPorcentaje(t, "CONFIABILIDAD DE UBICACIÓN", info.confiabilidad_ubi, verde, verdePanel, grisLinea, font, menorEsMejor: false);
                                 });
                             });
 
@@ -432,6 +415,74 @@ namespace HD_Auditoria.Reporteria
                                 ? (valor < 5 ? "ÓPTIMO" : valor < 15 ? "ACEPTABLE" : "CRÍTICO")
                                 : (valor >= 95 ? "EXCELENTE" : valor >= 80 ? "ACEPTABLE" : "REQUIERE ATENCIÓN"))
                         .FontSize(5.5f).FontFamily(font).FontColor(colorValor);  // ← era 6
+                });
+        }
+
+        private static void KpiMontoConPorcentaje(TableDescriptor t,
+    string etiqueta, string monto, string? porcentaje,
+    string colorValor, string fondoCelda, string gris, string font,
+    bool? menorEsMejor = null)  // ← nullable: si null no muestra estado
+        {
+            // Calcular estado solo si viene porcentaje y menorEsMejor
+            string? estado = null;
+            string colorEstado = colorValor;
+
+            if (porcentaje != null && menorEsMejor.HasValue)
+            {
+                // Extraer el valor numérico del string de porcentaje "12.5%"
+                if (double.TryParse(porcentaje.Replace("%", "").Replace(",", ".").Trim(),
+                    System.Globalization.NumberStyles.Any,
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    out double valorPct))
+                {
+                    if (menorEsMejor.Value)
+                    {
+                        colorEstado = valorPct < 5 ? "#275027" : valorPct < 15 ? "#b8860b" : "#c0392b";
+                        estado = valorPct < 5 ? "ÓPTIMO" : valorPct < 15 ? "ACEPTABLE" : "CRÍTICO";
+                    }
+                    else
+                    {
+                        colorEstado = valorPct >= 95 ? "#275027" : valorPct >= 80 ? "#b8860b" : "#c0392b";
+                        estado = valorPct >= 95 ? "EXCELENTE" : valorPct >= 80 ? "ACEPTABLE" : "REQUIERE ATENCIÓN";
+                    }
+                }
+            }
+
+            t.Cell()
+                .Background(fondoCelda)
+                .BorderRight(0.5f).BorderColor(gris)
+                .BorderBottom(0.5f).BorderColor(gris)
+                .Padding(6).Column(c =>
+                {
+                    c.Item().Text(etiqueta)
+                        .FontSize(6f).Bold().FontFamily(font).FontColor("#555");
+
+                    // Monto + separador + porcentaje en la misma línea
+                    c.Item().PaddingTop(3).Row(r =>
+                    {
+                        r.AutoItem()
+                            .Text(monto)
+                            .FontSize(10).Bold().FontFamily(font).FontColor(colorValor);
+
+                        if (!string.IsNullOrEmpty(porcentaje))
+                        {
+                            r.AutoItem().PaddingHorizontal(4)
+                                .Text("|")
+                                .FontSize(10).FontFamily(font).FontColor(gris);
+
+                            r.AutoItem()
+                                .Text(porcentaje)
+                                .FontSize(10).Bold().FontFamily(font).FontColor(colorEstado);
+                        }
+                    });
+
+                    // Estado debajo — solo si se calculó
+                    if (estado != null)
+                    {
+                        c.Item().PaddingTop(1)
+                            .Text(estado)
+                            .FontSize(5.5f).FontFamily(font).FontColor(colorEstado);
+                    }
                 });
         }
 
