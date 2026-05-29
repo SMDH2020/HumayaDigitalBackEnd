@@ -1,8 +1,6 @@
 ﻿using HD.Security;
-using HD_Auditoria.Consultas.Conteo_Piezas;
 using HD_Auditoria.Consultas.Reporteria;
 using HD_Auditoria.Reporteria;
-using HD_Cobranza.Reportes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HD.Endpoints.Controllers.Auditoria.Reporteria
@@ -28,16 +26,16 @@ namespace HD.Endpoints.Controllers.Auditoria.Reporteria
             return Ok(docresult);
         }
 
-        //[HttpGet]
-        //[Route("/api/[controller]/[action]")]
-        //public async Task<ActionResult> GenerarExcelPrimerConteo(string folio)
-        //{
-        //    string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-        //    AD_Reporte_Primer_Conteo datos = new AD_Reporte_Primer_Conteo(CadenaConexion);
-        //    var result = await datos.ReportePrimerConteo(folio);
-        //    var docresult = await XLS_Reporte_Primer_Conteo.GenerarExcel(result, folio);
-        //    return Ok(docresult);
-        //}
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GenerarExcelPrimerConteo(string folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Reporte_Primer_Conteo datos = new AD_Reporte_Primer_Conteo(CadenaConexion);
+            var result = await datos.ReportePrimerConteo(folio);
+            var docresult = await XLS_Reporte_Primer_Conteo.GenerarExcel(result, folio);
+            return Ok(docresult);
+        }
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
