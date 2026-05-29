@@ -46,45 +46,56 @@ namespace HD.Endpoints.Controllers.Auditoria.Justificaciones
         }
 
         [HttpPost]
-        [Consumes("multipart/form-data")] 
+        [Consumes("multipart/form-data")]
         [Route("/api/[controller]/[action]")]
         public async Task<IActionResult> Guardar([FromForm] mdl_Justificaciones_Guardar mdl)
         {
-            var rutaBase = Path.Combine("C:\\ArchivosHD\\Justificaciones", mdl.folio);
-            Directory.CreateDirectory(rutaBase);
-
             var metadataArchivos = new List<object>();
 
-            foreach (var archivo in mdl.archivos)
+            // Solo crear carpeta y recorrer archivos si existen
+            if (mdl.archivos != null && mdl.archivos.Any())
             {
-                var extension = Path.GetExtension(archivo.FileName).TrimStart('.').ToLower();
-                var nombreUnico = $"{Guid.NewGuid()}.{extension}";
-                var rutaFisica = Path.Combine(rutaBase, nombreUnico);
-                var rutaServidor = $"/ArchivosHD/Justificaciones/{mdl.folio}/{nombreUnico}";
+                var rutaBase = Path.Combine("C:\\ArchivosHD\\Justificaciones", mdl.folio);
+                Directory.CreateDirectory(rutaBase);
 
-                // Guardar en disco directo desde el stream — sin conversiones
-                using (var stream = new FileStream(rutaFisica, FileMode.Create))
+                foreach (var archivo in mdl.archivos)
                 {
-                    await archivo.CopyToAsync(stream);
+                    var extension = Path.GetExtension(archivo.FileName)
+                        .TrimStart('.')
+                        .ToLower();
+
+                    var nombreUnico = $"{Guid.NewGuid()}.{extension}";
+                    var rutaFisica = Path.Combine(rutaBase, nombreUnico);
+                    var rutaServidor = $"/ArchivosHD/Justificaciones/{mdl.folio}/{nombreUnico}";
+
+                    // Guardar archivo
+                    using (var stream = new FileStream(rutaFisica, FileMode.Create))
+                    {
+                        await archivo.CopyToAsync(stream);
+                    }
+
+                    metadataArchivos.Add(new
+                    {
+                        nombre = archivo.FileName,
+                        tipo_archivo = extension,
+                        ruta_servidor = rutaServidor,
+                        tamanio_bytes = archivo.Length,
+                    });
                 }
-
-                metadataArchivos.Add(new
-                {
-                    nombre = archivo.FileName,
-                    tipo_archivo = extension,
-                    ruta_servidor = rutaServidor,
-                    tamanio_bytes = archivo.Length,
-                });
             }
 
             var jsonMetadata = JsonConvert.SerializeObject(metadataArchivos);
 
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
-            AD_Justificar_Auditoria_Responsable_Almacen_Guardar datos = new AD_Justificar_Auditoria_Responsable_Almacen_Guardar(CadenaConexion);
-            mdl.usuario = Sesion.usuario();
-            var result = await datos.GuardarJustificacion(mdl, jsonMetadata);
-            return Ok(result);
 
+            AD_Justificar_Auditoria_Responsable_Almacen_Guardar datos =
+                new AD_Justificar_Auditoria_Responsable_Almacen_Guardar(CadenaConexion);
+
+            mdl.usuario = Sesion.usuario();
+
+            var result = await datos.GuardarJustificacion(mdl, jsonMetadata);
+
+            return Ok(result);
         }
 
         [HttpGet]

@@ -1,21 +1,21 @@
-﻿// RPT_FinalizacionMetricas.cs
-using HD_Auditoria.Modelos.Programar_Inventario;
+﻿using HD_Auditoria.Modelos.Programar_Inventario;
 using HD_Reporteria;
 using HD_Reporteria.Cobranza;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
-using QuestPDF.Infrastructure;
 using SkiaSharp;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace HD_Auditoria.Reporteria
 {
-    public class RPT_FinalizacionMetricas 
+    public class RPT_ReporteSimplificado_PDF
     {
-       public static RPT_Result GenerarPDF(mdl_Notificar_Finalizacion_View detalle, string? folio)
+        public static RPT_Result GenerarPDF(mdl_ReporteSimplificado_View detalle, string? folio)
         {
             try
             {
@@ -335,11 +335,11 @@ namespace HD_Auditoria.Reporteria
             catch (Exception ex) { throw ex; }
         }
 
-        // ── Helpers ──────────────────────────────────────────────────────────────
+        // ── Helpers ───────────────────────────────────────────────────────────
 
         private static void KpiMonto(TableDescriptor t,
-  string etiqueta, string valor,
-  string colorValor, string fondoCelda, string gris, string font)
+     string etiqueta, string valor,
+     string colorValor, string fondoCelda, string gris, string font)
         {
             t.Cell()
                 .Background(fondoCelda)
@@ -351,7 +351,8 @@ namespace HD_Auditoria.Reporteria
                     c.Item().Text(etiqueta)
                         .FontSize(6f).Bold().FontFamily(font).FontColor("#555");  // ← era 6.5
                     c.Item().PaddingTop(2).Text(valor)
-                        .FontSize(10).Bold().FontFamily(font).FontColor(colorValor);  // ← era 13
+                        .FontSize(10).Bold().FontFamily(font).FontColor(colorValor); // ← era 13
+
                 });
         }
 
@@ -372,14 +373,13 @@ namespace HD_Auditoria.Reporteria
                 .Background(fondoCelda)
                 .BorderRight(0.5f).BorderColor(gris)
                 .BorderBottom(0.5f).BorderColor(gris)
-                .Padding(6)          // ← era 8
-                .Column(c =>
+                .Padding(6).Column(c =>
                 {
                     c.Item().Text(etiqueta)
-                        .FontSize(6f).Bold().FontFamily(font).FontColor("#555");  // ← era 6.5
+                        .FontSize(6f).Bold().FontFamily(font).FontColor("#555");
                     c.Item().PaddingTop(2).Text($"{valor:N1}%")
-                        .FontSize(11).Bold().FontFamily(font).FontColor(colorValor);  // ← era 15
-                    c.Item().PaddingTop(3).Height(5).SkiaSharpCanvas((canvas, size) =>  // ← altura era 6
+                        .FontSize(11).Bold().FontFamily(font).FontColor(colorValor);
+                    c.Item().PaddingTop(3).Height(5).SkiaSharpCanvas((canvas, size) =>
                     {
                         using var pFondo = new SKPaint
                         {
@@ -403,18 +403,18 @@ namespace HD_Auditoria.Reporteria
                                 new SKRoundRect(new SKRect(0, 0, w, size.Height), 3, 3), pRelleno);
                         }
                     });
-                    c.Item().PaddingTop(1).Text(  // ← era PaddingTop(2)
+                    c.Item().PaddingTop(1).Text(
                             menorEsMejor
                                 ? (valor < 5 ? "ÓPTIMO" : valor < 15 ? "ACEPTABLE" : "CRÍTICO")
                                 : (valor >= 95 ? "EXCELENTE" : valor >= 80 ? "ACEPTABLE" : "REQUIERE ATENCIÓN"))
-                        .FontSize(5.5f).FontFamily(font).FontColor(colorValor);  // ← era 6
+                        .FontSize(5.5f).FontFamily(font).FontColor(colorValor);
                 });
         }
 
         private static void KpiMontoConPorcentaje(TableDescriptor t,
-    string etiqueta, string monto, string? porcentaje,
-    string colorValor, string fondoCelda, string gris, string font,
-    bool? menorEsMejor = null)  // ← nullable: si null no muestra estado
+            string etiqueta, string monto, string? porcentaje,
+            string colorValor, string fondoCelda, string gris, string font,
+            bool? menorEsMejor = null)  // ← nullable: si null no muestra estado
         {
             // Calcular estado solo si viene porcentaje y menorEsMejor
             string? estado = null;

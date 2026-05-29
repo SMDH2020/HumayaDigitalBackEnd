@@ -1,8 +1,6 @@
 ﻿using HD.Security;
-using HD_Auditoria.Consultas.Conteo_Piezas;
 using HD_Auditoria.Consultas.Reporteria;
 using HD_Auditoria.Reporteria;
-using HD_Cobranza.Reportes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HD.Endpoints.Controllers.Auditoria.Reporteria

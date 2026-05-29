@@ -14,6 +14,7 @@ namespace HD_Auditoria.Modelos.Programar_Inventario
         public double importe_sobrante { get; set; }
         public double porc_sobrante { get; set; }
         public double total_neto { get; set; }
+        public double porc_total_neto { get; set; }
         public double confiabilidad { get; set; }
         public double confiabilidad_ubi { get; set; }
 
