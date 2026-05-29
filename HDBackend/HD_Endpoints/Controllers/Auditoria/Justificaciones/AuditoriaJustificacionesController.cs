@@ -225,5 +225,19 @@ namespace HD.Endpoints.Controllers.Auditoria.Justificaciones
             }
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<IActionResult> ReporteAjuste(string? folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_ReporteAjuste_PDF datos = new AD_ReporteAjuste_PDF(CadenaConexion);
+            var result = await datos.Listado(folio);
+
+            var rpt = RPT_Reporte_Ajuste_PDF.GenerarPDF(result, folio);
+
+            return Ok(rpt);
+
+        }
     }
 }

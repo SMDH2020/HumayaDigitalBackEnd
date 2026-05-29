@@ -92,10 +92,13 @@ namespace HD_Auditoria.Reporteria
                                         c.RelativeColumn(1); c.RelativeColumn(1);
                                         c.RelativeColumn(1); c.RelativeColumn(1);
                                     });
-                                    KpiMontoConPorcentaje(t, "IMPORTE TOTAL", info.importe_total_inventario.ToString("C2", culturaMoneda), null, verde, verdePanel, grisLinea, font);                       // sin estado
-                                    KpiMontoConPorcentaje(t, "TOTAL NETO", info.total_neto.ToString("C2", culturaMoneda), $"{Math.Abs(info.porc_total_neto):N2}%", verdeOscuro, verdeClaro, grisLinea, font, menorEsMejor: false); // mayor es mejor
-                                    KpiMontoConPorcentaje(t, "FALTANTE", info.importe_faltante.ToString("C2", culturaMoneda), $"{Math.Abs(info.porc_faltante):N2}%", "#c0392b", "#fff0f0", grisLinea, font, menorEsMejor: true);  // menor es mejor
-                                    KpiMontoConPorcentaje(t, "SOBRANTE", info.importe_sobrante.ToString("C2", culturaMoneda), $"{Math.Abs(info.porc_sobrante):N2}%", "#1a6fa8", "#f0f5ff", grisLinea, font, menorEsMejor: true);  // menor es mejor
+                                    KpiMontoConPorcentaje(t, "IMPORTE TOTAL", info.importe_total_inventario.ToString("C2", culturaMoneda), null, verde, verdePanel, grisLinea, font);
+
+                                    KpiMontoConPorcentaje(t, "TOTAL NETO", info.total_neto.ToString("C2", culturaMoneda), $"{Math.Abs(info.porc_total_neto):N2}%", verdeOscuro, verdeClaro, grisLinea, font, tipoKpi: "total_neto", esNegativo: info.porc_total_neto < 0);
+
+                                    KpiMontoConPorcentaje(t, "FALTANTE", info.importe_faltante.ToString("C2", culturaMoneda), $"{Math.Abs(info.porc_faltante):N2}%", "#c0392b", "#fff0f0", grisLinea, font, tipoKpi: "faltante_sobrante");
+
+                                    KpiMontoConPorcentaje(t, "SOBRANTE", info.importe_sobrante.ToString("C2", culturaMoneda), $"{Math.Abs(info.porc_sobrante):N2}%", "#1a6fa8", "#f0f5ff", grisLinea, font, tipoKpi: "faltante_sobrante");
                                 });
 
                                 sec.Item().Height(1).Background(amarillo);
@@ -107,8 +110,8 @@ namespace HD_Auditoria.Reporteria
                                     {
                                         c.RelativeColumn(1); c.RelativeColumn(1);
                                     });
-                                    KpiPorcentaje(t, "CONFIABILIDAD DE INVENTARIO", info.confiabilidad, verde, verdePanel, grisLinea, font, menorEsMejor: false);
-                                    KpiPorcentaje(t, "CONFIABILIDAD DE UBICACIÓN", info.confiabilidad_ubi, verde, verdePanel, grisLinea, font, menorEsMejor: false);
+                                    KpiPorcentaje(t, "CONFIABILIDAD DE INVENTARIO", info.confiabilidad, verde, verdePanel, grisLinea, font, tipoConfiabilidad: "inventario");
+                                    KpiPorcentaje(t, "CONFIABILIDAD DE UBICACIÓN", info.confiabilidad_ubi, verde, verdePanel, grisLinea, font, tipoConfiabilidad: "localizacion");
                                 });
                             });
 
@@ -335,7 +338,7 @@ namespace HD_Auditoria.Reporteria
                 return new RPT_Result
                 {
                     extension = "pdf",
-                    nombredocumento = $"Primer_inventario_{folio}",
+                    nombredocumento = $"Primer_conteo_{folio}",
                     documento = Convert.ToBase64String(doc)
                 };
             }
@@ -365,13 +368,25 @@ namespace HD_Auditoria.Reporteria
         private static void KpiPorcentaje(TableDescriptor t,
             string etiqueta, double valor,
             string colorBase, string fondoCelda, string gris, string font,
-            bool menorEsMejor)
+            string tipoConfiabilidad)   // "inventario" | "localizacion"
         {
             string colorValor;
-            if (menorEsMejor)
-                colorValor = valor < 5 ? "#275027" : valor < 15 ? "#b8860b" : "#c0392b";
-            else
-                colorValor = valor >= 95 ? "#275027" : valor >= 80 ? "#b8860b" : "#c0392b";
+            string etiquetaEstado;
+
+            if (tipoConfiabilidad == "inventario")
+            {
+                if (valor >= 98) { colorValor = "#275027"; etiquetaEstado = "ÓPTIMO"; }
+                else if (valor >= 95) { colorValor = "#1a6fa8"; etiquetaEstado = "EN CONTROL"; }
+                else if (valor >= 90) { colorValor = "#b8860b"; etiquetaEstado = "SEGUIMIENTO"; }
+                else { colorValor = "#c0392b"; etiquetaEstado = "REQUIERE ACCIÓN"; }
+            }
+            else // localizacion
+            {
+                if (valor >= 98) { colorValor = "#275027"; etiquetaEstado = "ÓPTIMO"; }
+                else if (valor >= 95) { colorValor = "#1a6fa8"; etiquetaEstado = "CONTROLADO"; }
+                else if (valor >= 90) { colorValor = "#b8860b"; etiquetaEstado = "SEGUIMIENTO"; }
+                else { colorValor = "#c0392b"; etiquetaEstado = "REQUIERE CORRECCIÓN"; }
+            }
 
             float pct = (float)Math.Min(Math.Max(valor / 100.0, 0.0), 1.0);
 
@@ -379,14 +394,13 @@ namespace HD_Auditoria.Reporteria
                 .Background(fondoCelda)
                 .BorderRight(0.5f).BorderColor(gris)
                 .BorderBottom(0.5f).BorderColor(gris)
-                .Padding(6)          // ← era 8
-                .Column(c =>
+                .Padding(6).Column(c =>
                 {
                     c.Item().Text(etiqueta)
-                        .FontSize(6f).Bold().FontFamily(font).FontColor("#555");  // ← era 6.5
+                        .FontSize(6f).Bold().FontFamily(font).FontColor("#555");
                     c.Item().PaddingTop(2).Text($"{valor:N1}%")
-                        .FontSize(11).Bold().FontFamily(font).FontColor(colorValor);  // ← era 15
-                    c.Item().PaddingTop(3).Height(5).SkiaSharpCanvas((canvas, size) =>  // ← altura era 6
+                        .FontSize(11).Bold().FontFamily(font).FontColor(colorValor);
+                    c.Item().PaddingTop(3).Height(5).SkiaSharpCanvas((canvas, size) =>
                     {
                         using var pFondo = new SKPaint
                         {
@@ -410,40 +424,57 @@ namespace HD_Auditoria.Reporteria
                                 new SKRoundRect(new SKRect(0, 0, w, size.Height), 3, 3), pRelleno);
                         }
                     });
-                    c.Item().PaddingTop(1).Text(  // ← era PaddingTop(2)
-                            menorEsMejor
-                                ? (valor < 5 ? "ÓPTIMO" : valor < 15 ? "ACEPTABLE" : "CRÍTICO")
-                                : (valor >= 95 ? "EXCELENTE" : valor >= 80 ? "ACEPTABLE" : "REQUIERE ATENCIÓN"))
-                        .FontSize(5.5f).FontFamily(font).FontColor(colorValor);  // ← era 6
+                    c.Item().PaddingTop(1)
+                        .Text(etiquetaEstado)
+                        .FontSize(5.5f).FontFamily(font).FontColor(colorValor);
                 });
         }
 
         private static void KpiMontoConPorcentaje(TableDescriptor t,
-    string etiqueta, string monto, string? porcentaje,
-    string colorValor, string fondoCelda, string gris, string font,
-    bool? menorEsMejor = null)  // ← nullable: si null no muestra estado
+            string etiqueta, string monto, string? porcentaje,
+            string colorValor, string fondoCelda, string gris, string font,
+            string? tipoKpi = null,       // "total_neto" | "faltante_sobrante" | null
+            bool esNegativo = false)      // solo aplica para total_neto
         {
-            // Calcular estado solo si viene porcentaje y menorEsMejor
             string? estado = null;
             string colorEstado = colorValor;
 
-            if (porcentaje != null && menorEsMejor.HasValue)
+            if (porcentaje != null && tipoKpi != null)
             {
-                // Extraer el valor numérico del string de porcentaje "12.5%"
-                if (double.TryParse(porcentaje.Replace("%", "").Replace(",", ".").Trim(),
+                if (double.TryParse(
+                    porcentaje.Replace("%", "").Replace(",", ".").Trim(),
                     System.Globalization.NumberStyles.Any,
                     System.Globalization.CultureInfo.InvariantCulture,
                     out double valorPct))
                 {
-                    if (menorEsMejor.Value)
+                    if (tipoKpi == "total_neto")
                     {
-                        colorEstado = valorPct < 5 ? "#275027" : valorPct < 15 ? "#b8860b" : "#c0392b";
-                        estado = valorPct < 5 ? "ÓPTIMO" : valorPct < 15 ? "ACEPTABLE" : "CRÍTICO";
+                        // Positivo → siempre DENTRO DE TOLERANCIA
+                        // Negativo → tolerado hasta -0.20%, a partir de -0.21% excede
+                        if (!esNegativo || valorPct <= 0.20)
+                        {
+                            colorEstado = "#275027";
+                            estado = "DENTRO DE TOLERANCIA";
+                        }
+                        else
+                        {
+                            colorEstado = "#c0392b";
+                            estado = "EXCEDE TOLERANCIA";
+                        }
                     }
-                    else
+                    else if (tipoKpi == "faltante_sobrante")
                     {
-                        colorEstado = valorPct >= 95 ? "#275027" : valorPct >= 80 ? "#b8860b" : "#c0392b";
-                        estado = valorPct >= 95 ? "EXCELENTE" : valorPct >= 80 ? "ACEPTABLE" : "REQUIERE ATENCIÓN";
+                        // <= 0.50% → DENTRO DE TOLERANCIA | > 0.50% → EXCEDE TOLERANCIA
+                        if (valorPct <= 0.50)
+                        {
+                            colorEstado = "#275027";
+                            estado = "DENTRO DE TOLERANCIA";
+                        }
+                        else
+                        {
+                            colorEstado = "#c0392b";
+                            estado = "EXCEDE TOLERANCIA";
+                        }
                     }
                 }
             }
@@ -457,7 +488,6 @@ namespace HD_Auditoria.Reporteria
                     c.Item().Text(etiqueta)
                         .FontSize(6f).Bold().FontFamily(font).FontColor("#555");
 
-                    // Monto + separador + porcentaje en la misma línea
                     c.Item().PaddingTop(3).Row(r =>
                     {
                         r.AutoItem()
@@ -476,7 +506,6 @@ namespace HD_Auditoria.Reporteria
                         }
                     });
 
-                    // Estado debajo — solo si se calculó
                     if (estado != null)
                     {
                         c.Item().PaddingTop(1)
