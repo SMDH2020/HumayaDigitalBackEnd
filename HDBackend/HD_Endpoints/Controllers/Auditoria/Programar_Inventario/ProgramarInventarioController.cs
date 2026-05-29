@@ -196,5 +196,19 @@ namespace HD.Endpoints.Controllers.Auditoria.Programar_Inventario
             return Ok(rpt);
 
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<IActionResult> ReporteResumenPDF(string? folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Reporte_Resumen datos = new AD_Reporte_Resumen(CadenaConexion);
+            var result = await datos.Listado(folio);
+
+            var rpt = RPT_ReporteResumen_PDF.GenerarPDF(result, folio);
+
+            return Ok(rpt);
+
+        }
     }
 }

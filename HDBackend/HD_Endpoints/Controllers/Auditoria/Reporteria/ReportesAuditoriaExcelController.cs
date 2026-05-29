@@ -35,7 +35,6 @@ namespace HD.Endpoints.Controllers.Auditoria.Reporteria
             var result = await datos.ReportePrimerConteo(folio);
             var docresult = await XLS_Reporte_Primer_Conteo.GenerarExcel(result, folio);
             return Ok(docresult);
-            return null;
         }
 
         [HttpGet]
