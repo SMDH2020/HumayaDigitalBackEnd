@@ -115,13 +115,13 @@ namespace HD_Auditoria.Reporteria
                                         c.RelativeColumn(1); c.RelativeColumn(1);
                                         c.RelativeColumn(1); c.RelativeColumn(1);
                                     });
-                                    KpiMontoConPorcentaje(t, "IMPORTE TOTAL", info.importe_total_inventario.ToString("C2", culturaMoneda), null, verde, verdePanel, grisLinea, font);
+                                    KpiMontoConPorcentaje(t, "IMPORTE TOTAL", info2.importe_total_inventario.ToString("C2", culturaMoneda), null, verde, verdePanel, grisLinea, font);
 
-                                    KpiMontoConPorcentaje(t, "TOTAL NETO", info.total_neto.ToString("C2", culturaMoneda), $"{Math.Abs(info.porc_total_neto):N2}%", verdeOscuro, verdeClaro, grisLinea, font, tipoKpi: "total_neto", esNegativo: info.porc_total_neto < 0);
+                                    KpiMontoConPorcentaje(t, "TOTAL NETO", info2.total_neto.ToString("C2", culturaMoneda), $"{Math.Abs(info2.porc_total_neto):N2}%", verdeOscuro, verdeClaro, grisLinea, font, tipoKpi: "total_neto", esNegativo: info.porc_total_neto < 0);
 
-                                    KpiMontoConPorcentaje(t, "FALTANTE", info.importe_faltante.ToString("C2", culturaMoneda), $"{Math.Abs(info.porc_faltante):N2}%", "#c0392b", "#fff0f0", grisLinea, font, tipoKpi: "faltante_sobrante");
+                                    KpiMontoConPorcentaje(t, "FALTANTE", info2.importe_faltante.ToString("C2", culturaMoneda), $"{Math.Abs(info2.porc_faltante):N2}%", "#c0392b", "#fff0f0", grisLinea, font, tipoKpi: "faltante_sobrante");
 
-                                    KpiMontoConPorcentaje(t, "SOBRANTE", info.importe_sobrante.ToString("C2", culturaMoneda), $"{Math.Abs(info.porc_sobrante):N2}%", "#1a6fa8", "#f0f5ff", grisLinea, font, tipoKpi: "faltante_sobrante");
+                                    KpiMontoConPorcentaje(t, "SOBRANTE", info2.importe_sobrante.ToString("C2", culturaMoneda), $"{Math.Abs(info2.porc_sobrante):N2}%", "#1a6fa8", "#f0f5ff", grisLinea, font, tipoKpi: "faltante_sobrante");
                                 });
 
                                 sec.Item().Height(1).Background(amarillo);
@@ -133,8 +133,8 @@ namespace HD_Auditoria.Reporteria
                                     {
                                         c.RelativeColumn(1); c.RelativeColumn(1);
                                     });
-                                    KpiPorcentaje(t, "CONFIABILIDAD DE INVENTARIO", info.confiabilidad, verde, verdePanel, grisLinea, font, tipoConfiabilidad: "inventario");
-                                    KpiPorcentaje(t, "CONFIABILIDAD DE UBICACIÓN", info.confiabilidad_ubi, verde, verdePanel, grisLinea, font, tipoConfiabilidad: "localizacion");
+                                    KpiPorcentaje(t, "CONFIABILIDAD DE INVENTARIO", info2.confiabilidad, verde, verdePanel, grisLinea, font, tipoConfiabilidad: "inventario");
+                                    KpiPorcentaje(t, "CONFIABILIDAD DE UBICACIÓN", info2.confiabilidad_ubi, verde, verdePanel, grisLinea, font, tipoConfiabilidad: "localizacion");
                                 });
                             });
 
@@ -156,13 +156,13 @@ namespace HD_Auditoria.Reporteria
                                         c.RelativeColumn(1); c.RelativeColumn(1);
                                         c.RelativeColumn(1); c.RelativeColumn(1);
                                     });
-                                    KpiMontoConPorcentaje(t, "IMPORTE TOTAL", info.importe_total_inventario.ToString("C2", culturaMoneda), null, verde, verdePanel, grisLinea, font);
+                                    KpiMontoConPorcentaje(t, "IMPORTE TOTAL", info3.importe_total_inventario.ToString("C2", culturaMoneda), null, verde, verdePanel, grisLinea, font);
 
-                                    KpiMontoConPorcentaje(t, "TOTAL NETO", info.total_neto.ToString("C2", culturaMoneda), $"{Math.Abs(info.porc_total_neto):N2}%", verdeOscuro, verdeClaro, grisLinea, font, tipoKpi: "total_neto", esNegativo: info.porc_total_neto < 0);
+                                    KpiMontoConPorcentaje(t, "TOTAL NETO", info3.total_neto.ToString("C2", culturaMoneda), $"{Math.Abs(info3.porc_total_neto):N2}%", verdeOscuro, verdeClaro, grisLinea, font, tipoKpi: "total_neto", esNegativo: info.porc_total_neto < 0);
 
-                                    KpiMontoConPorcentaje(t, "FALTANTE", info.importe_faltante.ToString("C2", culturaMoneda), $"{Math.Abs(info.porc_faltante):N2}%", "#c0392b", "#fff0f0", grisLinea, font, tipoKpi: "faltante_sobrante");
+                                    KpiMontoConPorcentaje(t, "FALTANTE", info3.importe_faltante.ToString("C2", culturaMoneda), $"{Math.Abs(info3.porc_faltante):N2}%", "#c0392b", "#fff0f0", grisLinea, font, tipoKpi: "faltante_sobrante");
 
-                                    KpiMontoConPorcentaje(t, "SOBRANTE", info.importe_sobrante.ToString("C2", culturaMoneda), $"{Math.Abs(info.porc_sobrante):N2}%", "#1a6fa8", "#f0f5ff", grisLinea, font, tipoKpi: "faltante_sobrante");
+                                    KpiMontoConPorcentaje(t, "SOBRANTE", info3.importe_sobrante.ToString("C2", culturaMoneda), $"{Math.Abs(info3.porc_sobrante):N2}%", "#1a6fa8", "#f0f5ff", grisLinea, font, tipoKpi: "faltante_sobrante");
                                 });
 
                                 sec.Item().Height(1).Background(amarillo);
@@ -174,8 +174,8 @@ namespace HD_Auditoria.Reporteria
                                     {
                                         c.RelativeColumn(1); c.RelativeColumn(1);
                                     });
-                                    KpiPorcentaje(t, "CONFIABILIDAD DE INVENTARIO", info.confiabilidad, verde, verdePanel, grisLinea, font, tipoConfiabilidad: "inventario");
-                                    KpiPorcentaje(t, "CONFIABILIDAD DE UBICACIÓN", info.confiabilidad_ubi, verde, verdePanel, grisLinea, font, tipoConfiabilidad: "localizacion");
+                                    KpiPorcentaje(t, "CONFIABILIDAD DE INVENTARIO", info3.confiabilidad, verde, verdePanel, grisLinea, font, tipoConfiabilidad: "inventario");
+                                    KpiPorcentaje(t, "CONFIABILIDAD DE UBICACIÓN", info3.confiabilidad_ubi, verde, verdePanel, grisLinea, font, tipoConfiabilidad: "localizacion");
                                 });
                             });
 
