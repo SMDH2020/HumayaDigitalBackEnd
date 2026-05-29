@@ -1,8 +1,6 @@
 ﻿using HD.Security;
-using HD_Auditoria.Consultas.Conteo_Piezas;
 using HD_Auditoria.Consultas.Reporteria;
 using HD_Auditoria.Reporteria;
-using HD_Cobranza.Reportes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HD.Endpoints.Controllers.Auditoria.Reporteria
@@ -37,6 +35,7 @@ namespace HD.Endpoints.Controllers.Auditoria.Reporteria
             var result = await datos.ReportePrimerConteo(folio);
             var docresult = await XLS_Reporte_Primer_Conteo.GenerarExcel(result, folio);
             return Ok(docresult);
+            return null;
         }
 
         [HttpGet]
