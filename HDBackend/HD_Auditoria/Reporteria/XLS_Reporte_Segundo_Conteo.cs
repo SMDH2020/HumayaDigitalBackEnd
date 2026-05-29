@@ -67,31 +67,55 @@ namespace HD_Auditoria.Reporteria
                     double totalNoJustificadas = 0;
                     double totalImporteNoJustificadas = 0;
 
+                    HashSet<string> skusProcesados = new HashSet<string>();
+                    view.detalle = view.detalle
+                    .OrderBy(x => x.sku)
+                    .ToList();
                     // Llenar la tabla con los datos
                     foreach (var det in view.detalle)
                     {
-                        sheet.Cell(renglon, 1).Value = det.familia;
-                        sheet.Cell(renglon, 2).Value = det.sku;
-                        sheet.Cell(renglon, 3).Value = det.descripcion;
-                        sheet.Cell(renglon, 4).Value = det.posicion;
-                        sheet.Cell(renglon, 5).Value = det.ubicacion_correcta;
-                        sheet.Cell(renglon, 6).Value = det.precio_unitario;
-                        sheet.Cell(renglon, 7).Value = det.existencia;
-                        sheet.Cell(renglon, 8).Value = det.unidad_medida;
-                        sheet.Cell(renglon, 9).Value = det.importe_existencia;
-                        sheet.Cell(renglon, 10).Value = det.conteo;
-                        sheet.Cell(renglon, 11).Value = det.importe_cont_fisico;
-                        sheet.Cell(renglon, 12).Value = det.diferencias;
-                        sheet.Cell(renglon, 13).Value =
-                            det.tipo_diferencia == "F" ? "FALTANTE" :
-                            det.tipo_diferencia == "S" ? "SOBRANTE" :
-                            "CORRECTO";
-                        sheet.Cell(renglon, 14).Value = det.importe_dif;
-                        sheet.Cell(renglon, 15).Value = det.porc_dif;
-                        sheet.Cell(renglon, 16).Value = det.justificadas;
-                        sheet.Cell(renglon, 17).Value = det.importe_justificadas;
-                        sheet.Cell(renglon, 18).Value = det.no_justificadas;
-                        sheet.Cell(renglon, 19).Value = det.importe_no_justificadas;
+                        bool skuYaExiste = skusProcesados.Contains(det.sku);
+
+                        if (!skuYaExiste)
+                        {
+                            sheet.Cell(renglon, 1).Value = det.familia;
+                            sheet.Cell(renglon, 2).Value = det.sku;
+                            sheet.Cell(renglon, 3).Value = det.descripcion;
+                            sheet.Cell(renglon, 4).Value = det.posicion;
+                            sheet.Cell(renglon, 5).Value = det.ubicacion_correcta;
+                            sheet.Cell(renglon, 6).Value = det.precio_unitario;
+                            sheet.Cell(renglon, 7).Value = det.existencia;
+                            sheet.Cell(renglon, 8).Value = det.unidad_medida;
+                            sheet.Cell(renglon, 9).Value = det.importe_existencia;
+                            sheet.Cell(renglon, 10).Value = det.conteo;
+                            sheet.Cell(renglon, 11).Value = det.importe_cont_fisico;
+                            sheet.Cell(renglon, 12).Value = det.diferencias;
+                            sheet.Cell(renglon, 13).Value =
+                                det.tipo_diferencia == "F" ? "FALTANTE" :
+                                det.tipo_diferencia == "S" ? "SOBRANTE" :
+                                "CORRECTO";
+                            sheet.Cell(renglon, 14).Value = det.importe_dif;
+                            sheet.Cell(renglon, 15).Value = det.porc_dif;
+                            sheet.Cell(renglon, 16).Value = det.justificadas;
+                            sheet.Cell(renglon, 17).Value = det.importe_justificadas;
+                            sheet.Cell(renglon, 18).Value = det.no_justificadas;
+                            sheet.Cell(renglon, 19).Value = det.importe_no_justificadas;
+                            skusProcesados.Add(det.sku);
+                        }
+                        else
+                        {
+                            sheet.Cell(renglon, 1).Value = det.familia;
+                            sheet.Cell(renglon, 2).Value = det.sku;
+                            sheet.Cell(renglon, 3).Value = det.descripcion;
+                            sheet.Cell(renglon, 4).Value = det.posicion;
+                            //sheet.Cell(renglon, 5).Value = det.ubicacion_correcta;
+                            //sheet.Cell(renglon, 6).Value = det.precio_unitario;
+                            //sheet.Cell(renglon, 7).Value = det.existencia;
+                            //sheet.Cell(renglon, 8).Value = det.unidad_medida;
+                            //sheet.Cell(renglon, 9).Value = det.importe_existencia;
+                            sheet.Cell(renglon, 10).Value = det.conteo;
+                            sheet.Cell(renglon, 11).Value = det.importe_cont_fisico;
+                        }
                         renglon++;
 
                         totalExistencia += Convert.ToDouble(det.existencia);

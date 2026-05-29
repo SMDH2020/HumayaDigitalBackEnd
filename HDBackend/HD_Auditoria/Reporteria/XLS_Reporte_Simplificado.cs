@@ -44,22 +44,45 @@ namespace HD_Auditoria.Reporteria
 
                     float totalImporte = 0;
 
+                    HashSet<string> skusProcesados = new HashSet<string>();
+                    view.detalle = view.detalle
+                    .OrderBy(x => x.sku)
+                    .ToList();
                     // Llenar la tabla con los datos
                     foreach (var det in view.detalle)
                     {
-                        sheet.Cell(renglon, 1).Value = det.familia;
-                        sheet.Cell(renglon, 2).Value = det.sku;
-                        sheet.Cell(renglon, 3).Value = det.descripcion;
-                        sheet.Cell(renglon, 4).Value = det.posicion;
-                        sheet.Cell(renglon, 5).Value = det.existencia;
-                        sheet.Cell(renglon, 6).Value = det.conteo;
-                        sheet.Cell(renglon, 7).Value = det.diferencias;
-                        sheet.Cell(renglon, 8).Value =
-                            det.tipo_diferencia == "F" ? "FALTANTE" :
-                            det.tipo_diferencia == "S" ? "SOBRANTE" :
-                            "";
-                        sheet.Cell(renglon, 9).Value = det.importe_dif;
-                        sheet.Cell(renglon, 10).Value = det.comentario;
+                        bool skuYaExiste = skusProcesados.Contains(det.sku);
+
+                        if (!skuYaExiste)
+                        {
+                            // 🔥 REGISTRO COMPLETO
+                            sheet.Cell(renglon, 1).Value = det.familia;
+                            sheet.Cell(renglon, 2).Value = det.sku;
+                            sheet.Cell(renglon, 3).Value = det.descripcion;
+                            sheet.Cell(renglon, 4).Value = det.posicion;
+                            sheet.Cell(renglon, 5).Value = det.existencia;
+                            sheet.Cell(renglon, 6).Value = det.conteo;
+                            sheet.Cell(renglon, 7).Value = det.diferencias;
+
+                            sheet.Cell(renglon, 8).Value =
+                                det.tipo_diferencia == "F" ? "FALTANTE" :
+                                det.tipo_diferencia == "S" ? "SOBRANTE" :
+                                "";
+
+                            sheet.Cell(renglon, 9).Value = det.importe_dif;
+                            sheet.Cell(renglon, 10).Value = det.comentario;
+
+                            skusProcesados.Add(det.sku);
+                        }
+                        else
+                        {
+                            sheet.Cell(renglon, 1).Value = det.familia;
+                            sheet.Cell(renglon, 2).Value = det.sku;
+                            sheet.Cell(renglon, 3).Value = det.descripcion;
+                            sheet.Cell(renglon, 4).Value = det.posicion;
+                            sheet.Cell(renglon, 6).Value = det.conteo;
+                        }
+
                         renglon++;
                     }
 

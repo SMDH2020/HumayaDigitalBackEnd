@@ -19,7 +19,7 @@ namespace HD_Auditoria.Consultas.Reporteria
                 var parametros = new DynamicParameters();
                 parametros.Add("folio", folio, System.Data.DbType.String);
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                var result = await factory.SQL.QueryMultipleAsync("Auditoria.sp_GENERA_REPORTE_AUDITORIA_SIMPLIFICADO", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("Auditoria.sp_GENERA_REPORTE_AUDITORIA_SIMPLIFICADO_P", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 mdl_Reporte_Simplificado_View mdl = new mdl_Reporte_Simplificado_View();
                 mdl.detalle = result.Read<mdl_Reporte_Simplificado_Detalle>().ToList();
                 mdl.resumen = result.Read<mdl_Reporte_Simplificado_Resumen>().FirstOrDefault();
