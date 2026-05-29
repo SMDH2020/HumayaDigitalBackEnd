@@ -93,9 +93,9 @@ namespace HD_Auditoria.Reporteria
                                         c.RelativeColumn(1); c.RelativeColumn(1);
                                     });
                                     KpiMontoConPorcentaje(t, "IMPORTE TOTAL", info.importe_total_inventario.ToString("C2", culturaMoneda), null, verde, verdePanel, grisLinea, font);                       // sin estado
-                                    KpiMontoConPorcentaje(t, "TOTAL NETO", info.total_neto.ToString("C2", culturaMoneda), $"{Math.Abs(info.porc_total_neto):N1}%", verdeOscuro, verdeClaro, grisLinea, font, menorEsMejor: false); // mayor es mejor
-                                    KpiMontoConPorcentaje(t, "FALTANTE", info.importe_faltante.ToString("C2", culturaMoneda), $"{Math.Abs(info.porc_faltante):N1}%", "#c0392b", "#fff0f0", grisLinea, font, menorEsMejor: true);  // menor es mejor
-                                    KpiMontoConPorcentaje(t, "SOBRANTE", info.importe_sobrante.ToString("C2", culturaMoneda), $"{Math.Abs(info.porc_sobrante):N1}%", "#1a6fa8", "#f0f5ff", grisLinea, font, menorEsMejor: true);  // menor es mejor
+                                    KpiMontoConPorcentaje(t, "TOTAL NETO", info.total_neto.ToString("C2", culturaMoneda), $"{Math.Abs(info.porc_total_neto):N2}%", verdeOscuro, verdeClaro, grisLinea, font, menorEsMejor: false); // mayor es mejor
+                                    KpiMontoConPorcentaje(t, "FALTANTE", info.importe_faltante.ToString("C2", culturaMoneda), $"{Math.Abs(info.porc_faltante):N2}%", "#c0392b", "#fff0f0", grisLinea, font, menorEsMejor: true);  // menor es mejor
+                                    KpiMontoConPorcentaje(t, "SOBRANTE", info.importe_sobrante.ToString("C2", culturaMoneda), $"{Math.Abs(info.porc_sobrante):N2}%", "#1a6fa8", "#f0f5ff", grisLinea, font, menorEsMejor: true);  // menor es mejor
                                 });
 
                                 sec.Item().Height(1).Background(amarillo);
