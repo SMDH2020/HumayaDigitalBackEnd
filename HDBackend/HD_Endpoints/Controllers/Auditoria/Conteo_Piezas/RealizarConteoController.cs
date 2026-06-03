@@ -55,8 +55,19 @@ namespace HD.Endpoints.Controllers.Auditoria.Conteo_Piezas
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Conteo_Piezas_Online datos = new AD_Conteo_Piezas_Online(CadenaConexion);
-            //mdl.id_auditor = int.Parse(Sesion.usuario());
+            mdl.id_auditor = int.Parse(Sesion.usuario());
             var result = await datos.Agregar_Posicion_Extra(mdl);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<IActionResult> EditarNombrePosicion(mdl_Editar_Nombre_Posicion_Extra mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Conteo_Piezas_Online datos = new AD_Conteo_Piezas_Online(CadenaConexion);
+            mdl.id_auditor = int.Parse(Sesion.usuario());
+            var result = await datos.Editar_Nombre_Posicion_Extra(mdl);
             return Ok(result);
         }
 
