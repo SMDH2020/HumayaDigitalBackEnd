@@ -99,6 +99,7 @@ namespace HD_Auditoria.Reporteria
 
                                     KpiMontoConPorcentaje(t, "TOTAL NETO", info.total_neto.ToString("C2", culturaMoneda), $"{info.porc_total_neto}%", verdeOscuro, verdeClaro, grisLinea, font, tipoKpi: "total_neto", esNegativo: info.porc_total_neto < 0);
 
+
                                     KpiMontoConPorcentaje(t, "FALTANTE", info.importe_faltante.ToString("C2", culturaMoneda), $"{Math.Abs(info.porc_faltante):N2}%", "#c0392b", "#fff0f0", grisLinea, font, tipoKpi: "faltante_sobrante");
 
                                     KpiMontoConPorcentaje(t, "SOBRANTE", info.importe_sobrante.ToString("C2", culturaMoneda), $"{Math.Abs(info.porc_sobrante):N2}%", "#1a6fa8", "#f0f5ff", grisLinea, font, tipoKpi: "faltante_sobrante");

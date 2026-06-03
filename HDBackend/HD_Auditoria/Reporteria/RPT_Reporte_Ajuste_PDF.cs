@@ -37,6 +37,7 @@ namespace HD_Auditoria.Reporteria
                 var faltantes = difs
                     .Where(d => d.tipo_diferencia == "F" ||
                                 d.tipo_diferencia?.Contains("faltante", StringComparison.OrdinalIgnoreCase) == true)
+
                     .OrderBy(d => d.sku)
                     .ThenByDescending(d => Math.Abs(d.importe_dif))
                     .ToList();
@@ -44,6 +45,7 @@ namespace HD_Auditoria.Reporteria
                 var sobrantes = difs
                     .Where(d => d.tipo_diferencia == "S" ||
                                 d.tipo_diferencia?.Contains("sobrante", StringComparison.OrdinalIgnoreCase) == true)
+
                     .OrderBy(d => d.sku)
                     .ThenByDescending(d => Math.Abs(d.importe_dif))
                     .ToList();
@@ -51,6 +53,7 @@ namespace HD_Auditoria.Reporteria
                 var aceptados = difs
                     .Where(d => d.tipo_diferencia == "A")
                     .OrderBy(d => d.descripcion)
+
                     .ThenByDescending(d => Math.Abs(d.importe_dif))
                     .ToList();
 
@@ -194,6 +197,7 @@ namespace HD_Auditoria.Reporteria
                                         TD(d.posicion, centro: true);
                                         TS(d.existencia.ToString("N2"));                                        // ← TS derecha
                                         TS(d.conteo.ToString("N2"));                                            // ← TS derecha
+
                                         TS(d.diferencias == 0 ? "" : d.diferencias.ToString("N2"), "#eaf3de", "#27500a");
                                         TS(d.importe_dif == 0 ? "" : d.importe_dif.ToString("C2", culturaMoneda));
                                         idx++;
@@ -234,6 +238,7 @@ namespace HD_Auditoria.Reporteria
                                         TD(d.posicion, centro: true);
                                         TS(d.existencia.ToString("N2"));                                        // ← TS derecha
                                         TS(d.conteo.ToString("N2"));                                            // ← TS derecha
+
                                         TS(d.diferencias == 0 ? "" : d.diferencias.ToString("N2"), "#eaf3de", "#27500a");
                                         TS(d.importe_dif == 0 ? "" : d.importe_dif.ToString("C2", culturaMoneda));
                                         idx++;
@@ -274,6 +279,7 @@ namespace HD_Auditoria.Reporteria
                                         TD(d.posicion, centro: true);
                                         TS(d.existencia.ToString("N2"));                                        // ← TS derecha
                                         TS(d.conteo.ToString("N2"));                                            // ← TS derecha
+
                                         TS(d.diferencias == 0 ? "" : d.diferencias.ToString("N2"), "#eaf3de", "#27500a");
                                         TS(d.importe_dif == 0 ? "" : d.importe_dif.ToString("C2", culturaMoneda));
                                         idx++;
