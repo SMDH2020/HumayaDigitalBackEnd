@@ -210,5 +210,19 @@ namespace HD.Endpoints.Controllers.Auditoria.Programar_Inventario
             return Ok(rpt);
 
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<IActionResult> JustificacionesAuditorPDF(string? folio)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_JustificacionesAuditor_PDF datos = new AD_JustificacionesAuditor_PDF(CadenaConexion);
+            var result = await datos.Listado(folio);
+
+            var rpt = RPT_JustificacionesAuditor_PDF.GenerarPDF(result, folio);
+
+            return Ok(rpt);
+
+        }
     }
 }

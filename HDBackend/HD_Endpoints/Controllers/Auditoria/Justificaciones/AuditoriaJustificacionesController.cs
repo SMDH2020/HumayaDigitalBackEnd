@@ -182,10 +182,10 @@ namespace HD.Endpoints.Controllers.Auditoria.Justificaciones
             mdl.usuario = Sesion.usuario();
             var result = await datos.JustificacionRechazar(mdl);
 
-            if(result.estatus.rechazado == 1)
-            {
-                await EnvioJustificaciones.Enviar_Rechazado(result, mdl);
-            }
+            //if(result.estatus.rechazado == 1)
+            //{
+            //    await EnvioJustificaciones.Enviar_Rechazado(result, mdl);
+            //}
 
             return Ok(result.estatus);
         }
