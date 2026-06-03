@@ -141,6 +141,7 @@ namespace HD_Auditoria.Consultas.Conteo_Piezas
                 parametros.Add("@folio", mdl.folio, System.Data.DbType.String);
                 parametros.Add("@posicion_extra", mdl.posicion_extra, System.Data.DbType.String);
                 parametros.Add("@conteo_fisico", mdl.conteo_fisico, System.Data.DbType.Single);
+                parametros.Add("@id_auditor", mdl.id_auditor, System.Data.DbType.Single);
 
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 await factory.SQL.QueryAsync("Auditoria.sp_GUARDA_CONTEO_NUEVA_UBICACION", parametros, commandType: System.Data.CommandType.StoredProcedure);
@@ -153,6 +154,27 @@ namespace HD_Auditoria.Consultas.Conteo_Piezas
             }
         }
 
+        public async Task<bool> Editar_Nombre_Posicion_Extra(mdl_Editar_Nombre_Posicion_Extra mdl)
+        {
+            try
+            {
+                var parametros = new DynamicParameters();
+                parametros.Add("@id_inv_fisico", mdl.id_inv_fisico, System.Data.DbType.Int32);
+                parametros.Add("@folio", mdl.folio, System.Data.DbType.String);
+                parametros.Add("@posicion", mdl.posicion_extra, System.Data.DbType.String);
+                parametros.Add("@posicion_edit", mdl.posicion_edit, System.Data.DbType.String);
+                parametros.Add("@id_auditor", mdl.id_auditor, System.Data.DbType.Single);
+
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                await factory.SQL.QueryAsync("Auditoria.sp_Editar_Nombre_Ubicacion_Extra", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return true;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
         public async Task<bool> Eliminar_Posicion_Extra(mdl_Posicion_Extra mdl)
         {
             try

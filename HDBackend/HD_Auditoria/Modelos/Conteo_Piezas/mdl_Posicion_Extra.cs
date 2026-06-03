@@ -7,5 +7,6 @@
         public string posicion_extra { get; set; }
         public float conteo_fisico { get; set; }
         public bool bloqueado { get; set; }
+        public int id_auditor { get; set; } = 0;
     }
 }

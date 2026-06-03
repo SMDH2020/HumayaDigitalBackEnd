@@ -18,6 +18,7 @@ namespace HD.Fiscal.Modelos
         public IEnumerable<mdl_Listado_Incidencias_CancelacionesSAT_VigentesEQUIP> CancelacionesSat_VigentesEQUIP { get; set; }
         public IEnumerable<mdl_Listado_Incidencias_Reversas_Pendientes_Aplicar> Reversas_Pendientes_Aplicar { get; set; }
         public IEnumerable<mdl_Listado_Incidencias_Candidatos_Refacturacion> Candidatos_Refacturacion { get; set; }
+        public IEnumerable<mdl_Incidencias_Anticipos_NoLigados_Factura> Anticipos_NoLigados { get; set; }
         public mdl_Conciliacion_Ingresos_Analitica_Botones botones { get; set; }
 
 

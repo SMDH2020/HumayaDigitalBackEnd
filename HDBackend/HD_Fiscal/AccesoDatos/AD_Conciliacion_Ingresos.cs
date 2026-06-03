@@ -30,7 +30,7 @@ namespace HD.Fiscal.AccesoDatos
             }
         }
 
-        public async Task<mdl_Conciliacion_Ingresos_Analitica_Roles_View> obtenerAnalitica(int ejercicio, int periodo, int usuario)
+        public async Task<mdl_Conciliacion_Ingresos_Analitica_Roles_View> obtenerAnalitica(int ejercicio, int periodo, string origen, int usuario)
         {
             try
             {
@@ -38,6 +38,7 @@ namespace HD.Fiscal.AccesoDatos
                 var parametros = new DynamicParameters();
                 parametros.Add("ejercicio", ejercicio, System.Data.DbType.Int16);
                 parametros.Add("periodo", periodo, System.Data.DbType.Int16);
+                parametros.Add("origen", origen, System.Data.DbType.String);
                 parametros.Add("usuario", usuario, System.Data.DbType.Int16);
 
                 var result = await factory.SQL.QueryMultipleAsync("EQUIP.fiscal.sp_Conciliacion_Ingresos_Analitica_Roles", parametros, commandType: System.Data.CommandType.StoredProcedure);
