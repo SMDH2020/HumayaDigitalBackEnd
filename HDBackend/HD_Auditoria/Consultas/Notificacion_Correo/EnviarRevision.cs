@@ -27,12 +27,12 @@ namespace HD_Auditoria.Consultas.Notificacion_Correo
                 client.UseDefaultCredentials = false;
                 client.Credentials = new System.Net.NetworkCredential(_correo, password);
                 objeto_mail.From = new MailAddress(_correo);
-                //foreach (mdl_Notificar_Correo notificacion in mdl)
-                //{
-                //    objeto_mail.To.Add(new MailAddress(notificacion.Correo));
-                //}
+                foreach (mdl_Notificar_Correo notificacion in mdl)
+                {
+                    objeto_mail.To.Add(new MailAddress(notificacion.Correo));
+                }
 
-                objeto_mail.To.Add("desarrolladorti@humaya.com.mx");
+                //objeto_mail.To.Add("desarrolladorti@humaya.com.mx");
 
                 objeto_mail.Subject = "Justificaciones de inventario con folio: " + folio;
                 objeto_mail.IsBodyHtml = true;
@@ -64,12 +64,12 @@ namespace HD_Auditoria.Consultas.Notificacion_Correo
                 client.UseDefaultCredentials = false;
                 client.Credentials = new System.Net.NetworkCredential(_correo, password);
                 objeto_mail.From = new MailAddress(_correo);
-                //foreach (mdl_Notificar_Correo notificacion in mdl)
-                //{
-                //    objeto_mail.To.Add(new MailAddress(notificacion.Correo));
-                //}
+                foreach (mdl_Notificar_Correo notificacion in mdl)
+                {
+                    objeto_mail.To.Add(new MailAddress(notificacion.Correo));
+                }
 
-                objeto_mail.To.Add("desarrolladorti@humaya.com.mx");
+                //objeto_mail.To.Add("desarrolladorti@humaya.com.mx");
 
                 objeto_mail.Subject = "Justificaciones de inventario con folio: " + folio;
                 objeto_mail.IsBodyHtml = true;

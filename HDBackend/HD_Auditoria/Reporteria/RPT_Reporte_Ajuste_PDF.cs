@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace HD_Auditoria.Reporteria
 {
-    public class RPT_ReporteSimplificado_PDF
+    public class RPT_Reporte_Ajuste_PDF
     {
         public static RPT_Result GenerarPDF(mdl_ReporteSimplificado_View detalle, string? folio)
         {
@@ -48,11 +48,12 @@ namespace HD_Auditoria.Reporteria
                     .ThenByDescending(d => Math.Abs(d.importe_dif))
                     .ToList();
 
-                var correctos = difs
-                    .Where(d => d.tipo_diferencia == "C")
+                var aceptados = difs
+                    .Where(d => d.tipo_diferencia == "A")
                     .OrderBy(d => d.descripcion)
                     .ThenByDescending(d => Math.Abs(d.importe_dif))
                     .ToList();
+
 
                 byte[] doc = Document.Create(document =>
                 {
@@ -70,7 +71,7 @@ namespace HD_Auditoria.Reporteria
 
                             row.RelativeItem().PaddingTop(25).Height(50).Background(verde)
                                 .Padding(10).PaddingLeft(14)
-                                .Text("REPORTE SIMPLIFICADO - " + folio)
+                                .Text("REPORTE AJUSTE - " + folio)
                                 .FontColor("#fff").FontSize(16).Bold().FontFamily(font);
                         });
 
@@ -97,7 +98,7 @@ namespace HD_Auditoria.Reporteria
                                     });
                                     KpiMontoConPorcentaje(t, "IMPORTE TOTAL", info.importe_total_inventario.ToString("C2", culturaMoneda), null, verde, verdePanel, grisLinea, font);
 
-                                    KpiMontoConPorcentaje(t, "TOTAL NETO", info.total_neto.ToString("C2", culturaMoneda), $"{info.porc_total_neto}%", verdeOscuro, verdeClaro, grisLinea, font, tipoKpi: "total_neto", esNegativo: info.porc_total_neto < 0);
+                                    KpiMontoConPorcentaje(t, "TOTAL NETO", info.total_neto.ToString("C2", culturaMoneda), $"{Math.Abs(info.porc_total_neto):N2}%", verdeOscuro, verdeClaro, grisLinea, font, tipoKpi: "total_neto", esNegativo: info.porc_total_neto < 0);
 
                                     KpiMontoConPorcentaje(t, "FALTANTE", info.importe_faltante.ToString("C2", culturaMoneda), $"{Math.Abs(info.porc_faltante):N2}%", "#c0392b", "#fff0f0", grisLinea, font, tipoKpi: "faltante_sobrante");
 
@@ -128,7 +129,7 @@ namespace HD_Auditoria.Reporteria
                                     .Text($"DIFERENCIAS DETECTADAS  " +
                                           $"({faltantes.Count} faltante{(faltantes.Count != 1 ? "s" : "")}, " +
                                           $"{sobrantes.Count} sobrante{(sobrantes.Count != 1 ? "s" : "")}, " +
-                                          $"{correctos.Count} correcto{(correctos.Count != 1 ? "s" : "")})")
+                                          $"{aceptados.Count} correcto{(aceptados.Count != 1 ? "s" : "")})")
                                     .FontSize(7.5f).Bold().FontFamily(font).FontColor("#fff");
 
                                 sec.Item().Table(t =>
@@ -157,45 +158,6 @@ namespace HD_Auditoria.Reporteria
                                         TH("EXISTENCIA"); TH("CONTEO"); TH("DIFERENCIA"); TH("IMPORTE DIF.");
                                     });
 
-                                    // ── CORRECTOS ─────────────────────────────
-                                    if (correctos.Any())
-                                    {
-                                        t.Cell().ColumnSpan(8)
-                                            .Background("#eaf3de").BorderBottom(0.5f).BorderColor("#97c459")
-                                            .PaddingVertical(4).PaddingHorizontal(8)
-                                            .Text($"CORRECTOS — {correctos.Count} registro{(correctos.Count != 1 ? "s" : "")}")
-                                            .FontSize(7).Bold().FontFamily(font).FontColor("#27500a");
-                                    }
-
-                                    int idx = 0;
-                                    foreach (var d in correctos)
-                                    {
-                                        string bg = idx % 2 == 0 ? "#ffffff" : "#f5fbf0";
-
-                                        // TD — texto normal, izquierda por defecto
-                                        void TD(string? txt, string? fondo = null, string? color = null, bool centro = false) =>
-                                            t.Cell().Background(fondo ?? bg).BorderBottom(0.5f).BorderColor(grisLinea)
-                                                .PaddingVertical(3).PaddingHorizontal(4)
-                                                .Element(e => centro ? e.AlignCenter() : e.AlignLeft())
-                                                .Text(txt ?? "").FontSize(6.5f).FontFamily(font).FontColor(color ?? "#333");
-
-                                        // TS — cantidades/importes, derecha por defecto
-                                        void TS(string? txt, string? fondo = null, string? color = null, bool centro = false) =>
-                                            t.Cell().Background(fondo ?? bg).BorderBottom(0.5f).BorderColor(grisLinea)
-                                                .PaddingVertical(3).PaddingHorizontal(4)
-                                                .Element(e => centro ? e.AlignCenter() : e.AlignRight())  // ← derecha por defecto
-                                                .Text(txt ?? "").FontSize(6.5f).FontFamily(font).FontColor(color ?? "#333");
-
-                                        TD(d.familia, centro: true);
-                                        TD(d.sku);
-                                        TD(d.descripcion);
-                                        TD(d.posicion, centro: true);
-                                        TS(d.existencia.ToString("N2"));                                        // ← TS derecha
-                                        TS(d.conteo.ToString("N2"));                                            // ← TS derecha
-                                        TS(d.diferencias.ToString("N2"), "#eaf3de", "#27500a");                 // ← TS derecha
-                                        TS(d.importe_dif.ToString("C2", culturaMoneda));
-                                        idx++;
-                                    }
 
                                     // ── FALTANTES ─────────────────────────────
                                     if (faltantes.Any())
@@ -207,7 +169,7 @@ namespace HD_Auditoria.Reporteria
                                             .FontSize(7).Bold().FontFamily(font).FontColor("#c0392b");
                                     }
 
-                                    idx = 0;
+                                    int idx = 0;
                                     foreach (var d in faltantes)
                                     {
                                         string bg = idx % 2 == 0 ? "#ffffff" : "#fff7f7";
@@ -277,40 +239,80 @@ namespace HD_Auditoria.Reporteria
                                         idx++;
                                     }
 
+                                    // ── ACEPTADOS ─────────────────────────────
+                                    if (aceptados.Any())
+                                    {
+                                        t.Cell().ColumnSpan(8)
+                                            .Background("#eaf3de").BorderBottom(0.5f).BorderColor("#97c459")
+                                            .PaddingVertical(4).PaddingHorizontal(8)
+                                            .Text($"ACEPTADOS — {aceptados.Count} registro{(aceptados.Count != 1 ? "s" : "")}")
+                                            .FontSize(7).Bold().FontFamily(font).FontColor("#27500a");
+                                    }
+
+                                    idx = 0;
+                                    foreach (var d in aceptados)
+                                    {
+                                        string bg = idx % 2 == 0 ? "#ffffff" : "#f5fbf0";
+
+                                        // TD — texto normal, izquierda por defecto
+                                        void TD(string? txt, string? fondo = null, string? color = null, bool centro = false) =>
+                                            t.Cell().Background(fondo ?? bg).BorderBottom(0.5f).BorderColor(grisLinea)
+                                                .PaddingVertical(3).PaddingHorizontal(4)
+                                                .Element(e => centro ? e.AlignCenter() : e.AlignLeft())
+                                                .Text(txt ?? "").FontSize(6.5f).FontFamily(font).FontColor(color ?? "#333");
+
+                                        // TS — cantidades/importes, derecha por defecto
+                                        void TS(string? txt, string? fondo = null, string? color = null, bool centro = false) =>
+                                            t.Cell().Background(fondo ?? bg).BorderBottom(0.5f).BorderColor(grisLinea)
+                                                .PaddingVertical(3).PaddingHorizontal(4)
+                                                .Element(e => centro ? e.AlignCenter() : e.AlignRight())  // ← derecha por defecto
+                                                .Text(txt ?? "").FontSize(6.5f).FontFamily(font).FontColor(color ?? "#333");
+
+                                        TD(d.familia, centro: true);
+                                        TD(d.sku);
+                                        TD(d.descripcion);
+                                        TD(d.posicion, centro: true);
+                                        TS(d.existencia.ToString("N2"));                                        // ← TS derecha
+                                        TS(d.conteo.ToString("N2"));                                            // ← TS derecha
+                                        TS(d.diferencias == 0 ? "" : d.diferencias.ToString("N2"), "#eaf3de", "#27500a");
+                                        TS(d.importe_dif == 0 ? "" : d.importe_dif.ToString("C2", culturaMoneda));
+                                        idx++;
+                                    }
+
                                 });
                             });
 
                             col.Item().Height(28);
 
                             // ── 3. Firmas ─────────────────────────────────────
-                            col.Item().Row(r =>
-                            {
-                                r.RelativeItem().Column(c =>
-                                {
-                                    c.Item().Height(36);
-                                    c.Item().BorderTop(0.8f).BorderColor("#444").PaddingTop(5)
-                                        .AlignCenter()
-                                        .Text("ENCARGADO DE ALMACÉN")
-                                        .FontSize(7.5f).Bold().FontFamily(font).FontColor(verdeOscuro);
-                                    c.Item().AlignCenter()
-                                        .Text(firmas?.encargado_almacen?.ToUpper() ?? "")
-                                        .FontSize(7).FontFamily(font).FontColor("#333");
-                                });
+                            //col.Item().Row(r =>
+                            //{
+                            //    r.RelativeItem().Column(c =>
+                            //    {
+                            //        c.Item().Height(36);
+                            //        c.Item().BorderTop(0.8f).BorderColor("#444").PaddingTop(5)
+                            //            .AlignCenter()
+                            //            .Text("ENCARGADO DE ALMACÉN")
+                            //            .FontSize(7.5f).Bold().FontFamily(font).FontColor(verdeOscuro);
+                            //        c.Item().AlignCenter()
+                            //            .Text(firmas?.encargado_almacen?.ToUpper() ?? "")
+                            //            .FontSize(7).FontFamily(font).FontColor("#333");
+                            //    });
 
-                                r.ConstantItem(60);
+                            //    r.ConstantItem(60);
 
-                                r.RelativeItem().Column(c =>
-                                {
-                                    c.Item().Height(36);
-                                    c.Item().BorderTop(0.8f).BorderColor("#444").PaddingTop(5)
-                                        .AlignCenter()
-                                        .Text("AUDITOR")
-                                        .FontSize(7.5f).Bold().FontFamily(font).FontColor(verdeOscuro);
-                                    c.Item().AlignCenter()
-                                        .Text(firmas?.auditor?.ToUpper() ?? "")
-                                        .FontSize(7).FontFamily(font).FontColor("#333");
-                                });
-                            });
+                            //    r.RelativeItem().Column(c =>
+                            //    {
+                            //        c.Item().Height(36);
+                            //        c.Item().BorderTop(0.8f).BorderColor("#444").PaddingTop(5)
+                            //            .AlignCenter()
+                            //            .Text("AUDITOR")
+                            //            .FontSize(7.5f).Bold().FontFamily(font).FontColor(verdeOscuro);
+                            //        c.Item().AlignCenter()
+                            //            .Text(firmas?.auditor?.ToUpper() ?? "")
+                            //            .FontSize(7).FontFamily(font).FontColor("#333");
+                            //    });
+                            //});
                         });
 
                         // ── FOOTER ────────────────────────────────────────────
@@ -334,7 +336,7 @@ namespace HD_Auditoria.Reporteria
                 return new RPT_Result
                 {
                     extension = "pdf",
-                    nombredocumento = $"Reporte_simplificado_{folio}",
+                    nombredocumento = $"Reporte_ajuste_{folio}",
                     documento = Convert.ToBase64String(doc)
                 };
             }

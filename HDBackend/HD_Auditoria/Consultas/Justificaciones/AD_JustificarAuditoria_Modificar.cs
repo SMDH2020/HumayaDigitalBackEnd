@@ -26,7 +26,7 @@ namespace HD_Auditoria.Consultas.Justificaciones
                 //Parametros de entrada
                 var parametros = new DynamicParameters();
                 parametros.Add("@folio", mdl.folio, System.Data.DbType.String, System.Data.ParameterDirection.Input, 9);
-                parametros.Add("@motivo", mdl.motivo, System.Data.DbType.String, System.Data.ParameterDirection.Input, 200);
+                parametros.Add("@motivo", mdl.motivo, System.Data.DbType.String, System.Data.ParameterDirection.Input, 500);
                 parametros.Add("@id_just", mdl.idjust, System.Data.DbType.Int32, System.Data.ParameterDirection.Input);
                 parametros.Add("@usuario", mdl.usuario, System.Data.DbType.String, System.Data.ParameterDirection.Input);
 
