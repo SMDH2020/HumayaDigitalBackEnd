@@ -35,12 +35,12 @@ namespace HD.Endpoints.Controllers.Fiscal
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ConciliacionIngresosAnalitica(int ejercicio, int periodo)
+        public async Task<ActionResult> ConciliacionIngresosAnalitica(int ejercicio, int periodo, string origen)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Conciliacion_Ingresos datos = new AD_Conciliacion_Ingresos(CadenaConexion);
             int usuario = int.Parse(Sesion.usuario());
-            var result = await datos.obtenerAnalitica(ejercicio, periodo, usuario);
+            var result = await datos.obtenerAnalitica(ejercicio, periodo, origen, usuario);
             return Ok(result);
         }
 
@@ -78,12 +78,12 @@ namespace HD.Endpoints.Controllers.Fiscal
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ImprimirExcelReporteAnalitica(int ejercicio, int periodo, string titulo)
+        public async Task<ActionResult> ImprimirExcelReporteAnalitica(int ejercicio, int periodo, string origen, string titulo)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Conciliacion_Ingresos datos = new AD_Conciliacion_Ingresos(CadenaConexion);
             int usuario = int.Parse(Sesion.usuario());
-            var result = await datos.obtenerAnalitica(ejercicio, periodo, usuario);
+            var result = await datos.obtenerAnalitica(ejercicio, periodo, origen, usuario);
             var docresult = await XLS_Conciliacion_Ingresos_Analitica.GenerarExcel(result.Analitica, titulo);
             return Ok(docresult);
         }

@@ -46,7 +46,7 @@ namespace HD_Auditoria.Consultas.Reporteria
                 parametros.Add("folio", folio, System.Data.DbType.String);
 
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-
+ 
                 var result = await factory.SQL.QueryMultipleAsync("Auditoria.sp_GENERA_REPORTE_AUDITORIA_PRIMER_CONTEO", parametros, commandType: System.Data.CommandType.StoredProcedure);
 
                 mdl_Reporte_Primer_Conteo_View mdl = new mdl_Reporte_Primer_Conteo_View();
