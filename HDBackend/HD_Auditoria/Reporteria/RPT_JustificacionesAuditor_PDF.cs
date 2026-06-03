@@ -78,7 +78,7 @@ namespace HD_Auditoria.Reporteria
                                             .Text(txt).FontSize(6.5f).Bold().FontFamily(font).FontColor("#fff");
 
                                         TH("Codigo"); TH("Descripcion"); TH("Justificación"); TH("#");
-                                        TH("Auiditor");
+                                        TH("Auditor");
                                     });
 
                                     int idx = 0;
