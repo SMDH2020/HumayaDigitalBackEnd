@@ -15,5 +15,7 @@
         public float confiabilidad_inv { get; set; }
         public float confiabilidad_mon { get; set; }
         public float confiabilidad_loc { get; set; }
+        public bool habilitar { get; set; }
+
     }
 }
