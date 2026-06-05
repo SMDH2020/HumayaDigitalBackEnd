@@ -118,7 +118,7 @@ namespace HD_Auditoria.Reporteria
                                     });
                                     KpiMontoConPorcentaje(t, "IMPORTE TOTAL", info2.importe_total_inventario.ToString("C2", culturaMoneda), null, verde, verdePanel, grisLinea, font);
 
-                                    KpiMontoConPorcentaje(t, "TOTAL NETO", info2.total_neto.ToString("C2", culturaMoneda), $"{Math.Abs(info2.porc_total_neto):N2}%", verdeOscuro, verdeClaro, grisLinea, font, tipoKpi: "total_neto", esNegativo: info.porc_total_neto < 0);
+                                    KpiMontoConPorcentaje(t, "TOTAL NETO", info2.total_neto.ToString("C2", culturaMoneda), $"{info2.porc_total_neto}%", verdeOscuro, verdeClaro, grisLinea, font, tipoKpi: "total_neto", esNegativo: info2.porc_total_neto < 0);
 
                                     KpiMontoConPorcentaje(t, "FALTANTE", info2.importe_faltante.ToString("C2", culturaMoneda), $"{Math.Abs(info2.porc_faltante):N2}%", "#c0392b", "#fff0f0", grisLinea, font, tipoKpi: "faltante_sobrante");
 
@@ -159,7 +159,7 @@ namespace HD_Auditoria.Reporteria
                                     });
                                     KpiMontoConPorcentaje(t, "IMPORTE TOTAL", info3.importe_total_inventario.ToString("C2", culturaMoneda), null, verde, verdePanel, grisLinea, font);
 
-                                    KpiMontoConPorcentaje(t, "TOTAL NETO", info3.total_neto.ToString("C2", culturaMoneda), $"{Math.Abs(info3.porc_total_neto):N2}%", verdeOscuro, verdeClaro, grisLinea, font, tipoKpi: "total_neto", esNegativo: info.porc_total_neto < 0);
+                                    KpiMontoConPorcentaje(t, "TOTAL NETO", info3.total_neto.ToString("C2", culturaMoneda), $"{info3.porc_total_neto}%", verdeOscuro, verdeClaro, grisLinea, font, tipoKpi: "total_neto", esNegativo: info3.porc_total_neto < 0);
 
                                     KpiMontoConPorcentaje(t, "FALTANTE", info3.importe_faltante.ToString("C2", culturaMoneda), $"{Math.Abs(info3.porc_faltante):N2}%", "#c0392b", "#fff0f0", grisLinea, font, tipoKpi: "faltante_sobrante");
 
@@ -346,14 +346,17 @@ namespace HD_Auditoria.Reporteria
                 {
                     if (tipoKpi == "total_neto")
                     {
-                        // Positivo → siempre DENTRO DE TOLERANCIA
-                        // Negativo → tolerado hasta -0.20%, a partir de -0.21% excede
-                        if (!esNegativo || valorPct <= 0.20)
+                        if (!esNegativo)  // positivo → siempre dentro
                         {
                             colorEstado = "#275027";
                             estado = "DENTRO DE TOLERANCIA";
                         }
-                        else
+                        else if (Math.Abs(valorPct) <= 0.20)  // compara 0.5 <= 0.20 → FALSE ✅
+                        {
+                            colorEstado = "#275027";
+                            estado = "DENTRO DE TOLERANCIA";
+                        }
+                        else  // 0.5 > 0.20 → entra aquí ✅
                         {
                             colorEstado = "#c0392b";
                             estado = "EXCEDE TOLERANCIA";

@@ -453,14 +453,17 @@ namespace HD_Auditoria.Reporteria
                 {
                     if (tipoKpi == "total_neto")
                     {
-                        // Positivo → siempre DENTRO DE TOLERANCIA
-                        // Negativo → tolerado hasta -0.20%, a partir de -0.21% excede
-                        if (!esNegativo || valorPct <= 0.20)
+                        if (!esNegativo)  // positivo → siempre dentro
                         {
                             colorEstado = "#275027";
                             estado = "DENTRO DE TOLERANCIA";
                         }
-                        else
+                        else if (Math.Abs(valorPct) <= 0.20)  // compara 0.5 <= 0.20 → FALSE ✅
+                        {
+                            colorEstado = "#275027";
+                            estado = "DENTRO DE TOLERANCIA";
+                        }
+                        else  // 0.5 > 0.20 → entra aquí ✅
                         {
                             colorEstado = "#c0392b";
                             estado = "EXCEDE TOLERANCIA";

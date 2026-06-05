@@ -168,7 +168,7 @@ namespace HD.Endpoints.Controllers.Auditoria.Justificaciones
             AD_Justificacion_Auditoria_Enviar_Auditor datos = new AD_Justificacion_Auditoria_Enviar_Auditor(CadenaConexion);
             var result = await datos.Correos(mdl.folio);
 
-            await EnviarRevision.Enviar_Auditor(result, mdl.folio);
+             await EnviarRevision.Enviar_Auditor(result, mdl.folio);
 
             return Ok(true);
         }
