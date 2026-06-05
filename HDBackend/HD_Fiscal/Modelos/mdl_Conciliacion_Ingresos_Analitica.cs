@@ -35,6 +35,8 @@ namespace HD.Fiscal.Modelos
         public string orig_invoice_no { get; set; }
         public string document_refacturacion { get; set; }
         public string equip { get; set; }
+        public int tasa { get; set; }
+        public string relacion { get; set; }
         
     }
 }
