@@ -60,7 +60,6 @@ namespace HD.Fiscal.AccesoDatos
                 parametros.Add("ejercicio", ejercicio, System.Data.DbType.Int16);
                 parametros.Add("periodo", periodo, System.Data.DbType.Int16);
                 parametros.Add("usuario", usuario, System.Data.DbType.Int16);
-                parametros.Add("origen", origen, System.Data.DbType.String);
 
                 var result = await factory.SQL.QueryMultipleAsync("EQUIP.fiscal.sp_Obtener_Listados_Incidencias", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 var view = new mdl_Correccion_Incidencias_View();
@@ -74,7 +73,30 @@ namespace HD.Fiscal.AccesoDatos
                 view.CancelacionesSat_VigentesEQUIP = result.Read<mdl_Listado_Incidencias_CancelacionesSAT_VigentesEQUIP>().ToList();
                 view.Reversas_Pendientes_Aplicar = result.Read<mdl_Listado_Incidencias_Reversas_Pendientes_Aplicar>().ToList();
                 view.Candidatos_Refacturacion = result.Read<mdl_Listado_Incidencias_Candidatos_Refacturacion>().ToList();
+                view.botones = result.Read<mdl_Conciliacion_Ingresos_Analitica_Botones>().FirstOrDefault();
+                factory.SQL.Close();
+                return view;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<mdl_Correccion_Incidencias_Anticipos_View> ObtenerCorreccionIncidenciasAnticipos(int ejercicio, int periodo, string origen, int usuario)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new DynamicParameters();
+                parametros.Add("ejercicio", ejercicio, System.Data.DbType.Int16);
+                parametros.Add("periodo", periodo, System.Data.DbType.Int16);
+                parametros.Add("usuario", usuario, System.Data.DbType.Int16);
+
+                var result = await factory.SQL.QueryMultipleAsync("EQUIP.fiscal.sp_Obtener_Listados_Incidencias_Anticipos", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var view = new mdl_Correccion_Incidencias_Anticipos_View();
                 view.Anticipos_NoLigados = result.Read<mdl_Incidencias_Anticipos_NoLigados_Factura>().ToList();
+                view.Notas_NoTimbradas_ComoEgreso = result.Read<mdl_Incidencias_Anticipos_Notas_NoTimbradas_ComoEgreso>().ToList();
                 view.botones = result.Read<mdl_Conciliacion_Ingresos_Analitica_Botones>().FirstOrDefault();
                 factory.SQL.Close();
                 return view;
