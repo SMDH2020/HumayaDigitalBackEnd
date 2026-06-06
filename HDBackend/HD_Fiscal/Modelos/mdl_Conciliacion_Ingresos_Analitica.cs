@@ -37,6 +37,6 @@ namespace HD.Fiscal.Modelos
         public string equip { get; set; }
         public int tasa { get; set; }
         public string relacion { get; set; }
-        
+        public string fecha_aplicacion { get; set; }
     }
 }
