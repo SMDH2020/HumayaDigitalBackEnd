@@ -135,6 +135,13 @@ namespace HD_Auditoria.Consultas.Notificacion_Correo
           </div>
 
           <div class='pie'>
+                            <p style='margin-top:24px;'>
+                              Acceda al módulo desde el siguiente enlace:
+                            </p>
+                            <a class='btn' href='https://humayadigital.com/Auditoria/Justificaciones'>
+                              Revisar Justificaciones
+                            </a>
+
             Generado automáticamente por Humaya Digital — {DateTime.Now:dd/MM/yyyy HH:mm}
           </div>
         </div>
