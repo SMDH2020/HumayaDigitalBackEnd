@@ -78,27 +78,27 @@ namespace HD.Endpoints.Controllers.Ventas
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> MostrarScorecardVendedorporParametrosTablaAsesor(string region, string? sucursal, string? vendedor, int ejercicioinicio, int periodoinicio, int ejercicio, int mes_actual)
+        public async Task<ActionResult> MostrarScorecardVendedorporParametrosTablaAsesor(string region, string? sucursal, string? vendedor, int ejercicioinicio, int periodoinicio, int ejercicio, int mes_actual, int comparativa)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Carga_Scorecard_porParametros_Dash datos = new AD_Carga_Scorecard_porParametros_Dash(CadenaConexion);
             string? usuario = vendedor;
             int sesion = int.Parse(Sesion.usuario());
             //sesion = 5630;
-            var result = await datos.Scorecard_TablaAsesor(region, sucursal, usuario, ejercicioinicio, periodoinicio, ejercicio, mes_actual, sesion);
+            var result = await datos.Scorecard_TablaAsesor(region, sucursal, usuario, ejercicioinicio, periodoinicio, ejercicio, mes_actual, sesion, comparativa);
             return Ok(result);
         }
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> MostrarScorecardVendedorporParametrosTablaAsesorImportes(int region, string sucursal, string vendedor, int ejercicioinicio, int periodoinicio, int ejercicio, int mes_actual)
+        public async Task<ActionResult> MostrarScorecardVendedorporParametrosTablaAsesorImportes(int region, string sucursal, string vendedor, int ejercicioinicio, int periodoinicio, int ejercicio, int mes_actual, int comparativa)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Carga_Scorecard_porParametros_Dash datos = new AD_Carga_Scorecard_porParametros_Dash(CadenaConexion);
             string usuario = vendedor;
             int sesion = int.Parse(Sesion.usuario());
             //sesion = 5630;
-            var result = await datos.Scorecard_TablaAsesor_importes(region, sucursal, usuario, ejercicioinicio, periodoinicio, ejercicio, mes_actual, sesion);
+            var result = await datos.Scorecard_TablaAsesor_importes(region, sucursal, usuario, ejercicioinicio, periodoinicio, ejercicio, mes_actual, sesion, comparativa);
             return Ok(result);
         }
 
@@ -117,13 +117,13 @@ namespace HD.Endpoints.Controllers.Ventas
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ImprimirExcelTablaAsesores(string region, string? sucursal, string? vendedor, int ejercicioinicio, int periodoinicio, int ejercicio, int mes_actual)
+        public async Task<ActionResult> ImprimirExcelTablaAsesores(string region, string? sucursal, string? vendedor, int ejercicioinicio, int periodoinicio, int ejercicio, int mes_actual, int comparativa)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Carga_Scorecard_porParametros_Dash datos = new AD_Carga_Scorecard_porParametros_Dash(CadenaConexion);
             string? usuario = vendedor;
             int sesion = int.Parse(Sesion.usuario());
-            var result = await datos.Scorecard_TablaAsesor(region, sucursal, usuario, ejercicioinicio, periodoinicio, ejercicio, mes_actual, sesion);
+            var result = await datos.Scorecard_TablaAsesor(region, sucursal, usuario, ejercicioinicio, periodoinicio, ejercicio, mes_actual, sesion, comparativa);
             var docresult = await XLSVen_Scorecard_Asesores_Table.GenerarExcel(result, ejercicio, mes_actual, ejercicioinicio, periodoinicio);
             return Ok(docresult);
         }
@@ -154,13 +154,13 @@ namespace HD.Endpoints.Controllers.Ventas
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ImprimirPDFTablaAsesores(string region, string? sucursal, string? vendedor, int ejercicioinicio, int periodoinicio, int ejercicio, int mes_actual)
+        public async Task<ActionResult> ImprimirPDFTablaAsesores(string region, string? sucursal, string? vendedor, int ejercicioinicio, int periodoinicio, int ejercicio, int mes_actual, int comparativa)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Carga_Scorecard_porParametros_Dash datos = new AD_Carga_Scorecard_porParametros_Dash(CadenaConexion);
             string? usuario = vendedor;
             int sesion = int.Parse(Sesion.usuario());
-            var result = await datos.Scorecard_TablaAsesor(region, sucursal, usuario, ejercicioinicio, periodoinicio, ejercicio, mes_actual, sesion);
+            var result = await datos.Scorecard_TablaAsesor(region, sucursal, usuario, ejercicioinicio, periodoinicio, ejercicio, mes_actual, sesion, comparativa);
 
             try
             {
