@@ -35,7 +35,7 @@ namespace HD.Endpoints.Controllers.Authenticate
                 string audience = Configuracion["Jwt:Audience"];
                 string securitytkey = Configuracion["Jwt:Login"];
                 var token =await JwtManager.GenerarTocken(Login.usuario, Login.usuario, securitytkey, iussuer, audience,40320,"WEB");
-                return Ok(new { usuario = result.usuario, modulos = result.modulos, menus = result.menus,presas=result.presas, token });
+                return Ok(new { usuario = result.usuario, modulos = result.modulos, menus = result.menus,presas=result.presas, token, roles = result.roles });
 
             }
             else

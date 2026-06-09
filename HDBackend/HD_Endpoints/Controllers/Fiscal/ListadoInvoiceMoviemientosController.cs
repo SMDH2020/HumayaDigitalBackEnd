@@ -1,4 +1,5 @@
-﻿using HD.Fiscal.AccesoDatos;
+﻿using DocumentFormat.OpenXml.Math;
+using HD.Fiscal.AccesoDatos;
 using HD.Fiscal.Modelos;
 using HD.Security;
 using HD_Ventas.Consultas;
@@ -42,14 +43,26 @@ namespace HD.Endpoints.Controllers.Fiscal
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ObtenerListadosCorreccionIncidencias(int ejercicio, int periodo)
+        public async Task<ActionResult> ObtenerListadosCorreccionIncidencias(int ejercicio, int periodo, string origen)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Listado_InvoiceMoviemientos datos = new AD_Listado_InvoiceMoviemientos(CadenaConexion);
             int usuario = int.Parse(Sesion.usuario());
-            var result = await datos.ObtenerCorreccionIncidencias(ejercicio, periodo, usuario);
+            var result = await datos.ObtenerCorreccionIncidencias(ejercicio, periodo, origen, usuario);
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerListadosCorreccionIncidenciasAnticipos(int ejercicio, int periodo, string origen)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Listado_InvoiceMoviemientos datos = new AD_Listado_InvoiceMoviemientos(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.ObtenerCorreccionIncidenciasAnticipos(ejercicio, periodo, origen, usuario);
+            return Ok(result);
+        }
+
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]

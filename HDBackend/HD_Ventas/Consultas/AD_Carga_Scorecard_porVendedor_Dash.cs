@@ -24,7 +24,7 @@ namespace HD_Ventas.Consultas
                 IEnumerable<mdlCarga_Scorecard_porVendedor_Dash> result = await factory.SQL.QueryAsync<mdlCarga_Scorecard_porVendedor_Dash>("Ventas.Obtener_Scorecard_porUsuario", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
 
-                var tiposFaltantes = new List<string> { "TRACTORES", "IMPLEMENTOS", "JARDINEROS", "AUTOGUIADO", "DRONES", "PRODUCTO ALIADO", "TRACTORES USADOS", "TRILLADORAS USADAS", "GARANTIA EXTENDIDA", "POLIZA MANTENIMIENTO" };
+                var tiposFaltantes = new List<string> { "TRACTORES", "IMPLEMENTOS", "JARDINEROS", "AUTOGUIADO", "DRONES", "PRODUCTO ALIADO", "TRACTORES SEMINUEVOS", "TRILLADORAS SEMINUEVAS", "GARANTIA EXTENDIDA", "POLIZA MANTENIMIENTO" };
 
                 // Asegurarse de que siempre haya un objeto por cada tipo de "tipo_cartera"
                 var resultConTiposCompletos = tiposFaltantes.Select(tipo =>

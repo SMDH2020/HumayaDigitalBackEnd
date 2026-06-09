@@ -17,8 +17,9 @@ namespace HD.Endpoints.Controllers.Authenticate
             Configuracion = configuration;
         }
         [HttpPost]
-        public async Task<ActionResult>Post(mdlLogin mdl)
-        {
+        public async Task<ActionResult> Post(mdlLogin mdl)
+        { 
+
             if (mdl is null)
             {
                 return BadRequest("Error en datos enviados");

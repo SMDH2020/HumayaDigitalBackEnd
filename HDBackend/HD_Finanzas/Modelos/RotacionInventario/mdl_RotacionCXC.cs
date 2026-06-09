@@ -19,6 +19,8 @@ namespace HD_Finanzas.Modelos.RotacionInventario
         public double saldo_final { get; set; }
         public double rcxc { get; set; }
         public double guia { get; set; }
+        public double guia_semestral { get; set; }
+        public double guia_anual { get; set; }
          
     }
 }

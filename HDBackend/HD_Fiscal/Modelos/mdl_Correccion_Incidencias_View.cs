@@ -19,7 +19,5 @@ namespace HD.Fiscal.Modelos
         public IEnumerable<mdl_Listado_Incidencias_Reversas_Pendientes_Aplicar> Reversas_Pendientes_Aplicar { get; set; }
         public IEnumerable<mdl_Listado_Incidencias_Candidatos_Refacturacion> Candidatos_Refacturacion { get; set; }
         public mdl_Conciliacion_Ingresos_Analitica_Botones botones { get; set; }
-
-
     }
 }

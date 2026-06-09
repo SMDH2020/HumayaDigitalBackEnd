@@ -91,12 +91,12 @@ namespace HD_Ventas.Reportes
                     sheet.Range(renglon, 17, renglon, 19).Style.Font.Bold = true;
                     sheet.Range(renglon, 17, renglon, 19).Style.Fill.BackgroundColor = XLColor.LightGray;
 
-                    sheet.Range(renglon, 20, renglon, 22).Merge().Value = "TRACTORES U.";
+                    sheet.Range(renglon, 20, renglon, 22).Merge().Value = "TRACTORES S.";
                     sheet.Range(renglon, 20, renglon, 22).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                     sheet.Range(renglon, 20, renglon, 22).Style.Font.Bold = true;
                     sheet.Range(renglon, 20, renglon, 22).Style.Fill.BackgroundColor = XLColor.LightGray;
 
-                    sheet.Range(renglon, 23, renglon, 25).Merge().Value = "TRILLADORAS U.";
+                    sheet.Range(renglon, 23, renglon, 25).Merge().Value = "TRILLADORAS S.";
                     sheet.Range(renglon, 23, renglon, 25).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                     sheet.Range(renglon, 23, renglon, 25).Style.Font.Bold = true;
                     sheet.Range(renglon, 23, renglon, 25).Style.Fill.BackgroundColor = XLColor.LightGray;
