@@ -100,6 +100,7 @@ namespace HD.Fiscal.AccesoDatos
                 view.Notas_SinRelacion = result.Read<mdl_Correccion_Incidencias_Anticipos_Notas_SinRelacion>().ToList();
                 view.anticipos_SinUUID = result.Read<mdl_Incidencias_Anticipos_SinUUID>().ToList();
                 view.Anticipos_Multiples_Notas = result.Read<mdl_Incidencias_Anticipos_rel_Multiples_Notas>().ToList();
+
                 view.botones = result.Read<mdl_Conciliacion_Ingresos_Analitica_Botones>().FirstOrDefault();
                 factory.SQL.Close();
                 return view;

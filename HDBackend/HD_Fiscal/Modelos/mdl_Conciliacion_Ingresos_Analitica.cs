@@ -39,5 +39,6 @@ namespace HD.Fiscal.Modelos
         public string serie_fiscal { get; set; }
         public string v_relacion { get; set; }
         public string v_fecha_relacion { get; set; }
+
     }
 }
