@@ -97,6 +97,10 @@ namespace HD.Fiscal.AccesoDatos
                 var view = new mdl_Correccion_Incidencias_Anticipos_View();
                 view.Anticipos_NoLigados = result.Read<mdl_Incidencias_Anticipos_NoLigados_Factura>().ToList();
                 view.Notas_NoTimbradas_ComoEgreso = result.Read<mdl_Incidencias_Anticipos_Notas_NoTimbradas_ComoEgreso>().ToList();
+                view.Notas_SinRelacion = result.Read<mdl_Correccion_Incidencias_Anticipos_Notas_SinRelacion>().ToList();
+                view.anticipos_SinUUID = result.Read<mdl_Incidencias_Anticipos_SinUUID>().ToList();
+                view.Anticipos_Multiples_Notas = result.Read<mdl_Incidencias_Anticipos_rel_Multiples_Notas>().ToList();
+
                 view.botones = result.Read<mdl_Conciliacion_Ingresos_Analitica_Botones>().FirstOrDefault();
                 factory.SQL.Close();
                 return view;
@@ -200,6 +204,49 @@ namespace HD.Fiscal.AccesoDatos
             }
         }
 
+        public async Task<bool> GuardarRelacionNotaAnticipo(mdl_Relacion_Nota_Anticipo mdl)
+        {
+
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    serie_fiscal_anticipo = mdl.serie_fiscal_anticipo,
+                    serie_fiscal_nota = mdl.serie_fiscal_nota,
+                    usuario = mdl.usuario
+                };
+                await factory.SQL.QueryAsync("EQUIP.fiscal.sp_Guardar_Relacion_Nota_Anticipo", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<bool> GuardarRelacionAnticipoCancelacion(mdl_Relacion_Anticipo_Cancelacion mdl)
+        {
+
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    serie_fiscal_anticipo = mdl.serie_fiscal_anticipo,
+                    serie_fiscal_cancelacion = mdl.serie_fiscal_cancelacion,
+                    usuario = mdl.usuario
+                };
+                await factory.SQL.QueryAsync("EQUIP.fiscal.sp_Guardar_Relacion_Anticipo_Cancelacion", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
         public async Task<bool> AplicarReversa(mdl_Aplicar_Reversa mdl)
         {
 

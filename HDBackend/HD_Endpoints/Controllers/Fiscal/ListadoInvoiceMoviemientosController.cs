@@ -63,6 +63,28 @@ namespace HD.Endpoints.Controllers.Fiscal
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerListadoPosiblesAnticipos(string v_ref, string serie_fiscal, string importe)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Listado_Incidencias_Anticipos datos = new AD_Listado_Incidencias_Anticipos(CadenaConexion);
+            //int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.obtenerAnticipos(v_ref, serie_fiscal, importe);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerListadoPosiblesCancelaciones(string v_ref, string serie_fiscal, string importe)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Listado_Incidencias_Anticipos datos = new AD_Listado_Incidencias_Anticipos(CadenaConexion);
+            //int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.obtenerCancelaciones(v_ref, serie_fiscal, importe);
+            return Ok(result);
+        }
+
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
@@ -116,6 +138,38 @@ namespace HD.Endpoints.Controllers.Fiscal
             AD_Listado_InvoiceMoviemientos datos = new AD_Listado_InvoiceMoviemientos(CadenaConexion);
             //mdl.usuario = int.Parse(Sesion.usuario());
             await datos.GuardarRelacion(mdl);
+
+            return Ok(new
+            {
+                mensaje = "Guardado Correctamente",
+            }
+            );
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarRelacionNotaAnticipo(mdl_Relacion_Nota_Anticipo mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Listado_InvoiceMoviemientos datos = new AD_Listado_InvoiceMoviemientos(CadenaConexion);
+            mdl.usuario = int.Parse(Sesion.usuario());
+            await datos.GuardarRelacionNotaAnticipo(mdl);
+
+            return Ok(new
+            {
+                mensaje = "Guardado Correctamente",
+            }
+            );
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarRelacionAnticipoCancelacion(mdl_Relacion_Anticipo_Cancelacion mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Listado_InvoiceMoviemientos datos = new AD_Listado_InvoiceMoviemientos(CadenaConexion);
+            mdl.usuario = int.Parse(Sesion.usuario());
+            await datos.GuardarRelacionAnticipoCancelacion(mdl);
 
             return Ok(new
             {

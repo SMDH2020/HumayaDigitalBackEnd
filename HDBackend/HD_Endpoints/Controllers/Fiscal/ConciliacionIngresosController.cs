@@ -84,7 +84,7 @@ namespace HD.Endpoints.Controllers.Fiscal
             AD_Conciliacion_Ingresos datos = new AD_Conciliacion_Ingresos(CadenaConexion);
             int usuario = int.Parse(Sesion.usuario());
             var result = await datos.obtenerAnalitica(ejercicio, periodo, origen, usuario);
-            var docresult = await XLS_Conciliacion_Ingresos_Analitica.GenerarExcel(result.Analitica, titulo);
+            var docresult = await XLS_Conciliacion_Ingresos_Analitica.GenerarExcel(result.Analitica, titulo, origen);
             return Ok(docresult);
         }
 
