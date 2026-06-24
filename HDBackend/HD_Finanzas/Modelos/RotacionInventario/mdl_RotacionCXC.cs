@@ -21,6 +21,11 @@ namespace HD_Finanzas.Modelos.RotacionInventario
         public double guia { get; set; }
         public double guia_semestral { get; set; }
         public double guia_anual { get; set; }
-         
+        public double rcxc_semestral { get; set; }
+        public double rcxc_anual { get; set; }
+        public double cartera_optima { get; set; }
+        public double diferencia_cartera_optima { get; set; }
+
+
     }
 }
