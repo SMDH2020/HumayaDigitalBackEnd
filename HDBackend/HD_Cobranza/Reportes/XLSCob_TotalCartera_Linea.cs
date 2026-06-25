@@ -6,7 +6,7 @@ namespace HD_Cobranza.Reportes
 {
     public static class XLSCob_TotalCartera_Linea
     {
-        public static Task<DocResult> CrearExcel(IEnumerable<mdlCob_TotalCarteraPorLinea> lista,string titulo)
+        public static Task<DocResult> CrearExcel(IEnumerable<mdlCob_TotalCarteraPorLinea> lista, string titulo)
         {
             try
             {
@@ -18,7 +18,7 @@ namespace HD_Cobranza.Reportes
                     sheet.Style.Font.FontName = "Calibri";
                     sheet.Style.Font.FontSize = 10;
 
-                    int renglon = XLSEncabezado.Encabezado(ref sheet, titulo, 17);
+                    int renglon = XLSEncabezado.Encabezado(ref sheet, titulo, 22);
                     sheet.Cell(renglon, 1).Value = "LINEA";
                     sheet.Cell(renglon, 2).Value = "TOTAL CARTERA";
                     sheet.Cell(renglon, 3).Value = "SALDO A FAVOR";
@@ -32,12 +32,17 @@ namespace HD_Cobranza.Reportes
                     sheet.Cell(renglon, 11).Value = "VENCIDA";
                     sheet.Cell(renglon, 12).Value = "%";
                     sheet.Cell(renglon, 13).Value = "DE 1 A 15";
-                    sheet.Cell(renglon, 14).Value = "MAS DE 15";
-                    sheet.Cell(renglon, 15).Value = "MAS DE 30";
-                    sheet.Cell(renglon, 16).Value = "MAS DE 60";
-                    sheet.Cell(renglon, 17).Value = "MAS DE 90";
+                    sheet.Cell(renglon, 14).Value = "%";
+                    sheet.Cell(renglon, 15).Value = "MAS DE 15";
+                    sheet.Cell(renglon, 16).Value = "%";
+                    sheet.Cell(renglon, 17).Value = "MAS DE 30";
+                    sheet.Cell(renglon, 18).Value = "%";
+                    sheet.Cell(renglon, 19).Value = "MAS DE 60";
+                    sheet.Cell(renglon, 20).Value = "%";
+                    sheet.Cell(renglon, 21).Value = "MAS DE 90";
+                    sheet.Cell(renglon, 22).Value = "%";
 
-                    var rango = sheet.Range(renglon, 1, renglon, 17);
+                    var rango = sheet.Range(renglon, 1, renglon, 22);
                     rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
                     rango.Style.Font.Bold = true;
                     rango.Style.Font.FontSize = 12;
@@ -51,7 +56,7 @@ namespace HD_Cobranza.Reportes
                     foreach (var mdl in sucursales)
                     {
                         sheet.Cell(renglon, 1).Value = mdl.Key;
-                        rango = sheet.Range(renglon, 1, renglon, 17);
+                        rango = sheet.Range(renglon, 1, renglon, 22);
                         rango.Style.Fill.BackgroundColor = XLColor.FromArgb(218, 230, 190);
                         rango.Style.Font.Bold = true;
                         rango.Style.Font.FontSize = 10;
@@ -74,34 +79,48 @@ namespace HD_Cobranza.Reportes
                             sheet.Cell(renglon, 11).Value = activos.vencido;
                             sheet.Cell(renglon, 12).Value = activos.vencido / (activos.totalcartera);
                             sheet.Cell(renglon, 13).Value = activos.de1a15;
-                            sheet.Cell(renglon, 14).Value = activos.mas15;
-                            sheet.Cell(renglon, 15).Value = activos.mas30;
-                            sheet.Cell(renglon, 16).Value = activos.mas60;
-                            sheet.Cell(renglon, 17).Value = activos.mas90;
+                            sheet.Cell(renglon, 14).Value = activos.vencido != 0 ? activos.de1a15 / activos.vencido : 0;
+
+                            sheet.Cell(renglon, 15).Value = activos.mas15;
+                            sheet.Cell(renglon, 16).Value = activos.vencido != 0 ? activos.mas15 / activos.vencido : 0;
+
+                            sheet.Cell(renglon, 17).Value = activos.mas30;
+                            sheet.Cell(renglon, 18).Value = activos.vencido != 0 ? activos.mas30 / activos.vencido : 0;
+
+                            sheet.Cell(renglon, 19).Value = activos.mas60;
+                            sheet.Cell(renglon, 20).Value = activos.vencido != 0 ? activos.mas60 / activos.vencido : 0;
+
+                            sheet.Cell(renglon, 21).Value = activos.mas90;
+                            sheet.Cell(renglon, 22).Value = activos.vencido != 0 ? activos.mas90 / activos.vencido : 0;
                             renglon++;
                         }
 
                     }
 
                     //sheet.Cell(renglon, 1).Value = "TOTAL";
-                    //sheet.Cell(renglon, 2).FormulaA1 = $"SUBTOTAL(9,C5:C{renglon - 1})";
-                    //sheet.Cell(renglon, 3).FormulaA1 = $"SUBTOTAL(9,D5:D{renglon - 1})";
-                    //sheet.Cell(renglon, 4).FormulaA1 = $"SUBTOTAL(9,E5:E{renglon - 1})";
-                    //sheet.Cell(renglon, 5).FormulaA1 = $"SUBTOTAL(9,F5:F{renglon - 1})";
-                    //sheet.Cell(renglon, 6).FormulaA1 = $"=C{renglon}/F{renglon}/100";
-                    //sheet.Cell(renglon, 7).FormulaA1 = $"SUBTOTAL(9,H5:H{renglon - 1})";
-                    //sheet.Cell(renglon, 8).FormulaA1 = $"=C{renglon}/H{renglon}/100";
-                    //sheet.Cell(renglon, 9).FormulaA1 = $"SUBTOTAL(9,J5:J{renglon - 1})";
-                    //sheet.Cell(renglon, 10).FormulaA1 = $"=C{renglon}/J{renglon}/100";
-                    //sheet.Cell(renglon, 11).FormulaA1 = $"SUBTOTAL(9,L5:L{renglon - 1})";
-                    //sheet.Cell(renglon, 12).FormulaA1 = $"=C{renglon}/L{renglon}/100";
-                    //sheet.Cell(renglon, 13).FormulaA1 = $"SUBTOTAL(9,N5:N{renglon - 1})";
-                    //sheet.Cell(renglon, 14).FormulaA1 = $"SUBTOTAL(9,O5:O{renglon - 1})";
-                    //sheet.Cell(renglon, 15).FormulaA1 = $"SUBTOTAL(9,P5:P{renglon - 1})";
-                    //sheet.Cell(renglon, 16).FormulaA1 = $"SUBTOTAL(9,Q5:Q{renglon - 1})";
-                    //sheet.Cell(renglon, 17).FormulaA1 = $"SUBTOTAL(9,R5:R{renglon - 1})";
+                    //sheet.Cell(renglon, 2).FormulaA1 = $"SUBTOTAL(9,B5:B{renglon - 1})";
+                    //sheet.Cell(renglon, 3).FormulaA1 = $"SUBTOTAL(9,C5:C{renglon - 1})";
+                    //sheet.Cell(renglon, 4).FormulaA1 = $"SUBTOTAL(9,D5:D{renglon - 1})";
+                    //sheet.Cell(renglon, 5).FormulaA1 = $"SUBTOTAL(9,E5:E{renglon - 1})";
+                    //sheet.Cell(renglon, 6).FormulaA1 = $"=E{renglon}/B{renglon}";
+                    //sheet.Cell(renglon, 7).FormulaA1 = $"SUBTOTAL(9,G5:G{renglon - 1})";
+                    //sheet.Cell(renglon, 8).FormulaA1 = $"=G{renglon}/B{renglon}";
+                    //sheet.Cell(renglon, 9).FormulaA1 = $"SUBTOTAL(9,I5:I{renglon - 1})";
+                    //sheet.Cell(renglon, 10).FormulaA1 = $"=I{renglon}/B{renglon}";
+                    //sheet.Cell(renglon, 11).FormulaA1 = $"SUBTOTAL(9,K5:K{renglon - 1})";
+                    //sheet.Cell(renglon, 12).FormulaA1 = $"=K{renglon}/B{renglon}";
+                    //sheet.Cell(renglon, 13).FormulaA1 = $"SUBTOTAL(9,M5:M{renglon - 1})";
+                    //sheet.Cell(renglon, 14).FormulaA1 = $"=M{renglon}/K{renglon}";
+                    //sheet.Cell(renglon, 15).FormulaA1 = $"SUBTOTAL(9,O5:O{renglon - 1})";
+                    //sheet.Cell(renglon, 16).FormulaA1 = $"=O{renglon}/K{renglon}";
+                    //sheet.Cell(renglon, 17).FormulaA1 = $"SUBTOTAL(9,Q5:Q{renglon - 1})";
+                    //sheet.Cell(renglon, 18).FormulaA1 = $"=Q{renglon}/K{renglon}";
+                    //sheet.Cell(renglon, 19).FormulaA1 = $"SUBTOTAL(9,S5:S{renglon - 1})";
+                    //sheet.Cell(renglon, 20).FormulaA1 = $"=S{renglon}/K{renglon}";
+                    //sheet.Cell(renglon, 21).FormulaA1 = $"SUBTOTAL(9,U5:U{renglon - 1})";
+                    //sheet.Cell(renglon, 22).FormulaA1 = $"=U{renglon}/K{renglon}";
 
-                    rango = sheet.Range(renglon-1, 1, renglon-1, 17);
+                    rango = sheet.Range(renglon - 1, 1, renglon - 1, 22);
                     rango.Style.Font.Bold = true;
                     rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#e5e6e6");
 
@@ -109,18 +128,23 @@ namespace HD_Cobranza.Reportes
                     sheet.Column(3).Style.NumberFormat.Format = "#,##0.00";
                     sheet.Column(4).Style.NumberFormat.Format = "#,##0.00";
                     sheet.Column(5).Style.NumberFormat.Format = "#,##0.00";
-                    sheet.Column(6).Style.NumberFormat.Format = "0.0 %";
+                    sheet.Column(6).Style.NumberFormat.Format = "0.00 %";
                     sheet.Column(7).Style.NumberFormat.Format = "#,##0.00";
-                    sheet.Column(8).Style.NumberFormat.Format = "0.0 %";
+                    sheet.Column(8).Style.NumberFormat.Format = "0.00 %";
                     sheet.Column(9).Style.NumberFormat.Format = "#,##0.00";
-                    sheet.Column(10).Style.NumberFormat.Format = "0.0 %";
+                    sheet.Column(10).Style.NumberFormat.Format = "0.00 %";
                     sheet.Column(11).Style.NumberFormat.Format = "#,##0.00";
-                    sheet.Column(12).Style.NumberFormat.Format = "0.0 %";
+                    sheet.Column(12).Style.NumberFormat.Format = "0.00 %";
                     sheet.Column(13).Style.NumberFormat.Format = "#,##0.00";
-                    sheet.Column(14).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(14).Style.NumberFormat.Format = "0.00 %";
                     sheet.Column(15).Style.NumberFormat.Format = "#,##0.00";
-                    sheet.Column(16).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(16).Style.NumberFormat.Format = "0.00 %";
                     sheet.Column(17).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(18).Style.NumberFormat.Format = "0.00 %";
+                    sheet.Column(19).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(20).Style.NumberFormat.Format = "0.00 %";
+                    sheet.Column(21).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(22).Style.NumberFormat.Format = "0.00 %";
 
                     sheet.Columns().AdjustToContents();
                     workbook.SaveAs(ruta);
