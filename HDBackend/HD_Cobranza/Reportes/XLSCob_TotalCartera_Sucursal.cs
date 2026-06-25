@@ -63,17 +63,18 @@ namespace HD_Cobranza.Reportes
                     {
                         sheet.Cell(renglon, 1).Value = activos.idsucursal;
                         sheet.Cell(renglon, 2).Value = activos.sucursal;
-                        sheet.Cell(renglon, 3).Value = activos.totalcartera + activos.juridico;
+                        sheet.Cell(renglon, 3).Value = activos.totalcartera;
                         sheet.Cell(renglon, 4).Value = activos.saldoafavor;
-                        sheet.Cell(renglon, 5).Value = activos.total + activos.juridico;
+                        sheet.Cell(renglon, 5).Value = activos.total;
                         sheet.Cell(renglon, 6).Value = activos.juridico;
-                        sheet.Cell(renglon, 7).Value = activos.juridico / (activos.totalcartera + activos.juridico);
+                        sheet.Cell(renglon, 7).Value = activos.juridico/activos.totalcartera;
+
                         sheet.Cell(renglon, 8).Value = activos.activo;
-                        sheet.Cell(renglon, 9).Value = activos.activo / (activos.totalcartera + activos.juridico);
+                        sheet.Cell(renglon, 9).Value = activos.activo /activos.totalcartera;
                         sheet.Cell(renglon, 10).Value = activos.porvencer;
-                        sheet.Cell(renglon, 11).Value = activos.porvencer / (activos.totalcartera + activos.juridico);
+                        sheet.Cell(renglon, 11).Value = activos.porvencer / activos.totalcartera ;
                         sheet.Cell(renglon, 12).Value = activos.vencido;
-                        sheet.Cell(renglon, 13).Value = activos.vencido / (activos.totalcartera + activos.juridico);
+                        sheet.Cell(renglon, 13).Value = activos.vencido / activos.totalcartera ;
 
                         sheet.Cell(renglon, 14).Value = activos.de1a15;
                         sheet.Cell(renglon, 15).Value = activos.vencido != 0 ? activos.de1a15 / activos.vencido : 0;
@@ -106,7 +107,6 @@ namespace HD_Cobranza.Reportes
                     sheet.Cell(renglon, 12).FormulaA1 = $"SUBTOTAL(9,L5:L{renglon - 1})";
                     sheet.Cell(renglon, 13).FormulaA1 = $"=L{renglon}/C{renglon}";
 
-                    // --- totales y % respecto a VENCIDO (columna L) ---
                     sheet.Cell(renglon, 14).FormulaA1 = $"SUBTOTAL(9,N5:N{renglon - 1})";
                     sheet.Cell(renglon, 15).FormulaA1 = $"=N{renglon}/L{renglon}";
 
@@ -126,6 +126,7 @@ namespace HD_Cobranza.Reportes
                     sheet.Column(4).Style.NumberFormat.Format = "#,##0.00";
                     sheet.Column(5).Style.NumberFormat.Format = "#,##0.00";
                     sheet.Column(6).Style.NumberFormat.Format = "#,##0.00";
+
                     sheet.Column(7).Style.NumberFormat.Format = "0.00 %";
                     sheet.Column(8).Style.NumberFormat.Format = "#,##0.00";
                     sheet.Column(9).Style.NumberFormat.Format = "0.00 %";
@@ -133,6 +134,7 @@ namespace HD_Cobranza.Reportes
                     sheet.Column(11).Style.NumberFormat.Format = "0.00 %";
                     sheet.Column(12).Style.NumberFormat.Format = "#,##0.00";
                     sheet.Column(13).Style.NumberFormat.Format = "0.00 %";
+
                     sheet.Column(14).Style.NumberFormat.Format = "#,##0.00";
                     sheet.Column(15).Style.NumberFormat.Format = "0.00 %";
                     sheet.Column(16).Style.NumberFormat.Format = "#,##0.00";

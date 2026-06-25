@@ -67,19 +67,17 @@ namespace HD_Cobranza.Reportes
                         foreach (mdlCob_TotalCarteraPorLinea activos in lista.Where(item => item.sucursal == mdl.Key))
                         {
                             sheet.Cell(renglon, 1).Value = activos.linea;
-                            sheet.Cell(renglon, 2).Value = activos.totalcartera + activos.juridico;
+                            sheet.Cell(renglon, 2).Value = activos.totalcartera;
                             sheet.Cell(renglon, 3).Value = activos.saldoafavor;
-                            sheet.Cell(renglon, 4).Value = activos.total + activos.juridico;
+                            sheet.Cell(renglon, 4).Value = activos.total;
                             sheet.Cell(renglon, 5).Value = activos.juridico;
-                            sheet.Cell(renglon, 6).Value = activos.juridico / (activos.totalcartera + activos.juridico);
+                            sheet.Cell(renglon, 6).Value = activos.juridico / (activos.totalcartera);
                             sheet.Cell(renglon, 7).Value = activos.activo;
-                            sheet.Cell(renglon, 8).Value = activos.activo / (activos.totalcartera + activos.juridico);
+                            sheet.Cell(renglon, 8).Value = activos.activo / (activos.totalcartera );
                             sheet.Cell(renglon, 9).Value = activos.porvencer;
-                            sheet.Cell(renglon, 10).Value = activos.porvencer / (activos.totalcartera + activos.juridico);
+                            sheet.Cell(renglon, 10).Value = activos.porvencer / (activos.totalcartera);
                             sheet.Cell(renglon, 11).Value = activos.vencido;
-                            sheet.Cell(renglon, 12).Value = activos.vencido / (activos.totalcartera + activos.juridico);
-
-
+                            sheet.Cell(renglon, 12).Value = activos.vencido / (activos.totalcartera);
                             sheet.Cell(renglon, 13).Value = activos.de1a15;
                             sheet.Cell(renglon, 14).Value = activos.vencido != 0 ? activos.de1a15 / activos.vencido : 0;
 
