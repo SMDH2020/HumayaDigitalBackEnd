@@ -36,7 +36,7 @@ namespace HD.Endpoints.Controllers.Ventas
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Poliza_Mantenimiento_Listado datos = new AD_Poliza_Mantenimiento_Listado(CadenaConexion);
-            var result = await datos.Listado(ejercicioInicio, periodoInicio, ejercicioFin, periodoFin, region, sucursal, vendedor);
+            var result = await datos.Listado(ejercicioInicio, periodoInicio, ejercicioFin, periodoFin, region, sucursal, vendedor,Sesion.usuario());
             return Ok(result);
 
         }
@@ -75,7 +75,7 @@ namespace HD.Endpoints.Controllers.Ventas
             AD_Poliza_Mantenimiento_Listado datos = new AD_Poliza_Mantenimiento_Listado(CadenaConexion);
             string usuario = vendedor;
             int sesion = int.Parse(Sesion.usuario());
-            var result = await datos.Listado(ejercicioInicio, periodoInicio, ejercicioFin, periodoFin, region, sucursal, vendedor);
+            var result = await datos.Listado(ejercicioInicio, periodoInicio, ejercicioFin, periodoFin, region, sucursal, vendedor, Sesion.usuario());
             var docresult = await XLSVen_Poliza_Mantenimiento_Excel.GenerarExcel(result, ejercicioFin, periodoFin, ejercicioInicio, periodoInicio);
             return Ok(docresult);
         }

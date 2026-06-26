@@ -63,17 +63,17 @@ namespace HD_Cobranza.Reportes
                            double totalcartera = activos.totalcartera + activos.juridico;
                             sheet.Cell(renglon, 1).Value = activos.idcliente;
                             sheet.Cell(renglon, 2).Value = activos.razonsocial;
-                            sheet.Cell(renglon, 3).Value = activos.totalcartera + activos.juridico;
+                            sheet.Cell(renglon, 3).Value = activos.totalcartera;
                             sheet.Cell(renglon, 4).Value = activos.saldoafavor;
-                            sheet.Cell(renglon, 5).Value = activos.total + activos.juridico;
+                            sheet.Cell(renglon, 5).Value = activos.total;
                             sheet.Cell(renglon, 6).Value = activos.juridico;
-                             sheet.Cell(renglon, 7).Value =  activos.juridico ==0 || (activos.totalcartera + activos.juridico)==0 ? 0: activos.juridico/totalcartera ;
+                             sheet.Cell(renglon, 7).Value =  activos.juridico ==0 || (activos.totalcartera)==0 ? 0: activos.juridico/totalcartera ;
                             sheet.Cell(renglon, 8).Value = activos.activo;
-                            sheet.Cell(renglon, 9).Value = activos.activo ==0 || (activos.totalcartera + activos.juridico)==0 ? 0: activos.activo/totalcartera;
+                            sheet.Cell(renglon, 9).Value = activos.activo ==0 || (activos.totalcartera)==0 ? 0: activos.activo/totalcartera;
                             sheet.Cell(renglon, 10).Value = activos.porvencer;
-                            sheet.Cell(renglon, 11).Value = activos.porvencer == 0 || (activos.totalcartera + activos.juridico) == 0 ? 0 : activos.porvencer / totalcartera;
+                            sheet.Cell(renglon, 11).Value = activos.porvencer == 0 || (activos.totalcartera) == 0 ? 0 : activos.porvencer / totalcartera;
                             sheet.Cell(renglon, 12).Value = activos.vencido;
-                            sheet.Cell(renglon, 13).Value = activos.vencido == 0 || (activos.totalcartera + activos.juridico) == 0 ? 0 : activos.vencido/totalcartera;
+                            sheet.Cell(renglon, 13).Value = activos.vencido == 0 || (activos.totalcartera) == 0 ? 0 : activos.vencido/totalcartera;
                             renglon++;
                         }
 
@@ -85,13 +85,13 @@ namespace HD_Cobranza.Reportes
                     sheet.Cell(renglon, 4).FormulaA1 = $"SUBTOTAL(9,D5:D{renglon - 1})";
                     sheet.Cell(renglon, 5).FormulaA1 = $"SUBTOTAL(9,E5:E{renglon - 1})";
                     sheet.Cell(renglon, 6).FormulaA1 = $"SUBTOTAL(9,F5:F{renglon - 1})";
-                    sheet.Cell(renglon, 7).FormulaA1 = $"=C{renglon}/F{renglon}/100";
-                    sheet.Cell(renglon, 8).FormulaA1 = $"SUBTOTAL(9,H5:H{renglon - 1})";
-                    sheet.Cell(renglon, 9).FormulaA1 = $"=C{renglon}/H{renglon}/100";
+                    sheet.Cell(renglon, 7).FormulaA1 = $"=F{renglon}/C{renglon}";
+                    sheet.Cell(renglon, 8).FormulaA1 = $"SUBTOTAL(9,H5:H{renglon-1})";
+                    sheet.Cell(renglon, 9).FormulaA1 = $"=H{renglon}/C{renglon}";
                     sheet.Cell(renglon, 10).FormulaA1 = $"SUBTOTAL(9,J5:J{renglon - 1})";
-                    sheet.Cell(renglon, 11).FormulaA1 = $"=C{renglon}/J{renglon}/100";
+                    sheet.Cell(renglon, 11).FormulaA1 = $"=J{renglon}/C{renglon}";
                     sheet.Cell(renglon, 12).FormulaA1 = $"SUBTOTAL(9,L5:L{renglon - 1})";
-                    sheet.Cell(renglon, 13).FormulaA1 = $"=C{renglon}/L{renglon}/100";
+                    sheet.Cell(renglon, 13).FormulaA1 = $"=L{renglon}/C{renglon}";
 
                     rango = sheet.Range(renglon, 1, renglon , 18);
                     rango.Style.Font.Bold = true;

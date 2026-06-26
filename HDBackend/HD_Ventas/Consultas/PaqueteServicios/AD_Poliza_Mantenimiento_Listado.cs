@@ -16,7 +16,7 @@ namespace HD_Ventas.Consultas.PaqueteServicios
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_Poliza_Mantenimiento_Listado>> Listado(int ejercicioInicio, int periodoInicio, int ejercicioFin, int periodoFin, string? region, string? sucursal, string? vendedor)
+        public async Task<IEnumerable<mdl_Poliza_Mantenimiento_Listado>> Listado(int ejercicioInicio, int periodoInicio, int ejercicioFin, int periodoFin, string? region, string? sucursal, string? vendedor,string usuario)
         {
             try
             {
@@ -28,7 +28,8 @@ namespace HD_Ventas.Consultas.PaqueteServicios
                     periodoFin = periodoFin,
                     region = region,
                     sucursal = sucursal,
-                    vendedor = vendedor
+                    vendedor = vendedor,
+                    usuario
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdl_Poliza_Mantenimiento_Listado> result = await factory.SQL.QueryAsync<mdl_Poliza_Mantenimiento_Listado>("Ventas.sp_Poliza_Mantenimiento_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
