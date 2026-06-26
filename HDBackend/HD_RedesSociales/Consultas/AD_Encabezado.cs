@@ -67,6 +67,8 @@ namespace HD_RedesSociales.Consultas
                 Escenografia     = encabezado.Escenografia,
                 Hora             = encabezado.Hora,
                 Red_Social       = encabezado.Red_Social,
+                ImagenBase64     = encabezado.ImagenBase64
+                
 
             };
 
