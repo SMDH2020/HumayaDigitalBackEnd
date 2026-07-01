@@ -37,7 +37,7 @@ namespace HD_RedesSociales.Consultas
                 parametros,
                 commandType: System.Data.CommandType.StoredProcedure
             );
-
+            factory.SQL.Close();
             return consecutivo;
         }
 
@@ -58,6 +58,7 @@ namespace HD_RedesSociales.Consultas
                 parametros,
                 commandType: System.Data.CommandType.StoredProcedure
             );
+            factory.SQL.Close();
         }
 
         public async Task EliminarAsync(string folio, int? consecutivo = null)
@@ -69,6 +70,7 @@ namespace HD_RedesSociales.Consultas
                 new { Folio = folio, Consecutivo = consecutivo },
                 commandType: System.Data.CommandType.StoredProcedure
             );
+            factory.SQL.Close();
         }
 
         public async Task<List<mdl_Publicaciones_Detalle>> ListadoAsync(string? folio = null, int? consecutivo = null)
@@ -80,7 +82,7 @@ namespace HD_RedesSociales.Consultas
                 new { Folio = folio, Consecutivo = consecutivo },
                 commandType: System.Data.CommandType.StoredProcedure
             );
-
+            factory.SQL.Close();
             return result.ToList();
         }
     }
