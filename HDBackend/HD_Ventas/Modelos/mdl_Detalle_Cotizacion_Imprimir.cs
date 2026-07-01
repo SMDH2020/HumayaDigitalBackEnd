@@ -16,5 +16,7 @@ namespace HD_Ventas.Modelos
         public double precio_venta { get; set; }
         public string? descripcion_promocion {  get; set; }
         public string moneda { get; set; }
+        public int cantidad { get; set; }
+        public int idlinea { get; set; }
     }
 }

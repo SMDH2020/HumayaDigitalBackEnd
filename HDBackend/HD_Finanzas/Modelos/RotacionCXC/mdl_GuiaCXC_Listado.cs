@@ -25,6 +25,8 @@ namespace HD_Finanzas.Modelos.RotacionCXC
         public double octubre { get; set; }
         public double noviembre { get; set; }
         public double diciembre { get; set; }
+        public double semestre1 { get; set; }
+        public double semestre2 { get; set; }
         public double anual { get; set; }
 
     }

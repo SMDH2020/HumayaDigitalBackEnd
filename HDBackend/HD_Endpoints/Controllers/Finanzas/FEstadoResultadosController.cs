@@ -45,6 +45,17 @@ namespace HD.Endpoints.Controllers.Finanzas
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetEstadoResultadosByDireccionRolado_Claude(string fecha_inicio,string fecha_fin,string adr, string departamento, string sucursal)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            string usuario = Sesion.usuario();
+            FAD_EstadoResultados estadoresultados = new FAD_EstadoResultados(CadenaConexion);
+            var result = await estadoresultados.GetEstadoResultadosByDireccionRolado_Claude(fecha_inicio,fecha_fin,departamento,sucursal,adr,usuario);
+            return Ok(result);
+        }
+
         [HttpPost]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> GetEstadoResultadosEbitda(Fmdl_EstadoResultadosRolado prm)

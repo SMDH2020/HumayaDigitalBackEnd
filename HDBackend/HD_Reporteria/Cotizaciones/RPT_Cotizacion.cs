@@ -321,46 +321,50 @@ namespace HD_Reporteria.Cotizaciones
                                 int c = 1;
                                 foreach (var modelo in modelos)
                                 {
-                                    // Columna índice
+                                    bool esLineaEspecial = modelo.idlinea == 8 || modelo.idlinea == 9;
+
                                     tabla.Cell().BorderBottom(1).BorderRight(1).BorderColor("#477c2c").Padding(5).AlignCenter().Text(c.ToString()).FontSize(9);
 
-                                    // Columna de información
+
                                     tabla.Cell().BorderBottom(1).ShowEntire().BorderColor("#477c2c").Padding(5).Column(col =>
                                     {
                                         col.Item().Text(modelo.modelo + " / " + modelo.descripcion).Bold().FontSize(9).FontFamily(fontFamily);
 
-                                        col.Item().PaddingTop(3).Text("Características del equipo:").FontSize(9).FontFamily(fontFamily);
-
                                         string raw = modelo.caracteristicas_json;
 
-                                        int startIndex = raw.IndexOf("\"descripcion\":\"") + "\"descripcion\":\"".Length;
-                                        int endIndex = raw.IndexOf("\"", startIndex);
-
-                                        string descripcionSolo = (startIndex > -1 && endIndex > startIndex)
-                                            ? raw.Substring(startIndex, endIndex - startIndex)
-                                            : "";
-
-                                        descripcionSolo = descripcionSolo
-                                            .Replace("\\n", "\n")
-                                            .Replace("\\r", "");
-
-                                        if (!string.IsNullOrEmpty(descripcionSolo))
+                                        if (!esLineaEspecial)
                                         {
-                                            // Dividir por salto de línea y poner • en cada línea
-                                            var lineas = descripcionSolo.Split('\n');
+                                            col.Item().PaddingTop(3).Text("Características del equipo:").FontSize(9).FontFamily(fontFamily);
 
-                                            col.Item().Column(c =>
+                                            int startIndex = raw.IndexOf("\"descripcion\":\"") + "\"descripcion\":\"".Length;
+                                            int endIndex = raw.IndexOf("\"", startIndex);
+
+                                            string descripcionSolo = (startIndex > -1 && endIndex > startIndex)
+                                                ? raw.Substring(startIndex, endIndex - startIndex)
+                                                : "";
+
+                                            descripcionSolo = descripcionSolo
+                                                .Replace("\\n", "\n")
+                                                .Replace("\\r", "");
+
+                                            if (!string.IsNullOrEmpty(descripcionSolo))
                                             {
-                                                foreach (var linea in lineas)
+                                                // Dividir por salto de línea y poner • en cada línea
+                                                var lineas = descripcionSolo.Split('\n');
+
+                                                col.Item().Column(cc =>
                                                 {
-                                                    if (!string.IsNullOrWhiteSpace(linea))
+                                                    foreach (var linea in lineas)
                                                     {
-                                                        c.Item().Text("• " + linea.Trim())
-                                                            .FontSize(8)
-                                                            .Justify();
+                                                        if (!string.IsNullOrWhiteSpace(linea))
+                                                        {
+                                                            cc.Item().Text("• " + linea.Trim())
+                                                                .FontSize(8)
+                                                                .Justify();
+                                                        }
                                                     }
-                                                }
-                                            });
+                                                });
+                                            }
                                         }
 
                                         col.Item().PaddingTop(5).Row(row =>
@@ -370,10 +374,11 @@ namespace HD_Reporteria.Cotizaciones
 
                                             if (imagen != null)
                                             {
-                                                row.RelativeItem().Width(150).Image(imagen);
+                                                float anchoImagen = esLineaEspecial ? 80 : 150;
+                                                row.RelativeItem().Width(anchoImagen).Image(imagen);
                                             }
 
-                                            // Segunda descripción si existe
+
                                             string descripcionSegunda = "";
                                             if (!string.IsNullOrEmpty(raw))
                                             {
@@ -438,6 +443,15 @@ namespace HD_Reporteria.Cotizaciones
                                                     row.ConstantItem(anchoLabel).AlignLeft().Text("Subtotal:").FontSize(10).Bold();
                                                     row.ConstantItem(anchoValor).AlignRight().Text(modelo.precio_promocion > 0 ? modelo.precio_promocion.ToString("N0") : modelo.precio_lista.ToString("N0")).FontSize(10);
                                                 });
+
+                                                if (modelo.cantidad > 1)
+                                                {
+                                                    precios.Item().Row(row =>
+                                                    {
+                                                        row.ConstantItem(anchoLabel).AlignLeft().Text("Cantidad:").FontSize(10).Bold();
+                                                        row.ConstantItem(anchoValor).AlignRight().Text(modelo.cantidad.ToString()).FontSize(10);
+                                                    });
+                                                }
 
                                                 precios.Item().Row(row =>
                                                 {
@@ -510,7 +524,7 @@ namespace HD_Reporteria.Cotizaciones
                             }
 
                             col1.Item().PaddingTop(100).ShowEntire().Row(row =>
-                            { 
+                            {
 
                                 // Firma 2
                                 row.RelativeItem().AlignCenter().Column(col =>

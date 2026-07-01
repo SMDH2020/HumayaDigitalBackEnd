@@ -1,11 +1,6 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
 using HD_Ventas.Modelos.PaqueteServicios;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HD_Ventas.Consultas.PaqueteServicios
 {
@@ -16,7 +11,7 @@ namespace HD_Ventas.Consultas.PaqueteServicios
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_Powergard_Listado>> Listado(int ejercicioInicio, int periodoInicio, int ejercicioFin, int periodoFin, string? region, string? sucursal, string? vendedor)
+        public async Task<IEnumerable<mdl_Powergard_Listado>> Listado(int ejercicioInicio, int periodoInicio, int ejercicioFin, int periodoFin, string? region, string? sucursal, string? vendedor, string usuario)
         {
             FactoryConection factory = new FactoryConection(CadenaConexion);
 
@@ -30,7 +25,8 @@ namespace HD_Ventas.Consultas.PaqueteServicios
                     periodoFin = periodoFin,
                     region = region,
                     sucursal = sucursal,
-                    vendedor = vendedor
+                    vendedor = vendedor,
+                    usuario
                 };
                 IEnumerable<mdl_Powergard_Listado> result = await factory.SQL.QueryAsync<mdl_Powergard_Listado>("Ventas.sp_Powergard_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();

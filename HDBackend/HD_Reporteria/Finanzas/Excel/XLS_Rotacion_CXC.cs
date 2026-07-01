@@ -26,7 +26,7 @@ namespace HD_Reporteria.Finanzas.Excel
                     sheet.Style.Font.FontName = "Calibri";
                     sheet.Style.Font.FontSize = 10;
 
-                    int renglon = XLSEncabezado.Encabezado(ref sheet, titulo, 8);
+                    int renglon = XLSEncabezado.Encabezado(ref sheet, titulo, 11);
 
                     sheet.Cell(renglon, 1).Value = "LINEA";
                     sheet.Cell(renglon, 2).Value = "FACTURACION DE CREDITO";
@@ -34,12 +34,15 @@ namespace HD_Reporteria.Finanzas.Excel
                     sheet.Cell(renglon, 4).Value = "CARTERA FINAL";
                     sheet.Cell(renglon, 5).Value = "ROTACION";
                     sheet.Cell(renglon, 6).Value = "GUIA";
-                    sheet.Cell(renglon, 7).Value = "GUIA ANUAL";
-                    sheet.Cell(renglon, 8).Value = "PERIODO PROMEDIO DE COBRO";
+                    sheet.Cell(renglon, 7).Value = "ROTACION SEMESTRAL";
+                    sheet.Cell(renglon, 8).Value = "GUIA SEMESTRAL";
+                    sheet.Cell(renglon, 9).Value = "ROTACION ANUAL";
+                    sheet.Cell(renglon, 10).Value = "GUIA ANUAL";
+                    sheet.Cell(renglon, 11).Value = "PERIODO PROMEDIO DE COBRO";
 
 
                     // Estilo para los encabezados de la tabla
-                    var rango = sheet.Range(renglon, 1, renglon, 8);
+                    var rango = sheet.Range(renglon, 1, renglon, 11);
                     rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
                     rango.Style.Font.Bold = true;
                     rango.Style.Font.FontSize = 12;
@@ -62,12 +65,15 @@ namespace HD_Reporteria.Finanzas.Excel
                         sheet.Cell(renglon, 4).Value = det.saldo_final;
                         sheet.Cell(renglon, 5).Value = det.rcxc;
                         sheet.Cell(renglon, 6).Value = det.guia;
-                        sheet.Cell(renglon, 7).Value = det.guia_anual;
-                        sheet.Cell(renglon, 8).Value = det.rcxc == 0 ? 0 : (365m / (decimal)det.rcxc);
+                        sheet.Cell(renglon, 7).Value = det.rcxc_semestral;
+                        sheet.Cell(renglon, 8).Value = det.guia_semestral;
+                        sheet.Cell(renglon, 9).Value = det.rcxc_anual;
+                        sheet.Cell(renglon, 10).Value = det.guia_anual;
+                        sheet.Cell(renglon, 11).Value = det.rcxc == 0 ? 0 : (365m / (decimal)det.rcxc);
 
                         if (actual == total)
                         {
-                            var rangoUltimaFila = sheet.Range(renglon, 1, renglon, 8);
+                            var rangoUltimaFila = sheet.Range(renglon, 1, renglon, 11);
 
                             rangoUltimaFila.Style.Fill.BackgroundColor = XLColor.LightGray;
                             rangoUltimaFila.Style.Font.Bold = true; 
@@ -78,7 +84,7 @@ namespace HD_Reporteria.Finanzas.Excel
                     sheet.Column(2).Style.NumberFormat.Format = "#,##0.00";
                     sheet.Column(3).Style.NumberFormat.Format = "#,##0.00";
                     sheet.Column(4).Style.NumberFormat.Format = "#,##0.00";
-                    sheet.Column(8).Style.NumberFormat.Format = "#,##0.00";
+                    sheet.Column(11).Style.NumberFormat.Format = "#,##0.00";
 
                     sheet.Columns().AdjustToContents();
                     workbook.SaveAs(ruta);
