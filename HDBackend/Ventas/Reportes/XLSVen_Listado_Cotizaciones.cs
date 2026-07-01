@@ -74,7 +74,7 @@ namespace Ventas.Reportes
                     sheet.Style.Font.FontName = "Calibri";
                     sheet.Style.Font.FontSize = 10;
 
-                    int renglon = XLSEncabezado.Encabezado(ref sheet, titulo, 13);
+                    int renglon = XLSEncabezado.Encabezado(ref sheet, titulo, 14);
 
                     //renglon += 1;
 
@@ -102,16 +102,17 @@ namespace Ventas.Reportes
                     sheet.Cell(renglon, 5).Value = "LINEA";
                     sheet.Cell(renglon, 6).Value = "MODELO";
                     sheet.Cell(renglon, 7).Value = "ESQUEMA";
-                    sheet.Cell(renglon, 8).Value = "MONTO";
-                    sheet.Cell(renglon, 9).Value = "FECHA DE COTIZACION";
-                    sheet.Cell(renglon, 10).Value = "VIGENCIA";
-                    sheet.Cell(renglon, 11).Value = "FECHA DE VENTA";
-                    sheet.Cell(renglon, 12).Value = "COMENTARIO";
-                    sheet.Cell(renglon, 13).Value = "CULTIVO";
+                    sheet.Cell(renglon, 8).Value = "CANTIDAD";
+                    sheet.Cell(renglon, 9).Value = "MONTO";
+                    sheet.Cell(renglon, 10).Value = "FECHA DE COTIZACION";
+                    sheet.Cell(renglon, 11).Value = "VIGENCIA";
+                    sheet.Cell(renglon, 12).Value = "FECHA DE VENTA";
+                    sheet.Cell(renglon, 13).Value = "COMENTARIO";
+                    sheet.Cell(renglon, 14).Value = "CULTIVO";
 
 
                     // Estilo para los encabezados de la tabla
-                    var rango = sheet.Range(renglon, 1, renglon, 13);
+                    var rango = sheet.Range(renglon, 1, renglon, 14);
                     rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
                     rango.Style.Font.Bold = true;
                     rango.Style.Font.FontSize = 12;
@@ -130,12 +131,13 @@ namespace Ventas.Reportes
                         sheet.Cell(renglon, 5).Value = det.linea;
                         sheet.Cell(renglon, 6).Value = det.modelo;
                         sheet.Cell(renglon, 7).Value = det.esquema?.ToUpper();
-                        sheet.Cell(renglon, 8).Value = det.monto_total;
-                        sheet.Cell(renglon, 9).Value = det.createdate;
-                        sheet.Cell(renglon, 10).Value = det.vigencia;
-                        sheet.Cell(renglon, 11).Value = det.fecha_venta;
-                        sheet.Cell(renglon, 12).Value = det.comentario;
-                        sheet.Cell(renglon, 13).Value = det.cultivo;
+                        sheet.Cell(renglon, 8).Value = det.cantidad;
+                        sheet.Cell(renglon, 9).Value = det.monto_total;
+                        sheet.Cell(renglon, 10).Value = det.createdate;
+                        sheet.Cell(renglon, 11).Value = det.vigencia;
+                        sheet.Cell(renglon, 12).Value = det.fecha_venta;
+                        sheet.Cell(renglon, 13).Value = det.comentario;
+                        sheet.Cell(renglon, 14).Value = det.cultivo;
                         renglon++;
                     }
 

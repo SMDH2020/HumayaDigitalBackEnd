@@ -1,6 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Math;
 using HD.Fiscal.AccesoDatos;
 using HD.Fiscal.Modelos;
+using HD.Notifications.NotificacionesApp;
 using HD.Security;
 using HD_Ventas.Consultas;
 using HD_Ventas.Modelos;

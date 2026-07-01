@@ -14,5 +14,6 @@
         public double precio_promocion { get; set; }
         public double descuento_adicional { get; set; }
         public double precio_venta { get; set; }
+        public int cantidad { get; set; }
     }
 }
