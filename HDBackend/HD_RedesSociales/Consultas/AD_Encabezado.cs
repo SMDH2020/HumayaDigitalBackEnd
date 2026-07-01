@@ -45,7 +45,7 @@ namespace HD_RedesSociales.Consultas
                 parametros,
                 commandType: System.Data.CommandType.StoredProcedure
             );
-
+            factory.SQL.Close();
             return folioGenerado;
         }
 
@@ -77,6 +77,7 @@ namespace HD_RedesSociales.Consultas
                 parametros,
                 commandType: System.Data.CommandType.StoredProcedure
             );
+            factory.SQL.Close();
         }
 
         public async Task EliminarAsync(string folio)
@@ -88,6 +89,7 @@ namespace HD_RedesSociales.Consultas
                 new { Folio = folio },
                 commandType: System.Data.CommandType.StoredProcedure
             );
+            factory.SQL.Close();
         }
 
         public async Task<List<mdl_Encabezado>> ListadoAsync(string? folio = null)
@@ -99,7 +101,7 @@ namespace HD_RedesSociales.Consultas
                 new { Folio = folio },
                 commandType: System.Data.CommandType.StoredProcedure
             );
-
+            factory.SQL.Close();
             return result.ToList();
         }
 
@@ -113,7 +115,7 @@ namespace HD_RedesSociales.Consultas
                 "HumayaDigital_Eventos.RedesSociales.SP_Calendario_Listado",
                 commandType: System.Data.CommandType.StoredProcedure
             );
-
+            factory.SQL.Close();
             return result.ToList();
         }
     }
