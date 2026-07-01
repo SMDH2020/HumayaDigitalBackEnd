@@ -12,6 +12,8 @@ namespace HD_Mensajeria.Modelos
         public string numeroTelefono { get; set; }
         public string mensaje { get; set; }
         public string mensajePlantilla { get; set; }
+        public string documento { get; set; }
+        public string extension { get; set; }
         public string estatus { get; set; }
         public int createuser { get; set; }
         public string origino { get; set; }

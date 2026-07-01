@@ -9,6 +9,24 @@ namespace HD_Cobranza.Reportes
 {
     public class XLSCob_Reporte_Recuperacion_Completa
     {
+        private static void SetValorConPorcentaje(IXLCell cell, double? valor, double? porcentaje)
+        {
+            cell.Style.Alignment.WrapText = true;
+            cell.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+            cell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
+
+            var rt = cell.CreateRichText();
+            rt.AddText((valor ?? 0).ToString("#,##0.00")).SetFontSize(10);
+
+            if (porcentaje.HasValue)
+            {
+                rt.AddNewLine();
+                rt.AddText($"{porcentaje.Value:0.00} %")
+                  .SetFontSize(8)
+                  .SetFontColor(XLColor.Gray);
+            }
+        }
+
         public static Task<DocResult> GenerarExcel(mdl_Recuperacion_Completa_View datos)
         {
             try
@@ -48,8 +66,6 @@ namespace HD_Cobranza.Reportes
 
                     sheet.Range(renglon, 1, renglon, 17).Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
 
-                    sheet.Range(renglon, 1, renglon, 17).Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
-
                     sheet.Range(renglon, 2, renglon, 5).Merge().Value = "CARTERA";
                     sheet.Range(renglon, 2, renglon, 5).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                     sheet.Range(renglon, 2, renglon, 5).Style.Font.Bold = true;
@@ -67,7 +83,6 @@ namespace HD_Cobranza.Reportes
                     sheet.Range(renglon, 9, renglon, 15).Style.Font.Bold = true;
                     sheet.Range(renglon, 9, renglon, 15).Style.Fill.BackgroundColor = XLColor.LightGray;
                     int renglonrecuperaciontot = renglon;
-
 
                     renglon++;
 
@@ -89,7 +104,6 @@ namespace HD_Cobranza.Reportes
                     sheet.Cell(renglon, 16).Value = "OBJETIVO RECUPERADO";
                     sheet.Cell(renglon, 17).Value = "%";
 
-                    // Estilo para los encabezados de la tabla
                     var rango = sheet.Range(renglon, 1, renglon, 17);
                     rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
                     rango.Style.Font.Bold = true;
@@ -99,29 +113,38 @@ namespace HD_Cobranza.Reportes
                     rango.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
                     renglon++;
 
-                    // Llenar la tabla con los datos
                     foreach (var total in datos.total)
                     {
                         sheet.Cell(renglon, 1).Value = total.mes;
-                        sheet.Cell(renglon, 2).Value = total.cartera_activa;
-                        sheet.Cell(renglon, 3).Value = total.cartera_porvencer;
-                        sheet.Cell(renglon, 4).Value = total.cartera_vencida;
-                        sheet.Cell(renglon, 5).Value = total.total_cartera;
-                        sheet.Cell(renglon, 6).Value = total.objetivo_porvencer;
-                        sheet.Cell(renglon, 7).Value = total.objetivo_vencido;
-                        sheet.Cell(renglon, 8).Value = total.objetivo;
-                        sheet.Cell(renglon, 9).Value = total.recuperacion_mes;
-                        sheet.Cell(renglon, 10).Value = total.recuperacion_activa;
-                        sheet.Cell(renglon, 11).Value = total.recuperacion_porvencer;
+
+                        SetValorConPorcentaje(sheet.Cell(renglon, 2), total.cartera_activa, total.porc_cartera_activa);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 3), total.cartera_porvencer, total.porc_cartera_porvencer);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 4), total.cartera_vencida, total.porc_cartera_vencida);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 5), total.total_cartera, 100);
+
+                        SetValorConPorcentaje(sheet.Cell(renglon, 6), total.objetivo_porvencer, total.porc_objetivo_porvencer);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 7), total.objetivo_vencido, total.porc_objetivo_vencido);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 8), total.objetivo, 100);
+
+                        SetValorConPorcentaje(sheet.Cell(renglon, 9), total.recuperacion_mes, total.porc_recuperacion_mes);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 10), total.recuperacion_activa, total.porc_recuperacion_activa);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 11), total.recuperacion_porvencer, total.porc_recuperacion_porvencer);
+
                         sheet.Cell(renglon, 12).Value = (total.porcporvencer / 100);
-                        sheet.Cell(renglon, 13).Value = total.recuperacion_vencida;
+
+                        SetValorConPorcentaje(sheet.Cell(renglon, 13), total.recuperacion_vencida, total.porc_recuperacion_vencida);
+
                         sheet.Cell(renglon, 14).Value = (total.porcvencido / 100);
-                        sheet.Cell(renglon, 15).Value = total.total_recuperado;
+
+                        SetValorConPorcentaje(sheet.Cell(renglon, 15), total.total_recuperado, 100);
+
                         sheet.Cell(renglon, 16).Value = total.recuperado;
                         sheet.Cell(renglon, 17).Value = (total.porc / 100);
+
+                        sheet.Row(renglon).Height = 28;
+
                         renglon++;
                     }
-
 
                     sheet.Range(rengloncarteratot, 2, renglon - 1, 5).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                     sheet.Range(rengloncarteratot, 2, renglon - 1, 5).Style.Border.OutsideBorderColor = XLColor.Black;
@@ -132,13 +155,9 @@ namespace HD_Cobranza.Reportes
                     sheet.Range(renglonrecuperaciontot, 9, renglon - 1, 15).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                     sheet.Range(renglonrecuperaciontot, 9, renglon - 1, 15).Style.Border.OutsideBorderColor = XLColor.Black;
 
-                    for (int i = 2; i <= 17; i++)
-                    {
-                        sheet.Column(i).Style.NumberFormat.Format = "#,##0.00";
-                    }
-
                     sheet.Column(12).Style.NumberFormat.Format = "0.00%";
                     sheet.Column(14).Style.NumberFormat.Format = "0.00%";
+                    sheet.Column(16).Style.NumberFormat.Format = "#,##0.00";
                     sheet.Column(17).Style.NumberFormat.Format = "0.00%";
 
                     // ------------------------------------------------------------------------------------------------------------------------------------------
@@ -165,8 +184,6 @@ namespace HD_Cobranza.Reportes
                     rangosub2.Style.Fill.BackgroundColor = XLColor.FromHtml("#E9AE06");
 
                     renglon += 3;
-
-                    sheet.Range(renglon, 1, renglon, 17).Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
 
                     sheet.Range(renglon, 1, renglon, 17).Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
 
@@ -208,7 +225,6 @@ namespace HD_Cobranza.Reportes
                     sheet.Cell(renglon, 16).Value = "OBJETIVO RECUPERADO";
                     sheet.Cell(renglon, 17).Value = "%";
 
-                    // Estilo para los encabezados de la tabla
                     var rango2 = sheet.Range(renglon, 1, renglon, 17);
                     rango2.Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
                     rango2.Style.Font.Bold = true;
@@ -218,29 +234,38 @@ namespace HD_Cobranza.Reportes
                     rango2.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
                     renglon++;
 
-                    // Llenar la tabla con los datos
                     foreach (var operacion in datos.operacion)
                     {
                         sheet.Cell(renglon, 1).Value = operacion.mes;
-                        sheet.Cell(renglon, 2).Value = operacion.cartera_activa;
-                        sheet.Cell(renglon, 3).Value = operacion.cartera_porvencer;
-                        sheet.Cell(renglon, 4).Value = operacion.cartera_vencida;
-                        sheet.Cell(renglon, 5).Value = operacion.total_cartera;
-                        sheet.Cell(renglon, 6).Value = operacion.objetivo_porvencer;
-                        sheet.Cell(renglon, 7).Value = operacion.objetivo_vencido;
-                        sheet.Cell(renglon, 8).Value = operacion.objetivo;
-                        sheet.Cell(renglon, 9).Value = operacion.recuperacion_mes;
-                        sheet.Cell(renglon, 10).Value = operacion.recuperacion_activa;
-                        sheet.Cell(renglon, 11).Value = operacion.recuperacion_porvencer;
+
+                        SetValorConPorcentaje(sheet.Cell(renglon, 2), operacion.cartera_activa, operacion.porc_cartera_activa);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 3), operacion.cartera_porvencer, operacion.porc_cartera_porvencer);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 4), operacion.cartera_vencida, operacion.porc_cartera_vencida);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 5), operacion.total_cartera, 100);
+
+                        SetValorConPorcentaje(sheet.Cell(renglon, 6), operacion.objetivo_porvencer, operacion.porc_objetivo_porvencer);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 7), operacion.objetivo_vencido, operacion.porc_objetivo_vencido);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 8), operacion.objetivo, 100);
+
+                        SetValorConPorcentaje(sheet.Cell(renglon, 9), operacion.recuperacion_mes, operacion.porc_recuperacion_mes);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 10), operacion.recuperacion_activa, operacion.porc_recuperacion_activa);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 11), operacion.recuperacion_porvencer, operacion.porc_recuperacion_porvencer);
+
                         sheet.Cell(renglon, 12).Value = (operacion.porcporvencer / 100);
-                        sheet.Cell(renglon, 13).Value = operacion.recuperacion_vencida;
+
+                        SetValorConPorcentaje(sheet.Cell(renglon, 13), operacion.recuperacion_vencida, operacion.porc_recuperacion_vencida);
+
                         sheet.Cell(renglon, 14).Value = (operacion.porcvencido / 100);
-                        sheet.Cell(renglon, 15).Value = operacion.total_recuperado;
+
+                        SetValorConPorcentaje(sheet.Cell(renglon, 15), operacion.total_recuperado, 100);
+
                         sheet.Cell(renglon, 16).Value = operacion.recuperado;
                         sheet.Cell(renglon, 17).Value = (operacion.porc / 100);
+
+                        sheet.Row(renglon).Height = 28;
+
                         renglon++;
                     }
-
 
                     sheet.Range(rengloncarteraop, 2, renglon - 1, 5).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                     sheet.Range(rengloncarteraop, 2, renglon - 1, 5).Style.Border.OutsideBorderColor = XLColor.Black;
@@ -251,13 +276,9 @@ namespace HD_Cobranza.Reportes
                     sheet.Range(renglonrecuperacionop, 9, renglon - 1, 15).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                     sheet.Range(renglonrecuperacionop, 9, renglon - 1, 15).Style.Border.OutsideBorderColor = XLColor.Black;
 
-                    for (int i = 2; i <= 17; i++)
-                    {
-                        sheet.Column(i).Style.NumberFormat.Format = "#,##0.00";
-                    }
-
                     sheet.Column(12).Style.NumberFormat.Format = "0.00%";
                     sheet.Column(14).Style.NumberFormat.Format = "0.00%";
+                    sheet.Column(16).Style.NumberFormat.Format = "#,##0.00";
                     sheet.Column(17).Style.NumberFormat.Format = "0.00%";
 
                     // ----------------------------------------------------------------------------------------------------------------------------
@@ -284,8 +305,6 @@ namespace HD_Cobranza.Reportes
                     rangosub3.Style.Fill.BackgroundColor = XLColor.FromHtml("#E9AE06");
 
                     renglon += 3;
-
-                    sheet.Range(renglon, 1, renglon, 17).Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
 
                     sheet.Range(renglon, 1, renglon, 17).Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
 
@@ -327,7 +346,6 @@ namespace HD_Cobranza.Reportes
                     sheet.Cell(renglon, 16).Value = "OBJETIVO RECUPERADO";
                     sheet.Cell(renglon, 17).Value = "%";
 
-                    // Estilo para los encabezados de la tabla
                     var rango3 = sheet.Range(renglon, 1, renglon, 17);
                     rango3.Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
                     rango3.Style.Font.Bold = true;
@@ -337,29 +355,38 @@ namespace HD_Cobranza.Reportes
                     rango3.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
                     renglon++;
 
-                    // Llenar la tabla con los datos
                     foreach (var revolvente in datos.revolvente)
                     {
                         sheet.Cell(renglon, 1).Value = revolvente.mes;
-                        sheet.Cell(renglon, 2).Value = revolvente.cartera_activa;
-                        sheet.Cell(renglon, 3).Value = revolvente.cartera_porvencer;
-                        sheet.Cell(renglon, 4).Value = revolvente.cartera_vencida;
-                        sheet.Cell(renglon, 5).Value = revolvente.total_cartera;
-                        sheet.Cell(renglon, 6).Value = revolvente.objetivo_porvencer;
-                        sheet.Cell(renglon, 7).Value = revolvente.objetivo_vencido;
-                        sheet.Cell(renglon, 8).Value = revolvente.objetivo;
-                        sheet.Cell(renglon, 9).Value = revolvente.recuperacion_mes;
-                        sheet.Cell(renglon, 10).Value = revolvente.recuperacion_activa;
-                        sheet.Cell(renglon, 11).Value = revolvente.recuperacion_porvencer;
+
+                        SetValorConPorcentaje(sheet.Cell(renglon, 2), revolvente.cartera_activa, revolvente.porc_cartera_activa);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 3), revolvente.cartera_porvencer, revolvente.porc_cartera_porvencer);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 4), revolvente.cartera_vencida, revolvente.porc_cartera_vencida);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 5), revolvente.total_cartera, 100);
+
+                        SetValorConPorcentaje(sheet.Cell(renglon, 6), revolvente.objetivo_porvencer, revolvente.porc_objetivo_porvencer);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 7), revolvente.objetivo_vencido, revolvente.porc_objetivo_vencido);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 8), revolvente.objetivo, 100);
+
+                        SetValorConPorcentaje(sheet.Cell(renglon, 9), revolvente.recuperacion_mes, revolvente.porc_recuperacion_mes);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 10), revolvente.recuperacion_activa, revolvente.porc_recuperacion_activa);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 11), revolvente.recuperacion_porvencer, revolvente.porc_recuperacion_porvencer);
+
                         sheet.Cell(renglon, 12).Value = (revolvente.porcporvencer / 100);
-                        sheet.Cell(renglon, 13).Value = revolvente.recuperacion_vencida;
+
+                        SetValorConPorcentaje(sheet.Cell(renglon, 13), revolvente.recuperacion_vencida, revolvente.porc_recuperacion_vencida);
+
                         sheet.Cell(renglon, 14).Value = (revolvente.porcvencido / 100);
-                        sheet.Cell(renglon, 15).Value = revolvente.total_recuperado;
+
+                        SetValorConPorcentaje(sheet.Cell(renglon, 15), revolvente.total_recuperado, 100);
+
                         sheet.Cell(renglon, 16).Value = revolvente.recuperado;
                         sheet.Cell(renglon, 17).Value = (revolvente.porc / 100);
+
+                        sheet.Row(renglon).Height = 28;
+
                         renglon++;
                     }
-
 
                     sheet.Range(rengloncarterarev, 2, renglon - 1, 5).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                     sheet.Range(rengloncarterarev, 2, renglon - 1, 5).Style.Border.OutsideBorderColor = XLColor.Black;
@@ -370,17 +397,12 @@ namespace HD_Cobranza.Reportes
                     sheet.Range(renglonrecuperacionrev, 9, renglon - 1, 15).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                     sheet.Range(renglonrecuperacionrev, 9, renglon - 1, 15).Style.Border.OutsideBorderColor = XLColor.Black;
 
-                    for (int i = 2; i <= 17; i++)
-                    {
-                        sheet.Column(i).Style.NumberFormat.Format = "#,##0.00";
-                    }
-
                     sheet.Column(12).Style.NumberFormat.Format = "0.00%";
                     sheet.Column(14).Style.NumberFormat.Format = "0.00%";
+                    sheet.Column(16).Style.NumberFormat.Format = "#,##0.00";
                     sheet.Column(17).Style.NumberFormat.Format = "0.00%";
 
                     //---------------------------------------------------------------------------------------------------------------------------
-
 
                     renglon += 1;
 
@@ -404,8 +426,6 @@ namespace HD_Cobranza.Reportes
                     rangosub4.Style.Fill.BackgroundColor = XLColor.FromHtml("#E9AE06");
 
                     renglon += 3;
-
-                    sheet.Range(renglon, 1, renglon, 17).Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
 
                     sheet.Range(renglon, 1, renglon, 17).Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
 
@@ -447,7 +467,6 @@ namespace HD_Cobranza.Reportes
                     sheet.Cell(renglon, 16).Value = "OBJETIVO RECUPERADO";
                     sheet.Cell(renglon, 17).Value = "%";
 
-                    // Estilo para los encabezados de la tabla
                     var rango4 = sheet.Range(renglon, 1, renglon, 17);
                     rango4.Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
                     rango4.Style.Font.Bold = true;
@@ -457,29 +476,38 @@ namespace HD_Cobranza.Reportes
                     rango4.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
                     renglon++;
 
-                    // Llenar la tabla con los datos
                     foreach (var especial in datos.especial)
                     {
                         sheet.Cell(renglon, 1).Value = especial.mes;
-                        sheet.Cell(renglon, 2).Value = especial.cartera_activa;
-                        sheet.Cell(renglon, 3).Value = especial.cartera_porvencer;
-                        sheet.Cell(renglon, 4).Value = especial.cartera_vencida;
-                        sheet.Cell(renglon, 5).Value = especial.total_cartera;
-                        sheet.Cell(renglon, 6).Value = especial.objetivo_porvencer;
-                        sheet.Cell(renglon, 7).Value = especial.objetivo_vencido;
-                        sheet.Cell(renglon, 8).Value = especial.objetivo;
-                        sheet.Cell(renglon, 9).Value = especial.recuperacion_mes;
-                        sheet.Cell(renglon, 10).Value = especial.recuperacion_activa;
-                        sheet.Cell(renglon, 11).Value = especial.recuperacion_porvencer;
+
+                        SetValorConPorcentaje(sheet.Cell(renglon, 2), especial.cartera_activa, especial.porc_cartera_activa);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 3), especial.cartera_porvencer, especial.porc_cartera_porvencer);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 4), especial.cartera_vencida, especial.porc_cartera_vencida);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 5), especial.total_cartera, 100);
+
+                        SetValorConPorcentaje(sheet.Cell(renglon, 6), especial.objetivo_porvencer, especial.porc_objetivo_porvencer);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 7), especial.objetivo_vencido, especial.porc_objetivo_vencido);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 8), especial.objetivo, 100);
+
+                        SetValorConPorcentaje(sheet.Cell(renglon, 9), especial.recuperacion_mes, especial.porc_recuperacion_mes);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 10), especial.recuperacion_activa, especial.porc_recuperacion_activa);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 11), especial.recuperacion_porvencer, especial.porc_recuperacion_porvencer);
+
                         sheet.Cell(renglon, 12).Value = (especial.porcporvencer / 100);
-                        sheet.Cell(renglon, 13).Value = especial.recuperacion_vencida;
+
+                        SetValorConPorcentaje(sheet.Cell(renglon, 13), especial.recuperacion_vencida, especial.porc_recuperacion_vencida);
+
                         sheet.Cell(renglon, 14).Value = (especial.porcvencido / 100);
-                        sheet.Cell(renglon, 15).Value = especial.total_recuperado;
+
+                        SetValorConPorcentaje(sheet.Cell(renglon, 15), especial.total_recuperado, 100);
+
                         sheet.Cell(renglon, 16).Value = especial.recuperado;
                         sheet.Cell(renglon, 17).Value = (especial.porc / 100);
+
+                        sheet.Row(renglon).Height = 28;
+
                         renglon++;
                     }
-
 
                     sheet.Range(rengloncarteraes, 2, renglon - 1, 5).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                     sheet.Range(rengloncarteraes, 2, renglon - 1, 5).Style.Border.OutsideBorderColor = XLColor.Black;
@@ -490,17 +518,12 @@ namespace HD_Cobranza.Reportes
                     sheet.Range(renglonrecuperaciones, 9, renglon - 1, 15).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                     sheet.Range(renglonrecuperaciones, 9, renglon - 1, 15).Style.Border.OutsideBorderColor = XLColor.Black;
 
-                    for (int i = 2; i <= 17; i++)
-                    {
-                        sheet.Column(i).Style.NumberFormat.Format = "#,##0.00";
-                    }
-
                     sheet.Column(12).Style.NumberFormat.Format = "0.00%";
                     sheet.Column(14).Style.NumberFormat.Format = "0.00%";
+                    sheet.Column(16).Style.NumberFormat.Format = "#,##0.00";
                     sheet.Column(17).Style.NumberFormat.Format = "0.00%";
 
                     //------------------------------------------------------------------------------------------------
-
 
                     renglon += 1;
 
@@ -524,8 +547,6 @@ namespace HD_Cobranza.Reportes
                     rangosub5.Style.Fill.BackgroundColor = XLColor.FromHtml("#E9AE06");
 
                     renglon += 3;
-
-                    sheet.Range(renglon, 1, renglon, 17).Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
 
                     sheet.Range(renglon, 1, renglon, 17).Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
 
@@ -567,7 +588,6 @@ namespace HD_Cobranza.Reportes
                     sheet.Cell(renglon, 16).Value = "OBJETIVO RECUPERADO";
                     sheet.Cell(renglon, 17).Value = "%";
 
-                    // Estilo para los encabezados de la tabla
                     var rango5 = sheet.Range(renglon, 1, renglon, 17);
                     rango5.Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
                     rango5.Style.Font.Bold = true;
@@ -577,29 +597,38 @@ namespace HD_Cobranza.Reportes
                     rango5.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
                     renglon++;
 
-                    // Llenar la tabla con los datos
                     foreach (var juridico in datos.juridico)
                     {
                         sheet.Cell(renglon, 1).Value = juridico.mes;
-                        sheet.Cell(renglon, 2).Value = juridico.cartera_activa;
-                        sheet.Cell(renglon, 3).Value = juridico.cartera_porvencer;
-                        sheet.Cell(renglon, 4).Value = juridico.cartera_vencida;
-                        sheet.Cell(renglon, 5).Value = juridico.total_cartera;
-                        sheet.Cell(renglon, 6).Value = juridico.objetivo_porvencer;
-                        sheet.Cell(renglon, 7).Value = juridico.objetivo_vencido;
-                        sheet.Cell(renglon, 8).Value = juridico.objetivo;
-                        sheet.Cell(renglon, 9).Value = juridico.recuperacion_mes;
-                        sheet.Cell(renglon, 10).Value = juridico.recuperacion_activa;
-                        sheet.Cell(renglon, 11).Value = juridico.recuperacion_porvencer;
+
+                        SetValorConPorcentaje(sheet.Cell(renglon, 2), juridico.cartera_activa, juridico.porc_cartera_activa);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 3), juridico.cartera_porvencer, juridico.porc_cartera_porvencer);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 4), juridico.cartera_vencida, juridico.porc_cartera_vencida);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 5), juridico.total_cartera, 100);
+
+                        SetValorConPorcentaje(sheet.Cell(renglon, 6), juridico.objetivo_porvencer, juridico.porc_objetivo_porvencer);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 7), juridico.objetivo_vencido, juridico.porc_objetivo_vencido);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 8), juridico.objetivo, 100);
+
+                        SetValorConPorcentaje(sheet.Cell(renglon, 9), juridico.recuperacion_mes, juridico.porc_recuperacion_mes);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 10), juridico.recuperacion_activa, juridico.porc_recuperacion_activa);
+                        SetValorConPorcentaje(sheet.Cell(renglon, 11), juridico.recuperacion_porvencer, juridico.porc_recuperacion_porvencer);
+
                         sheet.Cell(renglon, 12).Value = (juridico.porcporvencer / 100);
-                        sheet.Cell(renglon, 13).Value = juridico.recuperacion_vencida;
+
+                        SetValorConPorcentaje(sheet.Cell(renglon, 13), juridico.recuperacion_vencida, juridico.porc_recuperacion_vencida);
+
                         sheet.Cell(renglon, 14).Value = (juridico.porcvencido / 100);
-                        sheet.Cell(renglon, 15).Value = juridico.total_recuperado;
+
+                        SetValorConPorcentaje(sheet.Cell(renglon, 15), juridico.total_recuperado, 100);
+
                         sheet.Cell(renglon, 16).Value = juridico.recuperado;
                         sheet.Cell(renglon, 17).Value = (juridico.porc / 100);
+
+                        sheet.Row(renglon).Height = 28;
+
                         renglon++;
                     }
-
 
                     sheet.Range(rengloncarteraju, 2, renglon - 1, 5).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                     sheet.Range(rengloncarteraju, 2, renglon - 1, 5).Style.Border.OutsideBorderColor = XLColor.Black;
@@ -610,13 +639,9 @@ namespace HD_Cobranza.Reportes
                     sheet.Range(renglonrecuperacionju, 9, renglon - 1, 15).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                     sheet.Range(renglonrecuperacionju, 9, renglon - 1, 15).Style.Border.OutsideBorderColor = XLColor.Black;
 
-                    for (int i = 2; i <= 17; i++)
-                    {
-                        sheet.Column(i).Style.NumberFormat.Format = "#,##0.00";
-                    }
-
                     sheet.Column(12).Style.NumberFormat.Format = "0.00%";
                     sheet.Column(14).Style.NumberFormat.Format = "0.00%";
+                    sheet.Column(16).Style.NumberFormat.Format = "#,##0.00";
                     sheet.Column(17).Style.NumberFormat.Format = "0.00%";
 
                     sheet.Columns().AdjustToContents();

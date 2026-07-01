@@ -90,6 +90,19 @@ namespace HD.Endpoints.Controllers.Finanzas
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ImprimirExcelReporteOptimo(int ejercicio, int periodo, string tipoUbi, string id, string tipoReporte, string titulo)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_RotacionCXC_Reporte datos = new AD_RotacionCXC_Reporte(CadenaConexion);
+            string usuario = Sesion.usuario();
+            var result = await datos.reporte(ejercicio, periodo, tipoUbi, id, usuario, tipoReporte);
+            var docresult = await XLS_Rotacion_CXC_Optima.GenerarExcel(result.rotacion, titulo);
+            //var servicio = await Conexion_Servicio_Mensajeria.send("home", new { });
+            return Ok(docresult);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> ImprimirExcelDetalle(int ejercicio, int periodo, string adr, string sucursales, string departamentos, string tipoReporte, string titulo)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];

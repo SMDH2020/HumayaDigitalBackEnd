@@ -16,6 +16,7 @@
         public float confiabilidad_mon { get; set; }
         public float confiabilidad_loc { get; set; }
         public bool habilitar { get; set; }
+        public string fecha_limite_just { get; set; }
 
     }
 }

@@ -13,7 +13,6 @@ namespace HD.Clientes.Consultas.Credito_Condicionado
 
         public async Task<mdlSC_Credito_Condicionado> Guardar(mdl_fecha_compromiso_documentos_detalle mdl,string usuario)
         {
-            FactoryConection factory = new FactoryConection(CadenaConexion,true);
             try
             {
 

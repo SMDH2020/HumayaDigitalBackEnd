@@ -36,7 +36,9 @@ namespace HD.Fiscal.Modelos
         public string document_refacturacion { get; set; }
         public string equip { get; set; }
         public int tasa { get; set; }
-        public string relacion { get; set; }
-        public string fecha_aplicacion { get; set; }
+        public string serie_fiscal { get; set; }
+        public string v_relacion { get; set; }
+        public string v_fecha_relacion { get; set; }
+
     }
 }

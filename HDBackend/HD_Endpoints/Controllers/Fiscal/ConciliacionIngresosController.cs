@@ -1,6 +1,7 @@
 ﻿using HD.Fiscal.AccesoDatos;
 using HD.Fiscal.Modelos;
 using HD.Fiscal.Reportes;
+using HD.Notifications.NotificacionesApp;
 using HD.Security;
 using HD_Ventas.Consultas;
 using HD_Ventas.Modelos;
@@ -84,7 +85,7 @@ namespace HD.Endpoints.Controllers.Fiscal
             AD_Conciliacion_Ingresos datos = new AD_Conciliacion_Ingresos(CadenaConexion);
             int usuario = int.Parse(Sesion.usuario());
             var result = await datos.obtenerAnalitica(ejercicio, periodo, origen, usuario);
-            var docresult = await XLS_Conciliacion_Ingresos_Analitica.GenerarExcel(result.Analitica, titulo);
+            var docresult = await XLS_Conciliacion_Ingresos_Analitica.GenerarExcel(result.Analitica, titulo, origen);
             return Ok(docresult);
         }
 
