@@ -30,6 +30,7 @@ namespace HD_Ventas.Consultas
                 FactoryConection factory = new FactoryConection(CadenaConexion);
 
                 var multi = await factory.SQL.QueryMultipleAsync("Ventas.sp_Obtener_Solicitudes_Cliente_Cotizaciones", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
 
                 var model = new mdl_Obtener_Solicitudes_View
                 {
