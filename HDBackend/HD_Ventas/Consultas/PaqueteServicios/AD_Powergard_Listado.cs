@@ -18,6 +18,8 @@ namespace HD_Ventas.Consultas.PaqueteServicios
         }
         public async Task<IEnumerable<mdl_Powergard_Listado>> Listado(int ejercicioInicio, int periodoInicio, int ejercicioFin, int periodoFin, string? region, string? sucursal, string? vendedor)
         {
+            FactoryConection factory = new FactoryConection(CadenaConexion);
+
             try
             {
                 var parametros = new
@@ -30,7 +32,6 @@ namespace HD_Ventas.Consultas.PaqueteServicios
                     sucursal = sucursal,
                     vendedor = vendedor
                 };
-                FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdl_Powergard_Listado> result = await factory.SQL.QueryAsync<mdl_Powergard_Listado>("Ventas.sp_Powergard_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
@@ -38,6 +39,10 @@ namespace HD_Ventas.Consultas.PaqueteServicios
             catch (System.Exception ex)
             {
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+            finally
+            {
+                factory.SQL.Close();
             }
         }
     }

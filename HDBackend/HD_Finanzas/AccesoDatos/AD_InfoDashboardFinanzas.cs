@@ -20,9 +20,10 @@ namespace HD_Finanzas.AccesoDatos
         }
         public async Task<mdlInfoDashboardFinanzas> GetDash(int periodoinicio, int periodofin, int ejercicio, string adr, string sucursales, int usuario)
         {
+            FactoryConection factory = new FactoryConection(CadenaConexion);
+
             try
             {
-                FactoryConection factory = new FactoryConection(CadenaConexion);
                 var parametros = new
                 {
                     ejercicio = ejercicio,
@@ -60,6 +61,10 @@ namespace HD_Finanzas.AccesoDatos
             catch (System.Exception ex)
             {
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+            finally
+            {
+                factory.SQL.Close();
             }
         }
     }
