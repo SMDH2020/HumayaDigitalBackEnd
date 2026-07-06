@@ -7,10 +7,9 @@ namespace HD.Endpoints
     [Controller]
     public class HomeController: Controller
     {
-
         public ActionResult Index()
         {
-            return PhysicalFile(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "index.html"), "text/HTML");
+            return Content("Humaya Digital Backend", "text/plain");
         }
     }
 }

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <system.webServer>
+    <rewrite>
+      <rules>
+        <!-- 1. REDIRECT HTTP A HTTPS -->
+        <rule name="Redirect HTTP to HTTPS" stopProcessing="true">
+          <match url="(.*)" />
+          <conditions>
+            <add input="{HTTPS}" pattern="off" ignoreCase="true" />
+          </conditions>
+          <action type="Redirect" url="https://{HTTP_HOST}/{R:1}" redirectType="Permanent" />
+        </rule>
+
+        <!-- 2. OAuth metadata RFC 8414 → sirve el archivo .json estático -->
+        <rule name="WellKnownMcpMetadata" stopProcessing="true">
+          <match url="^.well-known/oauth-authorization-server/mh/apihumayadigital$" />
+          <action type="Rewrite" url="/.well-known/oauth-authorization-server/mh/apihumayadigital.json" />
+        </rule>
+
+        <!-- 3. ONESIGNAL -->
+        <rule name="OneSignalWorkers" stopProcessing="true">
+          <match url="^OneSignalSDK.*\.js$" />
+          <action type="None" />
+        </rule>
+
+        <!-- 4. EXCLUIR BACKEND .NET (/mh/...) -->
+        <rule name="ExcludeAPI" stopProcessing="true">
+          <match url="^(mh)(/.*)?$" />
+          <action type="None" />
+        </rule>
+
+        <!-- 5. EXCLUIR RUTAS MCP -->
+        <rule name="ExcludeMCP" stopProcessing="true">
+          <match url="^(mcp|mcpauth)(/.*)?$" />
+          <action type="None" />
+        </rule>
+
+        <!-- 6. SPA CATCH-ALL -->
+        <rule name="SinglePageApp" stopProcessing="true">
+          <match url="assets/.*" negate="true" />
+          <conditions logicalGrouping="MatchAll">
+            <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" />
+            <add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
+          </conditions>
+          <action type="Rewrite" url="index.html" />
+        </rule>
+      </rules>
+    </rewrite>
+
+    <staticContent>
+      <remove fileExtension=".woff" />
+      <mimeMap fileExtension=".woff" mimeType="application/font-woff" />
+      <remove fileExtension=".woff2" />
+      <mimeMap fileExtension=".woff2" mimeType="application/font-woff2" />
+    </staticContent>
+
+    <httpProtocol>
+      <customHeaders>
+        <remove name="Content-Security-Policy" />
+        <add name="Content-Security-Policy"
+          value="default-src 'self';
+                script-src 'self' 'unsafe-eval'
+                  https://cdn.onesignal.com
+                  https://api.onesignal.com;
+                style-src 'self' 'unsafe-inline'
+                    https://onesignal.com
+                    https://cdn.onesignal.com
+                    https://fonts.googleapis.com;
+                font-src 'self' https://fonts.gstatic.com;
+                connect-src 'self'
+                      https://cdn.onesignal.com
+                      https://api.onesignal.com
+                      https://api.openweathermap.org
+                      https://humayadigital.com
+                      https://humayadigital.com/mh/apihumayadigital/api;
+                 worker-src 'self' https://cdn.onesignal.com;
+                child-src 'self' https://cdn.onesignal.com;
+                img-src 'self' data: https://openweathermap.org https://img.onesignal.com;
+                frame-src 'self' data:;
+                object-src 'none';" />
+        <add name="Strict-Transport-Security" value="max-age=31536000; includeSubDomains; preload" />
+        <add name="X-Frame-Options" value="SAMEORIGIN" />
+        <add name="X-Content-Type-Options" value="nosniff" />
+      </customHeaders>
+    </httpProtocol>
+
+    <security>
+      <requestFiltering>
+        <requestLimits maxAllowedContentLength="104857600" />
+      </requestFiltering>
+    </security>
+  </system.webServer>
+</configuration>
