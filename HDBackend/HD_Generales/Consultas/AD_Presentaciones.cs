@@ -32,6 +32,28 @@ namespace HD.Generales.Consultas
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+        public async Task<IEnumerable<mld_Presentaciones_Listado>> GuardarPresentacion(mdl_Presentaciones_Guardar_completo mdl)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    PresentacionId = Guid.NewGuid(),
+                    nombre = mdl.nombre,
+                    descripcion = mdl.descripcion,
+                    htmlContenido=mdl.htmlContenido,
+                    usuariocreacion = mdl.usuario
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mld_Presentaciones_Listado> result = await factory.SQL.QueryAsync<mld_Presentaciones_Listado>("HumayaDigital_Eventos.dbo.sp_Presentaciones_Guardar_Presentacion", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
         public async Task<IEnumerable<mld_Presentaciones_Listado>> Actualizar(mdl_Presentaciones_Guardar mdl)
         {
             try
@@ -67,6 +89,24 @@ namespace HD.Generales.Consultas
                 await factory.SQL.QueryAsync("HumayaDigital_Eventos.dbo.sp_Presentaciones_ActualizarHtml", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return new { mensaje = "Archivo cargado con exito" };
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+        public async Task<object> Eliminar(Guid presentacionid)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    PresentacionId = presentacionid
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                await factory.SQL.QueryAsync("HumayaDigital_Eventos.dbo.sp_Presentaciones_Eliminar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return new { mensaje = "Presentacion Eliminada con exito" };
             }
             catch (System.Exception ex)
             {
