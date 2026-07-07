@@ -35,6 +35,7 @@ namespace HD_RedesSociales.Consultas
             parametros.Add("@Escenografia", encabezado.Escenografia);
             parametros.Add("@Hora", encabezado.Hora);
             parametros.Add("@Red_Social", encabezado.Red_Social);
+            parametros.Add("@Cargar", encabezado.Cargar);
 
             parametros.Add("@ImagenBase64",
                 encabezado.ImagenBase64,
@@ -67,8 +68,9 @@ namespace HD_RedesSociales.Consultas
                 Escenografia     = encabezado.Escenografia,
                 Hora             = encabezado.Hora,
                 Red_Social       = encabezado.Red_Social,
-                ImagenBase64     = encabezado.ImagenBase64
-                
+                ImagenBase64     = encabezado.ImagenBase64,
+                Cargar           = encabezado.Cargar
+
 
             };
 
