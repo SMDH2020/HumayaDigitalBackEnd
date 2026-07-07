@@ -24,6 +24,7 @@
             public int? Consecutivo { get; set; }
             public DateTime? Fecha_Envio { get; set; }
             public string? Estatus { get; set; }
-            public string? ImagenBase64 { get; set; }  
-        }
+            public string? ImagenBase64 { get; set; }
+            public bool Cargar { get; set; } = true;
+        }   
     }
