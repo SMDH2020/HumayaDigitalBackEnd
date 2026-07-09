@@ -30,7 +30,7 @@ namespace HD_Finanzas.AccesoDatos
                     Usuario = Usuario
                 };
                 var result = await factory.SQL.QueryMultipleAsync("PixelCode.dbo.SP_Revision_ProyeccionVentas_HumayaDigital_Escenarios", parametros, commandType: System.Data.CommandType.StoredProcedure);
-                factory.SQL.Close();
+           
                 var Proy = result.Read<mdl_Estado_Resultados>().ToList();
                 var ER = result.Read<mdl_Estado_Resultados>().ToList();
                 var ProyGastos = result.Read<mdl_Estado_Resultados>().ToList();

@@ -86,7 +86,8 @@ builder.Services.AddScoped<McpJwtService>();
 builder.Services.AddMcpServer()
     .WithHttpTransport()
     .WithTools<PresentacionesTools>()
-    .WithTools<FinanzasTools>();
+    .WithTools<FinanzasTools>()
+    .WithTools<VendedoresTools>();
 
 var app = builder.Build();
 
