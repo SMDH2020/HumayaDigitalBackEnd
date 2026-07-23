@@ -147,9 +147,7 @@ namespace HD.Endpoints.Controllers.Ventas
             catch (Exception ex)
             {
                 return BadRequest("Error de servidor");
-
             }
-
         }
 
         [HttpGet]
@@ -173,7 +171,6 @@ namespace HD.Endpoints.Controllers.Ventas
                 return BadRequest("Error de servidor");
 
             }
-
         }
     }
 }
