@@ -77,7 +77,7 @@ namespace HD_Reporteria.Ventas
 
                         });
 
-                        page.Content().PaddingTop(10).PaddingLeft(30).PaddingRight(30).Column(col1 =>
+                        page.Content().PaddingTop(10).PaddingLeft(20).PaddingRight(20).Column(col1 =>
                         {
 
                             //col1.Item().LineHorizontal(0.5f);
@@ -106,31 +106,37 @@ namespace HD_Reporteria.Ventas
                             {
                                 tabla.ColumnsDefinition(Columns =>
                                 {
-                                    Columns.RelativeColumn(1.7f);
-                                    Columns.RelativeColumn(0.5f);
-                                    Columns.RelativeColumn(0.5f);
-                                    Columns.RelativeColumn(0.5f);
-                                    Columns.RelativeColumn(0.5f);
-                                    Columns.RelativeColumn(0.5f);
-                                    Columns.RelativeColumn(0.5f);
-                                    Columns.RelativeColumn(0.5f);
-                                    Columns.RelativeColumn(0.5f);
-                                    Columns.RelativeColumn(0.5f);
-                                    Columns.RelativeColumn(0.5f);
-                                    Columns.RelativeColumn(0.5f);
-                                    Columns.RelativeColumn(0.5f);
-                                    Columns.RelativeColumn(0.5f);
-                                    Columns.RelativeColumn(0.5f);
-                                    Columns.RelativeColumn(0.5f);
-                                    Columns.RelativeColumn(0.5f);
-                                    Columns.RelativeColumn(0.5f);
-                                    Columns.RelativeColumn(0.5f);
-                                    Columns.RelativeColumn(0.5f);
-                                    Columns.RelativeColumn(0.5f);
-                                    Columns.RelativeColumn(0.5f);
-                                    Columns.RelativeColumn(0.5f);
-                                    Columns.RelativeColumn(0.5f);
-                                    Columns.RelativeColumn(0.5f);
+                                    Columns.RelativeColumn(1.6f);
+                                    Columns.RelativeColumn(0.46f);
+                                    Columns.RelativeColumn(0.46f);
+                                    Columns.RelativeColumn(0.46f);
+                                    Columns.RelativeColumn(0.46f);
+                                    Columns.RelativeColumn(0.46f);
+                                    Columns.RelativeColumn(0.46f);
+                                    Columns.RelativeColumn(0.46f);
+                                    Columns.RelativeColumn(0.46f);
+                                    Columns.RelativeColumn(0.46f);
+                                    Columns.RelativeColumn(0.46f);
+                                    Columns.RelativeColumn(0.46f);
+                                    Columns.RelativeColumn(0.46f);
+                                    Columns.RelativeColumn(0.46f);
+                                    Columns.RelativeColumn(0.46f);
+                                    Columns.RelativeColumn(0.46f);
+                                    Columns.RelativeColumn(0.46f);
+                                    Columns.RelativeColumn(0.46f);
+                                    Columns.RelativeColumn(0.46f);
+                                    Columns.RelativeColumn(0.46f);
+                                    Columns.RelativeColumn(0.46f);
+                                    Columns.RelativeColumn(0.46f);
+                                    Columns.RelativeColumn(0.46f);
+                                    Columns.RelativeColumn(0.46f);
+                                    Columns.RelativeColumn(0.46f);
+                                    Columns.RelativeColumn(0.46f); // Garantias Objetivo
+                                    Columns.RelativeColumn(0.46f); // Garantias Real
+                                    Columns.RelativeColumn(0.46f); // Garantias Alcance
+                                    Columns.RelativeColumn(0.46f); // Polizas Objetivo
+                                    Columns.RelativeColumn(0.46f); // Polizas Real
+                                    Columns.RelativeColumn(0.46f); // Polizas Alcance
                                 });
 
                                 tabla.Header(header =>
@@ -153,10 +159,26 @@ namespace HD_Reporteria.Ventas
                                    .Padding(1).Text("TRACTORES S.").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
                                     header.Cell().ColumnSpan(3).BorderLeft(0.6f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("TRILLADORAS S.").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().ColumnSpan(3).BorderLeft(0.6f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
+                                   .Padding(1).Text("GARANTIAS").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                    header.Cell().ColumnSpan(3).BorderLeft(0.6f).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
+                                    .Padding(1).Text("POLIZAS").FontSize(8).Bold().FontFamily(fontFamily).FontColor("#fff");
                                 });
 
                                 tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().Height(20).AlignMiddle()
                                     .Padding(1).Text("ASESOR").FontSize(6).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                .Padding(1).Text("OBJETIVO").FontSize(6).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                .Padding(1).Text("REAL").FontSize(6).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                .Padding(1).Text("ALCANCE").FontSize(6).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                .Padding(1).Text("OBJETIVO").FontSize(6).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                .Padding(1).Text("REAL").FontSize(6).Bold().FontFamily(fontFamily).FontColor("#fff");
+                                tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
+                                .Padding(1).Text("ALCANCE").FontSize(6).Bold().FontFamily(fontFamily).FontColor("#fff");
                                 tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
                                 .Padding(1).Text("OBJETIVO").FontSize(6).Bold().FontFamily(fontFamily).FontColor("#fff");
                                 tabla.Cell().BorderHorizontal(1).BorderColor("#fedb05").Background("#477c2c").AlignCenter().AlignMiddle()
@@ -265,6 +287,18 @@ namespace HD_Reporteria.Ventas
                                         ? ((float)totalRealAdrTriUsa / totalObjetivoAdrTriUsa) * 100
                                         : (totalRealAdrTriUsa > 0 ? 100 : 0);
 
+                                    var totalObjetivoAdrGarantias = adrGroup.Sum(x => x.Objetivo_Garantia);
+                                    var totalRealAdrGarantias = adrGroup.Sum(x => x.Real_Garantia);
+                                    float totalPorcentajeAdrGarantias = totalObjetivoAdrGarantias > 0
+                                        ? ((float)totalRealAdrGarantias / totalObjetivoAdrGarantias) * 100
+                                        : (totalRealAdrGarantias > 0 ? 100 : 0);
+
+                                    var totalObjetivoAdrPolizas = adrGroup.Sum(x => x.Objetivo_Poliza);
+                                    var totalRealAdrPolizas = adrGroup.Sum(x => x.Real_Poliza);
+                                    float totalPorcentajeAdrPolizas = totalObjetivoAdrPolizas > 0
+                                        ? ((float)totalRealAdrPolizas / totalObjetivoAdrPolizas) * 100
+                                        : (totalRealAdrPolizas > 0 ? 100 : 0);
+
 
                                     tabla.Cell().Background("#DAE6BE").BorderBottom(1).BorderColor("#afb69d").AlignCenter().Height(20).AlignMiddle().PaddingRight(3)
                                        .Text(totalObjetivoAdrTractores.ToString()).FontSize(7).FontFamily(fontFamily);
@@ -309,7 +343,7 @@ namespace HD_Reporteria.Ventas
                                       .Text(totalRealAdrDrones.ToString()).FontSize(7).FontFamily(fontFamily);
 
                                     tabla.Cell().Background("#DAE6BE").BorderBottom(1).BorderColor("#afb69d").AlignCenter().Height(20).AlignMiddle().PaddingRight(3)
-                                       .Text(Math.Round(totalPorcentajeAdrJardineros, 2).ToString() + " %").FontSize(7).FontFamily(fontFamily);
+                                       .Text(Math.Round(totalPorcentajeAdrDrones, 2).ToString() + " %").FontSize(7).FontFamily(fontFamily);
 
                                     tabla.Cell().Background("#DAE6BE").BorderBottom(1).BorderColor("#afb69d").AlignCenter().Height(20).AlignMiddle().PaddingRight(3)
                                                .Text(totalObjetivoAdrPA.ToString()).FontSize(7).FontFamily(fontFamily);
@@ -337,6 +371,24 @@ namespace HD_Reporteria.Ventas
 
                                     tabla.Cell().Background("#DAE6BE").BorderBottom(1).BorderColor("#afb69d").AlignCenter().Height(20).AlignMiddle().PaddingRight(3)
                                        .Text(Math.Round(totalPorcentajeAdrTriUsa, 2).ToString() + " %").FontSize(7).FontFamily(fontFamily);
+
+                                    tabla.Cell().Background("#DAE6BE").BorderBottom(1).BorderColor("#afb69d").AlignCenter().Height(20).AlignMiddle().PaddingRight(3)
+                                               .Text(totalObjetivoAdrGarantias.ToString()).FontSize(7).FontFamily(fontFamily);
+
+                                    tabla.Cell().Background("#DAE6BE").BorderBottom(1).BorderColor("#afb69d").AlignCenter().Height(20).AlignMiddle().PaddingRight(3)
+                                      .Text(totalRealAdrGarantias.ToString()).FontSize(7).FontFamily(fontFamily);
+
+                                    tabla.Cell().Background("#DAE6BE").BorderBottom(1).BorderColor("#afb69d").AlignCenter().Height(20).AlignMiddle().PaddingRight(3)
+                                       .Text(Math.Round(totalPorcentajeAdrGarantias, 2).ToString() + " %").FontSize(7).FontFamily(fontFamily);
+
+                                    tabla.Cell().Background("#DAE6BE").BorderBottom(1).BorderColor("#afb69d").AlignCenter().Height(20).AlignMiddle().PaddingRight(3)
+                                               .Text(totalObjetivoAdrPolizas.ToString()).FontSize(7).FontFamily(fontFamily);
+
+                                    tabla.Cell().Background("#DAE6BE").BorderBottom(1).BorderColor("#afb69d").AlignCenter().Height(20).AlignMiddle().PaddingRight(3)
+                                      .Text(totalRealAdrPolizas.ToString()).FontSize(7).FontFamily(fontFamily);
+
+                                    tabla.Cell().Background("#DAE6BE").BorderBottom(1).BorderColor("#afb69d").AlignCenter().Height(20).AlignMiddle().PaddingRight(3)
+                                       .Text(Math.Round(totalPorcentajeAdrPolizas, 2).ToString() + " %").FontSize(7).FontFamily(fontFamily);
 
 
                                     var groupedBySucursal = adrGroup.GroupBy(x => x.sucursal);
@@ -394,6 +446,18 @@ namespace HD_Reporteria.Ventas
                                             ? ((float)totalRealsucursalTriUsa / totalObjetivosucursalTriUsa) * 100
                                             : (totalRealsucursalTriUsa > 0 ? 100 : 0);
 
+                                        var totalObjetivosucursalGarantias = sucursalGroup.Sum(x => x.Objetivo_Garantia);
+                                        var totalRealsucursalGarantias = sucursalGroup.Sum(x => x.Real_Garantia);
+                                        float totalPorcentajesucursalGarantias = totalObjetivosucursalGarantias > 0
+                                            ? ((float)totalRealsucursalGarantias / totalObjetivosucursalGarantias) * 100
+                                            : (totalRealsucursalGarantias > 0 ? 100 : 0);
+
+                                        var totalObjetivosucursalPolizas = sucursalGroup.Sum(x => x.Objetivo_Poliza);
+                                        var totalRealsucursalPolizas = sucursalGroup.Sum(x => x.Real_Poliza);
+                                        float totalPorcentajesucursalPolizas = totalObjetivosucursalPolizas > 0
+                                            ? ((float)totalRealsucursalPolizas / totalObjetivosucursalPolizas) * 100
+                                            : (totalRealsucursalPolizas > 0 ? 100 : 0);
+
 
                                         tabla.Cell().Background("#e3e3e3").BorderBottom(1).BorderColor("#afb69d").AlignCenter().Height(20).AlignMiddle().PaddingRight(3)
                                            .Text(totalObjetivosucursalTractores.ToString()).FontSize(7).FontFamily(fontFamily);
@@ -438,7 +502,7 @@ namespace HD_Reporteria.Ventas
                                           .Text(totalRealsucursalDrones.ToString()).FontSize(7).FontFamily(fontFamily);
 
                                         tabla.Cell().Background("#e3e3e3").BorderBottom(1).BorderColor("#afb69d").AlignCenter().Height(20).AlignMiddle().PaddingRight(3)
-                                           .Text(Math.Round(totalPorcentajesucursalJardineros, 2).ToString() + " %").FontSize(7).FontFamily(fontFamily);
+                                           .Text(Math.Round(totalPorcentajesucursalDrones, 2).ToString() + " %").FontSize(7).FontFamily(fontFamily);
 
                                         tabla.Cell().Background("#e3e3e3").BorderBottom(1).BorderColor("#afb69d").AlignCenter().Height(20).AlignMiddle().PaddingRight(3)
                                                    .Text(totalObjetivosucursalPA.ToString()).FontSize(7).FontFamily(fontFamily);
@@ -466,6 +530,24 @@ namespace HD_Reporteria.Ventas
 
                                         tabla.Cell().Background("#e3e3e3").BorderBottom(1).BorderColor("#afb69d").AlignCenter().Height(20).AlignMiddle().PaddingRight(3)
                                            .Text(Math.Round(totalPorcentajesucursalTriUsa, 2).ToString() + " %").FontSize(7).FontFamily(fontFamily);
+
+                                        tabla.Cell().Background("#e3e3e3").BorderBottom(1).BorderColor("#afb69d").AlignCenter().Height(20).AlignMiddle().PaddingRight(3)
+                                                   .Text(totalObjetivosucursalGarantias.ToString()).FontSize(7).FontFamily(fontFamily);
+
+                                        tabla.Cell().Background("#e3e3e3").BorderBottom(1).BorderColor("#afb69d").AlignCenter().Height(20).AlignMiddle().PaddingRight(3)
+                                          .Text(totalRealsucursalGarantias.ToString()).FontSize(7).FontFamily(fontFamily);
+
+                                        tabla.Cell().Background("#e3e3e3").BorderBottom(1).BorderColor("#afb69d").AlignCenter().Height(20).AlignMiddle().PaddingRight(3)
+                                           .Text(Math.Round(totalPorcentajesucursalGarantias, 2).ToString() + " %").FontSize(7).FontFamily(fontFamily);
+
+                                        tabla.Cell().Background("#e3e3e3").BorderBottom(1).BorderColor("#afb69d").AlignCenter().Height(20).AlignMiddle().PaddingRight(3)
+                                                   .Text(totalObjetivosucursalPolizas.ToString()).FontSize(7).FontFamily(fontFamily);
+
+                                        tabla.Cell().Background("#e3e3e3").BorderBottom(1).BorderColor("#afb69d").AlignCenter().Height(20).AlignMiddle().PaddingRight(3)
+                                          .Text(totalRealsucursalPolizas.ToString()).FontSize(7).FontFamily(fontFamily);
+
+                                        tabla.Cell().Background("#e3e3e3").BorderBottom(1).BorderColor("#afb69d").AlignCenter().Height(20).AlignMiddle().PaddingRight(3)
+                                           .Text(Math.Round(totalPorcentajesucursalPolizas, 2).ToString() + " %").FontSize(7).FontFamily(fontFamily);
 
                                         foreach (var sco in sucursalGroup)
                                         {
@@ -500,6 +582,14 @@ namespace HD_Reporteria.Ventas
                                             float totalPorcentajeAsesorTriUsa = sco.Objetivo_TriUsa > 0
                                                 ? ((float)sco.Real_TriUsa / sco.Objetivo_TriUsa) * 100
                                                 : (sco.Real_TriUsa > 0 ? 100 : 0);
+
+                                            float totalPorcentajeAsesorGarantias = sco.Objetivo_Garantia > 0
+                                                ? ((float)sco.Real_Garantia / sco.Objetivo_Garantia) * 100
+                                                : (sco.Real_Garantia > 0 ? 100 : 0);
+
+                                            float totalPorcentajeAsesorPolizas = sco.Objetivo_Poliza > 0
+                                                ? ((float)sco.Real_Poliza / sco.Objetivo_Poliza) * 100
+                                                : (sco.Real_Poliza > 0 ? 100 : 0);
 
 
 
@@ -577,6 +667,24 @@ namespace HD_Reporteria.Ventas
 
                                             tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignCenter().Height(20).AlignMiddle().PaddingRight(3)
                                                .Text(Math.Round(totalPorcentajeAsesorTriUsa, 2).ToString() + " %").FontSize(7).FontFamily(fontFamily);
+
+                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignCenter().Height(20).AlignMiddle().PaddingRight(3)
+                                                       .Text(sco.Objetivo_Garantia.ToString()).FontSize(7).FontFamily(fontFamily);
+
+                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignCenter().Height(20).AlignMiddle().PaddingRight(3)
+                                              .Text(sco.Real_Garantia.ToString()).FontSize(7).FontFamily(fontFamily);
+
+                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignCenter().Height(20).AlignMiddle().PaddingRight(3)
+                                               .Text(Math.Round(totalPorcentajeAsesorGarantias, 2).ToString() + " %").FontSize(7).FontFamily(fontFamily);
+
+                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignCenter().Height(20).AlignMiddle().PaddingRight(3)
+                                                       .Text(sco.Objetivo_Poliza.ToString()).FontSize(7).FontFamily(fontFamily);
+
+                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignCenter().Height(20).AlignMiddle().PaddingRight(3)
+                                              .Text(sco.Real_Poliza.ToString()).FontSize(7).FontFamily(fontFamily);
+
+                                            tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignCenter().Height(20).AlignMiddle().PaddingRight(3)
+                                               .Text(Math.Round(totalPorcentajeAsesorPolizas, 2).ToString() + " %").FontSize(7).FontFamily(fontFamily);
                                         }
 
                                     }

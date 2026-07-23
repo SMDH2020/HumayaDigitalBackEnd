@@ -54,7 +54,7 @@ namespace HD_Ventas.Reportes
                     sheet.Style.Font.FontName = "Calibri";
                     sheet.Style.Font.FontSize = 10;
 
-                    int renglon = XLSEncabezado.Encabezado(ref sheet, $"SCORECARD GENERAL POR ASESOR", 25);
+                    int renglon = XLSEncabezado.Encabezado(ref sheet, $"SCORECARD GENERAL POR ASESOR", 31);
 
                     //renglon += 1;
 
@@ -100,6 +100,16 @@ namespace HD_Ventas.Reportes
                     sheet.Range(renglon, 23, renglon, 25).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                     sheet.Range(renglon, 23, renglon, 25).Style.Font.Bold = true;
                     sheet.Range(renglon, 23, renglon, 25).Style.Fill.BackgroundColor = XLColor.LightGray;
+
+                    sheet.Range(renglon, 26, renglon, 28).Merge().Value = "GARANTIAS";
+                    sheet.Range(renglon, 26, renglon, 28).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    sheet.Range(renglon, 26, renglon, 28).Style.Font.Bold = true;
+                    sheet.Range(renglon, 26, renglon, 28).Style.Fill.BackgroundColor = XLColor.LightGray;
+
+                    sheet.Range(renglon, 29, renglon, 31).Merge().Value = "POLIZAS";
+                    sheet.Range(renglon, 29, renglon, 31).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    sheet.Range(renglon, 29, renglon, 31).Style.Font.Bold = true;
+                    sheet.Range(renglon, 29, renglon, 31).Style.Fill.BackgroundColor = XLColor.LightGray;
                     int renglonrecuperaciontot = renglon;
 
 
@@ -130,9 +140,15 @@ namespace HD_Ventas.Reportes
                     sheet.Cell(renglon, 23).Value = "OBJETIVO";
                     sheet.Cell(renglon, 24).Value = "REAL";
                     sheet.Cell(renglon, 25).Value = "ALCANCE";
+                    sheet.Cell(renglon, 26).Value = "OBJETIVO";
+                    sheet.Cell(renglon, 27).Value = "REAL";
+                    sheet.Cell(renglon, 28).Value = "ALCANCE";
+                    sheet.Cell(renglon, 29).Value = "OBJETIVO";
+                    sheet.Cell(renglon, 30).Value = "REAL";
+                    sheet.Cell(renglon, 31).Value = "ALCANCE";
 
                     // Estilo para los encabezados de la tabla
-                    var rango = sheet.Range(renglon, 1, renglon, 25);
+                    var rango = sheet.Range(renglon, 1, renglon, 31);
                     rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
                     rango.Style.Font.Bold = true;
                     rango.Style.Font.FontSize = 12;
@@ -163,6 +179,10 @@ namespace HD_Ventas.Reportes
                         var totalRealAdrTracUsa = adrGroup.Sum(x => x.Real_TracUsa);
                         var totalObjetivoAdrTriUsa = adrGroup.Sum(x => x.Objetivo_TriUsa);
                         var totalRealAdrTriUsa = adrGroup.Sum(x => x.Real_TriUsa);
+                        var totalObjetivoAdrGarantias = adrGroup.Sum(x => x.Objetivo_Garantia);
+                        var totalRealAdrGarantias = adrGroup.Sum(x => x.Real_Garantia);
+                        var totalObjetivoAdrPolizas = adrGroup.Sum(x => x.Objetivo_Poliza);
+                        var totalRealAdrPolizas = adrGroup.Sum(x => x.Real_Poliza);
 
                         sheet.Cell(renglon, 2).Value = totalObjetivoAdrTractores;
                         sheet.Cell(renglon, 3).Value = totalRealAdrTractores;
@@ -190,10 +210,16 @@ namespace HD_Ventas.Reportes
                         sheet.Cell(renglon, 23).Value = totalObjetivoAdrTriUsa;
                         sheet.Cell(renglon, 24).Value = totalRealAdrTriUsa;
                         sheet.Cell(renglon, 25).FormulaA1 = $"=IF(X{renglon} > W{renglon}, 1, IF(X{renglon} > 0, MIN(X{renglon}/W{renglon}, 1), 0))";
-                        var rangoADR = sheet.Range(renglon, 1, renglon, 25);
+                        sheet.Cell(renglon, 26).Value = totalObjetivoAdrGarantias;
+                        sheet.Cell(renglon, 27).Value = totalRealAdrGarantias;
+                        sheet.Cell(renglon, 28).FormulaA1 = $"=IF(AA{renglon} > Z{renglon}, 1, IF(AA{renglon} > 0, MIN(AA{renglon}/Z{renglon}, 1), 0))";
+                        sheet.Cell(renglon, 29).Value = totalObjetivoAdrPolizas;
+                        sheet.Cell(renglon, 30).Value = totalRealAdrPolizas;
+                        sheet.Cell(renglon, 31).FormulaA1 = $"=IF(AD{renglon} > AC{renglon}, 1, IF(AD{renglon} > 0, MIN(AD{renglon}/AC{renglon}, 1), 0))";
+                        var rangoADR = sheet.Range(renglon, 1, renglon, 31);
                         rangoADR.Style.Fill.BackgroundColor = XLColor.FromHtml("#DAE6BE");
                         renglon++;
-                        
+
                         //var rango = sheet.Range(renglon, 1, renglon, 25);
 
 
@@ -219,6 +245,10 @@ namespace HD_Ventas.Reportes
                             var totalRealSucursalTracUsa = sucursalGroup.Sum(x => x.Real_TracUsa);
                             var totalObjetivoSucursalTriUsa = sucursalGroup.Sum(x => x.Objetivo_TriUsa);
                             var totalRealSucursalTriUsa = sucursalGroup.Sum(x => x.Real_TriUsa);
+                            var totalObjetivoSucursalGarantias = sucursalGroup.Sum(x => x.Objetivo_Garantia);
+                            var totalRealSucursalGarantias = sucursalGroup.Sum(x => x.Real_Garantia);
+                            var totalObjetivoSucursalPolizas = sucursalGroup.Sum(x => x.Objetivo_Poliza);
+                            var totalRealSucursalPolizas = sucursalGroup.Sum(x => x.Real_Poliza);
 
                             sheet.Cell(renglon, 2).Value = totalObjetivoSucursalTractores;
                             sheet.Cell(renglon, 3).Value = totalRealSucursalTractores;
@@ -246,7 +276,13 @@ namespace HD_Ventas.Reportes
                             sheet.Cell(renglon, 23).Value = totalObjetivoSucursalTriUsa;
                             sheet.Cell(renglon, 24).Value = totalRealSucursalTriUsa;
                             sheet.Cell(renglon, 25).FormulaA1 = $"=IF(X{renglon} > W{renglon}, 1, IF(X{renglon} > 0, MIN(X{renglon}/W{renglon}, 1), 0))";
-                            var rangoSucursal = sheet.Range(renglon, 1, renglon, 25);
+                            sheet.Cell(renglon, 26).Value = totalObjetivoSucursalGarantias;
+                            sheet.Cell(renglon, 27).Value = totalRealSucursalGarantias;
+                            sheet.Cell(renglon, 28).FormulaA1 = $"=IF(AA{renglon} > Z{renglon}, 1, IF(AA{renglon} > 0, MIN(AA{renglon}/Z{renglon}, 1), 0))";
+                            sheet.Cell(renglon, 29).Value = totalObjetivoSucursalPolizas;
+                            sheet.Cell(renglon, 30).Value = totalRealSucursalPolizas;
+                            sheet.Cell(renglon, 31).FormulaA1 = $"=IF(AD{renglon} > AC{renglon}, 1, IF(AD{renglon} > 0, MIN(AD{renglon}/AC{renglon}, 1), 0))";
+                            var rangoSucursal = sheet.Range(renglon, 1, renglon, 31);
                             rangoSucursal.Style.Fill.BackgroundColor = XLColor.FromHtml("#e3e3e3");
                             renglon++;
 
@@ -279,13 +315,19 @@ namespace HD_Ventas.Reportes
                                 sheet.Cell(renglon, 23).Value = sco.Objetivo_TriUsa;
                                 sheet.Cell(renglon, 24).Value = sco.Real_TriUsa;
                                 sheet.Cell(renglon, 25).FormulaA1 = $"=IF(X{renglon} > W{renglon}, 1, IF(X{renglon} > 0, MIN(X{renglon}/W{renglon}, 1), 0))";
+                                sheet.Cell(renglon, 26).Value = sco.Objetivo_Garantia;
+                                sheet.Cell(renglon, 27).Value = sco.Real_Garantia;
+                                sheet.Cell(renglon, 28).FormulaA1 = $"=IF(AA{renglon} > Z{renglon}, 1, IF(AA{renglon} > 0, MIN(AA{renglon}/Z{renglon}, 1), 0))";
+                                sheet.Cell(renglon, 29).Value = sco.Objetivo_Poliza;
+                                sheet.Cell(renglon, 30).Value = sco.Real_Poliza;
+                                sheet.Cell(renglon, 31).FormulaA1 = $"=IF(AD{renglon} > AC{renglon}, 1, IF(AD{renglon} > 0, MIN(AD{renglon}/AC{renglon}, 1), 0))";
                                 renglon++;
                             }
                         }
                     }
 
                     // Llenar la tabla con los datos
-                    
+
 
                     //float totalImporteProyectado = scorecard.Sum(sco => sco.importe_proyectado);
                     //float totalImporte = scorecard.Sum(sco => sco.importe);
@@ -309,6 +351,8 @@ namespace HD_Ventas.Reportes
                     sheet.Column(19).Style.NumberFormat.Format = "0.0 %";
                     sheet.Column(22).Style.NumberFormat.Format = "0.0 %";
                     sheet.Column(25).Style.NumberFormat.Format = "0.0 %";
+                    sheet.Column(28).Style.NumberFormat.Format = "0.0 %";
+                    sheet.Column(31).Style.NumberFormat.Format = "0.0 %";
                     //sheet.Column(6).Style.NumberFormat.Format = "#,##0.00";
                     //sheet.Column(7).Style.NumberFormat.Format = "0.0 %";
 
