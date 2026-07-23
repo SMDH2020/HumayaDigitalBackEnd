@@ -30,8 +30,8 @@ namespace HD_Ventas.DashboardRefacciones
                 var parametros = new DynamicParameters();
                 parametros.Add("fechainicio", fechainicio, System.Data.DbType.String);
                 parametros.Add("fechafin", fechafin, System.Data.DbType.String);
-                parametros.Add("vendedor", vendedor, System.Data.DbType.String);
-                parametros.Add("cliente", cliente, System.Data.DbType.String);
+                //parametros.Add("vendedor", vendedor, System.Data.DbType.String);
+                //parametros.Add("cliente", cliente, System.Data.DbType.String);
                 parametros.Add("comparativa", comparativa, System.Data.DbType.String);
                 parametros.Add("adr", adr, System.Data.DbType.String);
                 parametros.Add("sucursal", sucursal, System.Data.DbType.String);
@@ -39,10 +39,10 @@ namespace HD_Ventas.DashboardRefacciones
                 var result = await factory.SQL.QueryMultipleAsync("EQUIP.ventas.sp_Facturacion_Familia_Detalle_Dashboard", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 var view = new mdl_Dashboard_Refacciones_View();
                 view.detalle = result.Read<mdl_Dashboard_Refacciones>().ToList();
-                view.familia_10 = result.Read<mdl_Dashboard_Refacciones>().ToList();
-                view.clientes_10 = result.Read<mdl_Dashboard_Refacciones>().ToList();
-                view.pendiente1_10 = result.Read<mdl_Dashboard_Refacciones>().ToList();
-                view.pendiente2_10 = result.Read<mdl_Dashboard_Refacciones>().ToList();
+                //view.familia_10 = result.Read<mdl_Dashboard_Refacciones>().ToList();
+                //view.clientes_10 = result.Read<mdl_Dashboard_Refacciones>().ToList();
+                //view.pendiente1_10 = result.Read<mdl_Dashboard_Refacciones>().ToList();
+                //view.pendiente2_10 = result.Read<mdl_Dashboard_Refacciones>().ToList();
 
                 //view.tipo_cartera = result.Read<string>().FirstOrDefault();
                 factory.SQL.Close();

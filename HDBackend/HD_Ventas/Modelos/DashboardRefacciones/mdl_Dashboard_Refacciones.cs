@@ -40,6 +40,7 @@ namespace HD_Ventas.Modelos.DashboardRefacciones
         public string? parte { get; set; }
         public string? nombre_parte { get; set; }
         public string? familia { get; set; }
+        public string? linea { get; set; }
         public string? subfamilia1 { get; set; }
         public string? subfamilia2 { get; set; }
 
