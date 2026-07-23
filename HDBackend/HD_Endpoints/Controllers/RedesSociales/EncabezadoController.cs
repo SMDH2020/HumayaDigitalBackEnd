@@ -101,7 +101,7 @@ namespace HD.Endpoints.Controllers.RedesSociales
                 var resultado = await ad.ListadoAsync(folio);
 
                 return Ok(resultado);
-            }
+            }   
             catch (Exception ex)
             {
                 return BadRequest(new { mensaje = ex.Message });
@@ -126,4 +126,4 @@ namespace HD.Endpoints.Controllers.RedesSociales
             }
         }
     }
-}
+}   
