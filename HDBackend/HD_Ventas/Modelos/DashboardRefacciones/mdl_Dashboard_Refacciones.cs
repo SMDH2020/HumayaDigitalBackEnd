@@ -8,6 +8,7 @@ namespace HD_Ventas.Modelos.DashboardRefacciones
 {
     public class mdl_Dashboard_Refacciones
     {
+        public int ejercicio { get; set; }
         public int periodo { get; set; }
         public int id { get; set; }
         public int idsucursal { get; set; }
@@ -43,6 +44,9 @@ namespace HD_Ventas.Modelos.DashboardRefacciones
         public string? linea { get; set; }
         public string? subfamilia1 { get; set; }
         public string? subfamilia2 { get; set; }
+        public double precio_unitario { get; set; }
+        public double cantidad { get; set; }
+
 
     }
 }
