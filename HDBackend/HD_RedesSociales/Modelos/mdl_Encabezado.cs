@@ -22,5 +22,6 @@ namespace HD_RedesSociales.Modelos
 
         public string? CreateUser { get; set; }
         public DateTime? CreateDate { get; set; }
+        public bool Cargar { get; set; } = true; // NUEVO
     }
 }

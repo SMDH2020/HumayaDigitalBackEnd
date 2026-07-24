@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 18
-VisualStudioVersion = 18.4.11626.88
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36930.0 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HD_AccesoDatos", "HD_AccesoDatos\HD_AccesoDatos.csproj", "{C6569143-AD4B-4C60-AC73-B11B905DA4F8}"
 EndProject
@@ -52,6 +52,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HD_GestionActividades", "HD_GestionActividades\HD_GestionActividades.csproj", "{B7831A83-9065-4227-B449-28EE82D73BA8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HD_RedesSociales", "HD_RedesSociales\HD_RedesSociales.csproj", "{5171CF24-D2A6-475A-B0F3-F3FD937A3702}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HD_CentroMonitoreo", "HD_CentroMonitoreo\HD_CentroMonitoreo.csproj", "{E9FA394B-6A32-4100-8319-297B38E17114}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HD_Checador", "HD_Checador\HD_Checador.csproj", "{864083BC-0626-4DE6-881C-CB6821C46B10}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -159,6 +162,14 @@ Global
 		{5171CF24-D2A6-475A-B0F3-F3FD937A3702}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5171CF24-D2A6-475A-B0F3-F3FD937A3702}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5171CF24-D2A6-475A-B0F3-F3FD937A3702}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9FA394B-6A32-4100-8319-297B38E17114}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9FA394B-6A32-4100-8319-297B38E17114}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9FA394B-6A32-4100-8319-297B38E17114}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9FA394B-6A32-4100-8319-297B38E17114}.Release|Any CPU.Build.0 = Release|Any CPU
+		{864083BC-0626-4DE6-881C-CB6821C46B10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{864083BC-0626-4DE6-881C-CB6821C46B10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{864083BC-0626-4DE6-881C-CB6821C46B10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{864083BC-0626-4DE6-881C-CB6821C46B10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
