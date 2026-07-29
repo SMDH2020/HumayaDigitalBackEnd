@@ -8,5 +8,8 @@
         public string? idestado { get; set; }
         public double porcentaje { get; set; }
         public string? fechaactualizacion { get; set; }
+        public string? riesgo_principal { get; set; }
+        public string? pronostico { get; set; }
+
     }
 }
