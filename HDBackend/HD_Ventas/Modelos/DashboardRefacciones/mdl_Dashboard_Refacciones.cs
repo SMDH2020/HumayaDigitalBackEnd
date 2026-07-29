@@ -22,6 +22,7 @@ namespace HD_Ventas.Modelos.DashboardRefacciones
         public int numero_folio { get; set; }
         public string? descripcion_tipo { get; set; }
         public int origen { get; set; }
+        public string? idvendedor { get; set; }
         public string? vendedor { get; set; }
         public double descuento { get; set; }
         public double impuesto { get; set; }
