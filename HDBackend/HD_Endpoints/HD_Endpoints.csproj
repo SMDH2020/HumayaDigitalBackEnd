@@ -35,6 +35,7 @@
     <ProjectReference Include="..\HD_Fiscal\HD_Fiscal.csproj" />
     <ProjectReference Include="..\HD_Generales\HD_Generales.csproj" />
     <ProjectReference Include="..\HD_GestionActividades\HD_GestionActividades.csproj" />
+    <ProjectReference Include="..\HD_GestionProyectosTI\HD_GestionProyectosTI.csproj" />
     <ProjectReference Include="..\HD_Helpers\HD_Helpers.csproj" />
     <ProjectReference Include="..\HD_Mensajeria\HD_Mensajeria.csproj" />
     <ProjectReference Include="..\HD_Notifications\HD_Notifications.csproj" />
