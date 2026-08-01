@@ -27,6 +27,7 @@ namespace HD_GestionActividades.Consultas.Actividad
                     sla = actividad.sla,
                     tiempoSolucion = actividad.tiemposolucion,
                     tiempo = actividad.tiempo,
+                    prioridad = actividad.prioridad,
                     user = actividad.usuario,
                     estado = actividad.estado
                 };

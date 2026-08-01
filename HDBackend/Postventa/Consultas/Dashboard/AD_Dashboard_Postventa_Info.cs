@@ -38,7 +38,7 @@ namespace Postventa.Consultas.Dashboard
 
                 var result = await factory.SQL.QueryMultipleAsync("Postventa.sp_dashboard_nuevo", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 var view = new mdl_Dashboard_View();
-                view.dashboard_titulo = result.Read<string>().FirstOrDefault();
+                view.accesos = result.Read<mdl_Dashboard_Accesos>().FirstOrDefault();
                 view.proyecciones = result.Read<mdl_Dashboard_Proyecciones>().ToList();
                 view.servicio = result.Read<mdl_Dashboard_Servicio>().ToList();
                 view.refacciones = result.Read<mdl_Dashboard_Refacciones>().ToList();
