@@ -26,7 +26,10 @@ namespace HD_GestionActividades.Consultas.SeguimientoAct
                 comentarios = seguimiento.comentarios,
                 evidencia = seguimiento.evidencia,
                 user = seguimiento.usuario,
-                prioridad = seguimiento.prioridad
+                prioridad = seguimiento.prioridad,
+                idSucursal = seguimiento.idSucursal,
+                idDepartamento = seguimiento.idDepartamento,
+                datosExtra = seguimiento.datosExtra
             };
 
             var idGenerado = await factory.SQL.QueryFirstOrDefaultAsync<int>(

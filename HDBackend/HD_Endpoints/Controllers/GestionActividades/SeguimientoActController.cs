@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
 using HD.Endpoints.Controllers;
+using HD.Generales.Consultas;
 using HD.Notifications.SeguimientoActividades;
 using HD.Security;
 using HD_GestionActividades.Consultas.SeguimientoAct;
@@ -18,10 +19,36 @@ namespace HD.Endpoints.Controllers.GestionActividades
         private readonly IConfiguration _configuracion;
         private readonly ISesion _session;
 
+        // Rol con el que un usuario puede levantar un ticket a nombre de otra
+        // sucursal/departamento. Debe coincidir con el código validado en el
+        // frontend (SeguimientoActividadesNuevaScreen.js).
+        private const string ROL_ADMIN_SOPORTE = "ADTI";
+
         public SeguimientoActController(IConfiguration configuracion, ISesion session)
         {
             _configuracion = configuracion;
             _session = session;
+        }
+
+        // Verifica contra la base (no contra lo que mande el cliente) si el
+        // usuario actual tiene el rol de administrador de soporte. Se apoya
+        // en AD_ValidateUser (mismos datos que arma el login), sin repetir
+        // el flujo completo de autenticación. Ante cualquier falla al
+        // consultarlo, se asume que NO es admin (fail-closed).
+        private async Task<bool> EsAdminSoporteAsync(int idUsuario)
+        {
+            try
+            {
+                string cadenaConexionLogin = _configuracion["ConnectionStrings:Login"];
+                var datosSesion = await new AD_ValidateUser(cadenaConexionLogin)
+                    .UsuarioSesion(idUsuario.ToString());
+
+                return datosSesion?.roles?.Any(r => r.idrol == ROL_ADMIN_SOPORTE) ?? false;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         [HttpPost("Guardar")]
@@ -35,6 +62,16 @@ namespace HD.Endpoints.Controllers.GestionActividades
                 int usuarioActual = int.Parse(_session.usuario());
 
                 seguimiento.usuario = usuarioActual;
+
+                // Blindaje: idSucursal/idDepartamento solo se persisten si el
+                // usuario realmente tiene el rol ADTI verificado en el
+                // servidor. Cualquier otro usuario que los mande en el body
+                // los pierde aquí, sin importar lo que haya enviado el front.
+                if (!await EsAdminSoporteAsync(usuarioActual))
+                {
+                    seguimiento.idSucursal = null;
+                    seguimiento.idDepartamento = null;
+                }
 
                 string cadenaConexion = _configuracion["ConnectionStrings:Servicio"];
                 AD_SeguimientoAct ad = new AD_SeguimientoAct(cadenaConexion);
