@@ -24,6 +24,25 @@ namespace HD.Endpoints.Controllers.GestionActividades
         // frontend (SeguimientoActividadesNuevaScreen.js).
         private const string ROL_ADMIN_SOPORTE = "ADTI";
 
+        // Una vez que el ticket llega a uno de estos estatus ya no se cambia
+        // más manualmente desde aquí (el flujo de calificación/reactivación
+        // del creador es aparte, en SeguimientoAct/Calificar y /Reactivar).
+        private static readonly string[] ESTATUS_TERMINALES = { "F", "A", "R" };
+
+        // Las opciones para cambiar el estatus dependen del tipo de sala del
+        // ticket, no de un flujo fijo: las salas "normales" se trabajan
+        // (Proceso/Finalizado) y las de "autorización" (ej. Confirmación de
+        // depósitos) solo se aprueban o rechazan (Autorizado/Rechazado).
+        // Debe coincidir con obtenerTransicionesDisponibles en el frontend
+        // (Helpers/SeguimientoActEstatus.js) -- se valida aquí también
+        // porque no hay que confiar en lo que mande el cliente.
+        private static string[] CandidatosPorTipoSala(string? tipoSala)
+        {
+            return tipoSala == "A"
+                ? new[] { "A", "R" }
+                : new[] { "P", "F" };
+        }
+
         public SeguimientoActController(IConfiguration configuracion, ISesion session)
         {
             _configuracion = configuracion;
@@ -82,18 +101,21 @@ namespace HD.Endpoints.Controllers.GestionActividades
 
                 var modeloCorreo = new mdlSeguimiento_Email
                 {
-                    idSala = seguimiento.idSala, 
+                    idSala = seguimiento.idSala,
+                    idSolicitud = idGenerado,
+                    folio = data.folio,
+                    nombreSala = data.nombreSala,
                     actividad = data.nombreActividad,
                     comentarios = data.comentarios,
                     estatus = data.estatus,
-                    usuario = data.usuarioNombre
+                    usuario = data.usuarioNombre,
+                    accionPor = data.usuarioNombre
                 };
 
-                Console.WriteLine("ANTES DE ENVIAR CORREO");
-
-                await NotificacionSeguimientoAct.Enviar(modeloCorreo, cadenaConexion);
-
-                Console.WriteLine("DESPUES DE ENVIAR CORREO");
+                // Ticket recién creado -- se avisa a los responsables de la
+                // sala para que se enteren de que hay algo nuevo por atender.
+                var destinatariosCreacion = CorreosSeguimientoAct.ObtenerCorreosResponsables(seguimiento.idSala, cadenaConexion);
+                await NotificacionSeguimientoAct.Enviar(modeloCorreo, destinatariosCreacion);
 
                 return Ok(new { mensaje = "Guardado correctamente" });
             }
@@ -121,23 +143,108 @@ namespace HD.Endpoints.Controllers.GestionActividades
 
                 var data = await ad.ObtenerAsync(seguimiento.idSolicitud, usuarioActual);
 
+                // Quien edita puede ser el responsable o el propio creador
+                // (ver comentario de la ruta) -- se muestra a quién
+                // corresponde en el correo, no siempre al creador.
+                var contactoEditor = CorreosSeguimientoAct.ObtenerContactoEmpleado(usuarioActual, cadenaConexion);
+
                 var modeloCorreo = new mdlSeguimiento_Email
                 {
                     idSala = data.idSala,
+                    idSolicitud = data.idSolicitud,
+                    folio = data.folio,
+                    nombreSala = data.nombreSala,
                     actividad = data.nombreActividad,
                     comentarios = data.comentarios,
                     estatus = data.estatus,
-                    usuario = data.usuarioNombre
+                    usuario = data.usuarioNombre,
+                    accionPor = contactoEditor?.Nombre ?? data.usuarioNombre
                 };
 
-                Console.WriteLine("ANTES DE ENVIAR CORREO EDITAR");
-
-                
-                await NotificacionSeguimientoAct.Enviar(modeloCorreo, cadenaConexion);
-
-                Console.WriteLine("DESPUES DE ENVIAR CORREO EDITAR");
+                var destinatariosEdicion = CorreosSeguimientoAct.ObtenerCorreosResponsables(data.idSala, cadenaConexion);
+                await NotificacionSeguimientoAct.Enviar(modeloCorreo, destinatariosEdicion);
 
                 return Ok(new { mensaje = "Seguimiento editado correctamente" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { mensaje = ex.Message });
+            }
+        }
+
+        // Cambia el estatus del ticket -- separado de Editar() a propósito:
+        // Editar() es para el contenido (sala/actividad/comentario) y lo
+        // pueden usar el responsable o el creador; esto es exclusivamente
+        // para el flujo de atención del ticket y solo lo puede hacer el
+        // responsable de la sala, verificado aquí contra la base (no contra
+        // lo que mande el cliente), igual que el blindaje de sucursal en
+        // Guardar().
+        [HttpPost("CambiarEstatus")]
+        public async Task<IActionResult> CambiarEstatus([FromBody] mdl_SeguimientoAct model)
+        {
+            try
+            {
+                if (model == null || model.idSolicitud == 0 || string.IsNullOrEmpty(model.estatus))
+                    return BadRequest(new { mensaje = "Datos inválidos" });
+
+                int usuarioActual = int.Parse(_session.usuario());
+
+                string cadenaConexion = _configuracion["ConnectionStrings:Servicio"];
+                AD_SeguimientoAct ad = new AD_SeguimientoAct(cadenaConexion);
+
+                var ticket = await ad.ObtenerAsync(model.idSolicitud, usuarioActual);
+
+                if (ticket == null)
+                    return NotFound(new { mensaje = "Ticket no encontrado" });
+
+                if (ticket.esResponsable != 1)
+                    return BadRequest(new { mensaje = "Solo el responsable de esta sala puede cambiar el estatus de este ticket" });
+
+                if (ESTATUS_TERMINALES.Contains(ticket.estatus))
+                    return BadRequest(new { mensaje = $"El ticket ya está en un estatus final (\"{ticket.estatus}\") y no se puede modificar" });
+
+                var candidatos = CandidatosPorTipoSala(ticket.tipoSala).Where(c => c != ticket.estatus);
+
+                if (!candidatos.Contains(model.estatus))
+                    return BadRequest(new { mensaje = $"No se puede cambiar el estatus de \"{ticket.estatus}\" a \"{model.estatus}\"" });
+
+                await ad.CambiarEstatusAsync(model.idSolicitud, model.estatus, usuarioActual);
+
+                // El comentario del cambio de estatus es opcional -- si lo
+                // mandan, se guarda igual que cualquier otro comentario del
+                // historial (reutiliza SP_Cat_SeguimientoAct_AgregarComentario,
+                // que ya existe, sin tocar SQL nuevo).
+                if (!string.IsNullOrWhiteSpace(model.comentario))
+                    await ad.AgregarComentarioAsync(model.idSolicitud, model.comentario, usuarioActual);
+
+                var data = await ad.ObtenerAsync(model.idSolicitud, usuarioActual);
+
+                // Quien cambia el estatus siempre es el responsable (ya se
+                // validó arriba) -- el correo debe avisarle a quien LEVANTÓ
+                // el ticket, no a los propios responsables.
+                var contactoResponsable = CorreosSeguimientoAct.ObtenerContactoEmpleado(usuarioActual, cadenaConexion);
+                var contactoCreador = CorreosSeguimientoAct.ObtenerContactoEmpleado(data.createUser, cadenaConexion);
+
+                var modeloCorreo = new mdlSeguimiento_Email
+                {
+                    idSala = data.idSala,
+                    idSolicitud = data.idSolicitud,
+                    folio = data.folio,
+                    nombreSala = data.nombreSala,
+                    actividad = data.nombreActividad,
+                    comentarios = model.comentario,
+                    estatus = data.estatus,
+                    usuario = data.usuarioNombre,
+                    accionPor = contactoResponsable?.Nombre ?? data.usuarioNombre
+                };
+
+                var destinatariosEstatus = !string.IsNullOrWhiteSpace(contactoCreador?.Correo)
+                    ? new List<string> { contactoCreador!.Correo! }
+                    : new List<string>();
+
+                await NotificacionSeguimientoAct.Enviar(modeloCorreo, destinatariosEstatus);
+
+                return Ok(new { mensaje = "Estatus actualizado correctamente" });
             }
             catch (Exception ex)
             {
@@ -330,23 +437,48 @@ namespace HD.Endpoints.Controllers.GestionActividades
 
                 
                 await ad.AgregarComentarioAsync(model.idSolicitud, model.comentario, usuarioActual);
-                
+
                 var data = await ad.ObtenerAsync(model.idSolicitud, usuarioActual);
+
+                // "Y viceversa": si comenta el creador se avisa a los
+                // responsables de la sala; si comenta cualquier otra
+                // persona (típicamente el responsable atendiendo el
+                // ticket) se avisa a quien lo levantó.
+                bool actorEsCreador = data.createUser == usuarioActual;
+
+                List<string> destinatariosComentario;
+                string? nombreActor;
+
+                if (actorEsCreador)
+                {
+                    destinatariosComentario = CorreosSeguimientoAct.ObtenerCorreosResponsables(data.idSala, cadenaConexion);
+                    nombreActor = data.usuarioNombre;
+                }
+                else
+                {
+                    var contactoCreador = CorreosSeguimientoAct.ObtenerContactoEmpleado(data.createUser, cadenaConexion);
+                    var contactoActor = CorreosSeguimientoAct.ObtenerContactoEmpleado(usuarioActual, cadenaConexion);
+
+                    destinatariosComentario = !string.IsNullOrWhiteSpace(contactoCreador?.Correo)
+                        ? new List<string> { contactoCreador!.Correo! }
+                        : new List<string>();
+                    nombreActor = contactoActor?.Nombre;
+                }
 
                 var modeloCorreo = new mdlSeguimiento_Email
                 {
                     idSala = data.idSala,
+                    idSolicitud = data.idSolicitud,
+                    folio = data.folio,
+                    nombreSala = data.nombreSala,
                     actividad = data.nombreActividad,
                     comentarios = model.comentario,
-                    estatus = "M", 
-                    usuario = data.usuarioNombre
+                    estatus = "M",
+                    usuario = data.usuarioNombre,
+                    accionPor = nombreActor
                 };
 
-                Console.WriteLine("ENVIANDO CORREO DE COMENTARIO");
-
-                await NotificacionSeguimientoActComentario.Enviar(modeloCorreo, cadenaConexion);
-
-                Console.WriteLine("CORREO ENVIADO");
+                await NotificacionSeguimientoActComentario.Enviar(modeloCorreo, destinatariosComentario, paraCreador: !actorEsCreador);
 
                 return Ok(new { mensaje = "Comentario agregado correctamente" });
             }

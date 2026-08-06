@@ -7,7 +7,12 @@ namespace HD_GestionActividades.Modelos
         public int idSolicitud { get; set; }
         public int idSala { get; set; }
 
-        public string? nombreSala { get; set; }          
+        public string? nombreSala { get; set; }
+
+        // Cat_Sala.tiposala ("N" Normal / "A" Autorización). Determina qué
+        // opciones se ofrecen al cambiar el estatus del ticket (ver
+        // SeguimientoActController.CandidatosPorTipoSala).
+        public string? tipoSala { get; set; }
 
         public int idActividad { get; set; }
 

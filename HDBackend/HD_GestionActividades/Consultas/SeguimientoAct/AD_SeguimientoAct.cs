@@ -77,6 +77,30 @@ namespace HD_GestionActividades.Consultas.SeguimientoAct
         }
 
 
+        // Cambia únicamente el estatus (y registra el evento en el historial,
+        // ya que el propio SP lo hace). A diferencia de EditarAsync, no toca
+        // idSala/idActividad/comentarios/evidencia -- se usa desde el detalle
+        // del ticket (SeguimientoAct/CambiarEstatus), separado del edit de
+        // contenido para poder blindar cada uno con su propia regla de
+        // permisos en el controller.
+        public async Task CambiarEstatusAsync(int idSolicitud, string estatus, int user)
+        {
+            FactoryConection factory = new FactoryConection(CadenaConexion);
+
+            var parametros = new
+            {
+                idSolicitud,
+                estatus,
+                user
+            };
+
+            await factory.SQL.ExecuteAsync(
+                "Seguimiento_Actividades..SP_Cat_SeguimientoAct_CambiarEstatus",
+                parametros,
+                commandType: System.Data.CommandType.StoredProcedure
+            );
+        }
+
         public async Task<List<mdl_SeguimientoAct>> ListadoAsync(int idUsuario)
         {
             FactoryConection factory = new FactoryConection(CadenaConexion);
