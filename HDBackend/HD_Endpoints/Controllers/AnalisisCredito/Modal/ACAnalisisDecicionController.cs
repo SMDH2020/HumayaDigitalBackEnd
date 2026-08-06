@@ -27,6 +27,18 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Modal
 
         }
 
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerResumen(mdlSCAnalisis_Dedidion_View mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADAnalisisDecicion datos = new ADAnalisisDecicion(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.ObtenerResumen(mdl);
+            return Ok(result);
+
+        }
+
         [HttpGet]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> Condiciones(string folio)
