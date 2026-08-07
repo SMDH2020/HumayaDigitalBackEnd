@@ -10,6 +10,7 @@ namespace HD_Mensajeria.Modelos
     {
         public int idMensaje { get; set; }
         public string numeroTelefono { get; set; }
+        public string folioidentificador { get; set; }
         public string mensaje { get; set; }
         public string mensajePlantilla { get; set; }
         public string documento { get; set; }
