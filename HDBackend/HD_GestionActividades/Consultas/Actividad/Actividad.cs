@@ -140,5 +140,93 @@ namespace HD_GestionActividades.Consultas.Actividad
                 );
             }
         }
+
+        // ---------------------------------------------------------------
+        // Recurrencia (tickets automáticos). Aditivo -- no toca
+        // Guardar/Listado/Obtener/ActividadesPorSala de arriba.
+        // ---------------------------------------------------------------
+
+        public async Task GuardarRecurrencia(mdl_ActividadRecurrencia recurrencia)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+
+                var parametros = new
+                {
+                    idActividad = recurrencia.idActividad,
+                    esRecurrente = recurrencia.esRecurrente,
+                    idSalaRecurrente = recurrencia.idSalaRecurrente,
+                    idUsuarioRecurrente = recurrencia.idUsuarioRecurrente,
+                    frecuenciaRecurrente = recurrencia.frecuenciaRecurrente,
+                    diaRecurrente = recurrencia.diaRecurrente,
+                    user = recurrencia.usuario
+                };
+
+                await factory.SQL.ExecuteAsync(
+                    "Seguimiento_Actividades..SP_Cat_Actividad_GuardarRecurrencia",
+                    parametros,
+                    commandType: System.Data.CommandType.StoredProcedure
+                );
+
+                factory.SQL.Close();
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(
+                    System.Net.HttpStatusCode.InternalServerError,
+                    new { Mensaje = ex.Message }
+                );
+            }
+        }
+
+        public async Task<mdl_ActividadRecurrencia> ObtenerRecurrencia(int idActividad)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+
+                var parametros = new { idActividad };
+
+                var result = await factory.SQL.QueryFirstOrDefaultAsync<mdl_ActividadRecurrencia>(
+                    "Seguimiento_Actividades..SP_Cat_Actividad_ObtenerRecurrencia",
+                    parametros,
+                    commandType: System.Data.CommandType.StoredProcedure
+                );
+
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(
+                    System.Net.HttpStatusCode.InternalServerError,
+                    new { Mensaje = ex.Message }
+                );
+            }
+        }
+
+        public async Task<List<mdl_ActividadRecurrenciaResumen>> ListadoRecurrencia()
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+
+                var result = await factory.SQL.QueryAsync<mdl_ActividadRecurrenciaResumen>(
+                    "Seguimiento_Actividades..SP_Cat_Actividad_ListadoRecurrencia",
+                    commandType: System.Data.CommandType.StoredProcedure
+                );
+
+                factory.SQL.Close();
+                return result.ToList();
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(
+                    System.Net.HttpStatusCode.InternalServerError,
+                    new { Mensaje = ex.Message }
+                );
+            }
+        }
     }
 }

@@ -253,7 +253,72 @@ namespace HD_GestionActividades.Consultas.SeguimientoAct
                 parametros,
                 commandType: CommandType.StoredProcedure
             );
-        }   
+        }
+
+        // ---------------------------------------------------------------
+        // Checklist de subactividades (opcional por actividad). Todo lo de
+        // aquí abajo es aditivo -- no toca Guardar/Editar/CambiarEstatus de
+        // arriba; el controller decide cuándo llamarlo.
+        // ---------------------------------------------------------------
+
+        // Clona el checklist configurado para la actividad hacia el ticket
+        // recién creado (si la actividad no tiene checklist, no inserta
+        // nada y el ticket se comporta exactamente igual que antes).
+        public async Task ClonarSubActividadesAsync(int idSolicitud, int idActividad, int user)
+        {
+            FactoryConection factory = new FactoryConection(CadenaConexion);
+
+            var parametros = new { idSolicitud, idActividad, user };
+
+            await factory.SQL.ExecuteAsync(
+                "Seguimiento_Actividades..SP_Cat_SeguimientoAct_SubActividad_Clonar",
+                parametros,
+                commandType: CommandType.StoredProcedure
+            );
+        }
+
+        public async Task<List<mdl_SeguimientoAct_SubActividad>> SubActividadesAsync(int idSolicitud)
+        {
+            FactoryConection factory = new FactoryConection(CadenaConexion);
+
+            var parametros = new { idSolicitud };
+
+            var result = await factory.SQL.QueryAsync<mdl_SeguimientoAct_SubActividad>(
+                "Seguimiento_Actividades..SP_Cat_SeguimientoAct_SubActividad_Listado",
+                parametros,
+                commandType: CommandType.StoredProcedure
+            );
+
+            return result.ToList();
+        }
+
+        public async Task MarcarSubActividadAsync(int idSegActSubActividad, bool completado, int user)
+        {
+            FactoryConection factory = new FactoryConection(CadenaConexion);
+
+            var parametros = new { idSegActSubActividad, completado, user };
+
+            await factory.SQL.ExecuteAsync(
+                "Seguimiento_Actividades..SP_Cat_SeguimientoAct_SubActividad_Marcar",
+                parametros,
+                commandType: CommandType.StoredProcedure
+            );
+        }
+
+        // 0 si el ticket no tiene checklist, o si ya se completó todo --
+        // en ambos casos no debe bloquear el paso a Finalizado.
+        public async Task<int> ContarSubActividadesPendientesAsync(int idSolicitud)
+        {
+            FactoryConection factory = new FactoryConection(CadenaConexion);
+
+            var parametros = new { idSolicitud };
+
+            return await factory.SQL.QueryFirstOrDefaultAsync<int>(
+                "Seguimiento_Actividades..SP_Cat_SeguimientoAct_SubActividad_ContarPendientes",
+                parametros,
+                commandType: CommandType.StoredProcedure
+            );
+        }
     }
 
 }

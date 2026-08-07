@@ -97,6 +97,11 @@ namespace HD.Endpoints.Controllers.GestionActividades
 
                 int idGenerado = await ad.GuardarAsync(seguimiento);
 
+                // Si la actividad tiene checklist configurado (Cat_SubActividad),
+                // se clona hacia este ticket. Si no tiene ninguno, esto no
+                // inserta nada -- el ticket se comporta igual que siempre.
+                await ad.ClonarSubActividadesAsync(idGenerado, seguimiento.idActividad, usuarioActual);
+
                 var data = await ad.ObtenerAsync(idGenerado, usuarioActual);
 
                 var modeloCorreo = new mdlSeguimiento_Email
@@ -207,6 +212,17 @@ namespace HD.Endpoints.Controllers.GestionActividades
 
                 if (!candidatos.Contains(model.estatus))
                     return BadRequest(new { mensaje = $"No se puede cambiar el estatus de \"{ticket.estatus}\" a \"{model.estatus}\"" });
+
+                // No se puede Finalizar un ticket mientras le queden
+                // subactividades del checklist sin marcar. Si el ticket no
+                // tiene checklist (la mayoría, hoy) esto siempre da 0 y no
+                // afecta en nada el flujo actual.
+                if (model.estatus == "F")
+                {
+                    int pendientes = await ad.ContarSubActividadesPendientesAsync(model.idSolicitud);
+                    if (pendientes > 0)
+                        return BadRequest(new { mensaje = $"No puedes finalizar este ticket: quedan {pendientes} subactividad(es) del checklist sin completar." });
+                }
 
                 await ad.CambiarEstatusAsync(model.idSolicitud, model.estatus, usuarioActual);
 
@@ -387,6 +403,62 @@ namespace HD.Endpoints.Controllers.GestionActividades
                 var resultado = await ad.HistorialAsync(id);
 
                 return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { mensaje = ex.Message });
+            }
+        }
+
+        // Checklist de subactividades del ticket (vacío si la actividad no
+        // tiene ninguna configurada). Cualquiera con acceso al ticket puede
+        // verlo; solo el responsable puede marcarlo (ver MarcarSubActividad).
+        [HttpGet("SubActividades/{id}")]
+        public async Task<IActionResult> SubActividades(int id)
+        {
+            try
+            {
+                string cadenaConexion = _configuracion["ConnectionStrings:Servicio"];
+                AD_SeguimientoAct ad = new AD_SeguimientoAct(cadenaConexion);
+
+                var resultado = await ad.SubActividadesAsync(id);
+
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { mensaje = ex.Message });
+            }
+        }
+
+        // Marca (o desmarca) una subactividad del checklist. Restringido al
+        // responsable de la sala del ticket -- mismo criterio que
+        // CambiarEstatus, verificado aquí contra la base, no contra lo que
+        // mande el cliente.
+        [HttpPost("MarcarSubActividad")]
+        public async Task<IActionResult> MarcarSubActividad([FromBody] mdl_SeguimientoAct_SubActividad model)
+        {
+            try
+            {
+                if (model == null || model.idSegActSubActividad == 0)
+                    return BadRequest(new { mensaje = "Datos inválidos" });
+
+                int usuarioActual = int.Parse(_session.usuario());
+
+                string cadenaConexion = _configuracion["ConnectionStrings:Servicio"];
+                AD_SeguimientoAct ad = new AD_SeguimientoAct(cadenaConexion);
+
+                var ticket = await ad.ObtenerAsync(model.idSolicitud, usuarioActual);
+
+                if (ticket == null)
+                    return NotFound(new { mensaje = "Ticket no encontrado" });
+
+                if (ticket.esResponsable != 1)
+                    return BadRequest(new { mensaje = "Solo el responsable de esta sala puede marcar el checklist de este ticket" });
+
+                await ad.MarcarSubActividadAsync(model.idSegActSubActividad, model.completado, usuarioActual);
+
+                return Ok(new { mensaje = "Checklist actualizado correctamente" });
             }
             catch (Exception ex)
             {
