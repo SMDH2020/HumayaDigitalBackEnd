@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CarteraTransito\CarteraTransito.csproj" />
     <ProjectReference Include="..\HD_AccesoDatos\HD_AccesoDatos.csproj" />
     <ProjectReference Include="..\HD_Administracion\HD_Administracion.csproj" />
     <ProjectReference Include="..\HD_Auditoria\HD_Auditoria.csproj" />
