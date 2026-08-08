@@ -8,5 +8,10 @@
         public string? tiempoestimado { get; set; }
         public string? tiempotranscurrido { get; set; }
         public string? icono { get; set; }
+        public int idproceso { get; set; }
+        public int documentos_totales { get; set; }
+        public int diferencias_documentos_tasas { get; set; }
+        public int diferencias_documentos_facturacion { get; set; }
+
     }
 }

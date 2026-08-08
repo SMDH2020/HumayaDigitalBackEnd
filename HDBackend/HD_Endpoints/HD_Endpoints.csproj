@@ -23,10 +23,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CarteraTransito\CarteraTransito.csproj" />
     <ProjectReference Include="..\HD_AccesoDatos\HD_AccesoDatos.csproj" />
     <ProjectReference Include="..\HD_Administracion\HD_Administracion.csproj" />
     <ProjectReference Include="..\HD_Auditoria\HD_Auditoria.csproj" />
     <ProjectReference Include="..\HD_Buro\HD_Buro.csproj" />
+    <ProjectReference Include="..\HD_CentroMonitoreo\HD_CentroMonitoreo.csproj" />
     <ProjectReference Include="..\HD_Clientes\HD_Clientes.csproj" />
     <ProjectReference Include="..\HD_Cobranza\HD_Cobranza.csproj" />
     <ProjectReference Include="..\HD_Dashboard\HD_Dashboard.csproj" />
@@ -34,6 +36,7 @@
     <ProjectReference Include="..\HD_Fiscal\HD_Fiscal.csproj" />
     <ProjectReference Include="..\HD_Generales\HD_Generales.csproj" />
     <ProjectReference Include="..\HD_GestionActividades\HD_GestionActividades.csproj" />
+    <ProjectReference Include="..\HD_GestionProyectosTI\HD_GestionProyectosTI.csproj" />
     <ProjectReference Include="..\HD_Helpers\HD_Helpers.csproj" />
     <ProjectReference Include="..\HD_Mensajeria\HD_Mensajeria.csproj" />
     <ProjectReference Include="..\HD_Notifications\HD_Notifications.csproj" />

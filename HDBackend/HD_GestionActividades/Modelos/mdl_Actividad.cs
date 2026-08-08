@@ -14,6 +14,8 @@
 
         public string? tiempo { get; set; }
 
+        public string? prioridad { get; set; }   // 'A' Alta / 'M' Mediana / 'B' Baja -- ya no la captura el usuario, la define este catálogo
+
         public bool estado { get; set; }
 
         public int usuario { get; set; }
