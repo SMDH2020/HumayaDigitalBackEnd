@@ -456,6 +456,12 @@ namespace HD.Endpoints.Controllers.GestionActividades
                 if (ticket.esResponsable != 1)
                     return BadRequest(new { mensaje = "Solo el responsable de esta sala puede marcar el checklist de este ticket" });
 
+                // Ticket ya cerrado (Finalizado/Aceptado/Rechazado): el
+                // checklist queda congelado tal como quedó, ya no se puede
+                // seguir marcando/desmarcando.
+                if (ESTATUS_TERMINALES.Contains(ticket.estatus))
+                    return BadRequest(new { mensaje = $"El ticket ya está en un estatus final (\"{ticket.estatus}\") y su checklist no se puede modificar" });
+
                 await ad.MarcarSubActividadAsync(model.idSegActSubActividad, model.completado, usuarioActual);
 
                 return Ok(new { mensaje = "Checklist actualizado correctamente" });
