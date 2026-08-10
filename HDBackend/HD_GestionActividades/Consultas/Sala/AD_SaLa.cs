@@ -92,5 +92,60 @@ namespace HD_GestionActividades.Consultas.Sala
             }
         }
 
+        // Campos extra configurables por sala (JSON). Se maneja con SPs
+        // propios, separados de Guardar/Obtener/Listado, para no tocar la
+        // lógica existente del catálogo de salas.
+        public async Task<mdl_Sala> ObtenerCamposExtra(int idSala)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+
+                var parametros = new { idSala };
+
+                var result = await factory.SQL.QueryFirstOrDefaultAsync<mdl_Sala>(
+                    "Seguimiento_Actividades..SP_Cat_Sala_CamposExtra_Obtener",
+                    parametros,
+                    commandType: System.Data.CommandType.StoredProcedure
+                );
+
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError,
+                    new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task GuardarCamposExtra(int idSala, string camposExtra, int user)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+
+                var parametros = new
+                {
+                    idSala,
+                    camposExtra,
+                    user
+                };
+
+                await factory.SQL.ExecuteAsync(
+                    "Seguimiento_Actividades..SP_Cat_Sala_CamposExtra_Guardar",
+                    parametros,
+                    commandType: System.Data.CommandType.StoredProcedure
+                );
+
+                factory.SQL.Close();
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError,
+                    new { Mensaje = ex.Message });
+            }
+        }
+
     }
 }
