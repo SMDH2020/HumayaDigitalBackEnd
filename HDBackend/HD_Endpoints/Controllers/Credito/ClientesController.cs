@@ -1,4 +1,5 @@
 ﻿using HD.Clientes.Consultas.Clientes;
+using HD.Clientes.Consultas.CRM;
 using HD.Clientes.Consultas.Cultivos;
 using HD.Clientes.Modelos;
 using HD.Security;
@@ -103,7 +104,15 @@ namespace HD.Endpoints.Controllers.Credito
             AD_Clientes_BuscarRFCOrRazonSocial datos = new AD_Clientes_BuscarRFCOrRazonSocial(CadenaConexion);
             var result = await datos.Listado(value);
             return Ok(result);
-
+        }
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetListadoClientesCRM()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Datos_CRM datos = new AD_Datos_CRM(CadenaConexion);
+            var result = await datos.Listado();
+            return Ok(result);
         }
 
         [HttpGet]

@@ -46,12 +46,10 @@ namespace HD.Clientes.Modelos
         [RegularExpression(@"^[COR]+$", ErrorMessage = "El campo Tipo de Venta debe estar formado por las siguientes opciones [CO][CR]")]
         [StringLength(2, MinimumLength = 2, ErrorMessage = "El campo Tipo de Venta debe estar formado por 2 digitos")]
         public string tipo_venta { get; set; } = "CR";
-
         public bool estatus { get; set; } = true;
-
-
         public string? usuario { get; set; } = "";
         public string? referencia { get; set; } = "";
         public string? idvendedor { get; set; } = "";
+        public string? cliente_principal { get; set; } = "";
     }
 }
