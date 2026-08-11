@@ -15,6 +15,7 @@ namespace HD.Clientes.Modelos.CRM
         public string tipodomicilio { get; set; }
         public string referencia1 { get; set; }
         public string referencia2 { get; set; }
+        public bool estatus { get; set; }
         public int idlocalidad { get; set; }
         public string localidad { get; set; }
         public int idmunicipio { get; set; }

@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
+using HD.Clientes.Modelos;
 using HD.Clientes.Modelos.CRM;
 
 namespace HD.Clientes.Consultas.CRM
@@ -46,9 +47,15 @@ namespace HD.Clientes.Consultas.CRM
                 mdl.opciones_estatus = result.Read<mdl_Opciones_Generales_CRM>().ToList();
                 mdl.opciones_origen = result.Read<mdl_Opciones_Generales_CRM>().ToList();
                 mdl.opciones_tipo = result.Read<mdl_Opciones_Generales_CRM>().ToList();
+                mdl.opciones_clasificacion = result.Read<mdl_Opciones_Generales_CRM>().ToList();
+                mdl.opciones_superficie = result.Read<mdl_Opciones_Generales_CRM>().ToList();
                 mdl.info_ubicacion_cliente = result.Read<mdl_Info_Cliente_Ubicacion_CRM>().ToList();
                 mdl.opciones_estado = result.Read<mdl_Opciones_Estado_CRM>().ToList();
                 mdl.opciones_municipio = result.Read<mdl_Opciones_Municipio_CRM>().ToList();
+                mdl.info_Facturacion_cliente = result.Read<mdl_Info_Cliente_Facturacion_CRM>().FirstOrDefault();
+                mdl.opciones_lineas = result.Read<mdl_Opciones_Lineas_CRM>().ToList();
+                mdl.opciones_giros = result.Read<mdl_Opciones_Giros_CRM>().ToList();
+                mdl.info_clasificacion_cliente = result.Read<mdl_Info_Cliente_Clasificación_CRM>().FirstOrDefault();
 
                 factory.SQL.Close();
                 return mdl;
@@ -74,6 +81,35 @@ namespace HD.Clientes.Consultas.CRM
             }
             catch (System.Exception ex)
             {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<int> GuardarClasificacion(mdl_Guarda_Clasificacion_Cliente_CRM mdl)
+        {
+            FactoryConection factory = new FactoryConection(CadenaConexion);
+            try
+            {
+                var parametros = new
+                {
+                    idcliente = mdl.idcliente,
+                    lineas = mdl.lineas,
+                    giros = mdl.giros,
+                    superficie = mdl.superficie,
+                    usuario = mdl.usuario
+                };
+
+                await factory.SQL.ExecuteAsync(
+                    "CRM.sp_Guardar_Clasificacion_CRM",
+                    parametros,
+                    commandType: System.Data.CommandType.StoredProcedure);
+
+                factory.SQL.Close();
+                return mdl.idcliente;
+            }
+            catch (Exception ex)
+            {
+                factory.SQL.Close();
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
