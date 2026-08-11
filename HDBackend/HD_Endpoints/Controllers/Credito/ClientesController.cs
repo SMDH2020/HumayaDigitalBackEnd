@@ -158,5 +158,31 @@ namespace HD.Endpoints.Controllers.Credito
             return Ok(new { mensaje = "datos cargados con exito" });
 
         }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarClasificacion(mdl_Cliente_Clasificacion mdl)
+        {
+
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Clientes_Clasificacion_Guardar datos = new AD_Clientes_Clasificacion_Guardar(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.GuardarClasificacion(mdl);
+            return Ok(result);
+
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarDatosFacturacion(mdl_Datos_Facturacion mdl)
+        {
+
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Clientes_Datos_Facturacion_Guardar datos = new AD_Clientes_Datos_Facturacion_Guardar(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.GuardarDatosFacturacion(mdl);
+            return Ok(result);
+
+        }
     }
 }
