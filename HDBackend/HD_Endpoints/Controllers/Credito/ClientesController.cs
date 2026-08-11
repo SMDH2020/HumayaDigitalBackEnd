@@ -112,7 +112,18 @@ namespace HD.Endpoints.Controllers.Credito
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Datos_CRM datos = new AD_Datos_CRM(CadenaConexion);
-            var result = await datos.Listado();
+            var usuario = Sesion.usuario();
+            var result = await datos.Listado(usuario);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetDashboardCRM(int idcliente)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Dashboard_CRM datos = new AD_Dashboard_CRM(CadenaConexion);
+            var result = await datos.obtenerDashboard(idcliente);
             return Ok(result);
         }
 
