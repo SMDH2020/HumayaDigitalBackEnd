@@ -32,7 +32,10 @@ namespace HD.Clientes.Consultas.Clientes
                     tipo_venta = mdl.tipo_venta,
                     estatus = mdl.estatus,
                     usuario = mdl.usuario,
-                    cliente_principal = mdl.cliente_principal
+                    cliente_principal = mdl.cliente_principal,
+                    estatus_cliente = mdl.estatus_cliente,
+                    origen = mdl.origen,
+                    tipo_cliente = mdl.tipo_cliente
                 };
                 mdl.idcliente= await factory.SQL.QueryFirstAsync<int>("Credito.sp_clientes_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();

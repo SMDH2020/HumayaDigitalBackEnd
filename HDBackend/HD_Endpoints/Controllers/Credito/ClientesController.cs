@@ -117,6 +117,26 @@ namespace HD.Endpoints.Controllers.Credito
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetInfoClienteID(int idcliente)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Datos_CRM datos = new AD_Datos_CRM(CadenaConexion);
+            var result = await datos.Obtener_Info_Cliente(idcliente);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetLocalidadesCRM(string codigo_postal = null, int? idmunicipio = null)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Datos_CRM datos = new AD_Datos_CRM(CadenaConexion);
+            var result = await datos.Listado_localidades(codigo_postal, idmunicipio);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> Coincidencia(string cliente)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];

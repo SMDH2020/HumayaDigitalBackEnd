@@ -27,7 +27,8 @@ namespace HD.Clientes.Consultas.ClientesDomicilio
                     referencia1=mdl.referencia1,
                     referencia2=mdl.referencia2,
                     estatus = mdl.estatus,
-                    usuario = mdl.usuario
+                    usuario = mdl.usuario,
+                    ubicacion = mdl.ubicacion
                 };
                 IEnumerable<mdlClientesDomicilioList>  result =await factory.SQL.QueryAsync<mdlClientesDomicilioList>("Credito.sp_Clientes_Domicilio_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
