@@ -15,12 +15,12 @@ namespace HD.Endpoints.Controllers.Credito
             Sesion = sesion;
         }
         [HttpPost]
-        public async Task<ActionResult> Post(mdlClientes_Domicilio mdl)
+        public async Task<ActionResult> Post(mdlClienteDomicilioArray mdl)
         {
 
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_ClientesDomicilio_Guardar datos = new AD_ClientesDomicilio_Guardar(CadenaConexion);
-            mdl.usuario = Sesion.usuario();
+            mdl.usuario = int.Parse(Sesion.usuario());
             var result =await datos.Guardar(mdl);
             return Ok(new { mensaje = "datos cargados con exito", domicilios = result });
 

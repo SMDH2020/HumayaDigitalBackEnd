@@ -2,6 +2,7 @@
 using HD.Clientes.Consultas.CRM;
 using HD.Clientes.Consultas.Cultivos;
 using HD.Clientes.Modelos;
+using HD.Clientes.Modelos.CRM;
 using HD.Security;
 using HD_Cobranza.Capturas.ConvenioPago;
 using Microsoft.AspNetCore.Mvc;
@@ -183,6 +184,17 @@ namespace HD.Endpoints.Controllers.Credito
             var result = await datos.GuardarDatosFacturacion(mdl);
             return Ok(result);
 
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<IActionResult> GuardarDatosClasificacion(mdl_Guarda_Clasificacion_Cliente_CRM mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Datos_CRM datos = new AD_Datos_CRM(CadenaConexion);
+            mdl.usuario = int.Parse(Sesion.usuario());
+            var result = await datos.GuardarClasificacion(mdl);
+            return Ok(result);
         }
     }
 }
