@@ -39,5 +39,7 @@ namespace HD.Clientes.Modelos
         public bool estatus { get; set; } = true;
 
         public string? usuario { get; set; } = "";
+        public string? ubicacion { get; set; } = "";
+
     }
 }
