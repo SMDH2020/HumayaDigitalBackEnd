@@ -50,6 +50,11 @@ namespace HD.Clientes.Modelos
         public string? usuario { get; set; } = "";
         public string? referencia { get; set; } = "";
         public string? idvendedor { get; set; } = "";
-        public string? cliente_principal { get; set; } = "";
+        public string? cliente_principal { get; set; }
+        public int? estatus_cliente { get; set; }
+        public int? origen { get; set; }
+        public int? tipo_cliente { get; set; }
+
+
     }
 }

@@ -2,6 +2,7 @@
 using HD.Clientes.Consultas.CRM;
 using HD.Clientes.Consultas.Cultivos;
 using HD.Clientes.Modelos;
+using HD.Clientes.Modelos.CRM;
 using HD.Security;
 using HD_Cobranza.Capturas.ConvenioPago;
 using Microsoft.AspNetCore.Mvc;
@@ -117,6 +118,26 @@ namespace HD.Endpoints.Controllers.Credito
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetInfoClienteID(int idcliente)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Datos_CRM datos = new AD_Datos_CRM(CadenaConexion);
+            var result = await datos.Obtener_Info_Cliente(idcliente);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetLocalidadesCRM(string codigo_postal = null, int? idmunicipio = null)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Datos_CRM datos = new AD_Datos_CRM(CadenaConexion);
+            var result = await datos.Listado_localidades(codigo_postal, idmunicipio);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> Coincidencia(string cliente)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
@@ -137,6 +158,43 @@ namespace HD.Endpoints.Controllers.Credito
             await datos.GuardarRel(mdl);
             return Ok(new { mensaje = "datos cargados con exito" });
 
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarClasificacion(mdl_Cliente_Clasificacion mdl)
+        {
+
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Clientes_Clasificacion_Guardar datos = new AD_Clientes_Clasificacion_Guardar(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.GuardarClasificacion(mdl);
+            return Ok(result);
+
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarDatosFacturacion(mdl_Datos_Facturacion mdl)
+        {
+
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Clientes_Datos_Facturacion_Guardar datos = new AD_Clientes_Datos_Facturacion_Guardar(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.GuardarDatosFacturacion(mdl);
+            return Ok(result);
+
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<IActionResult> GuardarDatosClasificacion(mdl_Guarda_Clasificacion_Cliente_CRM mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Datos_CRM datos = new AD_Datos_CRM(CadenaConexion);
+            mdl.usuario = int.Parse(Sesion.usuario());
+            var result = await datos.GuardarClasificacion(mdl);
+            return Ok(result);
         }
     }
 }
