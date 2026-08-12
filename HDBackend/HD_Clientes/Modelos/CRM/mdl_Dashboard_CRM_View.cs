@@ -10,7 +10,7 @@ namespace HD.Clientes.Modelos.CRM
     {
         public mdl_Dashboard_CRM_Solicitudes solicitudes { get; set; }
         public mdl_Dashboard_CRM_Cotizaciones cotizaciones { get; set; }
-
+        public IEnumerable<mdl_Dashboard_CRM_Credito> lineasCredito { get; set; }
 
     }
 }
