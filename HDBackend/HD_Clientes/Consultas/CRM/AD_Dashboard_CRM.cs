@@ -32,6 +32,17 @@ namespace HD.Clientes.Consultas.CRM
                 mdl.solicitudes = result.Read<mdl_Dashboard_CRM_Solicitudes>().FirstOrDefault();
                 mdl.cotizaciones = result.Read<mdl_Dashboard_CRM_Cotizaciones>().FirstOrDefault();
                 mdl.lineasCredito = result.Read<mdl_Dashboard_CRM_Credito>().ToList();
+                mdl.referencias = result.Read<mdl_Dashboard_CRM_Referencias>().FirstOrDefault();
+
+                if (mdl.referencias == null)
+                {
+                    mdl.referencias = new mdl_Dashboard_CRM_Referencias
+                    {
+                        total = 0,
+                        referencia = "",
+                        idcliente = "",
+                    };
+                }
                 factory.SQL.Close();
                 return mdl;
             }
