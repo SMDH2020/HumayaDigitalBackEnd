@@ -1,5 +1,6 @@
 ﻿using HD.Clientes.Consultas.ClientesEQUIP;
 using HD.Clientes.Modelos;
+using HD.Clientes.Modelos.CRM;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,6 +23,19 @@ namespace HD.Endpoints.Controllers.Credito
             AD_ClientesEQUIP_Guardar datos = new AD_ClientesEQUIP_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.Guardar(mdl);
+            return Ok(result);
+
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarArrayEquip(mdl_Guarda_Equip_Array_CRM mdl)
+        {
+
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_ClientesEQUIP_Guardar datos = new AD_ClientesEQUIP_Guardar(CadenaConexion);
+            mdl.usuario = int.Parse(Sesion.usuario());
+            var result = await datos.GuardarArray(mdl);
             return Ok(result);
 
         }
