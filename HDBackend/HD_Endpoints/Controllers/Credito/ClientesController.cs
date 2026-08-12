@@ -196,5 +196,27 @@ namespace HD.Endpoints.Controllers.Credito
             var result = await datos.GuardarClasificacion(mdl);
             return Ok(result);
         }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<IActionResult> GuardarAsesorCliente(mdl_Guarda_Asesor_Cliente_CRM mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Datos_CRM datos = new AD_Datos_CRM(CadenaConexion);
+            mdl.Usuario = int.Parse(Sesion.usuario());
+            var result = await datos.GuardaAsesorCliente(mdl);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> CancelaAsesorCliente(int idcliente, int idvendedor, int idlinea)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Datos_CRM datos = new AD_Datos_CRM(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.CancelaAsesorCliente(idcliente, idvendedor, idlinea, usuario);
+            return Ok(result);
+        }
     }
 }

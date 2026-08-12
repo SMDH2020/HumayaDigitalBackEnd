@@ -18,7 +18,7 @@ namespace HD.Clientes.Consultas.CRM
             {
                 var parametros = new
                 {
-                    
+
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdl_Listado_Clientes_CRM> result = await factory.SQL.QueryAsync<mdl_Listado_Clientes_CRM>("Credito.sp_Get_Clientes_CRM", parametros, commandType: System.Data.CommandType.StoredProcedure);
@@ -56,6 +56,9 @@ namespace HD.Clientes.Consultas.CRM
                 mdl.opciones_lineas = result.Read<mdl_Opciones_Lineas_CRM>().ToList();
                 mdl.opciones_giros = result.Read<mdl_Opciones_Giros_CRM>().ToList();
                 mdl.info_clasificacion_cliente = result.Read<mdl_Info_Cliente_Clasificación_CRM>().FirstOrDefault();
+                mdl.opciones_asesor = result.Read<mdl_Opciones_Asesor>().ToList();
+                mdl.info_asesores_cliente = result.Read<mdl_Info_Cliente_Asesores_CRM>().ToList();
+
 
                 factory.SQL.Close();
                 return mdl;
@@ -110,6 +113,77 @@ namespace HD.Clientes.Consultas.CRM
             catch (Exception ex)
             {
                 factory.SQL.Close();
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<IEnumerable<mdl_Info_Cliente_Asesores_CRM>> GuardaAsesorCliente(mdl_Guarda_Asesor_Cliente_CRM modelo)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    idcliente = modelo.IdCliente,
+                    idvendedor = modelo.IdVendedor,
+                    idlinea = modelo.IdLinea,
+                    usuario = modelo.Usuario
+                };
+
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Info_Cliente_Asesores_CRM> result = await factory.SQL.QueryAsync<mdl_Info_Cliente_Asesores_CRM>(
+                    "Credito.sp_rel_Cliente_Asesor_por_linea_Guardar",
+                    parametros,
+                    commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<IEnumerable<mdl_Info_Cliente_Asesores_CRM>> CancelaAsesorCliente(int idcliente, int idvendedor, int idlinea, int usuario)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    idcliente,
+                    idvendedor,
+                    idlinea,
+                    usuario
+                };
+
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Info_Cliente_Asesores_CRM> result = await factory.SQL.QueryAsync<mdl_Info_Cliente_Asesores_CRM>("Credito.Cancela_Asesor_CRM", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<IEnumerable<mdlClientes_EQUIP>> GuardaEquipArray(int idcliente, string equip, int usuario)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    idcliente,
+                    equip,
+                    usuario
+                };
+
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdlClientes_EQUIP> result = await factory.SQL.QueryAsync<mdlClientes_EQUIP>("Credito.Cancela_Asesor_CRM", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }

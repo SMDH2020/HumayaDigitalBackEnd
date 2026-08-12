@@ -25,7 +25,8 @@ namespace HD.Clientes.Consultas.ClientesDatosContacto
                     valor = mdl.valor,
                     comentarios=mdl.comentarios,
                     estatus = mdl.estatus,
-                    usuario = mdl.usuario
+                    usuario = mdl.usuario,
+                    responsable = mdl.responsable
                 };
                 IEnumerable<mdlClientes_Datos_Contacto> result = await factory.SQL.QueryAsync<mdlClientes_Datos_Contacto>("Credito.sp_clientes_datos_contacto_Guardar_Dpto", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();

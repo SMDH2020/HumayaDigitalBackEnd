@@ -15,6 +15,7 @@
         public IEnumerable<mdl_Opciones_Lineas_CRM> opciones_lineas { get; set; }
         public IEnumerable<mdl_Opciones_Giros_CRM> opciones_giros { get; set; }
         public mdl_Info_Cliente_Clasificación_CRM info_clasificacion_cliente { get; set; }
-
+        public IEnumerable<mdl_Opciones_Asesor> opciones_asesor { get; set; }
+        public IEnumerable<mdl_Info_Cliente_Asesores_CRM> info_asesores_cliente { get; set; }
     }
 }
