@@ -12,16 +12,16 @@ namespace HD.Clientes.Consultas.CRM
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_Listado_Clientes_CRM>> Listado()
+        public async Task<IEnumerable<mdl_Listado_Clientes_CRM>> Listado(string? usuario)
         {
             try
             {
                 var parametros = new
                 {
-
+                    usuario = usuario
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_Listado_Clientes_CRM> result = await factory.SQL.QueryAsync<mdl_Listado_Clientes_CRM>("Credito.sp_Get_Clientes_CRM", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Listado_Clientes_CRM> result = await factory.SQL.QueryAsync<mdl_Listado_Clientes_CRM>("CRM.sp_clientes_dropdownlist", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

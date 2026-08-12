@@ -30,7 +30,6 @@ namespace HD_Cobranza.Capturas.Dashboard.Dash_Indicadores
                 parametros.Add("sucursal", sucursales, System.Data.DbType.String);
                 parametros.Add("responsable", responsable, System.Data.DbType.String);
                 parametros.Add("usuario", usuario, System.Data.DbType.Int16);
-
                 var result = await factory.SQL.QueryMultipleAsync("Cartera_Clientes.Cobranza.sp_Dashboard_Indicadores", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 var view = new mdl_Dashboard_View();
                 view.header = result.Read<mdl_Dashboard_Header>().ToList();
