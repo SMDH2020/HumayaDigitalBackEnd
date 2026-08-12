@@ -33,6 +33,8 @@ namespace HD.Clientes.Consultas.CRM
                 mdl.cotizaciones = result.Read<mdl_Dashboard_CRM_Cotizaciones>().FirstOrDefault();
                 mdl.lineasCredito = result.Read<mdl_Dashboard_CRM_Credito>().ToList();
                 mdl.referencias = result.Read<mdl_Dashboard_CRM_Referencias>().FirstOrDefault();
+                mdl.documentacionMhusa = result.Read<mdl_Dashboard_CRM_Expediente_Digital>().FirstOrDefault();
+                mdl.documentacionJDF = result.Read<mdl_Dashboard_CRM_Expediente_Digital>().FirstOrDefault();
 
                 if (mdl.referencias == null)
                 {
