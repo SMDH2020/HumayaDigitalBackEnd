@@ -9,6 +9,8 @@ namespace HD.Clientes.Modelos.CRM
     public class mdl_Dashboard_CRM_View
     {
         public mdl_Dashboard_CRM_Solicitudes solicitudes { get; set; }
+        public mdl_Dashboard_CRM_Cotizaciones cotizaciones { get; set; }
+
 
     }
 }
