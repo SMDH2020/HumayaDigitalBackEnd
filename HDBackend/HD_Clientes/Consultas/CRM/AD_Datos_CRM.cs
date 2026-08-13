@@ -49,6 +49,10 @@ namespace HD.Clientes.Consultas.CRM
                 mdl.opciones_tipo = result.Read<mdl_Opciones_Generales_CRM>().ToList();
                 mdl.opciones_clasificacion = result.Read<mdl_Opciones_Generales_CRM>().ToList();
                 mdl.opciones_superficie = result.Read<mdl_Opciones_Generales_CRM>().ToList();
+                mdl.opciones_tecnologia = result.Read<mdl_Opciones_Generales_CRM>().ToList();
+                mdl.opciones_etiqueta = result.Read<mdl_Opciones_Generales_CRM>().ToList();
+                mdl.opciones_cultivo_terreno = result.Read<mdl_Opciones_Generales_CRM>().ToList();
+                mdl.opciones_cultivo_riego = result.Read<mdl_Opciones_Generales_CRM>().ToList();
                 mdl.info_ubicacion_cliente = result.Read<mdl_Info_Cliente_Ubicacion_CRM>().ToList();
                 mdl.opciones_estado = result.Read<mdl_Opciones_Estado_CRM>().ToList();
                 mdl.opciones_municipio = result.Read<mdl_Opciones_Municipio_CRM>().ToList();
@@ -58,6 +62,10 @@ namespace HD.Clientes.Consultas.CRM
                 mdl.info_clasificacion_cliente = result.Read<mdl_Info_Cliente_Clasificación_CRM>().FirstOrDefault();
                 mdl.opciones_asesor = result.Read<mdl_Opciones_Asesor>().ToList();
                 mdl.info_asesores_cliente = result.Read<mdl_Info_Cliente_Asesores_CRM>().ToList();
+                mdl.info_cultivo_cliente = result.Read<mdlClientes_Cultivo_Listado>().ToList();
+                mdl.info_contacto_cliente = result.Read<mdlClientes_Datos_Contacto>().ToList();
+                mdl.validado = result.Read<mdl_Validado_Mercadotecnia_CRM>().FirstOrDefault();
+                mdl.info_equip_cliente = result.Read<mdlClientes_EQUIP>().ToList();
 
 
                 factory.SQL.Close();
@@ -179,6 +187,28 @@ namespace HD.Clientes.Consultas.CRM
 
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdlClientes_EQUIP> result = await factory.SQL.QueryAsync<mdlClientes_EQUIP>("Credito.Cancela_Asesor_CRM", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<mdl_Validado_Mercadotecnia_CRM> ValidaCliente(mdl_Guarda_Validacion_Cliente_CRM mdl)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    idcliente = mdl.idcliente,
+                    validado = mdl.validacion,
+                    usuario = mdl.usuario
+                };
+
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                mdl_Validado_Mercadotecnia_CRM result = await factory.SQL.QueryFirstOrDefaultAsync<mdl_Validado_Mercadotecnia_CRM>("Credito.sp_Valida_Cliente_CRM", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

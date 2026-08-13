@@ -13,5 +13,9 @@ namespace HD.Clientes.Modelos.CRM
         public int idlinea { get; set; }
         public string linea { get; set; }
         public string desde { get; set; }
+        public int? id_ultimousuario { get; set; }
+        public string? ultimousuario { get; set; }
+        public DateTime? ultima_fecha { get; set; }
+        public string? accion { get; set; }
     }
 }
