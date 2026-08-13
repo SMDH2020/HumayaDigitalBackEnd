@@ -26,5 +26,15 @@ namespace HD.Endpoints.Controllers.CarteraTransito
             var result = await datos.Listado(ejercicio, periodo, sucursal, adr);
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> actualizar(int ejercicio, int periodo, int ejerciciotransito, int periodotransito)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Cartera_Transito_Actualizar datos = new AD_Cartera_Transito_Actualizar(CadenaConexion);
+            var result = await datos.actualizar(ejercicio, periodo, ejerciciotransito, periodotransito);
+            return Ok(result);
+        }
     }
 }
