@@ -17,7 +17,7 @@ namespace HD.Endpoints.Controllers.Ventas
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ObtenerVentasEstimadas(int anio, int periodo, int sucursal)
+        public async Task<ActionResult> ObtenerVentasEstimadas(int anio, int periodo, string sucursal)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_EstimacionVentas datos = new AD_EstimacionVentas(CadenaConexion);

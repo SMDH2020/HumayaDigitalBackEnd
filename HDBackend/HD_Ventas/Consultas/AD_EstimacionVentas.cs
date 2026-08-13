@@ -12,7 +12,7 @@ namespace HD_Ventas.Consultas
             CadenaConexion = _cadenaconexion;
         }
 
-        public async Task<mdl_VentasEstimadas_Resultado> ObtenerVentasEstimadas(int anio, int periodo, int sucursal, int usuario)
+        public async Task<mdl_VentasEstimadas_Resultado> ObtenerVentasEstimadas(int anio, int periodo, string sucursal, int usuario)
         {
             try
             {
