@@ -11,5 +11,6 @@ namespace HD.Clientes.Modelos.CRM
         public int creadas { get; set; }
         public int enProceso { get; set; }
         public int cerradas { get; set; }
+        public string? UltimaFechaFacturacion { get; set; }
     }
 }
