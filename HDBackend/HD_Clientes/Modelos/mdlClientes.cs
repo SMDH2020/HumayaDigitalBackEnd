@@ -54,7 +54,12 @@ namespace HD.Clientes.Modelos
         public int? estatus_cliente { get; set; }
         public int? origen { get; set; }
         public int? tipo_cliente { get; set; }
-
+        public int? nivel_tecnologia { get; set; }
+        public int? etiqueta { get; set; }
+        public string? telefono { get; set; }
+        public string? correo { get; set; }
+        public string? nombre_completo { get; set; }
+        public int? zona { get; set; }
 
     }
 }

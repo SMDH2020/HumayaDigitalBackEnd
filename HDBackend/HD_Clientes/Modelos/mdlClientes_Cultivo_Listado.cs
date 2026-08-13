@@ -49,7 +49,7 @@ namespace HD.Clientes.Modelos
         public string? ciclo { get; set; }
 
         [Required(ErrorMessage = "El Tipo de Riego es un valor requerido")]
-        [RegularExpression(@"^[BGR]+$", ErrorMessage = "El campo Tipo de Riego debe estar formado solo por letras")]
+        [RegularExpression(@"^[BGRT]+$", ErrorMessage = "El campo Tipo de Riego debe estar formado solo por letras")]
         [StringLength(1, MinimumLength = 1, ErrorMessage = "El campo Tipo de Riego debe estar formado por 1 digitos")]
         public string? tipo_riego { get; set; }
         public string? idtipo_riego { get; set; }
@@ -74,5 +74,9 @@ namespace HD.Clientes.Modelos
         public string? idmescosecha { get; set; }
 
         public bool estatus { get; set; } = true;
+        public int? id_ultimousuario { get; set; }
+        public string? ultimousuario { get; set; }
+        public DateTime? ultima_fecha { get; set; }
+        public string? accion { get; set; }
     }
 }

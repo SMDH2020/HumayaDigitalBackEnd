@@ -219,6 +219,17 @@ namespace HD.Endpoints.Controllers.Credito
             return Ok(result);
         }
 
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<IActionResult> GuardarValidacionCliente(mdl_Guarda_Validacion_Cliente_CRM mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Datos_CRM datos = new AD_Datos_CRM(CadenaConexion);
+            mdl.usuario = int.Parse(Sesion.usuario());
+            var result = await datos.ValidaCliente(mdl);
+            return Ok(result);
+        }
+
         [HttpGet]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> CancelaAsesorCliente(int idcliente, int idvendedor, int idlinea)
