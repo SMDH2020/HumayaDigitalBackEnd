@@ -49,6 +49,10 @@ namespace HD.Endpoints.Controllers.GestionCobranza
             var usuario = Sesion.usuario();
             var result = await datos.GetPorFecha(idcliente,fecha, usuario);
 
+            if (result.Count() == 0)
+            {
+                return BadRequest("No se encontro estado de cuenta para el cliente");
+            }
             string origen = Sesion.origen();
             if (Sesion.generarLog() == true && origen == "APP")
             {

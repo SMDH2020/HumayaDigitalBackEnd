@@ -47,5 +47,30 @@ namespace HD.Endpoints.Controllers.GestionActividades
 
             return Ok(resultado);
         }
+
+        // Campos extra configurables por sala (ej. Sala "Confirmación de
+        // depósitos" -> campo "Banco"). El front arma/interpreta el JSON;
+        // aquí solo se guarda y se regresa tal cual.
+        [HttpGet("CamposExtra/{id}")]
+        public async Task<IActionResult> CamposExtra(int id)
+        {
+            string cadenaConexion = _configuracion["ConnectionStrings:Servicio"];
+            AD_Sala ad = new AD_Sala(cadenaConexion);
+
+            var resultado = await ad.ObtenerCamposExtra(id);
+
+            return Ok(resultado);
+        }
+
+        [HttpPost("GuardarCamposExtra")]
+        public async Task<IActionResult> GuardarCamposExtra([FromBody] mdl_Sala sala)
+        {
+            string cadenaConexion = _configuracion["ConnectionStrings:Servicio"];
+            AD_Sala ad = new AD_Sala(cadenaConexion);
+
+            await ad.GuardarCamposExtra(sala.idsala, sala.camposExtra, sala.usuario);
+
+            return Ok(new { mensaje = "Campos extra guardados correctamente" });
+        }
     }
 }

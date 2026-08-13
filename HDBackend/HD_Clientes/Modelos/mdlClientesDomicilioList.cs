@@ -17,7 +17,7 @@
         public int idlocalidad { get; set; }
 
         public string? localidad { get; set; } = "";
-        public string? codigo_postal { get; set; } = "";
+        public string? cp { get; set; } = "";
 
         public string? direccion { get; set; } = "";
 

@@ -7,7 +7,12 @@ namespace HD_GestionActividades.Modelos
         public int idSolicitud { get; set; }
         public int idSala { get; set; }
 
-        public string? nombreSala { get; set; }          
+        public string? nombreSala { get; set; }
+
+        // Cat_Sala.tiposala ("N" Normal / "A" Autorización). Determina qué
+        // opciones se ofrecen al cambiar el estatus del ticket (ver
+        // SeguimientoActController.CandidatosPorTipoSala).
+        public string? tipoSala { get; set; }
 
         public int idActividad { get; set; }
 
@@ -36,6 +41,19 @@ namespace HD_GestionActividades.Modelos
         public string? comentario { get; set; }
         public string? folio { get; set; }
         public string? prioridad { get; set; }
+
+        // Solo se capturan cuando quien crea el ticket tiene rol de
+        // administrador de soporte (ADTI); para el usuario normal quedan
+        // en null y el ticket se guarda sin ellos.
+        public int? idSucursal { get; set; }
+        public int? idDepartamento { get; set; }
+
+        // JSON crudo con las respuestas a los campos extra que pida la sala
+        // elegida (ej. {"banco":"BBVA"}). El backend no lo interpreta, solo
+        // lo guarda/regresa -- el front arma y consume el JSON según la
+        // definición de Cat_Sala.camposExtra.
+        public string? datosExtra { get; set; }
+
         public int? esResponsable { get; set; }
         public int? calificacion { get; set; }                 // 1 a 5 estrellas
         public string? comentarioCalificacion { get; set; }   // comentario si < 5
