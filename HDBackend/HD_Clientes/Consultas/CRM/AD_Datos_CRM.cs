@@ -107,6 +107,7 @@ namespace HD.Clientes.Consultas.CRM
                     lineas = mdl.lineas,
                     giros = mdl.giros,
                     superficie = mdl.superficie,
+                    nivel_tecnologia = mdl.nivel_tecnologia,
                     usuario = mdl.usuario
                 };
 

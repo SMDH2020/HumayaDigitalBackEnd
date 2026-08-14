@@ -24,6 +24,8 @@ namespace HD.Clientes.Consultas.ClientesDomicilio
                 parametros.Add("idcliente", mdl.IdCliente);
                 parametros.Add("usuario", mdl.usuario);
                 parametros.Add("domicilios", tablaDomicilios.AsTableValuedParameter("Credito.TVP_ClientesDomicilio"));
+                parametros.Add("buro_credito", mdl.buro_credito);
+
 
                 IEnumerable<mdlClientesDomicilioList> result = await factory.SQL.QueryAsync<mdlClientesDomicilioList>(
                     "Credito.sp_Clientes_Domicilio_Guardar_Array",
