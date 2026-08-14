@@ -13,6 +13,8 @@ namespace HD.Clientes.Modelos.CRM
 
         public mdl_Dashboard_CRM_Solicitudes solicitudes { get; set; }
         public mdl_Dashboard_CRM_Cotizaciones cotizaciones { get; set; }
+        public IEnumerable<mdl_Dashboard_CRM_Fechas_Facturacion_Linea> Facturacion_cotizaciones { get; set; }
+
         public IEnumerable<mdl_Dashboard_CRM_Credito> lineasCredito { get; set; }
         public mdl_Dashboard_CRM_Referencias referencias { get; set; }
         public mdl_Dashboard_CRM_Expediente_Digital documentacionMhusa { get; set; }
