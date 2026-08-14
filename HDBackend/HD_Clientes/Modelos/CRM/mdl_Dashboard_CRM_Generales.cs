@@ -11,6 +11,7 @@ namespace HD.Clientes.Modelos.CRM
         public int pendientes { get; set; }
         public double progreso { get; set; }
         public string? ultima_actualizacion { get; set; }
+        public string? fecha_creacion { get; set; }
 
     }
 }
