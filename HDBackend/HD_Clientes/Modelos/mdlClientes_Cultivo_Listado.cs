@@ -72,6 +72,8 @@ namespace HD.Clientes.Modelos
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "El campo Mes de Cosecha debe estar formado solo por letras")]
         public string? mescosecha { get; set; }
         public string? idmescosecha { get; set; }
+        public string? messiembra { get; set; }
+        public string? idmessiembra { get; set; }
 
         public bool estatus { get; set; } = true;
         public int? id_ultimousuario { get; set; }

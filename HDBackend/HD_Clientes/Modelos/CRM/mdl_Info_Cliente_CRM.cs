@@ -18,7 +18,6 @@ namespace HD.Clientes.Modelos.CRM
         public string? tipo_cliente { get; set; }
         public int idvendedor { get; set; }
         public string? clasificacion { get; set; }
-        public string? nivel_tecnologia { get; set; }
         public string? etiqueta { get; set; }
         public string? telefono { get; set; }
         public string? correo { get; set; }
