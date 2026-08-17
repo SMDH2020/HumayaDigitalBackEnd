@@ -19,6 +19,14 @@
         public mdl_Dashboard_Porcentaje_Recuperacion porc_recuperacion { get; set; }
         public IEnumerable<mdl_Permisos_Dash_Sucursales>? permisos { get; set; }
         public IEnumerable<mdl_Fecha_Ultima_Actualizacion>? ultima_actualizacion { get; set; }
+        public mdl_cartera_transico? cartera_transito { get; set; }
 
     }
+    public class mdl_cartera_transico
+    {
+        public double saldo { get; set; }
+        public double registros { get; set; }
+    }
 }
+
+
