@@ -60,5 +60,13 @@ namespace HD_Ventas.Modelos
         public double Real_Mantenimiento { get; set; }
         public double Comp_Poliza { get; set; }
 
+        public int Objetivo_Visitas { get; set; }
+        public int Real_Visitas { get; set; }
+        public int Comp_Visitas { get; set; }
+
+        public int Objetivo_Refacciones { get; set; }
+        public int Real_Refacciones { get; set; }
+        public int Comp_Refacciones { get; set; }
+
     }
 }
