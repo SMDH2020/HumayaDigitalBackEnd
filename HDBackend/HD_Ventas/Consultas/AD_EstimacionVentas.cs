@@ -12,12 +12,13 @@ namespace HD_Ventas.Consultas
             CadenaConexion = _cadenaconexion;
         }
 
-        public async Task<mdl_VentasEstimadas_Resultado> ObtenerVentasEstimadas(int anio, int periodo, string sucursal, int usuario)
+        public async Task<mdl_VentasEstimadas_Resultado> ObtenerVentasEstimadas(bool bylineas,int anio, int periodo, string sucursal, int usuario)
         {
             try
             {
                 var parametros = new
                 {
+                    bylineas,
                     ejercicio = anio,
                     periodo = periodo,
                     sucursal = sucursal.ToString(), 
