@@ -23,5 +23,7 @@ namespace CarteraTransito.Modelos
         public string? folio { get; set; }
         public string? fecha { get; set; }
         public string? vencimiento { get; set; }
+        public bool estatus { get; set; }
+
     }
 }

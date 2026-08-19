@@ -29,8 +29,10 @@ namespace HD.Clientes.Consultas.CRM
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var result = await factory.SQL.QueryMultipleAsync("CRM.sp_Dashboard_Obtener", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 mdl_Dashboard_CRM_View mdl = new mdl_Dashboard_CRM_View();
+                mdl.generales = result.Read<mdl_Dashboard_CRM_Generales>().FirstOrDefault();
                 mdl.solicitudes = result.Read<mdl_Dashboard_CRM_Solicitudes>().FirstOrDefault();
                 mdl.cotizaciones = result.Read<mdl_Dashboard_CRM_Cotizaciones>().FirstOrDefault();
+                mdl.Facturacion_cotizaciones = result.Read<mdl_Dashboard_CRM_Fechas_Facturacion_Linea>().ToList();
                 mdl.lineasCredito = result.Read<mdl_Dashboard_CRM_Credito>().ToList();
                 mdl.referencias = result.Read<mdl_Dashboard_CRM_Referencias>().FirstOrDefault();
                 mdl.documentacionMhusa = result.Read<mdl_Dashboard_CRM_Expediente_Digital>().FirstOrDefault();

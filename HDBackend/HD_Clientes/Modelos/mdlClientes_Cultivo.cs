@@ -16,10 +16,7 @@ namespace HD.Clientes.Modelos
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "El campo idcultivo debe estar formado solo por numeros")]
         public int idcultivo { get; set; }
 
-        [Required(ErrorMessage = "El Terreno es un valor requerido")]
-        [RegularExpression(@"^[PRES]+$", ErrorMessage = "El campo Terreno debe estar formado por las siguientes opciones [P][R][E][S]")]
-        [StringLength(1, MinimumLength = 1, ErrorMessage = "El campo Terreno debe estar formado por 1 digitos")]
-        public string? terreno{ get; set; }
+        public string? terreno { get; set; }
 
         [Required(ErrorMessage = "Las Hectareas es un valor requerido")]
         [RegularExpression(@"^[0-9.]+$", ErrorMessage = "El campo Hectareas debe estar formado solo por numeros")]
@@ -37,10 +34,6 @@ namespace HD.Clientes.Modelos
         [StringLength(20, ErrorMessage = "El campo Ciclo debe contener una longitud maxima de 20 digitos")]
         public string? ciclo { get; set; }
 
-
-        [Required(ErrorMessage = "El Tipo de Riego es un valor requerido")]
-        [RegularExpression(@"^[BGR]+$", ErrorMessage = "El campo Tipo de Riego debe estar formado por las siguientes opciones [B][G][R]")]
-        [StringLength(1, MinimumLength = 1, ErrorMessage = "El campo Tipo de Riego debe estar formado por 1 digitos")]
         public string? tipo_riego { get; set; }
 
 
@@ -63,6 +56,11 @@ namespace HD.Clientes.Modelos
         [Required(ErrorMessage = "El mes de cosecha es un valor requerido")]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "El campo Mes de Cosecha debe estar formado solo por numeros")]
         public int mescosecha { get; set; }
+
+        [Required(ErrorMessage = "El mes de siembra es un valor requerido")]
+        [RegularExpression(@"^[0-9]+$", ErrorMessage = "El campo Mes de siembra debe estar formado solo por numeros")]
+        public int messiembra { get; set; }
+
 
         public bool estatus { get; set; } = true;
 

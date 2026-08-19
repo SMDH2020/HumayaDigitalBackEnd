@@ -2,6 +2,7 @@
 {
     public class mdlCarga_Scorecard_porVendedor_Dash
     {
+        public int idlinea { get; set; }
         public string? linea { get; set; }
         public int objetivo { get; set; }
         public int unidades_vendidas { get; set; }

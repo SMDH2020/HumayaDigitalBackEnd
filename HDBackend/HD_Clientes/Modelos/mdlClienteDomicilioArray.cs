@@ -11,5 +11,6 @@ namespace HD.Clientes.Modelos
         public int IdCliente { get; set; }
         public int usuario { get; set; }
         public List<MdlClientesDomicilioGuardar> Domicilios { get; set; } = new();
+        public bool buro_credito { get; set; }
     }
 }

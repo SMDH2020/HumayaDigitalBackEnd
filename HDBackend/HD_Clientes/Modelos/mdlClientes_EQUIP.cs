@@ -9,5 +9,9 @@
         public string? sucursal { get; set; }
         public bool estatus { get; set; }
         public string? usuario { get; set; } = "";
+        public int? id_ultimousuario { get; set; }
+        public string? ultimousuario { get; set; }
+        public DateTime? ultima_fecha { get; set; }
+        public string? accion { get; set; }
     }
 }
