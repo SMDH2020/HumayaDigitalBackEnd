@@ -1,11 +1,6 @@
 ﻿using CarteraTransito.Modelos;
 using Dapper;
 using HD.AccesoDatos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CarteraTransito.Consultas
 {
@@ -16,7 +11,7 @@ namespace CarteraTransito.Consultas
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdl_Cartera_Transito>> Listado(int ejercicio, int periodo, string? sucursal, string? adr)
+        public async Task<IEnumerable<mdl_Cartera_Transito>> Listado(int ejercicio, int periodo, string? sucursal, string? adr, string pendientes)
         {
             try
             {
@@ -25,7 +20,8 @@ namespace CarteraTransito.Consultas
                     @ejercicio = ejercicio,
                     @periodo = periodo,
                     sucursal = sucursal,
-                    adr = adr
+                    adr = adr,
+                    @pendientes = pendientes
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdl_Cartera_Transito> result = await factory.SQL.QueryAsync<mdl_Cartera_Transito>("Cartera_Clientes.dbo.sp_Cartera_Transito_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
