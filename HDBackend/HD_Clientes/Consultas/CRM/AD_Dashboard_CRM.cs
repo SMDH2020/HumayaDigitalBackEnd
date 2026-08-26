@@ -37,6 +37,8 @@ namespace HD.Clientes.Consultas.CRM
                 mdl.referencias = result.Read<mdl_Dashboard_CRM_Referencias>().FirstOrDefault();
                 mdl.documentacionMhusa = result.Read<mdl_Dashboard_CRM_Expediente_Digital>().FirstOrDefault();
                 mdl.documentacionJDF = result.Read<mdl_Dashboard_CRM_Expediente_Digital>().FirstOrDefault();
+                mdl.visitas = result.Read<mdl_Dashboard_CRM_Visitas>().FirstOrDefault();
+
 
                 if (mdl.referencias == null)
                 {

@@ -40,5 +40,13 @@ namespace HD.Clientes.Modelos
         public string? usuario { get; set; } = "";
 
         public string? contactos { get; set; }
+
+        [RegularExpression(@"^[ ñÑa-zA-Z0-9 ]+$", ErrorMessage = "El campo responsable debe estar formado por valores alfanumericos")]
+        [StringLength(maximumLength: 100, ErrorMessage = "El campo comentarios debe de contener una longitud maxima de 100 caracteres")]
+        public string? responsable { get; set; } = "";
+        public int? id_ultimousuario { get; set; }
+        public string? ultimousuario { get; set; }
+        public DateTime? ultima_fecha { get; set; }
+        public string? accion { get; set; }
     }
 }

@@ -15,5 +15,9 @@ namespace HD.Clientes.Modelos.CRM
         public string municipio { get; set; }
         public string estado { get; set; }
         public string correo { get; set; }
+        public int? id_ultimousuario { get; set; }
+        public string? ultimousuario { get; set; }
+        public DateTime? ultima_fecha { get; set; }
+        public string? accion { get; set; }
     }
 }

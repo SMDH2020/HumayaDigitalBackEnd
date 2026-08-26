@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
 using HD.Clientes.Modelos;
+using HD.Clientes.Modelos.CRM;
 
 namespace HD.Clientes.Consultas.ClientesEQUIP
 {
@@ -24,6 +25,27 @@ namespace HD.Clientes.Consultas.ClientesEQUIP
                     usuario = mdl.usuario
                 };
                 var result =await factory.SQL.QueryAsync< mdlClientes_EQUIP>("Credito.sp_Clientes_EQUIP_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<IEnumerable<mdlClientes_EQUIP>> GuardarArray(mdl_Guarda_Equip_Array_CRM mdl)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    idcliente = mdl.idcliente,
+                    equip = mdl.equip,
+                    usuario = mdl.usuario
+                };
+                var result = await factory.SQL.QueryAsync<mdlClientes_EQUIP>("Credito.sp_Clientes_EQUIP_Guardar_Array", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

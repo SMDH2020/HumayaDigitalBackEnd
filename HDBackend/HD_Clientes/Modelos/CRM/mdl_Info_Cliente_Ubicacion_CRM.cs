@@ -23,5 +23,9 @@ namespace HD.Clientes.Modelos.CRM
         public int idestado { get; set; }
         public string estado { get; set; }
         public int cp { get; set; }
+        public int? id_ultimousuario { get; set; }
+        public string? ultimousuario { get; set; }
+        public DateTime? ultima_fecha { get; set; }
+        public string? accion { get; set; }
     }
 }

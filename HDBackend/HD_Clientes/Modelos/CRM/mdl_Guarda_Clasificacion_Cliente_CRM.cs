@@ -12,6 +12,7 @@ namespace HD.Clientes.Modelos.CRM
         public string? lineas { get; set; } = "";
         public string? giros { get; set; } = ""; 
         public int superficie { get; set; }
+        public int nivel_tecnologia { get; set; }
         public int usuario { get; set; }
     }
 }
