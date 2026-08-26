@@ -17,13 +17,14 @@ namespace HD.Clientes.Consultas.CRM
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<mdl_Dashboard_CRM_View> obtenerDashboard(int idcliente)
+        public async Task<mdl_Dashboard_CRM_View> obtenerDashboard(int idcliente, int usuario)
         {
             try
             {
                 var parametros = new
                 {
-                    idcliente = idcliente
+                    idcliente = idcliente,
+                    usuario = usuario
                 };
 
                 FactoryConection factory = new FactoryConection(CadenaConexion);
@@ -37,6 +38,9 @@ namespace HD.Clientes.Consultas.CRM
                 mdl.referencias = result.Read<mdl_Dashboard_CRM_Referencias>().FirstOrDefault();
                 mdl.documentacionMhusa = result.Read<mdl_Dashboard_CRM_Expediente_Digital>().FirstOrDefault();
                 mdl.documentacionJDF = result.Read<mdl_Dashboard_CRM_Expediente_Digital>().FirstOrDefault();
+                mdl.visitas = result.Read<mdl_Dashboard_CRM_Visitas>().FirstOrDefault();
+                mdl.parque_maquinaria = result.Read<mdl_Dashboard_CRM_Parque_Maquinaria>().FirstOrDefault();
+
 
                 if (mdl.referencias == null)
                 {
