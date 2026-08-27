@@ -46,5 +46,26 @@ namespace HD.Endpoints.Controllers.Credito
             await datos.GenerarSemanas(ejercicio, usuario);
             return Ok(new { mensaje = "Registradas con exito" });
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ListadoMatriz()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_ObjetivosSemanales_ListadoMatriz datos = new AD_ObjetivosSemanales_ListadoMatriz(CadenaConexion);
+            var result = await datos.ListadoMatriz();
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarMatriz(mdl_ObjetivosSemanales_GuardarMatriz mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_ObjetivosSemanales_GuardarMatriz datos = new AD_ObjetivosSemanales_GuardarMatriz(CadenaConexion);
+            mdl.usuario = int.Parse(Sesion.usuario());
+            await datos.GuardarMatriz(mdl);
+            return Ok(new { mensaje = "Guardado Correctamente" });
+        }
     }
 }
