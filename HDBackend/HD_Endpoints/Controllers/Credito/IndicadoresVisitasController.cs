@@ -28,6 +28,7 @@ namespace HD.Endpoints.Controllers.Credito
         [HttpGet]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> ImprimirExcelReporteVisitas(int ejercicio, int periodo)
+        {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_IndicadoresVisitas_ReporteVisitas datos = new AD_IndicadoresVisitas_ReporteVisitas(CadenaConexion);
             var result = await datos.ReporteVisitas(ejercicio, periodo);
