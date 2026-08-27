@@ -1,43 +1,40 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
-using HD.Clientes.Modelos.CRM.ObjetivosSemanales;
-using Newtonsoft.Json;
+using HD.Clientes.Modelos.CRM.IndicadoresVisitas;
 using System.Data.SqlClient;
 
-namespace HD.Clientes.Consultas.CRM.ObjetivosSemanales
+namespace HD.Clientes.Consultas.CRM.IndicadoresVisitas
 {
-    public class AD_ObjetivosSemanales_GuardarMatriz
+    public class AD_IndicadoresVisitas_ReporteVisitas
     {
         private string CadenaConexion;
-        public AD_ObjetivosSemanales_GuardarMatriz(string _cadenaconexion)
+        public AD_IndicadoresVisitas_ReporteVisitas(string _cadenaconexion)
         {
             CadenaConexion = _cadenaconexion;
         }
 
         /// <summary>
-        /// Guarda la matriz de objetivos por linea. Solo se serializa el arreglo matriz,
-        /// sin envoltorio. El SP maneja su propia transaccion y hace upsert por idlinea,
-        /// por lo que no se abre transaccion adicional aqui.
+        /// Devuelve el objetivo vs las visitas realizadas por asesor y semana.
+        /// El SP regresa el listado ya ordenado por vendedor y fecha: no reordenar aqui.
+        /// El pivoteo por semana lo arma el front.
         /// Los errores definidos por el usuario en SQL (numero mayor o igual a 50000)
         /// son validaciones del SP con mensaje para el usuario final y se devuelven
         /// tal cual como BadRequest.
         /// </summary>
-        public async Task<bool> GuardarMatriz(mdl_ObjetivosSemanales_GuardarMatriz mdl)
+        public async Task<IEnumerable<mdl_IndicadoresVisitas_ReporteVisitas>> ReporteVisitas(int ejercicio, int periodo)
         {
             FactoryConection factory = new FactoryConection(CadenaConexion);
             try
             {
                 var parametros = new
                 {
-                    ejercicio = mdl.ejercicio,
-                    periodo = mdl.periodo,
-                    actualiza_vendedor = mdl.actualiza_vendedor,
-                    json = JsonConvert.SerializeObject(mdl.matriz),
-                    usuario = mdl.usuario
+                    ejercicio = ejercicio,
+                    periodo = periodo
                 };
-                await factory.SQL.ExecuteAsync("CRM.sp_ObjetivosSemanales_GuardarMatriz", parametros, commandType: System.Data.CommandType.StoredProcedure);
+
+                IEnumerable<mdl_IndicadoresVisitas_ReporteVisitas> result = await factory.SQL.QueryAsync<mdl_IndicadoresVisitas_ReporteVisitas>("CRM.sp_ObjetivosSemanales_ReporteVisitas", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
-                return true;
+                return result;
             }
             catch (SqlException ex) when (ex.Number >= 50000)
             {
