@@ -1,5 +1,6 @@
 ﻿using HD.Clientes.Consultas.CRM.IndicadoresVisitas;
 using HD.Security;
+using HD_Reporteria.CRM;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HD.Endpoints.Controllers.Credito
@@ -22,6 +23,16 @@ namespace HD.Endpoints.Controllers.Credito
             AD_IndicadoresVisitas_ReporteVisitas datos = new AD_IndicadoresVisitas_ReporteVisitas(CadenaConexion);
             var result = await datos.ReporteVisitas(ejercicio, periodo);
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ImprimirExcelReporteVisitas(int ejercicio, int periodo)
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_IndicadoresVisitas_ReporteVisitas datos = new AD_IndicadoresVisitas_ReporteVisitas(CadenaConexion);
+            var result = await datos.ReporteVisitas(ejercicio, periodo);
+            var docresult = await XLS_Reporte_IndicadoresVisitas.GenerarExcel(result, ejercicio, periodo);
+            return Ok(docresult);
         }
     }
 }
