@@ -8,17 +8,6 @@ namespace HD_Reporteria.CRM
 {
     public class XLS_Reporte_IndicadoresVisitas
     {
-        private const string VerdeFondo = "#EAF3DE";
-        private const string VerdeTexto = "#3B6D11";
-        private const string AmbarFondo = "#FDF3E3";
-        private const string AmbarTexto = "#A76B0B";
-        private const string RojoFondo = "#FDECEB";
-        private const string RojoTexto = "#C0392B";
-        private const string GrisTexto = "#9E9E9E";
-        private const string EncabezadoTabla = "#EBECEE";
-        private const string BandaEstado = "#DDE4D5";
-        private const string BandaSucursal = "#F1F3EE";
-
         public static Task<DocResult> GenerarExcel(IEnumerable<mdl_IndicadoresVisitas_ReporteVisitas> detalle, int ejercicio, int periodo)
         {
             try
@@ -48,32 +37,27 @@ namespace HD_Reporteria.CRM
                     sheet.Style.Font.FontName = "Calibri";
                     sheet.Style.Font.FontSize = 10;
 
-                    string titulo = "REPORTE INDICADOR DE VISITAS - " + NombreMes(periodo, ci).ToUpper() + " " + ejercicio;
+                    string titulo = "REPORTE INDICADOR DE VISITAS - " + XLS_IndicadoresEstilos.NombreMes(periodo, ci).ToUpper() + " " + ejercicio;
                     int renglon = XLSEncabezado.Encabezado(ref sheet, titulo, totalColumnas);
 
                     int filaGrupo = renglon;
                     int filaSub = renglon + 1;
 
-                    // Encabezados fijos
                     sheet.Range(filaGrupo, 1, filaSub, 1).Merge().Value = "ASESOR";
                     sheet.Range(filaGrupo, 2, filaSub, 2).Merge().Value = "OBJETIVO MENSUAL";
 
-                    // Un grupo de 3 columnas por semana
                     for (int i = 0; i < semanas.Count; i++)
                     {
                         int col = 3 + (i * 3);
                         var s = semanas[i];
-                        string etiqueta = "SEMANA " + (i + 1) + Environment.NewLine +
-                                          s.fecha_inicio.ToString("dd", ci) + " - " +
-                                          s.fecha_fin.ToString("dd", ci) + " de " + NombreMes(s.fecha_fin.Month, ci);
 
-                        sheet.Range(filaGrupo, col, filaGrupo, col + 2).Merge().Value = etiqueta;
+                        sheet.Range(filaGrupo, col, filaGrupo, col + 2).Merge().Value =
+                            XLS_IndicadoresEstilos.EtiquetaSemana(i + 1, s.fecha_inicio, s.fecha_fin, ci);
                         sheet.Cell(filaSub, col).Value = "Objetivo";
                         sheet.Cell(filaSub, col + 1).Value = "Visitas";
                         sheet.Cell(filaSub, col + 2).Value = "Cumpl.";
                     }
 
-                    // Grupo de totales del mes
                     int colTotal = 3 + (semanas.Count * 3);
                     sheet.Range(filaGrupo, colTotal, filaGrupo, colTotal + 2).Merge().Value = "TOTAL DEL MES";
                     sheet.Cell(filaSub, colTotal).Value = "Realizadas";
@@ -81,7 +65,7 @@ namespace HD_Reporteria.CRM
                     sheet.Cell(filaSub, colTotal + 2).Value = "Cumpl.";
 
                     var rangoEncabezado = sheet.Range(filaGrupo, 1, filaSub, totalColumnas);
-                    rangoEncabezado.Style.Fill.BackgroundColor = XLColor.FromHtml(EncabezadoTabla);
+                    rangoEncabezado.Style.Fill.BackgroundColor = XLColor.FromHtml(XLS_IndicadoresEstilos.EncabezadoTabla);
                     rangoEncabezado.Style.Font.Bold = true;
                     rangoEncabezado.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                     rangoEncabezado.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
@@ -95,11 +79,11 @@ namespace HD_Reporteria.CRM
                     // GroupBy conserva el orden de aparicion: se respeta el orden del SP.
                     foreach (var grupoEstado in datos.GroupBy(x => x.estado ?? ""))
                     {
-                        renglon = EscribirBanda(sheet, renglon, totalColumnas, grupoEstado.Key.ToUpper(), BandaEstado, 11, 0);
+                        renglon = XLS_IndicadoresEstilos.EscribirBanda(sheet, renglon, totalColumnas, grupoEstado.Key.ToUpper(), XLS_IndicadoresEstilos.BandaEstado, 11, 0);
 
                         foreach (var grupoSucursal in grupoEstado.GroupBy(x => x.sucursal ?? ""))
                         {
-                            renglon = EscribirBanda(sheet, renglon, totalColumnas, grupoSucursal.Key.ToUpper(), BandaSucursal, 10, 1);
+                            renglon = XLS_IndicadoresEstilos.EscribirBanda(sheet, renglon, totalColumnas, grupoSucursal.Key.ToUpper(), XLS_IndicadoresEstilos.BandaSucursal, 10, 1);
 
                             foreach (var grupoVendedor in grupoSucursal.GroupBy(x => new { x.idvendedor, x.vendedor }))
                             {
@@ -123,7 +107,7 @@ namespace HD_Reporteria.CRM
 
                                     if (registro == null)
                                     {
-                                        AplicarSemaforo(sheet.Cell(renglon, col + 2), null);
+                                        XLS_IndicadoresEstilos.AplicarSemaforo(sheet.Cell(renglon, col + 2), null);
                                         continue;
                                     }
 
@@ -137,10 +121,9 @@ namespace HD_Reporteria.CRM
                                     sheet.Cell(renglon, col + 1).Style.NumberFormat.Format = "0";
                                     sheet.Cell(renglon, col + 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
 
-                                    AplicarSemaforo(sheet.Cell(renglon, col + 2), registro.cumplimiento_vp);
+                                    XLS_IndicadoresEstilos.AplicarSemaforo(sheet.Cell(renglon, col + 2), registro.cumplimiento_vp);
                                 }
 
-                                // Totales del mes
                                 sheet.Cell(renglon, colTotal).Value = realizadasMes;
                                 sheet.Cell(renglon, colTotal).Style.NumberFormat.Format = "0";
                                 sheet.Cell(renglon, colTotal).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
@@ -149,7 +132,7 @@ namespace HD_Reporteria.CRM
                                 if (objetivoMensual <= 0)
                                 {
                                     celdaFaltan.Value = "—";
-                                    celdaFaltan.Style.Font.FontColor = XLColor.FromHtml(GrisTexto);
+                                    celdaFaltan.Style.Font.FontColor = XLColor.FromHtml(XLS_IndicadoresEstilos.GrisTexto);
                                 }
                                 else
                                 {
@@ -162,14 +145,13 @@ namespace HD_Reporteria.CRM
                                 decimal? cumplimientoMes = objetivoMensual > 0
                                     ? Math.Round((realizadasMes / objetivoMensual) * 100, 0, MidpointRounding.AwayFromZero)
                                     : (decimal?)null;
-                                AplicarSemaforo(sheet.Cell(renglon, colTotal + 2), cumplimientoMes);
+                                XLS_IndicadoresEstilos.AplicarSemaforo(sheet.Cell(renglon, colTotal + 2), cumplimientoMes);
 
                                 renglon++;
                             }
                         }
                     }
 
-                    // Bordes de todo el cuerpo
                     if (renglon > filaSub + 1)
                     {
                         var cuerpo = sheet.Range(filaSub + 1, 1, renglon - 1, totalColumnas);
@@ -185,7 +167,6 @@ namespace HD_Reporteria.CRM
                     for (int col = 3; col <= totalColumnas; col++)
                         sheet.Column(col).Width = 10;
 
-                    // Asesor y Objetivo mensual fijos a la izquierda, encabezados fijos arriba.
                     sheet.SheetView.Freeze(filaSub, 2);
 
                     workbook.SaveAs(ruta);
@@ -204,65 +185,6 @@ namespace HD_Reporteria.CRM
             {
                 throw ex;
             }
-        }
-
-        /// <summary>
-        /// Escribe una fila banda (Estado o Sucursal) combinada a todo lo ancho de la tabla.
-        /// </summary>
-        private static int EscribirBanda(IXLWorksheet sheet, int renglon, int totalColumnas, string texto, string fondo, double tamanio, int sangria)
-        {
-            var banda = sheet.Range(renglon, 1, renglon, totalColumnas);
-            banda.Merge();
-            banda.Value = texto;
-            banda.Style.Fill.BackgroundColor = XLColor.FromHtml(fondo);
-            banda.Style.Font.Bold = true;
-            banda.Style.Font.FontSize = tamanio;
-            banda.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
-            banda.Style.Alignment.Indent = sangria;
-            sheet.Row(renglon).Height = 18;
-            return renglon + 1;
-        }
-
-        /// <summary>
-        /// Pinta el semaforo de cumplimiento. porcentaje null = sin objetivo capturado (N/A).
-        /// </summary>
-        private static void AplicarSemaforo(IXLCell celda, decimal? porcentaje)
-        {
-            celda.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-
-            if (porcentaje == null)
-            {
-                celda.Value = "N/A";
-                celda.Style.Font.FontColor = XLColor.FromHtml(GrisTexto);
-                return;
-            }
-
-            decimal valor = porcentaje.Value;
-            celda.Value = valor;
-            celda.Style.NumberFormat.Format = "0\"%\"";
-
-            if (valor >= 100)
-            {
-                celda.Style.Fill.BackgroundColor = XLColor.FromHtml(VerdeFondo);
-                celda.Style.Font.FontColor = XLColor.FromHtml(VerdeTexto);
-            }
-            else if (valor > 80)
-            {
-                celda.Style.Fill.BackgroundColor = XLColor.FromHtml(AmbarFondo);
-                celda.Style.Font.FontColor = XLColor.FromHtml(AmbarTexto);
-            }
-            else
-            {
-                celda.Style.Fill.BackgroundColor = XLColor.FromHtml(RojoFondo);
-                celda.Style.Font.FontColor = XLColor.FromHtml(RojoTexto);
-            }
-        }
-
-        private static string NombreMes(int mes, CultureInfo ci)
-        {
-            if (mes < 1 || mes > 12) return "";
-            string nombre = ci.DateTimeFormat.GetMonthName(mes);
-            return char.ToUpper(nombre[0]) + nombre.Substring(1);
         }
     }
 }
