@@ -129,5 +129,36 @@ namespace HD.Endpoints.Controllers.Credito
                 return BadRequest("Error de servidor");
             }
         }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> EnviarPDFCorreo( mdl_Cotizaciones_Servicio_CRM_Enviar_Correo mdl)
+        {
+            if (mdl == null || string.IsNullOrWhiteSpace(mdl.folio) || string.IsNullOrWhiteSpace(mdl.plantilla))
+                return BadRequest("Folio y plantilla son obligatorios.");
+
+            if (mdl.destinatarios == null || !mdl.destinatarios.Any(d => !string.IsNullOrWhiteSpace(d)))
+                return BadRequest("Debes indicar al menos un destinatario.");
+
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Cotizaciones_CRM datos = new AD_Cotizaciones_CRM(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+
+            await datos.EnviarPorCorreo(mdl.folio, mdl.plantilla, usuario, mdl.destinatarios, mdl.mensaje);
+
+            return Ok(new { enviado = true });
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetCorreosCliente(int idcliente)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Cotizaciones_CRM datos = new AD_Cotizaciones_CRM(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.GetOpcionesCorreo(idcliente);
+            return Ok(result);
+        }
+
     }
 }
