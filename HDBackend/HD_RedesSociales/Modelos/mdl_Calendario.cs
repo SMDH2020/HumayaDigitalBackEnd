@@ -9,11 +9,13 @@
         public class mdl_Calendario
         {
             public string? Folio { get; set; }
+            public string? Tipo_Evento { get; set; }  // 'Imagen' | 'Reel'
+            public string? Titulo { get; set; }       // Tipo_Publicacion (Imagen) o Tema (Reel)
             public string? Linea { get; set; }
-            public string? Firma { get; set; }   
+            public string? Firma { get; set; }
             public string? Tipo_Publicacion { get; set; }
             //public string? Imagen { get; set; }
-            public decimal Precio_Lista { get; set; }
+            public decimal? Precio_Lista { get; set; }
             public decimal? Precio_Especial { get; set; }
             public string? Beneficios { get; set; }
             public string? Vigencias { get; set; }
