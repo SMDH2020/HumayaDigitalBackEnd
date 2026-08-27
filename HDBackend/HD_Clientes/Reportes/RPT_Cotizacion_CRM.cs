@@ -64,7 +64,7 @@ namespace HD.Clientes.Reportes
         // MAPEO desde el resultado real de AD_Cotizaciones_CRM.ObtenerPorFolio
         // =====================================================================
 
-        private static mdl_Cotizacion_CRM_Imprimir Mapear(mdl_Cotizaciones_CRM_Folio_View vista)
+        public static mdl_Cotizacion_CRM_Imprimir Mapear(mdl_Cotizaciones_CRM_Folio_View vista)
         {
             var cot = vista.Cotizacion;
 
@@ -75,13 +75,14 @@ namespace HD.Clientes.Reportes
             var mdl = new mdl_Cotizacion_CRM_Imprimir
             {
                 folio_crm = cot.folio,
+                folio_equipo = "",   // TODO: no existe aún en el stored/modelo, se deja vacío
                 asunto = cot.asunto,
                 apreciable = cot.nombre_contacto,
                 empresa = cliente?.razon_social ?? "",
                 direccion = "",   // no disponible en el catálogo actual de clientes
                 ciudad = "",   // no disponible en el catálogo actual de clientes
                 sucursal = asesor?.sucursal ?? "",
-                telefono_sucursal = "",   // sin catálogo de teléfonos por sucursal aún
+                telefono_sucursal = "667 7588200",   // mismo teléfono que se muestra junto al sitio web (aún sin catálogo por sucursal)
                 sitio_web = "www.humaya.com.mx",
                 asesorventa = asesor?.empleado ?? "",
                 atendio = asesor?.empleado ?? "",
@@ -108,7 +109,13 @@ namespace HD.Clientes.Reportes
                 descuento = d.descuento,
                 impuesto = d.impuesto,
                 importe = d.importe,
-                importe_total = d.importe_total
+                importe_total = d.importe_total,
+                // Características del artículo (mismo "orden" del detalle <-> "orden_articulo")
+                caracteristicas = vista.caracteristicas?
+                    .Where(x => x.orden_articulo == d.orden)
+                    .OrderBy(x => x.orden_caracteristica)
+                    .Select(x => x.caracteristica)
+                    .ToList() ?? new List<string>()
             }).ToList() ?? new List<mdl_Cotizacion_CRM_Detalle_Imprimir>();
 
             mdl.detalle = JsonConvert.SerializeObject(detalle);
@@ -136,10 +143,13 @@ namespace HD.Clientes.Reportes
             catch { return null; }
         }
 
-        private static void DatosCliente(QuestPDF.Infrastructure.IContainer container, mdl_Cotizacion_CRM_Imprimir c)
+        private static void DatosCliente(QuestPDF.Infrastructure.IContainer container, mdl_Cotizacion_CRM_Imprimir c, bool mostrarAsunto = true)
         {
             container.Column(col =>
             {
+                if (mostrarAsunto && !string.IsNullOrWhiteSpace(c.asunto))
+                    col.Item().Text(txt => { txt.Span("Asunto: ").Bold(); txt.Span(c.asunto); });
+
                 col.Item().Text(txt => { txt.Span("Apreciable: ").Bold(); txt.Span(c.apreciable); });
                 col.Item().Text(txt => { txt.Span("Empresa: ").Bold(); txt.Span(c.empresa); });
 
@@ -169,42 +179,58 @@ namespace HD.Clientes.Reportes
                         }
                     });
                 }
+
+                if (m.caracteristicas != null && m.caracteristicas.Count > 0)
+                {
+                    cc.Item().PaddingTop(3).Column(inner =>
+                    {
+                        foreach (var car in m.caracteristicas)
+                        {
+                            if (!string.IsNullOrWhiteSpace(car))
+                                inner.Item().Text($"* {car}").FontSize(8);
+                        }
+                    });
+                }
             });
         }
 
+        // Los importes quedan alineados a la derecha (igual que el encabezado
+        // "Importe" de la tabla) y ya no se concatena la palabra "Pesos" junto al monto.
         private static void ImporteDetalle(QuestPDF.Infrastructure.IContainer cell, mdl_Cotizacion_CRM_Detalle_Imprimir m, string moneda)
         {
-            cell.Column(cc =>
+            cell.AlignRight().Column(cc =>
             {
-                cc.Item().Text(txt =>
+                cc.Item().AlignRight().Text(txt =>
                 {
                     txt.Span("Precio de lista: ").FontSize(8);
-                    txt.Span($"{FormatearMoneda(m.precio_lista)} {moneda}").Bold().FontSize(8);
+                    txt.Span(FormatearMoneda(m.precio_lista)).Bold().FontSize(8);
                 });
 
                 if (m.descuento > 0)
-                    cc.Item().Text(txt => { txt.Span("Descuento: ").FontSize(8); txt.Span(FormatearMoneda(m.descuento)).Bold().FontSize(8); });
+                    cc.Item().AlignRight().Text(txt => { txt.Span("Descuento: ").FontSize(8); txt.Span(FormatearMoneda(m.descuento)).Bold().FontSize(8); });
 
-                cc.Item().Text(txt => { txt.Span("Importe: ").FontSize(8); txt.Span(FormatearMoneda(m.importe_total)).Bold().FontSize(8); });
+                cc.Item().AlignRight().Text(txt => { txt.Span("Importe: ").FontSize(8); txt.Span(FormatearMoneda(m.importe_total)).Bold().FontSize(8); });
             });
         }
 
+        // El texto siempre va en peso normal y la cantidad/monto en negritas
+        // (misma convención que ImporteDetalle), consistente en las 3 plantillas.
         private static void TotalesFinales(QuestPDF.Infrastructure.IContainer container, mdl_Cotizacion_CRM_Imprimir c, List<mdl_Cotizacion_CRM_Detalle_Imprimir> modelos)
         {
             double impuestoTotal = modelos.Sum(m => m.impuesto);
 
-            container.AlignRight().Column(tot =>
+            container.Column(tot =>
             {
-                tot.Item().Text(txt => { txt.Span("Subtotal ").Bold(); txt.Span(FormatearMoneda(c.subtotal)); });
+                tot.Item().AlignRight().Text(txt => { txt.Span("Subtotal "); txt.Span(FormatearMoneda(c.subtotal)).Bold(); });
 
                 if (c.descuento_general > 0)
-                    tot.Item().Text(txt => { txt.Span("Descuento ").Bold(); txt.Span(FormatearMoneda(c.descuento_general)); });
+                    tot.Item().AlignRight().Text(txt => { txt.Span("Descuento "); txt.Span(FormatearMoneda(c.descuento_general)).Bold(); });
 
                 if (c.ajuste != 0)
-                    tot.Item().Text(txt => { txt.Span("Ajuste ").Bold(); txt.Span(FormatearMoneda(c.ajuste)); });
+                    tot.Item().AlignRight().Text(txt => { txt.Span("Ajuste "); txt.Span(FormatearMoneda(c.ajuste)).Bold(); });
 
-                tot.Item().Text(txt => { txt.Span("Impuestos ").Bold(); txt.Span(FormatearMoneda(impuestoTotal)); });
-                tot.Item().Text(txt => { txt.Span("Total ").Bold().FontSize(11); txt.Span(FormatearMoneda(c.total)).FontSize(11); });
+                tot.Item().AlignRight().Text(txt => { txt.Span("Impuestos "); txt.Span(FormatearMoneda(impuestoTotal)).Bold(); });
+                tot.Item().AlignRight().Text(txt => { txt.Span("Total "); txt.Span(FormatearMoneda(c.total)).Bold(); });
             });
         }
 
@@ -254,27 +280,30 @@ namespace HD.Clientes.Reportes
                 document.Page(page =>
                 {
                     page.Size(PageSizes.Letter.Portrait());
-                    page.Margin(30);
+                    // El margen general se pone en 0 para poder pintar la línea negra
+                    // de borde a borde; el espacio de "margen" se agrega a mano con
+                    // PaddingHorizontal/PaddingTop/PaddingBottom en Header, Content y Footer.
+                    page.Margin(0);
                     page.DefaultTextStyle(t => t.FontFamily(fontFamily).FontSize(9));
 
                     page.Header().Column(head =>
                     {
-                        head.Item().Row(row =>
+                        head.Item().PaddingHorizontal(30).PaddingTop(12).PaddingBottom(6).Row(row =>
                         {
                             row.RelativeItem();
-                            row.ConstantItem(220).AlignRight().Column(col =>
+                            row.ConstantItem(400).AlignRight().Column(col =>
                             {
-                                var logo = LeerLogo("Logo_DJI.jpg");
-                                if (logo != null) col.Item().AlignRight().Width(160).Image(logo);
+                                var logo = LeerLogo("Logo DJI.png");
+                                // Mismo tamaño de logo (Height 32), solo se redujo el
+                                // padding de arriba/abajo que lo rodea.
+                                if (logo != null) col.Item().AlignRight().Height(64).Image(logo).FitArea();
                                 else col.Item().AlignRight().Text("DJI AGRICULTURE").Bold().FontSize(16);
-
-                                col.Item().AlignRight().Text("MAQUINARIA DEL HUMAYA").FontSize(9).Bold();
                             });
                         });
-                        head.Item().PaddingTop(8).Height(6).Background("#000");
+                        head.Item().Height(6).Background("#000");
                     });
 
-                    page.Content().PaddingTop(10).Column(col1 =>
+                    page.Content().PaddingHorizontal(30).PaddingTop(15).PaddingBottom(20).Column(col1 =>
                     {
                         col1.Item().Row(row =>
                         {
@@ -283,6 +312,10 @@ namespace HD.Clientes.Reportes
                             row.RelativeItem().AlignRight().Column(col =>
                             {
                                 col.Item().AlignRight().Text(txt => { txt.Span("Folio Cotización CRM: ").Bold(); txt.Span(c.folio_crm); });
+
+                                if (!string.IsNullOrWhiteSpace(c.folio_equipo))
+                                    col.Item().AlignRight().Text(txt => { txt.Span("Folio de Cotización Equipo: ").Bold(); txt.Span(c.folio_equipo); });
+
                                 col.Item().AlignRight().Text(txt => { txt.Span("Asesor de ventas: ").Bold(); txt.Span(c.asesorventa); });
                                 col.Item().AlignRight().Text(c.fecha.ToString("dd/MM/yyyy HH:mm"));
                             });
@@ -327,10 +360,10 @@ namespace HD.Clientes.Reportes
                             col1.Item().PaddingTop(3).Text(c.terminos).FontSize(8).Justify();
                         }
 
-                        col1.Item().PaddingTop(60).Element(e => FirmasFooter(e, c));
+                        col1.Item().PaddingTop(120).Element(e => FirmasFooter(e, c));
                     });
 
-                    page.Footer().Height(30).PaddingRight(30).PaddingBottom(10).Element(PiePagina);
+                    page.Footer().Height(30).PaddingHorizontal(30).PaddingBottom(10).Element(PiePagina);
                 });
             }).GeneratePdf();
         }
@@ -363,10 +396,10 @@ namespace HD.Clientes.Reportes
                                 col.Item().Text(c.sitio_web).FontColor("#0072BC").Underline();
                             });
 
-                            row.ConstantItem(150).AlignRight().Height(50).Element(e =>
+                            row.ConstantItem(200).AlignRight().Height(40).Element(e =>
                             {
-                                var logo = LeerLogo("Logo_Rivulis.jpg");
-                                if (logo != null) e.Image(logo); else e.AlignRight().Text("Rivulis").Bold().FontSize(18).FontColor("#0072BC");
+                                var logo = LeerLogo("Logo Rivulis.png");
+                                if (logo != null) e.Image(logo).FitArea(); else e.AlignRight().Text("Rivulis").Bold().FontSize(18).FontColor("#0072BC");
                             });
                         });
 
@@ -423,6 +456,8 @@ namespace HD.Clientes.Reportes
 
                         col1.Item().PaddingTop(8).Element(e => TotalesFinales(e, c, modelos));
 
+                        col1.Item().PaddingTop(8).LineHorizontal(1).LineColor("#000");
+
                         col1.Item().PaddingTop(10)
                             .Text("Estos precios son netos y de contado quedan sujetos a cambio sin previo aviso, prevaleciendo los que estén en vigor al momento de facturar.")
                             .FontSize(8);
@@ -436,7 +471,7 @@ namespace HD.Clientes.Reportes
                             });
                         }
 
-                        col1.Item().PaddingTop(60).Element(e => FirmasFooter(e, c));
+                        col1.Item().PaddingTop(120).Element(e => FirmasFooter(e, c));
                     });
 
                     page.Footer().Height(30).PaddingRight(30).PaddingBottom(10).Element(PiePagina);
@@ -467,15 +502,15 @@ namespace HD.Clientes.Reportes
                             row.RelativeItem().AlignMiddle().Text("Maquinaria del Humaya, S.A. de C.V.").Bold().FontSize(14);
                             row.ConstantItem(120).AlignRight().Element(e =>
                             {
-                                var logo = LeerLogo("Logo_JohnDeere.jpg");
-                                if (logo != null) e.Image(logo);
+                                var logo = LeerLogo("Logo JD.png");
+                                if (logo != null) e.Image(logo).FitArea();
                             });
                         });
 
-                        head.Item().PaddingTop(4).Row(row =>
+                        head.Item().PaddingTop(8).Column(col =>
                         {
-                            row.RelativeItem().Height(6).Background("#367C2B");
-                            row.RelativeItem().Height(6).Background("#FFDE00");
+                            col.Item().Height(8).Background("#367C2B");
+                            col.Item().Height(5).Background("#FFDE00");
                         });
 
                         head.Item().PaddingTop(8).Row(row =>
@@ -506,7 +541,7 @@ namespace HD.Clientes.Reportes
                     {
                         col1.Item().Border(1).BorderColor("#000").Padding(6).Row(row =>
                         {
-                            row.RelativeItem(3).Element(e => DatosCliente(e, c));
+                            row.RelativeItem(3).Element(e => DatosCliente(e, c, mostrarAsunto: false));
                             row.ConstantItem(90).AlignTop().AlignRight().Text(c.fecha.ToString("dd/MM/yyyy HH:mm")).FontSize(8);
                         });
 
@@ -552,7 +587,7 @@ namespace HD.Clientes.Reportes
                             });
                         }
 
-                        col1.Item().PaddingTop(60).Element(e => FirmasFooter(e, c));
+                        col1.Item().PaddingTop(120).Element(e => FirmasFooter(e, c));
                     });
 
                     page.Footer().Height(30).PaddingRight(30).PaddingBottom(10).Element(PiePagina);
