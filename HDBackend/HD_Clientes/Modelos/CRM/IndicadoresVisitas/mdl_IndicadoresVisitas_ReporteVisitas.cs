@@ -21,8 +21,8 @@
         public string? estado { get; set; }
         public int idsucursal { get; set; }
         public string? sucursal { get; set; }
-
-
+        public bool tiene_comentario { get; set; }
+        public string? comentario { get; set; }
 
     }
 }

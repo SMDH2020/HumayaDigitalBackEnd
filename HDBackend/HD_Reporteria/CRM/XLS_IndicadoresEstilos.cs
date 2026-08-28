@@ -93,8 +93,35 @@ namespace HD_Reporteria.CRM
         /// </summary>
         public static string EtiquetaSemana(int numero, DateTime inicio, DateTime fin, CultureInfo ci)
         {
-            return "SEMANA " + numero + Environment.NewLine +
-                   inicio.ToString("dd", ci) + " - " + fin.ToString("dd", ci) + " de " + NombreMes(fin.Month, ci);
+            return "SEMANA " + numero + Environment.NewLine + RangoSemana(inicio, fin, ci);
+        }
+
+        /// <summary>
+        /// Rango de fechas de la semana sin el numero: 01 - 07 de Agosto.
+        /// </summary>
+        public static string RangoSemana(DateTime inicio, DateTime fin, CultureInfo ci)
+        {
+            return inicio.ToString("dd", ci) + " - " + fin.ToString("dd", ci) + " de " + NombreMes(fin.Month, ci);
+        }
+
+        /// <summary>
+        /// Escribe el renglon de encabezados de la hoja Comentarios y devuelve el siguiente renglon.
+        /// </summary>
+        public static int EncabezadoComentarios(IXLWorksheet sheet, string[] titulos)
+        {
+            for (int i = 0; i < titulos.Length; i++)
+                sheet.Cell(1, i + 1).Value = titulos[i];
+
+            var rango = sheet.Range(1, 1, 1, titulos.Length);
+            rango.Style.Fill.BackgroundColor = XLColor.FromHtml(EncabezadoTabla);
+            rango.Style.Font.Bold = true;
+            rango.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+            rango.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+            rango.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+            rango.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+            sheet.Row(1).Height = 20;
+            sheet.SheetView.FreezeRows(1);
+            return 2;
         }
     }
 }

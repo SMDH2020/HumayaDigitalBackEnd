@@ -23,5 +23,8 @@
         public decimal objetivo { get; set; }
         public int real { get; set; }
         public decimal? cumplimiento_vp { get; set; }
+        public bool tiene_comentario { get; set; }
+        public string? comentario { get; set; }
+
     }
 }

@@ -27,7 +27,8 @@ namespace HD.Clientes.Consultas.CRM.ObjetivosSemanales
                     ejercicio = mdl.ejercicio,
                     periodo = mdl.periodo,
                     json = JsonConvert.SerializeObject(mdl.detalle),
-                    usuario = mdl.usuario
+                    usuario = mdl.usuario,
+                    comentario=mdl.comentarios
                 };
                 await factory.SQL.QueryAsync("CRM.sp_ObjetivosSemanales_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
