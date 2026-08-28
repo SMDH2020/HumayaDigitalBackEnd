@@ -48,6 +48,14 @@
         public int Real_Poliza { get; set; }
         public int Comp_Poliza { get; set; }
 
+        public int Objetivo_Visitas { get; set; }
+        public int Real_Visitas { get; set; }
+        public int Comp_Visitas { get; set; }
+
+        public double Objetivo_Refacciones { get; set; }
+        public double Real_Refacciones { get; set; }
+        public double Comp_Refacciones { get; set; }
+
 
     }
 }
