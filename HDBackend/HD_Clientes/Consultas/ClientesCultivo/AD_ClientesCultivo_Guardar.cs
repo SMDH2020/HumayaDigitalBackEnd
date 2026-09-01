@@ -30,6 +30,7 @@ namespace HD.Clientes.Consultas.ClientesCultivo
                     rendimiento = mdl.rendimiento,
                     precio = mdl.precio,
                     mescosecha = mdl.mescosecha,
+                    messiembra = mdl.messiembra,
                     estatus = mdl.estatus,
                     usuario = mdl.usuario
                 };

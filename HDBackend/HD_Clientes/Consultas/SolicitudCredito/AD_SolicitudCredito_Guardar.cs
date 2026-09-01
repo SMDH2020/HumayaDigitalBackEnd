@@ -11,7 +11,7 @@ namespace HD.Clientes.Consultas.SolicitudCredito
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<bool> Guardar(mdlSolicitud_Credito mdl)
+        public async Task<mdlView_Solicitud_Credito> Guardar(mdlSolicitud_Credito mdl)
         {
             try
             {
@@ -19,17 +19,21 @@ namespace HD.Clientes.Consultas.SolicitudCredito
                 var parametros = new
                 {
                     folio = mdl.folio,
-                    consecutivo = mdl.consecutivo,
                     idcliente = mdl.idcliente,
-                    seguro_cosecha = mdl.seguro_cosecha,
                     tipo_solicitud = mdl.tipo_solicitud,
                     importe = mdl.importe,
-                    estatus = mdl.estatus,
-                    usuario = mdl.usuario
+                    usuario = mdl.usuario,
+                    vendedor = mdl.vendedor,
                 };
-                await factory.SQL.QueryAsync("Credito.sp_solicitud_credito_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_solicitud_credito_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlSolicitud_Credito_Detalle? detalle = result.Read<mdlSolicitud_Credito_Detalle>().FirstOrDefault();
+                mdlSolicitudCredito_Screen? screen = result.Read<mdlSolicitudCredito_Screen>().FirstOrDefault();
                 factory.SQL.Close();
-                return true;
+                return new mdlView_Solicitud_Credito()
+                {
+                    solicitud_credito = detalle,
+                    config = screen,
+                };
             }
             catch (Exception ex)
             {

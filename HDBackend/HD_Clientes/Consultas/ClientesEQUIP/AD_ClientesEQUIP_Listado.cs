@@ -11,16 +11,35 @@ namespace HD.Clientes.Consultas.ClientesEQUIP
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlClientes_EQUIP>> Listado(short filtrar)
+        public async Task<IEnumerable<mdlClientes_EQUIP>> Listado(short idcliente)
         {
             try
             {
                 var parametros = new
                 {
-                    filtrar
+                    idcliente
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdlClientes_EQUIP> result = await factory.SQL.QueryAsync<mdlClientes_EQUIP>("Credito.sp_clientes_equip_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdlClientes_EQUIP> result = await factory.SQL.QueryAsync<mdlClientes_EQUIP>("Credito.sp_Clientes_EQUIP_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+        public async Task<IEnumerable<mdlClientes_EQUIP>> Eliminar(int idcliente,int idequip)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    idcliente,
+                    idequip
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdlClientes_EQUIP> result = await factory.SQL.QueryAsync<mdlClientes_EQUIP>("Credito.sp_Clientes_EQUIP_Eliminar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

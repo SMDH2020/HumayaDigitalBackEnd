@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>preview</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.102.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="QuestPDF" Version="2024.10.1" />
+    <PackageReference Include="SkiaSharp" Version="2.88.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HD_Buro\HD_Buro.csproj" />
+    <ProjectReference Include="..\HD_Clientes\HD_Clientes.csproj" />
+    <ProjectReference Include="..\HD_Cobranza\HD_Cobranza.csproj" />
+    <ProjectReference Include="..\HD_Finanzas\HD_Finanzas.csproj" />
+    <ProjectReference Include="..\HD_Ventas\HD_Ventas.csproj" />
+    <ProjectReference Include="..\ProductoAliado\ProductoAliado.csproj" />
+    <ProjectReference Include="..\Usados\Usados.csproj" />
+  </ItemGroup>
+
+</Project>
