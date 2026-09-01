@@ -8,6 +8,7 @@ namespace HD.Clientes.Modelos.CRM
 {
     public class mdl_Dashboard_CRM_Visitas
     {
+        public int objetivo { get; set; }
         public int programadas {  get; set; }
         public int realizadas { get; set; }
     }
