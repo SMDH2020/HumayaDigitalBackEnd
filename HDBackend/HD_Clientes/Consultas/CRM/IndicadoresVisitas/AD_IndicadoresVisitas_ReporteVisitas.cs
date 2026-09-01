@@ -21,7 +21,7 @@ namespace HD.Clientes.Consultas.CRM.IndicadoresVisitas
         /// son validaciones del SP con mensaje para el usuario final y se devuelven
         /// tal cual como BadRequest.
         /// </summary>
-        public async Task<IEnumerable<mdl_IndicadoresVisitas_ReporteVisitas>> ReporteVisitas(int ejercicio, int periodo)
+        public async Task<IEnumerable<mdl_IndicadoresVisitas_ReporteVisitas>> ReporteVisitas(int ejercicio, int periodo, string? tipo)
         {
             FactoryConection factory = new FactoryConection(CadenaConexion);
             try
@@ -29,7 +29,8 @@ namespace HD.Clientes.Consultas.CRM.IndicadoresVisitas
                 var parametros = new
                 {
                     ejercicio = ejercicio,
-                    periodo = periodo
+                    periodo = periodo,
+                    tipo = tipo
                 };
 
                 IEnumerable<mdl_IndicadoresVisitas_ReporteVisitas> result = await factory.SQL.QueryAsync<mdl_IndicadoresVisitas_ReporteVisitas>("CRM.sp_ObjetivosSemanales_ReporteVisitas", parametros, commandType: System.Data.CommandType.StoredProcedure);

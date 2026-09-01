@@ -24,10 +24,11 @@ namespace HD.Clientes.Consultas.Credito_Condicionado
             };
             FactoryConection factory = new FactoryConection(CadenaConexion);
             var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Aprobar_Facturacion_Condicionada", parametros, commandType: System.Data.CommandType.StoredProcedure);
-            factory.SQL.Close();
             mdl_Analisis_100_view view = new mdl_Analisis_100_view();
             view.encabezado = result.Read<mdl_Analisis_100_encabezado>().FirstOrDefault();
             view.detalle = result.Read<mdl_Analisis_100_detalle>().ToList();
+            factory.SQL.Close();
+
             return view;
         }
     }
