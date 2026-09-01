@@ -19,11 +19,11 @@ namespace HD.Endpoints.Controllers.CarteraTransito
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> listado(int ejercicio, int periodo, string sucursal, string adr)
+        public async Task<ActionResult> listado(int ejercicio, int periodo, string sucursal, string adr,string pendientes)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Cartera_Transito_Listado datos = new AD_Cartera_Transito_Listado(CadenaConexion);
-            var result = await datos.Listado(ejercicio, periodo, sucursal, adr);
+            var result = await datos.Listado(ejercicio, periodo, sucursal, adr,pendientes);
             return Ok(result);
         }
 

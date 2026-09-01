@@ -17,12 +17,12 @@ namespace HD.Endpoints.Controllers.Ventas
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ObtenerVentasEstimadas(int anio, int periodo, string sucursal)
+        public async Task<ActionResult> ObtenerVentasEstimadas(bool bylineas,int anio, int periodo, string sucursal)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_EstimacionVentas datos = new AD_EstimacionVentas(CadenaConexion);
             int usuario = int.Parse(Sesion.usuario());
-            var result = await datos.ObtenerVentasEstimadas(anio, periodo, sucursal, usuario);
+            var result = await datos.ObtenerVentasEstimadas(bylineas,anio, periodo, sucursal, usuario);
             return Ok(result);
         }
 

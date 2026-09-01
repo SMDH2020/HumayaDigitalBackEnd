@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard de Resultados | Julio 2026 | Humaya Digital</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --jd-green: #367C2B;
+    --jd-dark: #1D5C23;
+    --jd-yellow: #FFDE00;
+    --jd-light-green: #5aad4e;
+    --bg: #f4f6f0;
+    --card: #ffffff;
+    --text: #1a1a1a;
+    --muted: #6b7280;
+    --danger: #dc2626;
+    --warning: #f59e0b;
+    --success: #16a34a;
+    --border: #e5e7eb;
+    --shadow: 0 2px 12px rgba(0,0,0,0.07);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, var(--jd-dark) 0%, var(--jd-green) 100%);
+    color: #fff;
+    padding: 0;
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    border-bottom: 3px solid var(--jd-yellow);
+  }
+  .header-logo {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .logo-jd {
+    background: var(--jd-yellow);
+    color: var(--jd-dark);
+    font-size: 20px;
+    font-weight: 900;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    letter-spacing: -1px;
+  }
+  .header-title h1 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+  .header-title p {
+    font-size: 13px;
+    opacity: 0.8;
+    margin-top: 2px;
+  }
+  .header-meta {
+    text-align: right;
+    font-size: 12px;
+    opacity: 0.8;
+  }
+  .header-meta strong {
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+    opacity: 1;
+    color: var(--jd-yellow);
+    margin-bottom: 2px;
+  }
+  .header-period {
+    background: rgba(255,255,255,0.08);
+    padding: 10px 40px;
+    display: flex;
+    gap: 32px;
+    font-size: 12px;
+    opacity: 0.9;
+  }
+  .header-period span { color: var(--jd-yellow); font-weight: 600; }
+
+  /* ── LAYOUT ── */
+  main { padding: 32px 40px; max-width: 1400px; margin: 0 auto; }
+  section { margin-bottom: 40px; }
+  .section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--jd-dark);
+    border-left: 4px solid var(--jd-yellow);
+    padding-left: 12px;
+    margin-bottom: 18px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── KPI CARDS ── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .kpi-card {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 18px 20px;
+    box-shadow: var(--shadow);
+    border-top: 3px solid var(--border);
+  }
+  .kpi-card.green  { border-top-color: var(--jd-green); }
+  .kpi-card.yellow { border-top-color: var(--jd-yellow); }
+  .kpi-card.red    { border-top-color: var(--danger); }
+  .kpi-card.blue   { border-top-color: #3b82f6; }
+  .kpi-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .kpi-value {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--jd-dark);
+    line-height: 1;
+  }
+  .kpi-sub {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .kpi-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-top: 6px;
+  }
+  .badge-up   { background: #dcfce7; color: #15803d; }
+  .badge-down { background: #fee2e2; color: #b91c1c; }
+  .badge-neu  { background: #f3f4f6; color: #374151; }
+
+  /* ── PACE BAR ── */
+  .pace-indicator {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 16px 20px;
+    box-shadow: var(--shadow);
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .pace-label { font-size: 13px; font-weight: 600; color: var(--muted); min-width: 200px; }
+  .pace-bar-wrap { flex: 1; min-width: 200px; }
+  .pace-bar-bg {
+    height: 12px;
+    background: #e5e7eb;
+    border-radius: 6px;
+    position: relative;
+    overflow: visible;
+  }
+  .pace-bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    background: linear-gradient(90deg, var(--jd-green), var(--jd-light-green));
+    transition: width 0.6s ease;
+  }
+  .pace-bar-marker {
+    position: absolute;
+    top: -4px;
+    width: 2px;
+    height: 20px;
+    background: var(--jd-yellow);
+    border-radius: 1px;
+  }
+  .pace-bar-marker::after {
+    content: attr(data-label);
+    position: absolute;
+    top: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--jd-dark);
+    white-space: nowrap;
+  }
+  .pace-pct { font-size: 22px; font-weight: 800; color: var(--jd-dark); min-width: 60px; text-align: right; }
+
+  /* ── DEPT TABLE ── */
+  .dept-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(440px, 1fr));
+    gap: 16px;
+  }
+  .dept-card {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 18px 20px;
+    box-shadow: var(--shadow);
+    border-left: 5px solid var(--border);
+  }
+  .dept-card.excelente { border-left-color: var(--jd-green); }
+  .dept-card.bien      { border-left-color: #22c55e; }
+  .dept-card.atencion  { border-left-color: var(--warning); }
+  .dept-card.critico   { border-left-color: var(--danger); }
+  .dept-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .dept-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--jd-dark);
+  }
+  .dept-status {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+  }
+  .status-excelente { background: #dcfce7; color: #15803d; }
+  .status-bien      { background: #d1fae5; color: #047857; }
+  .status-atencion  { background: #fef3c7; color: #92400e; }
+  .status-critico   { background: #fee2e2; color: #b91c1c; }
+  .dept-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .dept-metric { text-align: center; }
+  .dept-metric .val { font-size: 15px; font-weight: 700; color: var(--jd-dark); }
+  .dept-metric .lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }
+  .dept-progress-bg {
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 3px;
+    margin-bottom: 6px;
+    position: relative;
+  }
+  .dept-progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    max-width: 100%;
+  }
+  .dept-progress-line {
+    position: absolute;
+    left: 41.9%;
+    top: -3px;
+    width: 2px;
+    height: 12px;
+    background: #9ca3af;
+  }
+  .dept-progress-text {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--muted);
+  }
+  .dept-recs { margin-top: 12px; border-top: 1px solid var(--border); padding-top: 12px; }
+  .dept-recs-title { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .rec-item {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    line-height: 1.45;
+  }
+  .rec-num {
+    min-width: 18px;
+    height: 18px;
+    background: var(--jd-green);
+    color: #fff;
+    border-radius: 50%;
+    font-size: 10px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+    flex-shrink: 0;
+  }
+
+  /* ── CHART ── */
+  .chart-container {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+  }
+  .chart-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--jd-dark);
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  /* ── VENDEDORES ── */
+  .vendedores-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 720px) { .vendedores-grid { grid-template-columns: 1fr; } }
+  .vend-card {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+  }
+  .vend-card.top-vend { border-top: 3px solid var(--jd-green); }
+  .vend-card.bot-vend { border-top: 3px solid var(--danger); }
+  .vend-card-title { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px; }
+  .vend-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .vend-row:last-child { border-bottom: none; }
+  .vend-rank {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .rank-gold   { background: #fef3c7; color: #b45309; }
+  .rank-silver { background: #f3f4f6; color: #374151; }
+  .rank-bronze { background: #fef3c7; color: #92400e; }
+  .rank-bad    { background: #fee2e2; color: #b91c1c; }
+  .vend-info { flex: 1; }
+  .vend-name { font-size: 13px; font-weight: 700; }
+  .vend-branch { font-size: 11px; color: var(--muted); }
+  .vend-amount { font-size: 14px; font-weight: 800; color: var(--jd-dark); }
+  .vend-cumpl { font-size: 11px; color: var(--muted); }
+  .nota-aviso {
+    background: #fef9c3;
+    border-left: 4px solid var(--warning);
+    border-radius: 0 6px 6px 0;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: #78350f;
+    margin-top: 14px;
+  }
+  .vend-recs-box {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--jd-green);
+    margin-top: 16px;
+  }
+  .vend-recs-title { font-size: 13px; font-weight: 700; color: var(--jd-dark); margin-bottom: 12px; }
+  .vend-rec-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .vend-rec-icon { font-size: 16px; flex-shrink: 0; }
+
+  /* ── FORECAST TABLE ── */
+  .forecast-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .forecast-table thead {
+    background: var(--jd-dark);
+    color: #fff;
+  }
+  .forecast-table th {
+    padding: 12px 14px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    text-align: right;
+  }
+  .forecast-table th:first-child { text-align: left; }
+  .forecast-table td {
+    padding: 10px 14px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+    text-align: right;
+  }
+  .forecast-table td:first-child { text-align: left; font-weight: 600; }
+  .forecast-table tbody tr:last-child td { border-bottom: none; font-weight: 800; background: #f8fdf8; }
+  .forecast-table tbody tr:hover { background: #f9fafb; }
+  .td-up   { color: var(--success); font-weight: 700; }
+  .td-down { color: var(--danger);  font-weight: 700; }
+  .td-neu  { color: var(--muted); }
+  .pct-bar-inline {
+    display: inline-block;
+    height: 6px;
+    border-radius: 3px;
+    vertical-align: middle;
+    margin-left: 6px;
+  }
+
+  /* ── H1 CONTEXT ── */
+  .context-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+  }
+  .ctx-card {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 16px 18px;
+    box-shadow: var(--shadow);
+  }
+  .ctx-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .ctx-name { font-size: 13px; font-weight: 700; color: var(--jd-dark); }
+  .ctx-h1-vn { font-size: 12px; color: var(--muted); }
+  .ctx-uo-bar-bg { height: 8px; background: #e5e7eb; border-radius: 4px; margin-bottom: 4px; }
+  .ctx-uo-bar-fill { height: 100%; border-radius: 4px; }
+  .ctx-uo-text { display: flex; justify-content: space-between; font-size: 11px; }
+  .uo-positive { color: var(--success); font-weight: 700; }
+  .uo-negative { color: var(--danger); font-weight: 700; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--jd-dark);
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    padding: 20px;
+    font-size: 11px;
+    margin-top: 40px;
+  }
+  footer strong { color: var(--jd-yellow); }
+
+  /* Utility */
+  .divider { border: none; border-top: 2px solid var(--border); margin: 32px 0; }
+  .alert-box {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-left: 4px solid var(--danger);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #7f1d1d;
+    margin-bottom: 16px;
+  }
+  .success-box {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-left: 4px solid var(--jd-green);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #14532d;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 900px) {
+    main { padding: 20px; }
+    .header-top { padding: 16px 20px; flex-wrap: wrap; gap: 12px; }
+    .dept-grid { grid-template-columns: 1fr; }
+    .vendedores-grid { grid-template-columns: 1fr; }
+    .dept-metrics { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════ HEADER ══════════════════════════════ -->
+<header>
+  <div class="header-top">
+    <div class="header-logo">
+      <div class="logo-jd">JD</div>
+      <div class="header-title">
+        <h1>Dashboard de Resultados — Julio 2026</h1>
+        <p>Maquinaria del Humaya · Distribuidor John Deere · Humaya Digital</p>
+      </div>
+    </div>
+    <div class="header-meta">
+      <strong>1 – 13 Julio 2026</strong>
+      13 de 31 días · 41.9% del mes transcurrido<br>
+      Generado: Agosto 17, 2026
+    </div>
+  </div>
+  <div class="header-period">
+    <div>Período analizado: <span>Jul 1–13, 2026</span></div>
+    <div>Referencia: <span>Junio 2026</span></div>
+    <div>Contexto semestral: <span>Ene–Jun 2026 (H1)</span></div>
+    <div>Cobertura: <span>Grupo completo · Todas las regiones</span></div>
+  </div>
+</header>
+
+<main>
+
+<!-- ══════════════════════════════ KPIs EJECUTIVOS ══════════════════════════════ -->
+<section>
+  <div class="section-title">Resumen Ejecutivo · Julio 1–13, 2026</div>
+  <div class="kpi-grid">
+    <div class="kpi-card green">
+      <div class="kpi-label">Ventas Netas</div>
+      <div class="kpi-value">$58.9M</div>
+      <div class="kpi-sub">$58,901,229</div>
+      <span class="kpi-badge badge-up">75.2% del presupuesto mensual</span>
+    </div>
+    <div class="kpi-card green">
+      <div class="kpi-label">Utilidad Bruta</div>
+      <div class="kpi-value">$11.1M</div>
+      <div class="kpi-sub">18.83% margen</div>
+      <span class="kpi-badge badge-neu">vs 19.6% presupuesto</span>
+    </div>
+    <div class="kpi-card yellow">
+      <div class="kpi-label">Utilidad de Operación</div>
+      <div class="kpi-value">$2.43M</div>
+      <div class="kpi-sub">4.13% margen</div>
+      <span class="kpi-badge badge-up">vs 5.22% junio</span>
+    </div>
+    <div class="kpi-card yellow">
+      <div class="kpi-label">Util. Antes Impuestos</div>
+      <div class="kpi-value">$1.85M</div>
+      <div class="kpi-sub">3.14% margen</div>
+      <span class="kpi-badge badge-neu">Proyección mes: ~$4.4M</span>
+    </div>
+    <div class="kpi-card blue">
+      <div class="kpi-label">Presupuesto Mensual</div>
+      <div class="kpi-value">$78.3M</div>
+      <div class="kpi-sub">Ritmo actual supera expectativa</div>
+      <span class="kpi-badge badge-up">+79% sobre ritmo esperado</span>
+    </div>
+    <div class="kpi-card red">
+      <div class="kpi-label">Alerta Crítica</div>
+      <div class="kpi-value">$0</div>
+      <div class="kpi-sub">Seminuevos · 13 días sin ventas</div>
+      <span class="kpi-badge badge-down">UO: -$1.16M</span>
+    </div>
+  </div>
+
+  <!-- Pace Indicator -->
+  <div class="pace-indicator">
+    <div class="pace-label">Avance vs presupuesto mensual completo</div>
+    <div class="pace-bar-wrap">
+      <div style="position:relative; padding-bottom: 28px;">
+        <div class="pace-bar-bg">
+          <div class="pace-bar-fill" style="width:75.2%"></div>
+          <div class="pace-bar-marker" style="left:41.9%" data-label="Ritmo esperado (41.9%)"></div>
+        </div>
+      </div>
+    </div>
+    <div class="pace-pct">75.2%</div>
+  </div>
+
+  <!-- Context boxes -->
+  <div class="success-box">
+    🚀 <strong>DRONES y PRODUCTOS ALIADOS</strong> ya superaron su presupuesto mensual completo en apenas 13 días. DRONES: +185.8% vs presupuesto · PRODUCTOS ALIADOS: +88.6% vs presupuesto.
+  </div>
+  <div class="alert-box">
+    ⚠️ <strong>SEMINUEVOS</strong>: Sin ventas en 13 días con $853K en costos activos → UO de -$1.16M. H1 2026 acumula -$3.84M en utilidad de operación. Requiere intervención inmediata.
+  </div>
+</section>
+
+<!-- ══════════════════════════════ CHART ══════════════════════════════ -->
+<section>
+  <div class="section-title">Avance vs Presupuesto por Línea de Negocio</div>
+  <div class="chart-container">
+    <div class="chart-title">Porcentaje de cumplimiento al 13 de Julio (línea punteada = ritmo esperado del mes 41.9%)</div>
+    <canvas id="avanceChart" style="max-height:320px"></canvas>
+  </div>
+</section>
+
+<!-- ══════════════════════════════ ANÁLISIS POR DEPARTAMENTO ══════════════════════════════ -->
+<section>
+  <div class="section-title">Análisis por Línea de Negocio · Insights y Recomendaciones Estratégicas</div>
+  <div class="dept-grid">
+
+    <!-- DRONES -->
+    <div class="dept-card excelente">
+      <div class="dept-header">
+        <div class="dept-name">🚁 DRONES</div>
+        <span class="dept-status status-excelente">Estrella del Mes</span>
+      </div>
+      <div class="dept-metrics">
+        <div class="dept-metric"><div class="val">$8.66M</div><div class="lbl">Ventas Netas</div></div>
+        <div class="dept-metric"><div class="val">20.4%</div><div class="lbl">Margen Bruto</div></div>
+        <div class="dept-metric"><div class="val">$1.28M</div><div class="lbl">Ut. Operación</div></div>
+        <div class="dept-metric"><div class="val">14.8%</div><div class="lbl">% UO</div></div>
+      </div>
+      <div class="dept-progress-bg">
+        <div class="dept-progress-fill" style="width:100%;background:var(--jd-green)"></div>
+        <div class="dept-progress-line"></div>
+      </div>
+      <div class="dept-progress-text"><span>Presup. $3.03M/mes</span><span style="color:var(--jd-green);font-weight:700">285.8% del presupuesto ✓</span></div>
+      <div class="dept-recs">
+        <div class="dept-recs-title">Recomendaciones Estratégicas</div>
+        <div class="rec-item"><div class="rec-num">1</div><div>Identificar qué sucursales están generando este volumen extraordinario y replicar su metodología de venta (promotores, demostraciones, ciclos agrícolas) en las sucursales rezagadas. El desempeño de julio es 2.3x el promedio mensual del H1 ($3.77M/mes).</div></div>
+        <div class="rec-item"><div class="rec-num">2</div><div>Gastos departamentales de $487K (5.63%) ya superan el presupuesto mensual completo de $375K. Validar que el sobregasto es consecuencia de comisiones por ventas y no de gastos estructurales fijos — si es comisional, es saludable; si es gasto fijo, urge revisión.</div></div>
+        <div class="rec-item"><div class="rec-num">3</div><div>El margen bruto cayó de 21.5% (H1 promedio) a 20.4% en julio. Con volumen tan alto, revisar si se están otorgando descuentos adicionales por volumen que erosionan el margen — un punto porcentual perdido en $8.66M son $87K menos de utilidad bruta.</div></div>
+      </div>
+    </div>
+
+    <!-- PRODUCTOS ALIADOS -->
+    <div class="dept-card excelente">
+      <div class="dept-header">
+        <div class="dept-name">🌿 PRODUCTOS ALIADOS</div>
+        <span class="dept-status status-excelente">Sobre Presupuesto</span>
+      </div>
+      <div class="dept-metrics">
+        <div class="dept-metric"><div class="val">$5.75M</div><div class="lbl">Ventas Netas</div></div>
+        <div class="dept-metric"><div class="val">18.9%</div><div class="lbl">Margen Bruto</div></div>
+        <div class="dept-metric"><div class="val">$745K</div><div class="lbl">Ut. Operación</div></div>
+        <div class="dept-metric"><div class="val">12.96%</div><div class="lbl">% UO</div></div>
+      </div>
+      <div class="dept-progress-bg">
+        <div class="dept-progress-fill" style="width:100%;background:var(--jd-green)"></div>
+        <div class="dept-progress-line"></div>
+      </div>
+      <div class="dept-progress-text"><span>Presup. $3.05M/mes</span><span style="color:var(--jd-green);font-weight:700">188.6% del presupuesto ✓</span></div>
+      <div class="dept-recs">
+        <div class="dept-recs-title">Recomendaciones Estratégicas</div>
+        <div class="rec-item"><div class="rec-num">1</div><div>Las ventas de $5.75M en 13 días representan 3.4x el promedio mensual del H1 ($1.7M/mes) — esto sugiere una transacción o grupo de transacciones atípicas. Antes de celebrar, identificar si es venta sostenible o un pico único, y ajustar proyección de cierre del mes en consecuencia.</div></div>
+        <div class="rec-item"><div class="rec-num">2</div><div>A pesar del excelente julio, el H1 2026 cerró con UO negativa (-$85,440) porque los gastos departamentales superaron consistentemente la utilidad bruta. Es urgente definir un techo de gastos de operación del departamento como % fijo de ventas (sugerencia: no más del 15%).</div></div>
+        <div class="rec-item"><div class="rec-num">3</div><div>El costo de venta es 81.12% con margen bruto del 18.88%. Identificar los 10 SKUs más vendidos de julio y calcular su margen individual — si los productos de alto volumen son de bajo margen, el crecimiento en pesos puede ser trampa. Negociar mejores condiciones con proveedores clave.</div></div>
+      </div>
+    </div>
+
+    <!-- MAQUINARIA -->
+    <div class="dept-card bien">
+      <div class="dept-header">
+        <div class="dept-name">🚜 MAQUINARIA</div>
+        <span class="dept-status status-bien">En Ritmo</span>
+      </div>
+      <div class="dept-metrics">
+        <div class="dept-metric"><div class="val">$21.4M</div><div class="lbl">Ventas Netas</div></div>
+        <div class="dept-metric"><div class="val">14.4%</div><div class="lbl">Margen Bruto</div></div>
+        <div class="dept-metric"><div class="val">$1.04M</div><div class="lbl">Ut. Operación</div></div>
+        <div class="dept-metric"><div class="val">4.87%</div><div class="lbl">% UO</div></div>
+      </div>
+      <div class="dept-progress-bg">
+        <div class="dept-progress-fill" style="width:58.2%;background:#22c55e"></div>
+        <div class="dept-progress-line"></div>
+      </div>
+      <div class="dept-progress-text"><span>Presup. $36.75M/mes</span><span>58.2% — adelantado vs ritmo</span></div>
+      <div class="dept-recs">
+        <div class="dept-recs-title">Recomendaciones Estratégicas</div>
+        <div class="rec-item"><div class="rec-num">1</div><div>El margen de UB del 14.4% está 0.7 puntos por debajo del objetivo (15.1%). Los descuentos de $1.19M representan el 5.56% sobre el precio bruto — verificar si los descuentos autorizados en julio están alineados a la política o si hay negociaciones no supervisadas a nivel de vendedor.</div></div>
+        <div class="rec-item"><div class="rec-num">2</div><div>Gastos departamentales de $2.04M en 13 días son el 9.53% de las ventas vs 5.66% presupuestado — desfase de casi $800K vs plan. Descomponer por partida: si es comisional por el volumen, está justificado; si es gasto de demostración o viáticos, hay fuga que tapar.</div></div>
+        <div class="rec-item"><div class="rec-num">3</div><div>Con $21.4M en 13 días vs un promedio mensual H1 de $22.5M, julio va camino a ser el mejor mes del semestre en maquinaria. Revisar el pipeline de unidades en tránsito o en proceso de cierre y presionar al equipo de ventas para facturar antes del 31 de julio — cada tractor adicional impacta directamente la UO del mes.</div></div>
+      </div>
+    </div>
+
+    <!-- REFACCIONES -->
+    <div class="dept-card bien">
+      <div class="dept-header">
+        <div class="dept-name">🔧 REFACCIONES</div>
+        <span class="dept-status status-bien">Bien Posicionado</span>
+      </div>
+      <div class="dept-metrics">
+        <div class="dept-metric"><div class="val">$12.8M</div><div class="lbl">Ventas Netas</div></div>
+        <div class="dept-metric"><div class="val">24.3%</div><div class="lbl">Margen Bruto</div></div>
+        <div class="dept-metric"><div class="val">$1.39M</div><div class="lbl">Ut. Operación</div></div>
+        <div class="dept-metric"><div class="val">10.86%</div><div class="lbl">% UO</div></div>
+      </div>
+      <div class="dept-progress-bg">
+        <div class="dept-progress-fill" style="width:73.2%;background:#22c55e"></div>
+        <div class="dept-progress-line"></div>
+      </div>
+      <div class="dept-progress-text"><span>Presup. $17.51M/mes</span><span>73.2% — sólido</span></div>
+      <div class="dept-recs">
+        <div class="dept-recs-title">Recomendaciones Estratégicas</div>
+        <div class="rec-item"><div class="rec-num">1</div><div>El margen bruto cayó de 25.95% (junio) a 24.27% en julio — 1.68 puntos de erosión en pocas semanas. Antes de que termine el mes, auditar si el mix de producto cambió hacia componentes de menor margen o si se otorgaron descuentos extraordinarios a clientes grandes no contemplados en el presupuesto.</div></div>
+        <div class="rec-item"><div class="rec-num">2</div><div>Con $12.8M en 13 días ($985K/día), el departamento lleva un ritmo para cerrar el mes en ~$30.5M — 74% sobre el presupuesto mensual de $17.5M. Evaluar si existe cartera de pedidos pendientes que pueda garantizar la segunda quincena, o si el volumen de julio está concentrado en pocos clientes de alto riesgo de no repetición.</div></div>
+        <div class="rec-item"><div class="rec-num">3</div><div>Los gastos de departamento de 13.41% vs 12.02% presupuestado — revisar presupuesto de nómina de entrega/distribución. Si el volumen crece, los costos variables de distribución deben escalar proporcionalmente; si crecen más que las ventas, hay ineficiencia operativa que corregir antes de que el departamento crezca más.</div></div>
+      </div>
+    </div>
+
+    <!-- SERVICIO -->
+    <div class="dept-card bien">
+      <div class="dept-header">
+        <div class="dept-name">⚙️ SERVICIO</div>
+        <span class="dept-status status-bien">Casi en Meta</span>
+      </div>
+      <div class="dept-metrics">
+        <div class="dept-metric"><div class="val">$4.4M</div><div class="lbl">Ventas Netas</div></div>
+        <div class="dept-metric"><div class="val">37.3%</div><div class="lbl">Margen Bruto</div></div>
+        <div class="dept-metric"><div class="val">$611K</div><div class="lbl">Ut. Operación</div></div>
+        <div class="dept-metric"><div class="val">13.88%</div><div class="lbl">% UO</div></div>
+      </div>
+      <div class="dept-progress-bg">
+        <div class="dept-progress-fill" style="width:96.4%;background:#22c55e"></div>
+        <div class="dept-progress-line"></div>
+      </div>
+      <div class="dept-progress-text"><span>Presup. $4.56M/mes</span><span>96.4% — excelente ritmo</span></div>
+      <div class="dept-recs">
+        <div class="dept-recs-title">Recomendaciones Estratégicas</div>
+        <div class="rec-item"><div class="rec-num">1</div><div>Los Trabajos Foráneos generaron $1.02M de ingresos con $958K de costo — margen de solo 6.24% en esa línea. Antes de comprometer más trabajos foráneos, establecer un piso de margen mínimo del 20% o renegociar tarifas de subcontratación. Actualmente están financiando trabajo que apenas les deja utilidad.</div></div>
+        <div class="rec-item"><div class="rec-num">2</div><div>La UB cayó de 41.7% (junio) a 37.3% (julio 1-13) — 4.4 puntos de erosión. La diferencia coincide con la proporción de trabajo foráneo en el mix. Si el servicio propio (no foráneo) se mantiene en 45%+ de margen bruto, el objetivo es reducir la participación del trabajo foráneo en el total del departamento.</div></div>
+        <div class="rec-item"><div class="rec-num">3</div><div>Los gastos de departamento de 23.4% están por debajo del presupuesto de 25% — el equipo de servicio está controlando eficientemente. Capitalizar esto: identificar qué proceso se optimizó (¿menos horas extra? ¿mejor programación de técnicos?) y documentarlo como buena práctica para replicar en sucursales con gastos más altos.</div></div>
+      </div>
+    </div>
+
+    <!-- AMS -->
+    <div class="dept-card bien">
+      <div class="dept-header">
+        <div class="dept-name">📡 AMS (Precisión)</div>
+        <span class="dept-status status-bien">Mayor Margen</span>
+      </div>
+      <div class="dept-metrics">
+        <div class="dept-metric"><div class="val">$627K</div><div class="lbl">Ventas Netas</div></div>
+        <div class="dept-metric"><div class="val">52.5%</div><div class="lbl">Margen Bruto</div></div>
+        <div class="dept-metric"><div class="val">$165K</div><div class="lbl">Ut. Operación</div></div>
+        <div class="dept-metric"><div class="val">26.35%</div><div class="lbl">% UO</div></div>
+      </div>
+      <div class="dept-progress-bg">
+        <div class="dept-progress-fill" style="width:84.2%;background:#22c55e"></div>
+        <div class="dept-progress-line"></div>
+      </div>
+      <div class="dept-progress-text"><span>Presup. $745K/mes</span><span>84.2% — bien posicionado</span></div>
+      <div class="dept-recs">
+        <div class="dept-recs-title">Recomendaciones Estratégicas</div>
+        <div class="rec-item"><div class="rec-num">1</div><div>Con 26.35% de margen UO, AMS es el departamento MÁS RENTABLE del grupo en porcentaje. Si AMS creciera de $627K/mes a $2M/mes en ventas, podría generar ~$527K de UO mensual adicional — más que cualquier otro departamento con el mismo crecimiento en pesos. Requiere inversión en prospección y demos agresivas.</div></div>
+        <div class="rec-item"><div class="rec-num">2</div><div>La Renta de AMS está 36.6% por debajo del presupuesto ($233K vs $368K). El modelo de renta es predecible y recurrente — revisar qué contratos de renta vencieron en el primer semestre y cuáles se renovaron. Cada contrato de renta no renovado es pérdida de ingreso recurrente garantizado.</div></div>
+        <div class="rec-item"><div class="rec-num">3</div><div>El H1 2026 cerró con apenas $2,462 de UO semestral — básicamente punto muerto por seis meses. Julio 1-13 ya genera $165K, que es 67x ese acumulado. El cambio debe tener una causa identificable: ¿nuevo cliente grande, nuevo equipo de ventas, nueva región atendida? Identificar el catalizador y replicarlo.</div></div>
+      </div>
+    </div>
+
+    <!-- FERRETERÍA -->
+    <div class="dept-card atencion">
+      <div class="dept-header">
+        <div class="dept-name">🔩 FERRETERÍA</div>
+        <span class="dept-status status-atencion">Rezagado</span>
+      </div>
+      <div class="dept-metrics">
+        <div class="dept-metric"><div class="val">$1.68M</div><div class="lbl">Ventas Netas</div></div>
+        <div class="dept-metric"><div class="val">17.8%</div><div class="lbl">Margen Bruto</div></div>
+        <div class="dept-metric"><div class="val">$114K</div><div class="lbl">Ut. Operación</div></div>
+        <div class="dept-metric"><div class="val">6.76%</div><div class="lbl">% UO</div></div>
+      </div>
+      <div class="dept-progress-bg">
+        <div class="dept-progress-fill" style="width:69%;background:var(--warning)"></div>
+        <div class="dept-progress-line"></div>
+      </div>
+      <div class="dept-progress-text"><span>Presup. $2.44M/mes</span><span style="color:var(--warning)">69% — por debajo del ritmo esperado</span></div>
+      <div class="dept-recs">
+        <div class="dept-recs-title">Recomendaciones Estratégicas</div>
+        <div class="rec-item"><div class="rec-num">1</div><div>Las ventas están 31% por debajo del presupuesto mensual en los primeros 13 días. En los 18 días restantes, el departamento necesita acelerar su ritmo diario de $129K a $421K para alcanzar el presupuesto — esto es 3.3x el ritmo actual. Revisar cartera de cotizaciones pendientes y priorizar el cierre de contratos con constructores o agropecuarios de la región.</div></div>
+        <div class="rec-item"><div class="rec-num">2</div><div>El margen bruto de julio (17.8%) mejoró vs junio (14.5%) — señal positiva de que el mix de producto está mejorando. Identificar qué SKUs o categorías están generando ese mejor margen y asegurarse de que el equipo de ventas los priorice en cotizaciones futuras, no solo los productos de alto volumen con margen delgado.</div></div>
+        <div class="rec-item"><div class="rec-num">3</div><div>En H1 2026, la UO de ferretería fue solo $297K sobre $11M de ventas (2.7%). Los gastos de departamento de 11.3% de las ventas están 2.7pp sobre el referente presupuestado (8.6%). Con ventas de $11M en el semestre, ese desfase representa $297K en gastos excesivos — prácticamente equivale a toda la utilidad semestral. Esto es estructuralmente insostenible.</div></div>
+      </div>
+    </div>
+
+    <!-- SISTEMAS DE RIEGO -->
+    <div class="dept-card atencion">
+      <div class="dept-header">
+        <div class="dept-name">💧 SISTEMAS DE RIEGO</div>
+        <span class="dept-status status-atencion">Pérdida Crónica H1</span>
+      </div>
+      <div class="dept-metrics">
+        <div class="dept-metric"><div class="val">$3.58M</div><div class="lbl">Ventas Netas</div></div>
+        <div class="dept-metric"><div class="val">17.1%</div><div class="lbl">Margen Bruto</div></div>
+        <div class="dept-metric"><div class="val">$223K</div><div class="lbl">Ut. Operación</div></div>
+        <div class="dept-metric"><div class="val">6.24%</div><div class="lbl">% UO</div></div>
+      </div>
+      <div class="dept-progress-bg">
+        <div class="dept-progress-fill" style="width:58%;background:var(--warning)"></div>
+        <div class="dept-progress-line"></div>
+      </div>
+      <div class="dept-progress-text"><span>Presup. $6.17M/mes</span><span style="color:var(--warning)">58% — rezagado, aunque sobre el ritmo de días</span></div>
+      <div class="dept-recs">
+        <div class="dept-recs-title">Recomendaciones Estratégicas</div>
+        <div class="rec-item"><div class="rec-num">1</div><div>ALERTA ESTRUCTURAL: El departamento acumula -$1.22M de UO en H1 2026 sobre $9.87M de ventas (-12.36% de margen UO). Más ventas no resolverán el problema si la estructura de costos fijos supera la capacidad de generación de margen bruto. Se requiere un diagnóstico de punto de equilibrio: ¿cuánto necesita vender el depto mensualmente para cubrir sus gastos fijos?</div></div>
+        <div class="rec-item"><div class="rec-num">2</div><div>Los gastos de departamento de 10.9% de las ventas superan el presupuesto de 7.6% — el exceso de $79K en 13 días equivale a $183K al mes no presupuestado. Identificar las 3 partidas de gasto más grandes del departamento y establecer techo mensual para cada una, con revisión semanal del gerente de área.</div></div>
+        <div class="rec-item"><div class="rec-num">3</div><div>Sinaloa y Nayarit son zonas de agricultura intensiva con alta demanda de riego tecnificado — el mercado existe. Revisar si la fuerza de ventas está orientada a proyectos de gran escala (sistema de riego para 500+ hectáreas) versus venta de equipos pequeños. Los proyectos grandes tienen mayor margen y requieren el mismo esfuerzo de gestión administrativa.</div></div>
+      </div>
+    </div>
+
+    <!-- SEMINUEVOS -->
+    <div class="dept-card critico">
+      <div class="dept-header">
+        <div class="dept-name">🔴 SEMINUEVOS</div>
+        <span class="dept-status status-critico">CRÍTICO — Sin Ventas</span>
+      </div>
+      <div class="dept-metrics">
+        <div class="dept-metric"><div class="val" style="color:var(--danger)">$0</div><div class="lbl">Ventas Netas</div></div>
+        <div class="dept-metric"><div class="val">$853K</div><div class="lbl">Costo de Venta</div></div>
+        <div class="dept-metric"><div class="val" style="color:var(--danger)">-$1.16M</div><div class="lbl">Ut. Operación</div></div>
+        <div class="dept-metric"><div class="val">-100%</div><div class="lbl">vs Presupuesto</div></div>
+      </div>
+      <div class="dept-progress-bg">
+        <div class="dept-progress-fill" style="width:0%;background:var(--danger)"></div>
+        <div class="dept-progress-line"></div>
+      </div>
+      <div class="dept-progress-text"><span>Presup. $4.09M/mes</span><span style="color:var(--danger);font-weight:700">0% — Cero ventas en 13 días</span></div>
+      <div class="dept-recs">
+        <div class="dept-recs-title">Recomendaciones Estratégicas</div>
+        <div class="rec-item"><div class="rec-num">1</div><div>EMERGENCIA: Cero ventas en 13 días con $853K de costo de inventario activo significa que el departamento está destruyendo $90K de valor por día. El gerente de área debe tener un plan de acción concreto en las próximas 72 horas: ¿cuántas unidades hay en inventario? ¿cuáles tienen más de 60 días sin movimiento? ¿existe al menos un cliente en pipeline con alta probabilidad de cierre antes del 31 de julio?</div></div>
+        <div class="rec-item"><div class="rec-num">2</div><div>El H1 2026 acumula -$3.84M de UO sobre $17.3M de ventas (-22.2%). El costo de venta supera consistentemente el precio de venta (implica ventas por debajo del valor en libros o con costos financieros no recuperados). Revisar urgentemente la política de precios de seminuevos: si se están vendiendo a pérdida para rotar, el problema no es de ventas sino de valuación de inventario.</div></div>
+        <div class="rec-item"><div class="rec-num">3</div><div>Establecer una política de rotación: toda unidad con más de 90 días en inventario debe tener un precio de venta agresivo autorizado por dirección, aunque implique pérdida controlada. Una unidad estancada en $800K genera más pérdida financiera cada mes que venderla con 5-10% de descuento hoy. La inacción es la estrategia más costosa.</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════ VENDEDORES ══════════════════════════════ -->
+<section>
+  <div class="section-title">Ranking de Vendedores · H1 2026</div>
+
+  <div class="nota-aviso" style="margin-bottom:16px">
+    ⚠️ <strong>Nota de disponibilidad de datos:</strong> El servicio de scorecard detallado por vendedor (H1 completo enero-junio) presentó un error de conexión al momento de generar este reporte — el procedimiento almacenado <code>Ventas.MCP_Obtener_ScorecardVendedor</code> requiere verificación en base de datos. El ranking siguiente está basado en los datos del scorecard disponibles (enero-febrero 2026) y refleja el desempeño relativo de los vendedores para ese período.
+  </div>
+
+  <div class="vendedores-grid">
+    <!-- TOP PERFORMERS -->
+    <div class="vend-card top-vend">
+      <div class="vend-card-title">🏆 Top Vendedores · Ene–Feb 2026</div>
+      <div class="vend-row">
+        <div class="vend-rank rank-gold">1°</div>
+        <div class="vend-info">
+          <div class="vend-name">Eduardo Borbon Sotelo</div>
+          <div class="vend-branch">Sucursal Tepic · Región Nayarit</div>
+          <div class="vend-cumpl">Tractores: 3/3 (100%) · Prod. Aliados: 3/3 (100%) · Drones: 3/4 (75%)</div>
+        </div>
+        <div style="text-align:right">
+          <div class="vend-amount">$6.9M</div>
+          <div class="vend-cumpl">Importe real</div>
+        </div>
+      </div>
+      <div class="vend-row">
+        <div class="vend-rank rank-silver">2°</div>
+        <div class="vend-info">
+          <div class="vend-name">Eloy G. Rodríguez Hernández</div>
+          <div class="vend-branch">Sucursal Santiago I. · Región Nayarit</div>
+          <div class="vend-cumpl">Tractores: 3/2 (150%) · Implementos: 2/1 (200%) · Jardineros: 1/0 extra</div>
+        </div>
+        <div style="text-align:right">
+          <div class="vend-amount">$6.1M</div>
+          <div class="vend-cumpl">Importe real</div>
+        </div>
+      </div>
+      <div class="vend-row">
+        <div class="vend-rank rank-bronze">3°</div>
+        <div class="vend-info">
+          <div class="vend-name">José Ramón Hernández Cruz</div>
+          <div class="vend-branch">Sucursal San José · Región Nayarit</div>
+          <div class="vend-cumpl">Tractores: 3 vendidos · Cumplimiento objetivo</div>
+        </div>
+        <div style="text-align:right">
+          <div class="vend-amount">$4.4M</div>
+          <div class="vend-cumpl">Importe real</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM PERFORMERS -->
+    <div class="vend-card bot-vend">
+      <div class="vend-card-title">⚠️ Vendedores con Menor Desempeño · Ene–Feb 2026</div>
+      <div class="vend-row">
+        <div class="vend-rank rank-bad">↓</div>
+        <div class="vend-info">
+          <div class="vend-name">Marco Antonio Guillén Ávila</div>
+          <div class="vend-branch">Sucursal Navolato · Región Sinaloa</div>
+          <div class="vend-cumpl">Tractores: 0/2 (0%) · Drones: 0/2 (0%) · Implementos: 0/1 (0%)</div>
+        </div>
+        <div style="text-align:right">
+          <div class="vend-amount" style="color:var(--danger)">$71K</div>
+          <div class="vend-cumpl">Importe real</div>
+        </div>
+      </div>
+      <div class="vend-row">
+        <div class="vend-rank rank-bad">↓</div>
+        <div class="vend-info">
+          <div class="vend-name">José Martín Flores Arredondo</div>
+          <div class="vend-branch">Sucursal Navolato · Región Sinaloa</div>
+          <div class="vend-cumpl">Resultado bajo en múltiples líneas de negocio</div>
+        </div>
+        <div style="text-align:right">
+          <div class="vend-amount" style="color:var(--danger)">$679K</div>
+          <div class="vend-cumpl">Importe real</div>
+        </div>
+      </div>
+      <div class="vend-row">
+        <div class="vend-rank rank-bad">↓</div>
+        <div class="vend-info">
+          <div class="vend-name">Santana Ortiz Ramírez</div>
+          <div class="vend-branch">Sucursal Tecuala · Región Nayarit</div>
+          <div class="vend-cumpl">Tractores: 0/3 (0%) · Cumplimiento bajo en línea principal</div>
+        </div>
+        <div style="text-align:right">
+          <div class="vend-amount" style="color:var(--warning)">$1.0M</div>
+          <div class="vend-cumpl">Importe real</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recomendaciones vendedores -->
+  <div class="vend-recs-box">
+    <div class="vend-recs-title">Recomendaciones Estratégicas · Fuerza de Ventas</div>
+    <div class="vend-rec-item">
+      <div class="vend-rec-icon">🎯</div>
+      <div><strong>Pairing urgente en Navolato:</strong> Los dos vendedores de menor desempeño pertenecen a la misma sucursal. Esto sugiere un problema local de liderazgo, territorio o producto disponible — no es una falla individual. Revisar si hay un problema de asignación de territorios en Navolato o si el gerente de sucursal requiere apoyo de capacitación.</div>
+    </div>
+    <div class="vend-rec-item">
+      <div class="vend-rec-icon">🏆</div>
+      <div><strong>Modelo de replicación desde Tepic y Santiago:</strong> Los dos mejores vendedores están en Nayarit. Su metodología de venta (cliente tipo, canal de acceso, ciclo de prospección) debe documentarse y compartirse con la región Sinaloa. En particular, Eduardo Borbon cumplió 100% en tractores y productos aliados — es vendedor multi-línea, que es exactamente el perfil que el grupo necesita replicar.</div>
+    </div>
+    <div class="vend-rec-item">
+      <div class="vend-rec-icon">📊</div>
+      <div><strong>Activar scorecard H1 completo:</strong> El SP <code>Ventas.MCP_Obtener_ScorecardVendedor</code> necesita ser creado o verificado en base de datos para obtener el ranking completo de enero-junio 2026. Con ese dato se puede hacer una evaluación de desempeño semestral justa y definir un plan de incentivos/corrección para el segundo semestre basado en datos reales.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════ PRONÓSTICO JULIO ══════════════════════════════ -->
+<section>
+  <div class="section-title">Pronóstico Cierre Julio 2026</div>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:16px">
+    Escenario conservador: promedio entre la extrapolación lineal del ritmo actual (13 días × 2.38) y el promedio mensual del H1 2026, ajustado por estacionalidad. El escenario optimista asume continuidad del ritmo actual hasta fin de mes.
+  </p>
+  <table class="forecast-table">
+    <thead>
+      <tr>
+        <th>Línea de Negocio</th>
+        <th>Jul 1–13 Real</th>
+        <th>Promedio H1</th>
+        <th>Pronóstico Conserv.</th>
+        <th>Pronóstico Optimista</th>
+        <th>Presupuesto Jul</th>
+        <th>vs Presup. (Conserv.)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>🚜 Maquinaria</td>
+        <td>$21.4M</td>
+        <td>$22.5M</td>
+        <td>$36.8M</td>
+        <td>$51.0M</td>
+        <td>$36.7M</td>
+        <td class="td-up">+0.3%</td>
+      </tr>
+      <tr>
+        <td>🔧 Refacciones</td>
+        <td>$12.8M</td>
+        <td>$11.2M</td>
+        <td>$20.9M</td>
+        <td>$30.5M</td>
+        <td>$17.5M</td>
+        <td class="td-up">+19.4%</td>
+      </tr>
+      <tr>
+        <td>⚙️ Servicio</td>
+        <td>$4.4M</td>
+        <td>$3.9M</td>
+        <td>$7.2M</td>
+        <td>$10.5M</td>
+        <td>$4.6M</td>
+        <td class="td-up">+56.5%</td>
+      </tr>
+      <tr>
+        <td>🌿 Productos Aliados</td>
+        <td>$5.75M</td>
+        <td>$1.7M</td>
+        <td>$7.7M ⚠️</td>
+        <td>$13.7M</td>
+        <td>$3.1M</td>
+        <td class="td-up">+148.4%</td>
+      </tr>
+      <tr>
+        <td>🔩 Ferretería</td>
+        <td>$1.68M</td>
+        <td>$1.8M</td>
+        <td>$2.9M</td>
+        <td>$4.0M</td>
+        <td>$2.4M</td>
+        <td class="td-up">+20.8%</td>
+      </tr>
+      <tr>
+        <td>💧 Sist. de Riego</td>
+        <td>$3.58M</td>
+        <td>$1.6M</td>
+        <td>$5.1M</td>
+        <td>$8.5M</td>
+        <td>$6.2M</td>
+        <td class="td-down">-17.7%</td>
+      </tr>
+      <tr>
+        <td>📡 AMS</td>
+        <td>$627K</td>
+        <td>$473K</td>
+        <td>$987K</td>
+        <td>$1.5M</td>
+        <td>$745K</td>
+        <td class="td-up">+32.5%</td>
+      </tr>
+      <tr>
+        <td>🚁 Drones</td>
+        <td>$8.66M</td>
+        <td>$3.8M</td>
+        <td>$12.2M ⚠️</td>
+        <td>$20.6M</td>
+        <td>$3.0M</td>
+        <td class="td-up">+306.7%</td>
+      </tr>
+      <tr>
+        <td>🔴 Seminuevos</td>
+        <td>$0</td>
+        <td>$2.9M</td>
+        <td>$1.4M ⚠️</td>
+        <td>~$3M</td>
+        <td>$4.1M</td>
+        <td class="td-down">-65.9%</td>
+      </tr>
+      <tr>
+        <td><strong>TOTAL GRUPO</strong></td>
+        <td><strong>$58.9M</strong></td>
+        <td><strong>$49.9M</strong></td>
+        <td><strong>~$95.2M</strong></td>
+        <td><strong>~$143M</strong></td>
+        <td><strong>$78.3M</strong></td>
+        <td class="td-up"><strong>+21.6%</strong></td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="font-size:11px;color:var(--muted);margin-top:10px">
+    ⚠️ Las líneas marcadas (Productos Aliados, Drones, Seminuevos) tienen alta incertidumbre: Aliados y Drones presentan spikes atípicos vs H1 promedio que pueden no sostenerse; Seminuevos parte de $0 y su recuperación depende de cierre de operaciones pendientes.
+  </p>
+</section>
+
+<!-- ══════════════════════════════ CONTEXTO H1 ══════════════════════════════ -->
+<section>
+  <div class="section-title">Contexto Semestral · H1 2026 (Enero–Junio)</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px">
+    <div class="kpi-card green">
+      <div class="kpi-label">Ventas Netas H1</div>
+      <div class="kpi-value">$299.5M</div>
+      <div class="kpi-sub">Promedio mensual: $49.9M</div>
+    </div>
+    <div class="kpi-card yellow">
+      <div class="kpi-label">Utilidad Operación H1</div>
+      <div class="kpi-value">$3.62M</div>
+      <div class="kpi-sub">1.21% margen — muy estrecho</div>
+    </div>
+    <div class="kpi-card red">
+      <div class="kpi-label">UAI H1 (Antes Impuestos)</div>
+      <div class="kpi-value">$432K</div>
+      <div class="kpi-sub">0.14% margen — casi sin utilidad</div>
+    </div>
+  </div>
+  <div class="context-grid">
+    <div class="ctx-card">
+      <div class="ctx-header"><div class="ctx-name">🚜 Maquinaria</div><div class="ctx-h1-vn">VN: $134.9M</div></div>
+      <div class="ctx-uo-bar-bg"><div class="ctx-uo-bar-fill" style="width:63%;background:var(--jd-green)"></div></div>
+      <div class="ctx-uo-text"><span class="uo-positive">UO: $8.6M (6.34%)</span><span>Mayor contribuidor</span></div>
+    </div>
+    <div class="ctx-card">
+      <div class="ctx-header"><div class="ctx-name">🔧 Refacciones</div><div class="ctx-h1-vn">VN: $67.2M</div></div>
+      <div class="ctx-uo-bar-bg"><div class="ctx-uo-bar-fill" style="width:89%;background:var(--jd-green)"></div></div>
+      <div class="ctx-uo-text"><span class="uo-positive">UO: $6.0M (8.90%)</span><span>Sólido</span></div>
+    </div>
+    <div class="ctx-card">
+      <div class="ctx-header"><div class="ctx-name">⚙️ Servicio</div><div class="ctx-h1-vn">VN: $23.5M</div></div>
+      <div class="ctx-uo-bar-bg"><div class="ctx-uo-bar-fill" style="width:100%;background:var(--jd-green)"></div></div>
+      <div class="ctx-uo-text"><span class="uo-positive">UO: $3.0M (12.84%)</span><span>Excelente margen</span></div>
+    </div>
+    <div class="ctx-card">
+      <div class="ctx-header"><div class="ctx-name">🚁 Drones</div><div class="ctx-h1-vn">VN: $22.6M</div></div>
+      <div class="ctx-uo-bar-bg"><div class="ctx-uo-bar-fill" style="width:100%;background:var(--jd-green)"></div></div>
+      <div class="ctx-uo-text"><span class="uo-positive">UO: $2.8M (12.54%)</span><span>Alto crecimiento</span></div>
+    </div>
+    <div class="ctx-card">
+      <div class="ctx-header"><div class="ctx-name">🔩 Ferretería</div><div class="ctx-h1-vn">VN: $11.0M</div></div>
+      <div class="ctx-uo-bar-bg"><div class="ctx-uo-bar-fill" style="width:27%;background:var(--warning)"></div></div>
+      <div class="ctx-uo-text"><span class="uo-positive">UO: $297K (2.70%)</span><span>Muy bajo</span></div>
+    </div>
+    <div class="ctx-card">
+      <div class="ctx-header"><div class="ctx-name">🌿 Prod. Aliados</div><div class="ctx-h1-vn">VN: $10.2M</div></div>
+      <div class="ctx-uo-bar-bg"><div class="ctx-uo-bar-fill" style="width:5%;background:var(--danger)"></div></div>
+      <div class="ctx-uo-text"><span class="uo-negative">UO: -$85K (-0.83%)</span><span>Pérdida leve</span></div>
+    </div>
+    <div class="ctx-card">
+      <div class="ctx-header"><div class="ctx-name">💧 Sist. de Riego</div><div class="ctx-h1-vn">VN: $9.9M</div></div>
+      <div class="ctx-uo-bar-bg"><div class="ctx-uo-bar-fill" style="width:0%;background:var(--danger)"></div></div>
+      <div class="ctx-uo-text"><span class="uo-negative">UO: -$1.2M (-12.36%)</span><span>Pérdida crónica</span></div>
+    </div>
+    <div class="ctx-card">
+      <div class="ctx-header"><div class="ctx-name">🔴 Seminuevos</div><div class="ctx-h1-vn">VN: $17.3M</div></div>
+      <div class="ctx-uo-bar-bg"><div class="ctx-uo-bar-fill" style="width:0%;background:var(--danger)"></div></div>
+      <div class="ctx-uo-text"><span class="uo-negative">UO: -$3.8M (-22.18%)</span><span>⚠️ Urgente</span></div>
+    </div>
+    <div class="ctx-card">
+      <div class="ctx-header"><div class="ctx-name">📡 AMS</div><div class="ctx-h1-vn">VN: $2.8M</div></div>
+      <div class="ctx-uo-bar-bg"><div class="ctx-uo-bar-fill" style="width:1%;background:var(--warning)"></div></div>
+      <div class="ctx-uo-text"><span class="uo-positive">UO: $2.5K (0.09%)</span><span>Punto de quiebre</span></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ══════════════════════════════ FOOTER ══════════════════════════════ -->
+<footer>
+  <p><strong>Humaya Digital</strong> · Maquinaria del Humaya · Distribuidor Autorizado John Deere</p>
+  <p style="margin-top:4px">Dashboard generado automáticamente · Datos al 13 de Julio de 2026 · Uso interno y confidencial</p>
+</footer>
+
+<script>
+window.addEventListener('DOMContentLoaded', function() {
+  // ── Avance vs Presupuesto Chart ──
+  var ctx = document.getElementById('avanceChart').getContext('2d');
+
+  var labels = ['Maquinaria','Refacciones','Servicio','Prod. Aliados','Ferretería','Sist. Riego','AMS','Drones','Seminuevos'];
+  var avances = [58.2, 73.2, 96.4, 188.6, 69.0, 58.0, 84.2, 285.8, 0];
+  var colors = avances.map(function(v) {
+    if (v === 0) return 'rgba(220, 38, 38, 0.75)';
+    if (v < 42) return 'rgba(245, 158, 11, 0.7)';
+    if (v < 80) return 'rgba(34, 197, 94, 0.75)';
+    return 'rgba(54, 124, 43, 0.85)';
+  });
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: '% del Presupuesto Mensual Alcanzado',
+        data: avances,
+        backgroundColor: colors,
+        borderColor: colors.map(function(c){ return c.replace('0.7','1').replace('0.75','1').replace('0.85','1'); }),
+        borderWidth: 1,
+        borderRadius: 4
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              return ctx.parsed.y.toFixed(1) + '% del presupuesto mensual (esperado: 41.9%)';
+            }
+          }
+        },
+        annotation: {
+          annotations: {}
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 300,
+          ticks: {
+            callback: function(v) { return v + '%'; }
+          },
+          grid: { color: 'rgba(0,0,0,0.06)' }
+        },
+        x: {
+          grid: { display: false }
+        }
+      }
+    },
+    plugins: [{
+      id: 'ritmoLine',
+      afterDraw: function(chart) {
+        var ctx2 = chart.ctx;
+        var yScale = chart.scales.y;
+        var xScale = chart.scales.x;
+        var y = yScale.getPixelForValue(41.9);
+        ctx2.save();
+        ctx2.setLineDash([6, 4]);
+        ctx2.strokeStyle = '#374151';
+        ctx2.lineWidth = 2;
+        ctx2.beginPath();
+        ctx2.moveTo(xScale.left, y);
+        ctx2.lineTo(xScale.right, y);
+        ctx2.stroke();
+        ctx2.fillStyle = '#374151';
+        ctx2.font = 'bold 11px sans-serif';
+        ctx2.fillText('Ritmo esperado (41.9%)', xScale.left + 8, y - 6);
+        ctx2.restore();
+      }
+    }]
+  });
+});
+</script>
+</body>
+</html>

@@ -46,6 +46,7 @@ namespace HD_Cobranza.Capturas.Dashboard.Dash_Indicadores
                 view.porc_recuperacion = result.Read<mdl_Dashboard_Porcentaje_Recuperacion>().FirstOrDefault();
                 view.permisos = result.Read<mdl_Permisos_Dash_Sucursales>().ToList();
                 view.ultima_actualizacion = result.Read<mdl_Fecha_Ultima_Actualizacion>().ToList();
+                view.cartera_transito= result.Read<mdl_cartera_transico>().FirstOrDefault();
                 factory.SQL.Close();
                 return view;
             }
