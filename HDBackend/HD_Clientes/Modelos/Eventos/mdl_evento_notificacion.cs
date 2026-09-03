@@ -19,6 +19,6 @@ namespace HD.Clientes.Modelos.Eventos
         public string? referencia { get; set; }
         public string? redireccion { get; set; }
         public string? redireccionweb { get; set; }
-
+        public DateTimeOffset fecha { get; set; }
     }
 }
