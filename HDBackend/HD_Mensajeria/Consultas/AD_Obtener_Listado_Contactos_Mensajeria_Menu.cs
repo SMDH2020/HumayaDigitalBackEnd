@@ -21,7 +21,7 @@ namespace HD_Mensajeria.Consultas
                     idusuario = idusuario
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                var result = await factory.SQL.QueryMultipleAsync("HD_Mensajeria.dbo.sp_Obtener_Listado_Clientes_Contactados_2", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("HD_Mensajeria.dbo.sp_Obtener_Listado_Clientes_Contactados_3", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 mdl_Contactos_Mensajeria_View mdl = new mdl_Contactos_Mensajeria_View();
                 mdl.postventa = result.Read<mdl_Contactos_Mensajeria_Menu>().ToList();
                 mdl.cobranza = result.Read<mdl_Contactos_Mensajeria_Menu>().ToList();

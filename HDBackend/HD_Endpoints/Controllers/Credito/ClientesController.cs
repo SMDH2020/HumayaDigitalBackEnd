@@ -123,7 +123,8 @@ namespace HD.Endpoints.Controllers.Credito
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Dashboard_CRM datos = new AD_Dashboard_CRM(CadenaConexion);
-            var result = await datos.obtenerDashboard(idcliente);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.obtenerDashboard(idcliente, usuario);
             return Ok(result);
         }
 

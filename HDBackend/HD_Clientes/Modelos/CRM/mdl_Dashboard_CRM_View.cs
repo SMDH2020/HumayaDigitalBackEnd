@@ -20,8 +20,7 @@ namespace HD.Clientes.Modelos.CRM
         public mdl_Dashboard_CRM_Expediente_Digital documentacionMhusa { get; set; }
         public mdl_Dashboard_CRM_Expediente_Digital documentacionJDF { get; set; }
         public mdl_Dashboard_CRM_Visitas visitas { get; set; }
-
-
+        public mdl_Dashboard_CRM_Parque_Maquinaria parque_maquinaria { get; set; }
 
 
     }

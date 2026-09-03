@@ -9,6 +9,7 @@ namespace HD.Clientes.Modelos.CRM.Cotizaciones
     public class mdl_Cotizacion_CRM_Imprimir
     {
         public string folio_crm { get; set; }
+        public string folio_equipo { get; set; }         // no disponible actualmente (queda vacío)
         public string asunto { get; set; }
         public string apreciable { get; set; }        // cot.nombre_contacto
         public string empresa { get; set; }             // Clientes.razon_social

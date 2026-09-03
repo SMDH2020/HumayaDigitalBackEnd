@@ -16,5 +16,6 @@ namespace HD.Clientes.Modelos.CRM.Cotizaciones
         public double impuesto { get; set; }
         public double importe { get; set; }
         public double importe_total { get; set; }
+        public List<string> caracteristicas { get; set; }
     }
 }
