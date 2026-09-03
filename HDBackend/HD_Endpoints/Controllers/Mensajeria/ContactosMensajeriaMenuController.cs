@@ -26,5 +26,16 @@ namespace HD.Endpoints.Controllers.Mensajeria
             var result = await datos.obtenerContactos(usuario);
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerIndicadore(string fechainicio, string fechafin, string? linea, string? adr, string? sucursal, string? plantilla)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Listado_Contactos_Mensajeria_Menu datos = new AD_Obtener_Listado_Contactos_Mensajeria_Menu(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.obtenerIndicadores(fechainicio, fechafin, linea, adr, sucursal, plantilla);
+            return Ok(result);
+        }
     }
 }

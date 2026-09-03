@@ -33,5 +33,34 @@ namespace HD_Mensajeria.Consultas
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<mdl_Mensajeria_Indicadores_View> obtenerIndicadores(string fechainicio, string fechafin, string? linea, string? adr, string? sucursal, string? plantilla)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    FechaInicio = fechainicio,
+                    FechaFin = fechafin,
+                    Linea = linea,
+                    Adr = adr,
+                    Sucursales = sucursal,
+                    Plantilla = plantilla
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var result = await factory.SQL.QueryMultipleAsync("HD_Mensajeria.dbo.sp_Obtener_Indicadores_Respuesta_Mensajeria", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdl_Mensajeria_Indicadores_View mdl = new mdl_Mensajeria_Indicadores_View();
+                mdl.header = result.Read<mdl_Mensajeria_Indicadores_Header>().FirstOrDefault();
+                mdl.masRespuestas = result.Read<mdl_Mensajeria_Indicadores_Top>().ToList();
+                mdl.menosRespuestas = result.Read<mdl_Mensajeria_Indicadores_Top>().ToList();
+                mdl.listado = result.Read<mdl_Mensajeria_Indicadores_Detalle>().ToList();
+                factory.SQL.Close();
+                return mdl;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }
