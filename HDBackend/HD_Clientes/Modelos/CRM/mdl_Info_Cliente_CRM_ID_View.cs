@@ -26,6 +26,7 @@
         public mdl_Validado_Mercadotecnia_CRM validado { get; set; }
         public IEnumerable<mdlClientes_EQUIP> info_equip_cliente { get; set; }
         public IEnumerable<mdl_Dep_Responsable_Seccion_CRM> responsable_departamento { get; set; }
+        public mdlClientes_Datos_Persona_Fisica datos_persona_fisica { get; set; }
 
     }
 }

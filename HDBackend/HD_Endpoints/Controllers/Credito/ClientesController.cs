@@ -241,5 +241,16 @@ namespace HD.Endpoints.Controllers.Credito
             var result = await datos.CancelaAsesorCliente(idcliente, idvendedor, idlinea, usuario);
             return Ok(result);
         }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<IActionResult> GuardarDatosBuroCredito(mdl_DatosBuroCredito mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Datos_Buro_Credito_Guardar datos = new AD_Datos_Buro_Credito_Guardar(CadenaConexion);
+            mdl.usuario = int.Parse(Sesion.usuario());
+            var result = await datos.Guardar(mdl);
+            return Ok(result);
+        }
     }
 }
