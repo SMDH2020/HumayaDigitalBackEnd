@@ -17,6 +17,7 @@ namespace HD.Notifications
         private string OneSignalAppId;
         private string OneSignalApiKey;
 
+
         public AD_OneSignal(string _cadenaconexion, string _OneSignalAppId, string _OneSignalApiKey)
         {
             CadenaConexion = _cadenaconexion;
@@ -74,7 +75,66 @@ namespace HD.Notifications
             }
         }
 
-        public async Task<bool> EnviarEspecifico(mdl_Notificacion_Usuarios_Solicitudes_View mdl)
+        public async Task<bool> EnviarEspecifico(NotificacionDto data, string? titulo = "Humaya Digital")
+        {
+
+            AD_Conseguir_Mensaje_Manual datos = new AD_Conseguir_Mensaje_Manual(CadenaConexion);
+            var resultado = await datos.obtenerIDEspecifico(data);
+
+            if (resultado == null || resultado.notificacionCuerpo == null) return false;
+
+            var playerIds = resultado.notificacionUsuarios?
+                                .Select(u => u.idSuscripcion)
+                                .Where(id => !string.IsNullOrWhiteSpace(id))
+                                .Distinct()
+                                .ToArray() ?? new string[] { };
+
+            // Sin suscripciones registradas OneSignal rechaza la peticion
+            if (playerIds.Length == 0) return false;
+
+            using var client = new HttpClient();
+
+            var payload = new
+            {
+                app_id = OneSignalAppId,
+                include_player_ids = playerIds,
+
+                headings = new { en = string.IsNullOrWhiteSpace(titulo) ? "Humaya Digital" : titulo },
+                contents = new { en = resultado.notificacionCuerpo.mensaje ?? "Mensaje por defecto" },
+                data = new
+                {
+                    idlog = resultado.notificacionCuerpo.idlog,
+                    mensaje = resultado.notificacionCuerpo.mensaje ?? "",
+                    portafolio = resultado.notificacionCuerpo.portafolio ?? "",
+                    parametro = resultado.notificacionCuerpo.parametro ?? "",
+                    estado = resultado.notificacionCuerpo.estado ?? "",
+                    cliente = resultado.notificacionCuerpo.cliente ?? "",
+                    redireccion = resultado.notificacionCuerpo.redireccion ?? "",
+                    redireccionweb = resultado.notificacionCuerpo.redireccionweb ?? "",
+                }
+
+            };
+
+            var jsonPayload = JsonSerializer.Serialize(payload);
+            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+            client.DefaultRequestHeaders.Add("Authorization", $"Basic {OneSignalApiKey}");
+
+            var response = await client.PostAsync("https://onesignal.com/api/v1/notifications", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadAsStringAsync();
+                return true;
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                return false;
+            }
+        }
+
+        public async Task<bool> EnviarEspecificoDirecto(mdl_Notificacion_Usuarios_Solicitudes_View mdl)
         {
             using var client = new HttpClient();
 

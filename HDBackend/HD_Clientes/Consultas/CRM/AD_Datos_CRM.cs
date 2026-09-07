@@ -67,7 +67,7 @@ namespace HD.Clientes.Consultas.CRM
                 mdl.validado = result.Read<mdl_Validado_Mercadotecnia_CRM>().FirstOrDefault();
                 mdl.info_equip_cliente = result.Read<mdlClientes_EQUIP>().ToList();
                 mdl.responsable_departamento = result.Read<mdl_Dep_Responsable_Seccion_CRM>().ToList();
-
+                mdl.datos_persona_fisica = result.Read<mdlClientes_Datos_Persona_Fisica>().FirstOrDefault();
 
                 factory.SQL.Close();
                 return mdl;

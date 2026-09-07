@@ -8,12 +8,28 @@ namespace HD_Reporteria.CRM
 {
     public class XLS_Reporte_IndicadoresVisitas
     {
-        public static Task<DocResult> GenerarExcel(IEnumerable<mdl_IndicadoresVisitas_ReporteVisitas> detalle, int ejercicio, int periodo)
+        /// <summary>
+        /// Genera el Excel del indicador de visitas.
+        /// tipo: P = Programadas, R = Realizadas. Cualquier otro valor genera el
+        /// reporte sin distincion de tipo. El titulo y el nombre del archivo
+        /// reflejan el tipo para que Programadas y Realizadas del mismo mes no se
+        /// sobreescriban entre si.
+        /// </summary>
+        public static Task<DocResult> GenerarExcel(IEnumerable<mdl_IndicadoresVisitas_ReporteVisitas> detalle, int ejercicio, int periodo, string? tipo)
         {
             try
             {
                 CultureInfo ci = new CultureInfo("es-MX");
                 var datos = detalle == null ? new List<mdl_IndicadoresVisitas_ReporteVisitas>() : detalle.ToList();
+
+                string clave = (tipo ?? "").Trim().ToUpper();
+                string tipoTitulo = clave == "P" ? " PROGRAMADAS" : clave == "R" ? " REALIZADAS" : "";
+                string tipoArchivo = clave == "P" ? "Programadas" : clave == "R" ? "Realizadas" : "";
+
+                string titulo = "INDICADORES DE VISITAS" + tipoTitulo + " - " + XLS_IndicadoresEstilos.NombreMes(periodo, ci).ToUpper() + " " + ejercicio;
+                string filename = "IndicadoresVisitas" + tipoArchivo + "_" + periodo.ToString("00") + ejercicio;
+                string sheetname = ("VISITAS" + tipoTitulo).Trim();
+                string ruta = $"C:\\SMDH\\Procesados\\{filename}.xlsx";
 
                 // Semanas en el orden en que las devuelve el SP (no se reordena el detalle).
                 var semanas = datos.GroupBy(x => x.idsemana)
@@ -28,16 +44,12 @@ namespace HD_Reporteria.CRM
 
                 int totalColumnas = 2 + (semanas.Count * 3) + 3;
 
-                string sheetname = "INDICADOR DE VISITAS";
-                string ruta = $"C:\\SMDH\\Procesados\\{sheetname}.xlsx";
-
                 using (var workbook = new XLWorkbook())
                 {
                     var sheet = workbook.Worksheets.Add(sheetname);
                     sheet.Style.Font.FontName = "Calibri";
                     sheet.Style.Font.FontSize = 10;
 
-                    string titulo = "REPORTE INDICADOR DE VISITAS - " + XLS_IndicadoresEstilos.NombreMes(periodo, ci).ToUpper() + " " + ejercicio;
                     int renglon = XLSEncabezado.Encabezado(ref sheet, titulo, totalColumnas);
 
                     int filaGrupo = renglon;
@@ -169,6 +181,8 @@ namespace HD_Reporteria.CRM
 
                     sheet.SheetView.Freeze(filaSub, 2);
 
+                    EscribirHojaComentarios(workbook, datos, semanas.Select(x => x.idsemana).ToList(), ci);
+
                     workbook.SaveAs(ruta);
                 }
 
@@ -177,7 +191,7 @@ namespace HD_Reporteria.CRM
                     byte[] docbytes = System.IO.File.ReadAllBytes(ruta);
                     string docBase64 = Convert.ToBase64String(docbytes);
                     System.IO.File.Delete(ruta);
-                    return Task.FromResult(new DocResult { documento = docBase64, filename = sheetname });
+                    return Task.FromResult(new DocResult { documento = docBase64, filename = filename });
                 }
                 throw new Exception("ERROR EN LA GENERACION DEL ARCHIVO, FAVOR DE COMUNICARSE CON EL ADMINISTRADOR DEL SISTEMA");
             }
@@ -185,6 +199,68 @@ namespace HD_Reporteria.CRM
             {
                 throw ex;
             }
+        }
+
+        /// <summary>
+        /// Hoja Comentarios: solo las celdas con tiene_comentario = true.
+        /// Se recorre con la misma agrupacion de la tabla principal para conservar
+        /// el orden por estado, sucursal, vendedor y semana.
+        /// </summary>
+        private static void EscribirHojaComentarios(XLWorkbook workbook, List<mdl_IndicadoresVisitas_ReporteVisitas> datos, List<int> ordenSemanas, CultureInfo ci)
+        {
+            var sheet = workbook.Worksheets.Add("Comentarios");
+            sheet.Style.Font.FontName = "Calibri";
+            sheet.Style.Font.FontSize = 10;
+
+            int renglon = XLS_IndicadoresEstilos.EncabezadoComentarios(sheet, new string[] { "Vendedor", "Semana", "Objetivo", "Comentario" });
+            int primero = renglon;
+
+            foreach (var grupoEstado in datos.GroupBy(x => x.estado ?? ""))
+            {
+                foreach (var grupoSucursal in grupoEstado.GroupBy(x => x.sucursal ?? ""))
+                {
+                    foreach (var grupoVendedor in grupoSucursal.GroupBy(x => new { x.idvendedor, x.vendedor }))
+                    {
+                        var filas = grupoVendedor.ToList();
+
+                        foreach (int idsemana in ordenSemanas)
+                        {
+                            var registro = filas.FirstOrDefault(x => x.idsemana == idsemana && x.tiene_comentario);
+                            if (registro == null) continue;
+
+                            sheet.Cell(renglon, 1).Value = grupoVendedor.Key.vendedor;
+                            sheet.Cell(renglon, 2).Value = XLS_IndicadoresEstilos.RangoSemana(registro.fecha_inicio, registro.fecha_fin, ci);
+                            sheet.Cell(renglon, 3).Value = registro.objetivo_semanal;
+                            sheet.Cell(renglon, 3).Style.NumberFormat.Format = "0";
+                            sheet.Cell(renglon, 3).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                            sheet.Cell(renglon, 4).Value = registro.comentario ?? "";
+                            renglon++;
+                        }
+                    }
+                }
+            }
+
+            if (renglon == primero)
+            {
+                sheet.Cell(primero, 1).Value = "Sin comentarios en este periodo";
+                sheet.Range(primero, 1, primero, 4).Merge();
+                sheet.Cell(primero, 1).Style.Font.FontColor = XLColor.FromHtml(XLS_IndicadoresEstilos.GrisTexto);
+            }
+            else
+            {
+                var cuerpo = sheet.Range(primero, 1, renglon - 1, 4);
+                cuerpo.Style.Alignment.Vertical = XLAlignmentVerticalValues.Top;
+                cuerpo.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                cuerpo.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+                cuerpo.Style.Border.OutsideBorderColor = XLColor.FromHtml("#D9D9D9");
+                cuerpo.Style.Border.InsideBorderColor = XLColor.FromHtml("#D9D9D9");
+                sheet.Range(primero, 4, renglon - 1, 4).Style.Alignment.WrapText = true;
+            }
+
+            sheet.Column(1).Width = 38;
+            sheet.Column(2).Width = 22;
+            sheet.Column(3).Width = 10;
+            sheet.Column(4).Width = 90;
         }
     }
 }

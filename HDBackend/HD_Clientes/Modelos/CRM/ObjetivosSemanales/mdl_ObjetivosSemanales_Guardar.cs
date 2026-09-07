@@ -18,5 +18,6 @@ namespace HD.Clientes.Modelos.CRM.ObjetivosSemanales
         public List<mdl_ObjetivosSemanales_Detalle> detalle { get; set; } = new List<mdl_ObjetivosSemanales_Detalle>();
 
         public int usuario { get; set; }
+        public string? comentarios { get; set; }
     }
 }

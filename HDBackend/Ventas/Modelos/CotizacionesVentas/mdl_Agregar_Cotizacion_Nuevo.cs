@@ -13,7 +13,7 @@ namespace Ventas.Modelos.CotizacionesVentas
         public int idcliente { get; set; }
 
         [Required(ErrorMessage = "La razon social es un valor requerido")]
-        [RegularExpression(@"^[. , # $ % ñ Ñ a-zA-Z0-9]+$", ErrorMessage = "El campo condiciones debe contener solo letras y numeros")]
+        //[RegularExpression(@"^[. - , # $ % ñ Ñ a-zA-Z0-9]+$", ErrorMessage = "El campo condiciones debe contener solo letras y numeros")]
         public string razon_social { get; set; }
 
         [Required(ErrorMessage = "El asesor es un valor requerido")]

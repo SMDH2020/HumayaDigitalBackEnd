@@ -218,6 +218,8 @@ namespace HD_Reporteria.CRM
                     // Asesor y Objetivo mensual fijos a la izquierda, encabezados fijos arriba.
                     sheet.SheetView.Freeze(filaSub, 2);
 
+                    EscribirHojaComentarios(workbook, datos, semanas.Select(x => x.idsemana).ToList(), lineas.Select(x => x.idlinea).ToList(), ci);
+
                     workbook.SaveAs(ruta);
                 }
 
@@ -234,6 +236,72 @@ namespace HD_Reporteria.CRM
             {
                 throw ex;
             }
+        }
+        /// <summary>
+        /// Hoja Comentarios: solo las celdas con tiene_comentario = true.
+        /// Se recorre con la misma agrupacion de la tabla principal para conservar
+        /// el orden por estado, sucursal, vendedor, semana y linea.
+        /// </summary>
+        private static void EscribirHojaComentarios(XLWorkbook workbook, List<mdl_IndicadoresCotizaciones_ReporteCotizaciones> datos, List<int> ordenSemanas, List<int> ordenLineas, CultureInfo ci)
+        {
+            var sheet = workbook.Worksheets.Add("Comentarios");
+            sheet.Style.Font.FontName = "Calibri";
+            sheet.Style.Font.FontSize = 10;
+
+            int renglon = XLS_IndicadoresEstilos.EncabezadoComentarios(sheet, new string[] { "Vendedor", "Semana", "Linea", "Objetivo", "Comentario" });
+            int primero = renglon;
+
+            foreach (var grupoEstado in datos.GroupBy(x => x.estado ?? ""))
+            {
+                foreach (var grupoSucursal in grupoEstado.GroupBy(x => x.sucursal ?? ""))
+                {
+                    foreach (var grupoVendedor in grupoSucursal.GroupBy(x => new { x.idvendedor, x.vendedor }))
+                    {
+                        var filas = grupoVendedor.ToList();
+
+                        foreach (int idsemana in ordenSemanas)
+                        {
+                            foreach (int idlinea in ordenLineas)
+                            {
+                                var registro = filas.FirstOrDefault(x => x.idsemana == idsemana && x.idlinea == idlinea && x.tiene_comentario);
+                                if (registro == null) continue;
+
+                                sheet.Cell(renglon, 1).Value = grupoVendedor.Key.vendedor;
+                                sheet.Cell(renglon, 2).Value = XLS_IndicadoresEstilos.RangoSemana(registro.fecha_inicio, registro.fecha_fin, ci);
+                                sheet.Cell(renglon, 3).Value = registro.linea ?? "";
+                                sheet.Cell(renglon, 4).Value = registro.objetivo;
+                                sheet.Cell(renglon, 4).Style.NumberFormat.Format = "0";
+                                sheet.Cell(renglon, 4).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                                sheet.Cell(renglon, 5).Value = registro.comentario ?? "";
+                                renglon++;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (renglon == primero)
+            {
+                sheet.Cell(primero, 1).Value = "Sin comentarios en este periodo";
+                sheet.Range(primero, 1, primero, 5).Merge();
+                sheet.Cell(primero, 1).Style.Font.FontColor = XLColor.FromHtml(XLS_IndicadoresEstilos.GrisTexto);
+            }
+            else
+            {
+                var cuerpo = sheet.Range(primero, 1, renglon - 1, 5);
+                cuerpo.Style.Alignment.Vertical = XLAlignmentVerticalValues.Top;
+                cuerpo.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                cuerpo.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+                cuerpo.Style.Border.OutsideBorderColor = XLColor.FromHtml("#D9D9D9");
+                cuerpo.Style.Border.InsideBorderColor = XLColor.FromHtml("#D9D9D9");
+                sheet.Range(primero, 5, renglon - 1, 5).Style.Alignment.WrapText = true;
+            }
+
+            sheet.Column(1).Width = 38;
+            sheet.Column(2).Width = 22;
+            sheet.Column(3).Width = 26;
+            sheet.Column(4).Width = 10;
+            sheet.Column(5).Width = 90;
         }
     }
 }
