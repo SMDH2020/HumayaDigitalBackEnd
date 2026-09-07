@@ -29,7 +29,7 @@ namespace HD.Endpoints.Controllers.Mensajeria
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ObtenerIndicadore(string fechainicio, string fechafin, string? linea, string? adr, string? sucursal, string? plantilla)
+        public async Task<ActionResult> ObtenerIndicadore(string fechainicio, string fechafin, string linea, string adr, string sucursal, string plantilla)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Obtener_Listado_Contactos_Mensajeria_Menu datos = new AD_Obtener_Listado_Contactos_Mensajeria_Menu(CadenaConexion);
