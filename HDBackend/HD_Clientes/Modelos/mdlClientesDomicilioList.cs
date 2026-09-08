@@ -17,11 +17,12 @@
         public int idlocalidad { get; set; }
 
         public string? localidad { get; set; } = "";
-        public string? codigo_postal { get; set; } = "";
+        public string? cp { get; set; } = "";
 
         public string? direccion { get; set; } = "";
 
         public string? tipodomicilio { get; set; } = "";
+        public string? idtipodomicilio { get; set; }
 
         public bool principal { get; set; }
 
@@ -32,5 +33,9 @@
         public bool estatus { get; set; } = true;
 
         public string? usuario { get; set; } = "";
+        public int? id_ultimousuario { get; set; }
+        public string? ultimousuario { get; set; }
+        public DateTime? ultima_fecha { get; set; }
+        public string? accion { get; set; }
     }
 }

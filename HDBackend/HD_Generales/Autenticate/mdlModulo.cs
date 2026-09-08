@@ -6,5 +6,8 @@
         public string descripcion { get; set; } = "";
         public string ruta { get; set; } = "";
         public string icono { get; set; } = "";
+        public bool estatus { get; set; } = true;
+        public string? usuario { get; set; } = "";
+
     }
 }

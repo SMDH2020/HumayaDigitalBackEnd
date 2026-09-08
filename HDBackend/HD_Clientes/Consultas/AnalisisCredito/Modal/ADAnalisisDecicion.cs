@@ -1,0 +1,160 @@
+﻿using Dapper;
+using HD.AccesoDatos;
+using HD.Clientes.Modelos.SC_Analisis;
+using HD.Clientes.Modelos.SC_Analisis.JDF;
+using HD.Clientes.Modelos.SC_Analisis.Modal;
+
+namespace HD.Clientes.Consultas.AnalisisCredito.Modal
+{
+    public class ADAnalisisDecicion
+    {
+        private string CadenaConexion;
+        public ADAnalisisDecicion(string _cadenaconexion)
+        {
+            CadenaConexion = _cadenaconexion;
+        }
+        public async Task<mdlSCAnalisis_Decicion> Get(mdlSCAnalisis_Dedidion_View mdl)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    folio=mdl.folio,
+                    idproceso=mdl.idproceso,
+                    usuario=mdl.usuario,
+                    responsable = mdl.responsable
+                };
+                mdlSCAnalisis_Decicion result = await factory.SQL.QueryFirstOrDefaultAsync<mdlSCAnalisis_Decicion>("Credito.sp_Analisis_Decicion", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<mdl_Resumen_Finalizacion_Solicitud_View> ObtenerResumen(mdlSCAnalisis_Dedidion_View mdl)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    folio = mdl.folio,
+                    idproceso = mdl.idproceso,
+                    usuario = mdl.usuario,
+                    responsable = mdl.responsable
+                };
+                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Analisis_Decicion_Finalizacion_Resumen", parametros, commandType: System.Data.CommandType.StoredProcedure);
+
+                mdl_Resumen_Finalizacion_Solicitud_View view = new mdl_Resumen_Finalizacion_Solicitud_View();
+                view.estado = result.Read<mdlSCAnalisis_Decicion>().FirstOrDefault();
+                //view.resumen_tasas = result.Read<mdl_Tabla_Diferencias_Tasas>().ToList();
+                view.resumen_facturacion = result.Read<mdl_Tabla_Diferencias_Facturacion>().ToList();
+                if (view.estado is null) view.estado = new mdlSCAnalisis_Decicion();
+
+                factory.SQL.Close();
+                return view;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+        public async Task<mdlSCAnalisis_Decicion> GetAutorizarFacturacion(mdlSCAnalisis_Dedidion_View mdl)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    folio = mdl.folio,
+                    idproceso = mdl.idproceso,
+                    usuario = mdl.usuario,
+                    responsable = mdl.responsable
+                };
+                mdlSCAnalisis_Decicion result = await factory.SQL.QueryFirstOrDefaultAsync<mdlSCAnalisis_Decicion>("Credito.sp_Analisis_Decicion_Autorizar_Facturacion", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+        public async Task<mdlJDFAnalisis_Decicion_un_documento> GetUndocumento(mdlJDFAnalisis_Un_Documento_Decicion_View mdl)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    folio = mdl.folio,
+                    idproceso = mdl.idproceso,
+                    iddocumento=mdl.iddocumento,
+                    usuario = mdl.usuario
+                };
+                mdlJDFAnalisis_Decicion_un_documento result = await factory.SQL.QueryFirstOrDefaultAsync<mdlJDFAnalisis_Decicion_un_documento>("Credito.sp_Analisis_JDF_un_Documento", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<mdlSCAnalisis_Decicion> ObtenerFinalizacionCondicionado(mdlSCAnalisis_Dedidion_View mdl)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    folio = mdl.folio,
+                    idproceso = mdl.idproceso,
+                    usuario = mdl.usuario,
+                    responsable = mdl.responsable
+                };
+                mdlSCAnalisis_Decicion result = await factory.SQL.QueryFirstOrDefaultAsync<mdlSCAnalisis_Decicion>("Credito.sp_Analisis_Decicion_Credito_Condicionado", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<mdl_Resumen_Finalizacion_Solicitud_View> ObtenerFinalizacionCondicionadoResumen(mdlSCAnalisis_Dedidion_View mdl)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    folio = mdl.folio,
+                    idproceso = mdl.idproceso,
+                    usuario = mdl.usuario,
+                    responsable = mdl.responsable
+                };
+                var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Analisis_Decicion_Credito_Condicionado_Finalizacion", parametros, commandType: System.Data.CommandType.StoredProcedure);
+
+                mdl_Resumen_Finalizacion_Solicitud_View view = new mdl_Resumen_Finalizacion_Solicitud_View();
+                view.estado = result.Read<mdlSCAnalisis_Decicion>().FirstOrDefault();
+                //view.resumen_tasas = result.Read<mdl_Tabla_Diferencias_Tasas>().ToList();
+                view.resumen_facturacion = result.Read<mdl_Tabla_Diferencias_Facturacion>().ToList();
+                if (view.estado is null) view.estado = new mdlSCAnalisis_Decicion();
+
+                factory.SQL.Close();
+                return view;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+    }
+}

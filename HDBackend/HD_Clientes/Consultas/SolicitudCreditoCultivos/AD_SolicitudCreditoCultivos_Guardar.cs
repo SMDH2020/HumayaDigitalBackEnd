@@ -18,6 +18,7 @@ namespace HD.Clientes.Consultas.SolicitudCreditoCultivos
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var parametros = new
                 {
+                    idsolicitud_cultivo = mdl.idsolicitud_cultivo,
                     folio = mdl.folio,
                     idcultivo = mdl.idcultivo,
                     hectareas = mdl.hectareas,
@@ -26,9 +27,10 @@ namespace HD.Clientes.Consultas.SolicitudCreditoCultivos
                     temporal = mdl.temporal,
                     rendimiento = mdl.rendimiento,
                     precio = mdl.precio,
-                    mescosecha = mdl.mescosecha,
-                    estatus = mdl.estatus,
-                    usuario = mdl.usuario
+                    mes_cosecha = mdl.mes_cosecha,
+                    total_toneladas = mdl.total_toneladas,
+                    usuario = mdl.usuario,
+                    estatus = mdl.estatus
                 };
                 await factory.SQL.QueryAsync("Credito.sp_solicitud_credito_cultivos_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();

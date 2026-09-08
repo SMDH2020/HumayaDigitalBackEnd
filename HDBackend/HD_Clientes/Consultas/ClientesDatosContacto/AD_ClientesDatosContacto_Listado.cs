@@ -29,5 +29,26 @@ namespace HD.Clientes.Consultas.ClientesDatosContacto
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<IEnumerable<mdlClientes_Datos_Contacto>> GetDatosRegistrados(int idcliente, string mediocontacto)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    @idcliente = idcliente,
+                    @mediocontacto = mediocontacto
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdlClientes_Datos_Contacto> result = await factory.SQL.QueryAsync<mdlClientes_Datos_Contacto>("Credito.sp_Get_Datos_Contacto_Cliente_Existente", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }
+

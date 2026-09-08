@@ -7,10 +7,6 @@ namespace HD.Clientes.Consultas.ClientesDatosPersonaFisica
     public class AD_ClientesDatosPersonaFisica_Guardar
     {
         private string CadenaConexion;
-        public AD_ClientesDatosPersonaFisica_Guardar()
-        {
-                
-        }
         public AD_ClientesDatosPersonaFisica_Guardar(string _cadenaconexion)
         {
             CadenaConexion = _cadenaconexion;
@@ -23,6 +19,7 @@ namespace HD.Clientes.Consultas.ClientesDatosPersonaFisica
                 {
                     idcliente = mdl.idcliente,
                     nombre = mdl.nombre,
+                    nombre2=mdl.nombre2,
                     apellido_paterno = mdl.apellido_paterno,
                     apellido_materno = mdl.apellido_materno,
                     curp = mdl.curp,
@@ -51,6 +48,7 @@ namespace HD.Clientes.Consultas.ClientesDatosPersonaFisica
                 {
                     idcliente = mdl.idcliente,
                     nombre = mdl.nombre,
+                    nombre2=mdl.nombre2,
                     apellido_paterno = mdl.apellido_paterno,
                     apellido_materno = mdl.apellido_materno,
                     curp = mdl.curp,

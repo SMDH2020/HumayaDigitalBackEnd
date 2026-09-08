@@ -29,5 +29,26 @@ namespace HD.Clientes.Consultas.ClientesCultivo
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<IEnumerable<mdlClientes_Cultivo_Listado>> Cancela_Cultivo(int idcliente, int registro, int usuario)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    idcliente,
+                    registro, 
+                    usuario
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdlClientes_Cultivo_Listado> result = await factory.SQL.QueryAsync<mdlClientes_Cultivo_Listado>("Credito.Cancela_Cultivo_CRM", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
     }
 }

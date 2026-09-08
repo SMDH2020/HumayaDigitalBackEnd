@@ -24,5 +24,14 @@ namespace HD.Endpoints.Controllers.Credito
             return Ok(result);
 
         }
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> DropDownList()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Localidad_DropDownList datos = new AD_Localidad_DropDownList(CadenaConexion);
+            var result = await datos.DropDownList();
+            return Ok(result);
+        }
     }
 }
