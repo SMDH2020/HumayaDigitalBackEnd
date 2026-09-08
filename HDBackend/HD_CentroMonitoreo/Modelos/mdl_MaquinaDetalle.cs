@@ -27,5 +27,12 @@ namespace HD_CentroMonitoreo.Modelos
         public int? total_alertas { get; set; }
         public string? ultima_severidad { get; set; }
         public DateTime? ultima_fecha_alerta { get; set; }
+
+        public decimal? combustible_pct { get; set; }
+        public decimal? combustible_consumido { get; set; }
+        public string? unidad_combustible { get; set; }
+        public decimal? combustible_horas_motor { get; set; }
+        public decimal? combustible_horas_idle { get; set; }
+        public DateTime? combustible_fecha_lectura { get; set; }
     }
 }
