@@ -37,6 +37,9 @@ namespace HD_Reporteria.Cobranza
         /// <summary>Tamano de letra de los importes.</summary>
         private const float TAM_NUM = 7.5f;
 
+        /// <summary>Aire a cada lado de la linea separadora de la banda de contexto.</summary>
+        private const float SEPARACION_CTX = 20f;
+
         private const string GUION = "-";
 
         // ---------- Paleta ----------
@@ -368,7 +371,7 @@ namespace HD_Reporteria.Cobranza
         /// <summary>Franja delgada con los datos de contexto del corte.</summary>
         private static void BandaContexto(IContainer container, string fontFamily, (string k, string v, bool destacado)[] datos)
         {
-            container.BorderTop(2).BorderBottom(1).BorderColor(HAIR).PaddingVertical(4).Row(row =>
+            container.BorderTop(2).BorderBottom(1).BorderColor(HAIR).PaddingVertical(6).Row(row =>
             {
                 for (int i = 0; i < datos.Length; i++)
                 {
@@ -376,8 +379,11 @@ namespace HD_Reporteria.Cobranza
                     bool ultimo = i == datos.Length - 1;
                     var item = ultimo ? row.RelativeItem() : row.AutoItem();
 
-                    item.PaddingRight(ultimo ? 0 : 14).PaddingLeft(i == 0 ? 0 : 14)
-                        .BorderRight(ultimo ? 0 : 1).BorderColor(HAIR)
+                    // El borde va primero y el padding despues: asi la linea
+                    // separadora queda por fuera del texto y no pegada a el.
+                    item.BorderRight(ultimo ? 0 : 1).BorderColor(HAIR)
+                        .PaddingLeft(i == 0 ? 0 : SEPARACION_CTX)
+                        .PaddingRight(ultimo ? 0 : SEPARACION_CTX)
                         .Column(c =>
                         {
                             c.Item().AlignLeft().Text(d.k).FontSize(6.5f).FontColor(SUAVE).Bold().FontFamily(fontFamily);
