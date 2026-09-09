@@ -36,7 +36,7 @@ namespace HD_Cobranza.Capturas
                 {
                     idsucursal = result.First().idsucursal,
                     sucursal = result.First().sucursal,
-                    departamento = "TOTAL",
+                    razonsocial = "TOTAL",
                     mas90 = result.Sum(x => x.mas90),
                     mas60 = result.Sum(x => x.mas60),
                     mas30 = result.Sum(x => x.mas30),

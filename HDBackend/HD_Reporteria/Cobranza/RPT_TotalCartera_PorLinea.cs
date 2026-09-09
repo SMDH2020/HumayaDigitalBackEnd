@@ -104,37 +104,45 @@ namespace HD_Reporteria.Cobranza
                                    .Text(mdl.linea).FontSize(8).FontFamily(fontFamily);
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).PaddingRight(10).AlignMiddle()
-                                   .Text((mdl.totalcartera + mdl.juridico).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                   //.Text((mdl.totalcartera + mdl.juridico).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                   .Text((mdl.totalcartera).ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
                                    .Text(mdl.saldoafavor.ToString("N2")).FontSize(8).FontColor("#ff2037").FontFamily(fontFamily);
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                   .Text((mdl.total + mdl.juridico).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                   //.Text((mdl.total + mdl.juridico).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                   .Text((mdl.total ).ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
                                    .Text(mdl.juridico.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                   .Text((mdl.juridico / (mdl.totalcartera + mdl.juridico) * 100).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                   //.Text((mdl.juridico / (mdl.totalcartera + mdl.juridico) * 100).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                   .Text((mdl.juridico / (mdl.totalcartera) * 100).ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
                                    .Text(mdl.activo.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                   .Text(((mdl.activo / (mdl.totalcartera + mdl.juridico)) * 100).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                   //.Text(((mdl.activo / (mdl.totalcartera + mdl.juridico)) * 100).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                   .Text(((mdl.activo / (mdl.totalcartera)) * 100).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
                                    .Text(mdl.porvencer.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                   .Text(((mdl.porvencer / (mdl.totalcartera + mdl.juridico)) * 100).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                   //.Text(((mdl.porvencer / (mdl.totalcartera + mdl.juridico)) * 100).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                   .Text(((mdl.porvencer / (mdl.totalcartera)) * 100).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
                                    .Text(mdl.vencido.ToString("N2")).FontSize(8).FontFamily(fontFamily);
 
                                     tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle().PaddingRight(3)
-                                   .Text(((mdl.vencido / (mdl.totalcartera + mdl.juridico)) * 100).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                   //.Text(((mdl.vencido / (mdl.totalcartera + mdl.juridico)) * 100).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                   .Text(((mdl.vencido / (mdl.totalcartera)) * 100).ToString("N2")).FontSize(8).FontFamily(fontFamily);
                                 }
                             });
                         });
