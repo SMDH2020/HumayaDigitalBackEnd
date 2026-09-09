@@ -73,7 +73,8 @@ namespace HD.Endpoints.Controllers.Cobranza
 
             try
             {
-                RPT_Result documento = RPT_TotalCartera_Detalle.Generar(result);
+                //RPT_Result documento = RPT_TotalCartera_Detalle.Generar(result);
+                RPT_Result documento = RPT_TotalCartera_DetalleV2.Generar(result);
 
                 return Ok(documento);
             }
