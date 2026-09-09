@@ -31,25 +31,25 @@ namespace HD_Cobranza.Capturas
                 factory.SQL.Close();
                 //List<mdlCob_TotalCartera_Detalle> listado = result.ToList();
                 List<mdlCob_TotalCartera_Detalle> listado = result.ToList();
-                if(result.Count()>0)
-                listado.Add(new mdlCob_TotalCartera_Detalle()
-                {
-                    idsucursal = result.First().idsucursal,
-                    sucursal = result.First().sucursal,
-                    razonsocial = "TOTAL",
-                    mas90 = result.Sum(x => x.mas90),
-                    mas60 = result.Sum(x => x.mas60),
-                    mas30 = result.Sum(x => x.mas30),
-                    mas15 = result.Sum(x => x.mas15),
-                    de1a15 = result.Sum(x => x.de1a15),
-                    vencido = result.Sum(x => x.vencido),
-                    porvencer = result.Sum(x => x.porvencer),
-                    totalcartera = result.Sum(x => x.totalcartera),
-                    saldoafavor = result.Sum(x => x.saldoafavor),
-                    total = result.Sum(x => x.total),
-                    activo = result.Sum(x => x.activo),
-                    juridico = result.Sum(x => x.juridico),
-                });                
+                //if(result.Count()>0)
+                //listado.Add(new mdlCob_TotalCartera_Detalle()
+                //{
+                //    idsucursal = result.First().idsucursal,
+                //    sucursal = result.First().sucursal,
+                //    razonsocial = "TOTAL",
+                //    mas90 = result.Sum(x => x.mas90),
+                //    mas60 = result.Sum(x => x.mas60),
+                //    mas30 = result.Sum(x => x.mas30),
+                //    mas15 = result.Sum(x => x.mas15),
+                //    de1a15 = result.Sum(x => x.de1a15),
+                //    vencido = result.Sum(x => x.vencido),
+                //    porvencer = result.Sum(x => x.porvencer),
+                //    totalcartera = result.Sum(x => x.totalcartera),
+                //    saldoafavor = result.Sum(x => x.saldoafavor),
+                //    total = result.Sum(x => x.total),
+                //    activo = result.Sum(x => x.activo),
+                //    juridico = result.Sum(x => x.juridico),
+                //});                
                 return listado;
             }
             catch (System.Exception ex)

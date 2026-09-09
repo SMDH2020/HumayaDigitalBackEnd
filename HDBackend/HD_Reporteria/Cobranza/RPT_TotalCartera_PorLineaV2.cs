@@ -6,20 +6,20 @@ using QuestPDF.Infrastructure;
 namespace HD_Reporteria.Cobranza
 {
     /// <summary>
-    /// Version ejecutiva del reporte "Resumen de cartera detalle".
-    /// No sustituye a RPT_TotalCartera_Detalle: es un archivo aparte para poder
-    /// cambiar el reporte desde el controlador con una sola linea.
+    /// Version ejecutiva del resumen de cartera por linea.
+    /// Archivo aparte: no sustituye a RPT_TotalCartera_PorLinea.
     /// </summary>
-    public class RPT_TotalCartera_DetalleV2
+    public class RPT_TotalCartera_PorLineaV2
     {
         // ==================================================================
         //  PARAMETROS RAPIDOS  (cambiar aqui, sin tocar el resto del codigo)
         // ==================================================================
 
-        /// <summary>Segunda tabla: true = solo clientes con saldo vencido. false = todos.</summary>
-        public static readonly bool SOLO_CLIENTES_CON_VENCIDO = true;
+        /// <summary>Segunda hoja: true = solo lineas con saldo vencido. false = todas.</summary>
+        public static readonly bool SOLO_LINEAS_CON_VENCIDO = true;
 
-        /// <summary>Agrupa el detalle por sucursal con su banda y subtotal.</summary>
+        /// <summary>Agrupa las lineas por sucursal con banda y subtotal.
+        /// Solo se nota cuando el reporte trae mas de una sucursal.</summary>
         public static readonly bool AGRUPAR_POR_SUCURSAL = true;
 
         /// <summary>Barra de composicion (100%) al final de cada renglon.
@@ -29,10 +29,13 @@ namespace HD_Reporteria.Cobranza
         /// <summary>false = los ceros se imprimen como guion tenue.</summary>
         public static readonly bool MOSTRAR_CEROS = false;
 
+        /// <summary>Sombrea las celdas de la hoja de antiguedad segun el rango.</summary>
+        public static readonly bool MOSTRAR_SOMBREADO_ANTIGUEDAD = true;
+
         /// <summary>Formato de los porcentajes: "N1" o "N2".</summary>
         public const string FORMATO_PCT = "N1";
 
-        /// <summary>Alto minimo del renglon de detalle (antes era 30).</summary>
+        /// <summary>Alto minimo del renglon de detalle (antes era 20 fijo).</summary>
         public const float ALTO_FILA = 16f;
 
         /// <summary>Tamano de letra de los importes.</summary>
@@ -41,8 +44,15 @@ namespace HD_Reporteria.Cobranza
         /// <summary>Aire a cada lado de la linea separadora de la banda de contexto.</summary>
         private const float SEPARACION_CTX = 6f;
 
-        /// <summary>Aire entre el subtotal de una sucursal y la siguiente.</summary>
+        /// <summary>Aire arriba de los subtotales y de las bandas de sucursal.</summary>
         private const float ESPACIO_GRUPO = 9f;
+
+        /// <summary>Titulo del encabezado. Al parametro "titulo" (la sucursal)
+        /// se le antepone este texto: "CARTERA POR LINEA  ·  NAVOLATO".</summary>
+        public const string TITULO_BASE = "CARTERA POR LINEA";
+
+        /// <summary>Titulo de la hoja de antiguedad.</summary>
+        public const string TITULO_BASE_VENCIDO = "CARTERA VENCIDA POR LINEA";
 
         private const string GUION = "-";
 
@@ -77,34 +87,42 @@ namespace HD_Reporteria.Cobranza
 
         // ==================================================================
 
-        public static RPT_Result Generar(IEnumerable<mdlCob_TotalCartera_Detalle> resumen, bool? soloConVencido = null)
+        public static RPT_Result Generar(IEnumerable<mdlCob_TotalCarteraPorLinea> resumen, string titulo, bool? soloConVencido = null)
         {
             try
             {
-                // Si el acomodo no se resuelve, que truene rapido en lugar de quedarse
-                // generando hojas para siempre.
+                // Si el acomodo no se resuelve, que truene rapido en lugar de
+                // quedarse generando hojas para siempre.
                 QuestPDF.Settings.DocumentLayoutExceptionThreshold = 100;
 
-                bool filtrarVencido = soloConVencido ?? SOLO_CLIENTES_CON_VENCIDO;
+                bool filtrarVencido = soloConVencido ?? SOLO_LINEAS_CON_VENCIDO;
                 string fontFamily = "Calibri";
 
-                // El origen de datos agrega un renglon con razonsocial = "TOTAL".
-                // Aqui se descarta y los totales se recalculan, para que la
-                // agrupacion y los subtotales cuadren.
-                var lista = (resumen ?? Enumerable.Empty<mdlCob_TotalCartera_Detalle>())
-                    .Where(x => !string.Equals((x.razonsocial ?? "").Trim(), "TOTAL", StringComparison.OrdinalIgnoreCase))
+                // "titulo" trae la sucursal; el nombre del reporte se antepone.
+                string sucursal = (titulo ?? "").Trim().ToUpper();
+                string sufijo = string.IsNullOrEmpty(sucursal) ? "" : "  ·  " + sucursal;
+                string tituloHoja1 = TITULO_BASE + sufijo;
+                string tituloHoja2 = TITULO_BASE_VENCIDO + sufijo;
+
+                // El origen agrega un renglon con linea = "TOTAL" por cada sucursal.
+                // Aqui se descartan y los totales se recalculan.
+                var lista = (resumen ?? Enumerable.Empty<mdlCob_TotalCarteraPorLinea>())
+                    .Where(x => !string.Equals((x.linea ?? "").Trim(), "TOTAL", StringComparison.OrdinalIgnoreCase))
                     .ToList();
 
                 var grupos = AGRUPAR_POR_SUCURSAL
-                    ? lista.GroupBy(x => string.IsNullOrWhiteSpace(x.sucursal) ? "SIN SUCURSAL" : x.sucursal!.Trim())
+                    ? lista.GroupBy(x => string.IsNullOrWhiteSpace(x.sucursal) ? "SIN SUCURSAL" : x.sucursal.Trim())
                            .Select(g => new Grupo(g.Key, g.ToList())).ToList()
                     : new List<Grupo> { new Grupo("", lista) };
 
-                var vencidos = filtrarVencido ? lista.Where(x => x.vencido != 0).ToList() : lista;
+                var vencidas = filtrarVencido ? lista.Where(x => x.vencido != 0).ToList() : lista;
                 var gruposVencido = AGRUPAR_POR_SUCURSAL
-                    ? vencidos.GroupBy(x => string.IsNullOrWhiteSpace(x.sucursal) ? "SIN SUCURSAL" : x.sucursal!.Trim())
+                    ? vencidas.GroupBy(x => string.IsNullOrWhiteSpace(x.sucursal) ? "SIN SUCURSAL" : x.sucursal.Trim())
                               .Select(g => new Grupo(g.Key, g.ToList())).ToList()
-                    : new List<Grupo> { new Grupo("", vencidos.ToList()) };
+                    : new List<Grupo> { new Grupo("", vencidas.ToList()) };
+
+                bool conBandas = AGRUPAR_POR_SUCURSAL && grupos.Count > 1;
+                bool conBandasV = AGRUPAR_POR_SUCURSAL && gruposVencido.Count > 1;
 
                 double gCartera = lista.Sum(Cartera);
                 double gSaldoFavor = lista.Sum(x => x.saldoafavor);
@@ -113,27 +131,27 @@ namespace HD_Reporteria.Cobranza
                 double gActivo = lista.Sum(x => x.activo);
                 double gPorVencer = lista.Sum(x => x.porvencer);
                 double gVencido = lista.Sum(x => x.vencido);
-                double gVencidoTabla = vencidos.Sum(x => x.vencido);
+                double gVencidoTabla = vencidas.Sum(x => x.vencido);
 
                 string fechaCorte = DateTime.Now.ToString("dd/MMM/yyyy").ToUpper();
 
                 byte[] doc = Document.Create(document =>
                 {
                     // ============================================================
-                    //  HOJA(S) 1 : DETALLE
+                    //  HOJA(S) 1 : RESUMEN POR LINEA
                     // ============================================================
                     document.Page(page =>
                     {
                         page.Size(PageSizes.A4.Landscape());
 
-                        page.Header().Element(c => Encabezado(c, "RESUMEN DE CARTERA DETALLE", fontFamily));
+                        page.Header().Element(c => Encabezado(c, tituloHoja1, fontFamily));
 
                         page.Content().PaddingTop(6).PaddingLeft(30).PaddingRight(30).Column(col1 =>
                         {
                             col1.Item().Element(c => BandaContexto(c, fontFamily, new[]
                             {
                                 ("CORTE AL", fechaCorte, "", false),
-                                ("CLIENTES", lista.Count.ToString("N0"), "", false),
+                                ("LINEAS", lista.Count.ToString("N0"), "", false),
                                 ("CARTERA TOTAL", gCartera.ToString("N2"), "", true),
                                 ("SALDO A FAVOR", gSaldoFavor.ToString("N2"), Pct(gSaldoFavor, gCartera), false),
                                 ("TOTAL", gNeto.ToString("N2"), "", true),
@@ -147,8 +165,7 @@ namespace HD_Reporteria.Cobranza
                             {
                                 tabla.ColumnsDefinition(c =>
                                 {
-                                    c.ConstantColumn(42);   // id
-                                    c.RelativeColumn(1);    // razon social
+                                    c.RelativeColumn(1);    // linea
                                     c.ConstantColumn(60);   // cartera
                                     c.ConstantColumn(56);   // saldo a favor
                                     c.ConstantColumn(60);   // neto
@@ -165,15 +182,14 @@ namespace HD_Reporteria.Cobranza
 
                                 tabla.Header(header =>
                                 {
-                                    // --- primer nivel: grupos de columnas ---
-                                    CeldaGrupo(header.Cell().ColumnSpan(2), "CLIENTE", fontFamily);
+                                    // --- primer nivel ---
+                                    CeldaGrupo(header.Cell(), "LINEA", fontFamily);
                                     CeldaGrupo(header.Cell().ColumnSpan(3), "SALDO", fontFamily);
                                     CeldaGrupo(header.Cell().ColumnSpan(8), "COMPOSICION DE LA CARTERA", fontFamily);
                                     if (MOSTRAR_BARRA_MEZCLA) CeldaGrupo(header.Cell(), "MEZCLA", fontFamily);
 
-                                    // --- segundo nivel: columnas ---
-                                    CeldaTitulo(header.Cell(), "ID", fontFamily, false);
-                                    CeldaTitulo(header.Cell(), "RAZON SOCIAL", fontFamily, false);
+                                    // --- segundo nivel ---
+                                    CeldaTitulo(header.Cell(), "DESCRIPCION", fontFamily, false);
                                     CeldaTitulo(header.Cell(), "CARTERA", fontFamily, true);
                                     CeldaTitulo(header.Cell(), "A FAVOR", fontFamily, true);
                                     CeldaTitulo(header.Cell(), "NETO", fontFamily, true);
@@ -191,11 +207,11 @@ namespace HD_Reporteria.Cobranza
                                 bool primerGrupo = true;
                                 foreach (var grupo in grupos)
                                 {
-                                    if (AGRUPAR_POR_SUCURSAL && !string.IsNullOrEmpty(grupo.Nombre))
+                                    if (conBandas && !string.IsNullOrEmpty(grupo.Nombre))
                                     {
                                         BandaGrupo(tabla.Cell().ColumnSpan(ColumnasDetalle),
                                                    "SUCURSAL  ·  " + grupo.Nombre.ToUpper(),
-                                                   grupo.Filas.Count + (grupo.Filas.Count == 1 ? " cliente" : " clientes"),
+                                                   grupo.Filas.Count + (grupo.Filas.Count == 1 ? " linea" : " lineas"),
                                                    fontFamily, !primerGrupo);
                                     }
                                     primerGrupo = false;
@@ -206,8 +222,7 @@ namespace HD_Reporteria.Cobranza
                                         string fondo = (i++ % 2 == 1) ? ZEBRA : BLANCO;
                                         double cartera = Cartera(mdl);
 
-                                        Celda(tabla.Cell(), fondo, mdl.idcliente.ToString(), fontFamily, false, false, SUAVE, 7.5f);
-                                        Celda(tabla.Cell(), fondo, mdl.razonsocial ?? "", fontFamily, false, false, TINTA, 8f);
+                                        Celda(tabla.Cell(), fondo, mdl.linea ?? "", fontFamily, false, false, TINTA, 8f);
                                         Celda(tabla.Cell(), fondo, Mon(cartera), fontFamily, true, false, TINTA, TAM_NUM);
                                         Celda(tabla.Cell(), fondo, Mon(mdl.saldoafavor), fontFamily, true, false, mdl.saldoafavor != 0 ? ROJO : TENUE, TAM_NUM);
                                         Celda(tabla.Cell(), fondo, Mon(Neto(mdl)), fontFamily, true, false, Neto(mdl) < 0 ? ROJO : TINTA, TAM_NUM);
@@ -223,11 +238,10 @@ namespace HD_Reporteria.Cobranza
                                             CeldaMezcla(tabla.Cell(), fondo, mdl.juridico, mdl.activo, mdl.porvencer, mdl.vencido);
                                     }
 
-                                    if (AGRUPAR_POR_SUCURSAL && grupos.Count > 1 && !string.IsNullOrEmpty(grupo.Nombre))
+                                    if (conBandas && !string.IsNullOrEmpty(grupo.Nombre))
                                     {
-                                        double sCartera = grupo.Filas.Sum(Cartera);
                                         FilaResumen(tabla, "SUBTOTAL " + grupo.Nombre.ToUpper(), fontFamily,
-                                            sCartera,
+                                            grupo.Filas.Sum(Cartera),
                                             grupo.Filas.Sum(x => x.saldoafavor),
                                             grupo.Filas.Sum(Neto),
                                             grupo.Filas.Sum(x => x.juridico),
@@ -238,59 +252,57 @@ namespace HD_Reporteria.Cobranza
                                     }
                                 }
 
-                                FilaResumen(tabla, "TOTAL GENERAL  ·  " + lista.Count.ToString("N0") + " clientes", fontFamily,
-                                    gCartera, gSaldoFavor, gNeto, gJuridico, gActivo, gPorVencer, gVencido, true);
+                                FilaResumen(tabla, "TOTAL GENERAL  ·  " + lista.Count.ToString("N0") + (lista.Count == 1 ? " linea" : " lineas"),
+                                    fontFamily, gCartera, gSaldoFavor, gNeto, gJuridico, gActivo, gPorVencer, gVencido, true);
                             });
                         });
 
-                        page.Footer().Element(c => PieDePagina(c, fontFamily, "Resumen de cartera detalle", true));
+                        page.Footer().Element(c => PieDePagina(c, fontFamily, tituloHoja1, true));
                     });
 
                     // ============================================================
-                    //  HOJA(S) 2 : ANTIGUEDAD DE SALDOS VENCIDOS
+                    //  HOJA(S) 2 : ANTIGUEDAD DEL VENCIDO
                     // ============================================================
                     document.Page(page =>
                     {
                         page.Size(PageSizes.A4.Landscape());
 
-                        page.Header().Element(c => Encabezado(c, "CARTERA VENCIDA POR ANTIGUEDAD", fontFamily));
+                        page.Header().Element(c => Encabezado(c, tituloHoja2, fontFamily));
 
                         page.Content().PaddingTop(6).PaddingLeft(30).PaddingRight(30).Column(col1 =>
                         {
                             col1.Item().Element(c => BandaContexto(c, fontFamily, new[]
                             {
                                 ("CORTE AL", fechaCorte, "", false),
-                                (filtrarVencido ? "CLIENTES CON MORA" : "CLIENTES", vencidos.Count().ToString("N0"), "", false),
+                                (filtrarVencido ? "LINEAS CON MORA" : "LINEAS", vencidas.Count.ToString("N0"), "", false),
                                 ("VENCIDO TOTAL", gVencidoTabla.ToString("N2"), "", true),
-                                ("DE 1 A 15", vencidos.Sum(x => x.de1a15).ToString("N2"), Pct(vencidos.Sum(x => x.de1a15), gVencidoTabla), false),
-                                ("MAS DE 15", vencidos.Sum(x => x.mas15).ToString("N2"), Pct(vencidos.Sum(x => x.mas15), gVencidoTabla), false),
-                                ("MAS DE 30", vencidos.Sum(x => x.mas30).ToString("N2"), Pct(vencidos.Sum(x => x.mas30), gVencidoTabla), false),
-                                ("MAS DE 60", vencidos.Sum(x => x.mas60).ToString("N2"), Pct(vencidos.Sum(x => x.mas60), gVencidoTabla), false),
-                                ("MAS DE 90", vencidos.Sum(x => x.mas90).ToString("N2"), Pct(vencidos.Sum(x => x.mas90), gVencidoTabla), true)
+                                ("DE 1 A 15", vencidas.Sum(x => x.de1a15).ToString("N2"), Pct(vencidas.Sum(x => x.de1a15), gVencidoTabla), false),
+                                ("MAS DE 15", vencidas.Sum(x => x.mas15).ToString("N2"), Pct(vencidas.Sum(x => x.mas15), gVencidoTabla), false),
+                                ("MAS DE 30", vencidas.Sum(x => x.mas30).ToString("N2"), Pct(vencidas.Sum(x => x.mas30), gVencidoTabla), false),
+                                ("MAS DE 60", vencidas.Sum(x => x.mas60).ToString("N2"), Pct(vencidas.Sum(x => x.mas60), gVencidoTabla), false),
+                                ("MAS DE 90", vencidas.Sum(x => x.mas90).ToString("N2"), Pct(vencidas.Sum(x => x.mas90), gVencidoTabla), true)
                             }));
 
                             col1.Item().PaddingTop(8).Table(tabla =>
                             {
                                 tabla.ColumnsDefinition(c =>
                                 {
-                                    c.ConstantColumn(42);   // id
-                                    c.RelativeColumn(1);    // razon social
+                                    c.RelativeColumn(1);    // linea
                                     c.ConstantColumn(62);   // vencido total
-                                    c.ConstantColumn(56); c.ConstantColumn(30);  // 1 a 15
-                                    c.ConstantColumn(56); c.ConstantColumn(30);  // mas 15
-                                    c.ConstantColumn(56); c.ConstantColumn(30);  // mas 30
-                                    c.ConstantColumn(56); c.ConstantColumn(30);  // mas 60
-                                    c.ConstantColumn(56); c.ConstantColumn(30);  // mas 90
+                                    c.ConstantColumn(58); c.ConstantColumn(28);  // 1 a 15
+                                    c.ConstantColumn(58); c.ConstantColumn(28);  // mas 15
+                                    c.ConstantColumn(58); c.ConstantColumn(28);  // mas 30
+                                    c.ConstantColumn(58); c.ConstantColumn(28);  // mas 60
+                                    c.ConstantColumn(58); c.ConstantColumn(28);  // mas 90
                                 });
 
                                 tabla.Header(header =>
                                 {
-                                    CeldaGrupo(header.Cell().ColumnSpan(2), "CLIENTE", fontFamily);
+                                    CeldaGrupo(header.Cell(), "LINEA", fontFamily);
                                     CeldaGrupo(header.Cell(), "VENCIDO", fontFamily);
                                     CeldaGrupo(header.Cell().ColumnSpan(10), "DIAS DE ATRASO", fontFamily);
 
-                                    CeldaTitulo(header.Cell(), "ID", fontFamily, false);
-                                    CeldaTitulo(header.Cell(), "RAZON SOCIAL", fontFamily, false);
+                                    CeldaTitulo(header.Cell(), "DESCRIPCION", fontFamily, false);
                                     CeldaTitulo(header.Cell(), "TOTAL", fontFamily, true);
                                     CeldaTitulo(header.Cell(), "DE 1 A 15", fontFamily, true);
                                     CeldaTitulo(header.Cell(), "%", fontFamily, true);
@@ -309,11 +321,11 @@ namespace HD_Reporteria.Cobranza
                                 {
                                     if (grupo.Filas.Count == 0) continue;
 
-                                    if (AGRUPAR_POR_SUCURSAL && !string.IsNullOrEmpty(grupo.Nombre))
+                                    if (conBandasV && !string.IsNullOrEmpty(grupo.Nombre))
                                     {
-                                        BandaGrupo(tabla.Cell().ColumnSpan(13),
+                                        BandaGrupo(tabla.Cell().ColumnSpan(12),
                                                    "SUCURSAL  ·  " + grupo.Nombre.ToUpper(),
-                                                   grupo.Filas.Count + (grupo.Filas.Count == 1 ? " cliente" : " clientes"),
+                                                   grupo.Filas.Count + (grupo.Filas.Count == 1 ? " linea" : " lineas"),
                                                    fontFamily, !primerGrupoV);
                                     }
                                     primerGrupoV = false;
@@ -323,8 +335,7 @@ namespace HD_Reporteria.Cobranza
                                     {
                                         string fondo = (i++ % 2 == 1) ? ZEBRA : BLANCO;
 
-                                        Celda(tabla.Cell(), fondo, mdl.idcliente.ToString(), fontFamily, false, false, SUAVE, 7.5f);
-                                        Celda(tabla.Cell(), fondo, mdl.razonsocial ?? "", fontFamily, false, false, TINTA, 8f);
+                                        Celda(tabla.Cell(), fondo, mdl.linea ?? "", fontFamily, false, false, TINTA, 8f);
                                         Celda(tabla.Cell(), fondo, Mon(mdl.vencido), fontFamily, true, false, TINTA, TAM_NUM);
 
                                         ParRango(tabla, fondo, mdl.de1a15, mdl.vencido, HEAT1, fontFamily);
@@ -336,10 +347,10 @@ namespace HD_Reporteria.Cobranza
                                 }
 
                                 // ---- total vencido ----
-                                double tV = vencidos.Sum(x => x.vencido);
-                                Celda(tabla.Cell().ColumnSpan(2), VERDE_OSC, "TOTAL VENCIDO", fontFamily, false, true, BLANCO, 8f, ESPACIO_GRUPO);
+                                double tV = vencidas.Sum(x => x.vencido);
+                                Celda(tabla.Cell(), VERDE_OSC, "TOTAL VENCIDO", fontFamily, false, true, BLANCO, 8f, ESPACIO_GRUPO);
                                 Celda(tabla.Cell(), VERDE_OSC, tV.ToString("N2"), fontFamily, true, true, BLANCO, 8f, ESPACIO_GRUPO);
-                                foreach (var v in new[] { vencidos.Sum(x => x.de1a15), vencidos.Sum(x => x.mas15), vencidos.Sum(x => x.mas30), vencidos.Sum(x => x.mas60), vencidos.Sum(x => x.mas90) })
+                                foreach (var v in new[] { vencidas.Sum(x => x.de1a15), vencidas.Sum(x => x.mas15), vencidas.Sum(x => x.mas30), vencidas.Sum(x => x.mas60), vencidas.Sum(x => x.mas90) })
                                 {
                                     Celda(tabla.Cell(), VERDE_OSC, v.ToString("N2"), fontFamily, true, true, BLANCO, 8f, ESPACIO_GRUPO);
                                     Celda(tabla.Cell(), VERDE_OSC, Pct(v, tV), fontFamily, true, true, "#cfe0c2", 7.5f, ESPACIO_GRUPO);
@@ -347,13 +358,13 @@ namespace HD_Reporteria.Cobranza
                             });
                         });
 
-                        page.Footer().Element(c => PieDePagina(c, fontFamily, "Cartera vencida por antiguedad", false));
+                        page.Footer().Element(c => PieDePagina(c, fontFamily, tituloHoja2, false));
                     });
                 }).GeneratePdf();
 
                 RPT_Result result = new RPT_Result();
                 result.extension = "pdf";
-                result.nombredocumento = "RESUMEN CARTERA DETALLE POR CLIENTE";
+                result.nombredocumento = "RESUMEN CARTERA POR LINEA";
                 result.documento = Convert.ToBase64String(doc);
                 return result;
             }
@@ -383,13 +394,13 @@ namespace HD_Reporteria.Cobranza
                     row.ConstantColumn(693).PaddingTop(35).Height(50).Background(VERDE).Row(row2 =>
                     {
                         row2.RelativeItem().Padding(10).PaddingLeft(30)
-                            .Text(titulo).FontColor("#fff").FontSize(20).Bold().FontFamily(fontFamily);
+                            .Text(titulo).FontColor("#fff").FontSize(18).Bold().FontFamily(fontFamily);
                     });
                 });
             });
         }
 
-        /// <summary>Franja delgada con los datos de contexto del corte.</summary>
+        /// <summary>Franja delgada con los totales del corte.</summary>
         private static void BandaContexto(IContainer container, string fontFamily, (string k, string v, string pct, bool destacado)[] datos)
         {
             container.BorderTop(2).BorderBottom(1).BorderColor(HAIR).PaddingVertical(6).Row(row =>
@@ -473,7 +484,7 @@ namespace HD_Reporteria.Cobranza
         // ==================================================================
 
         /// <summary>Columnas de la tabla de detalle (cambia con la barra de mezcla).</summary>
-        private static uint ColumnasDetalle => MOSTRAR_BARRA_MEZCLA ? 14u : 13u;
+        private static uint ColumnasDetalle => MOSTRAR_BARRA_MEZCLA ? 13u : 12u;
 
         private static void CeldaGrupo(IContainer c, string texto, string fontFamily)
         {
@@ -485,7 +496,7 @@ namespace HD_Reporteria.Cobranza
         private static void CeldaTitulo(IContainer c, string texto, string fontFamily, bool derecha)
         {
             var b = c.Background(VERDE_OSC).BorderRight(1).BorderColor("#ffffff")
-                     .MinHeight(17).AlignMiddle().PaddingHorizontal(3).PaddingVertical(2);
+                     .MinHeight(17).AlignMiddle().PaddingHorizontal(4).PaddingVertical(2);
             b = derecha ? b.AlignRight() : b.AlignLeft();
             b.Text(texto).FontSize(7f).Bold().FontColor("#fff").FontFamily(fontFamily);
         }
@@ -494,7 +505,7 @@ namespace HD_Reporteria.Cobranza
         {
             (conAire ? c.PaddingTop(ESPACIO_GRUPO) : c)
              .Background(VERDE_TINTE).BorderTop(1).BorderBottom(1).BorderColor(VERDE_BORDE)
-             .MinHeight(15).AlignMiddle().PaddingHorizontal(3).PaddingVertical(2).Row(row =>
+             .MinHeight(15).AlignMiddle().PaddingHorizontal(4).PaddingVertical(2).Row(row =>
              {
                  row.AutoItem().AlignMiddle()
                     .Text(nombre).FontSize(8).Bold().FontColor(VERDE_OSC).FontFamily(fontFamily);
@@ -508,10 +519,10 @@ namespace HD_Reporteria.Cobranza
         {
             var b = (aireArriba > 0 ? c.PaddingTop(aireArriba) : c)
                      .Background(fondo).BorderBottom(1).BorderColor(HAIR)
-                     .MinHeight(ALTO_FILA).AlignMiddle().PaddingHorizontal(3).PaddingVertical(1);
+                     .MinHeight(ALTO_FILA).AlignMiddle().PaddingHorizontal(4).PaddingVertical(1);
             b = derecha ? b.AlignRight() : b.AlignLeft();
 
-            var t = b.Text(texto == GUION ? GUION : texto)
+            var t = b.Text(texto)
                      .FontSize(size)
                      .FontColor(texto == GUION ? TENUE : color)
                      .FontFamily(fontFamily);
@@ -523,8 +534,6 @@ namespace HD_Reporteria.Cobranza
             var b = (aireArriba > 0 ? c.PaddingTop(aireArriba) : c)
                      .Background(fondo).BorderBottom(1).BorderColor(HAIR)
                      .MinHeight(ALTO_FILA).AlignMiddle().PaddingHorizontal(3);
-
-            if (!MOSTRAR_BARRA_MEZCLA) { b.Text(""); return; }
 
             double tot = jur + act + pv + ven;
             if (tot <= 0) { b.Height(5).Background(M_VACIO).Row(r => { }); return; }
@@ -541,7 +550,7 @@ namespace HD_Reporteria.Cobranza
         /// <summary>Par importe + % de un rango de antiguedad, con sombreado.</summary>
         private static void ParRango(TableDescriptor tabla, string fondo, double valor, double vencido, string heat, string fontFamily)
         {
-            string f = valor != 0 ? heat : fondo;
+            string f = (MOSTRAR_SOMBREADO_ANTIGUEDAD && valor != 0) ? heat : fondo;
             Celda(tabla.Cell(), f, Mon(valor), fontFamily, true, false, TINTA, TAM_NUM);
             Celda(tabla.Cell(), f, PctTxt(valor, vencido), fontFamily, true, false, SUAVE, 7.5f);
         }
@@ -556,10 +565,9 @@ namespace HD_Reporteria.Cobranza
             string tinta = esTotalGeneral ? BLANCO : VERDE_OSC;
             string tintaPct = esTotalGeneral ? "#cfe0c2" : VERDE;
             float size = esTotalGeneral ? 8f : TAM_NUM;
-
             float aire = ESPACIO_GRUPO;
 
-            Celda(tabla.Cell().ColumnSpan(2), fondo, etiqueta, fontFamily, false, true, tinta, size, aire);
+            Celda(tabla.Cell(), fondo, etiqueta, fontFamily, false, true, tinta, size, aire);
             Celda(tabla.Cell(), fondo, cartera.ToString("N2"), fontFamily, true, true, tinta, size, aire);
             Celda(tabla.Cell(), fondo, saldoFavor.ToString("N2"), fontFamily, true, true, esTotalGeneral ? "#ffd9d4" : ROJO, size, aire);
             Celda(tabla.Cell(), fondo, neto.ToString("N2"), fontFamily, true, true, tinta, size, aire);
@@ -579,8 +587,8 @@ namespace HD_Reporteria.Cobranza
         //  Utilerias
         // ==================================================================
 
-        private static double Cartera(mdlCob_TotalCartera_Detalle x) => x.totalcartera;
-        private static double Neto(mdlCob_TotalCartera_Detalle x) => x.total;
+        private static double Cartera(mdlCob_TotalCarteraPorLinea x) => x.totalcartera;
+        private static double Neto(mdlCob_TotalCarteraPorLinea x) => x.total;
 
         /// <summary>Importe con separador de miles; cero = guion (segun MOSTRAR_CEROS).</summary>
         private static string Mon(double v) => (v == 0 && !MOSTRAR_CEROS) ? GUION : v.ToString("N2");
@@ -599,8 +607,8 @@ namespace HD_Reporteria.Cobranza
         private class Grupo
         {
             public string Nombre { get; }
-            public List<mdlCob_TotalCartera_Detalle> Filas { get; }
-            public Grupo(string nombre, List<mdlCob_TotalCartera_Detalle> filas)
+            public List<mdlCob_TotalCarteraPorLinea> Filas { get; }
+            public Grupo(string nombre, List<mdlCob_TotalCarteraPorLinea> filas)
             {
                 Nombre = nombre;
                 Filas = filas;
