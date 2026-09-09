@@ -17,16 +17,17 @@ namespace HD_Reporteria.Cobranza
         // ==================================================================
 
         /// <summary>Segunda tabla: true = solo clientes con saldo vencido. false = todos.</summary>
-        public const bool SOLO_CLIENTES_CON_VENCIDO = true;
+        public static readonly bool SOLO_CLIENTES_CON_VENCIDO = true;
 
         /// <summary>Agrupa el detalle por sucursal con su banda y subtotal.</summary>
-        public const bool AGRUPAR_POR_SUCURSAL = true;
+        public static readonly bool AGRUPAR_POR_SUCURSAL = true;
 
-        /// <summary>Barra de composicion (100%) al final de cada renglon.</summary>
-        public const bool MOSTRAR_BARRA_MEZCLA = true;
+        /// <summary>Barra de composicion (100%) al final de cada renglon.
+        /// En false la columna desaparece por completo.</summary>
+        public static readonly bool MOSTRAR_BARRA_MEZCLA = false;
 
         /// <summary>false = los ceros se imprimen como guion tenue.</summary>
-        public const bool MOSTRAR_CEROS = false;
+        public static readonly bool MOSTRAR_CEROS = false;
 
         /// <summary>Formato de los porcentajes: "N1" o "N2".</summary>
         public const string FORMATO_PCT = "N1";
@@ -38,7 +39,10 @@ namespace HD_Reporteria.Cobranza
         private const float TAM_NUM = 7.5f;
 
         /// <summary>Aire a cada lado de la linea separadora de la banda de contexto.</summary>
-        private const float SEPARACION_CTX = 20f;
+        private const float SEPARACION_CTX = 12f;
+
+        /// <summary>Aire entre el subtotal de una sucursal y la siguiente.</summary>
+        private const float ESPACIO_GRUPO = 9f;
 
         private const string GUION = "-";
 
@@ -128,31 +132,35 @@ namespace HD_Reporteria.Cobranza
                         {
                             col1.Item().Element(c => BandaContexto(c, fontFamily, new[]
                             {
-                                ("CORTE AL", fechaCorte, false),
-                                ("MONEDA", "MXN", false),
-                                ("CLIENTES", lista.Count.ToString("N0"), false),
-                                ("CARTERA TOTAL", gCartera.ToString("N2"), true),
-                                ("VENCIDA", gVencido.ToString("N2") + "  ·  " + Pct(gVencido, gCartera) + "%", true)
+                                ("CORTE AL", fechaCorte, "", false),
+                                ("CLIENTES", lista.Count.ToString("N0"), "", false),
+                                ("CARTERA TOTAL", gCartera.ToString("N2"), "", true),
+                                ("SALDO A FAVOR", gSaldoFavor.ToString("N2"), Pct(gSaldoFavor, gCartera), false),
+                                ("TOTAL", gNeto.ToString("N2"), "", true),
+                                ("JURIDICO", gJuridico.ToString("N2"), Pct(gJuridico, gCartera), false),
+                                ("ACTIVA", gActivo.ToString("N2"), Pct(gActivo, gCartera), false),
+                                ("POR VENCER", gPorVencer.ToString("N2"), Pct(gPorVencer, gCartera), false),
+                                ("VENCIDA", gVencido.ToString("N2"), Pct(gVencido, gCartera), true)
                             }));
 
                             col1.Item().PaddingTop(8).Table(tabla =>
                             {
                                 tabla.ColumnsDefinition(c =>
                                 {
-                                    c.ConstantColumn(34);   // id
+                                    c.ConstantColumn(42);   // id
                                     c.RelativeColumn(1);    // razon social
-                                    c.ConstantColumn(56);   // cartera
-                                    c.ConstantColumn(52);   // saldo a favor
-                                    c.ConstantColumn(56);   // neto
-                                    c.ConstantColumn(56);   // juridico
-                                    c.ConstantColumn(30);   // %
-                                    c.ConstantColumn(56);   // activa
-                                    c.ConstantColumn(30);   // %
-                                    c.ConstantColumn(56);   // por vencer
-                                    c.ConstantColumn(30);   // %
-                                    c.ConstantColumn(56);   // vencida
-                                    c.ConstantColumn(30);   // %
-                                    c.ConstantColumn(MOSTRAR_BARRA_MEZCLA ? 54 : 1); // mezcla
+                                    c.ConstantColumn(60);   // cartera
+                                    c.ConstantColumn(56);   // saldo a favor
+                                    c.ConstantColumn(60);   // neto
+                                    c.ConstantColumn(58);   // juridico
+                                    c.ConstantColumn(28);   // %
+                                    c.ConstantColumn(58);   // activa
+                                    c.ConstantColumn(28);   // %
+                                    c.ConstantColumn(58);   // por vencer
+                                    c.ConstantColumn(28);   // %
+                                    c.ConstantColumn(58);   // vencida
+                                    c.ConstantColumn(28);   // %
+                                    if (MOSTRAR_BARRA_MEZCLA) c.ConstantColumn(48); // mezcla
                                 });
 
                                 tabla.Header(header =>
@@ -161,7 +169,7 @@ namespace HD_Reporteria.Cobranza
                                     CeldaGrupo(header.Cell().ColumnSpan(2), "CLIENTE", fontFamily);
                                     CeldaGrupo(header.Cell().ColumnSpan(3), "SALDO", fontFamily);
                                     CeldaGrupo(header.Cell().ColumnSpan(8), "COMPOSICION DE LA CARTERA", fontFamily);
-                                    CeldaGrupo(header.Cell(), MOSTRAR_BARRA_MEZCLA ? "MEZCLA" : "", fontFamily);
+                                    if (MOSTRAR_BARRA_MEZCLA) CeldaGrupo(header.Cell(), "MEZCLA", fontFamily);
 
                                     // --- segundo nivel: columnas ---
                                     CeldaTitulo(header.Cell(), "ID", fontFamily, false);
@@ -177,16 +185,20 @@ namespace HD_Reporteria.Cobranza
                                     CeldaTitulo(header.Cell(), "%", fontFamily, true);
                                     CeldaTitulo(header.Cell(), "VENCIDA", fontFamily, true);
                                     CeldaTitulo(header.Cell(), "%", fontFamily, true);
-                                    CeldaTitulo(header.Cell(), MOSTRAR_BARRA_MEZCLA ? "100%" : "", fontFamily, true);
+                                    if (MOSTRAR_BARRA_MEZCLA) CeldaTitulo(header.Cell(), "100%", fontFamily, true);
                                 });
 
+                                bool primerGrupo = true;
                                 foreach (var grupo in grupos)
                                 {
-                                    if (AGRUPAR_POR_SUCURSAL && grupos.Count > 0 && !string.IsNullOrEmpty(grupo.Nombre))
-                                        BandaGrupo(tabla.Cell().ColumnSpan(14),
+                                    if (AGRUPAR_POR_SUCURSAL && !string.IsNullOrEmpty(grupo.Nombre))
+                                    {
+                                        BandaGrupo(tabla.Cell().ColumnSpan(ColumnasDetalle),
                                                    "SUCURSAL  ·  " + grupo.Nombre.ToUpper(),
                                                    grupo.Filas.Count + (grupo.Filas.Count == 1 ? " cliente" : " clientes"),
-                                                   fontFamily);
+                                                   fontFamily, !primerGrupo);
+                                    }
+                                    primerGrupo = false;
 
                                     int i = 0;
                                     foreach (var mdl in grupo.Filas)
@@ -207,7 +219,8 @@ namespace HD_Reporteria.Cobranza
                                         Celda(tabla.Cell(), fondo, PctTxt(mdl.porvencer, cartera), fontFamily, true, false, SUAVE, 7.5f);
                                         Celda(tabla.Cell(), fondo, Mon(mdl.vencido), fontFamily, true, false, TINTA, TAM_NUM);
                                         Celda(tabla.Cell(), fondo, PctTxt(mdl.vencido, cartera), fontFamily, true, false, SUAVE, 7.5f);
-                                        CeldaMezcla(tabla.Cell(), fondo, mdl.juridico, mdl.activo, mdl.porvencer, mdl.vencido);
+                                        if (MOSTRAR_BARRA_MEZCLA)
+                                            CeldaMezcla(tabla.Cell(), fondo, mdl.juridico, mdl.activo, mdl.porvencer, mdl.vencido);
                                     }
 
                                     if (AGRUPAR_POR_SUCURSAL && grupos.Count > 1 && !string.IsNullOrEmpty(grupo.Nombre))
@@ -246,17 +259,21 @@ namespace HD_Reporteria.Cobranza
                         {
                             col1.Item().Element(c => BandaContexto(c, fontFamily, new[]
                             {
-                                ("CORTE AL", fechaCorte, false),
-                                (filtrarVencido ? "CLIENTES CON MORA" : "CLIENTES", vencidos.Count().ToString("N0"), false),
-                                ("VENCIDO TOTAL", gVencidoTabla.ToString("N2"), true),
-                                ("CONCENTRACION +90", Pct(vencidos.Sum(x => x.mas90), gVencidoTabla) + "%", true)
+                                ("CORTE AL", fechaCorte, "", false),
+                                (filtrarVencido ? "CLIENTES CON MORA" : "CLIENTES", vencidos.Count().ToString("N0"), "", false),
+                                ("VENCIDO TOTAL", gVencidoTabla.ToString("N2"), "", true),
+                                ("DE 1 A 15", vencidos.Sum(x => x.de1a15).ToString("N2"), Pct(vencidos.Sum(x => x.de1a15), gVencidoTabla), false),
+                                ("MAS DE 15", vencidos.Sum(x => x.mas15).ToString("N2"), Pct(vencidos.Sum(x => x.mas15), gVencidoTabla), false),
+                                ("MAS DE 30", vencidos.Sum(x => x.mas30).ToString("N2"), Pct(vencidos.Sum(x => x.mas30), gVencidoTabla), false),
+                                ("MAS DE 60", vencidos.Sum(x => x.mas60).ToString("N2"), Pct(vencidos.Sum(x => x.mas60), gVencidoTabla), false),
+                                ("MAS DE 90", vencidos.Sum(x => x.mas90).ToString("N2"), Pct(vencidos.Sum(x => x.mas90), gVencidoTabla), true)
                             }));
 
                             col1.Item().PaddingTop(8).Table(tabla =>
                             {
                                 tabla.ColumnsDefinition(c =>
                                 {
-                                    c.ConstantColumn(34);   // id
+                                    c.ConstantColumn(42);   // id
                                     c.RelativeColumn(1);    // razon social
                                     c.ConstantColumn(62);   // vencido total
                                     c.ConstantColumn(56); c.ConstantColumn(30);  // 1 a 15
@@ -287,15 +304,19 @@ namespace HD_Reporteria.Cobranza
                                     CeldaTitulo(header.Cell(), "%", fontFamily, true);
                                 });
 
+                                bool primerGrupoV = true;
                                 foreach (var grupo in gruposVencido)
                                 {
                                     if (grupo.Filas.Count == 0) continue;
 
                                     if (AGRUPAR_POR_SUCURSAL && !string.IsNullOrEmpty(grupo.Nombre))
+                                    {
                                         BandaGrupo(tabla.Cell().ColumnSpan(13),
                                                    "SUCURSAL  ·  " + grupo.Nombre.ToUpper(),
                                                    grupo.Filas.Count + (grupo.Filas.Count == 1 ? " cliente" : " clientes"),
-                                                   fontFamily);
+                                                   fontFamily, !primerGrupoV);
+                                    }
+                                    primerGrupoV = false;
 
                                     int i = 0;
                                     foreach (var mdl in grupo.Filas)
@@ -316,12 +337,12 @@ namespace HD_Reporteria.Cobranza
 
                                 // ---- total vencido ----
                                 double tV = vencidos.Sum(x => x.vencido);
-                                Celda(tabla.Cell().ColumnSpan(2), VERDE_OSC, "TOTAL VENCIDO", fontFamily, false, true, BLANCO, 8f);
-                                Celda(tabla.Cell(), VERDE_OSC, tV.ToString("N2"), fontFamily, true, true, BLANCO, 8f);
+                                Celda(tabla.Cell().ColumnSpan(2), VERDE_OSC, "TOTAL VENCIDO", fontFamily, false, true, BLANCO, 8f, ESPACIO_GRUPO);
+                                Celda(tabla.Cell(), VERDE_OSC, tV.ToString("N2"), fontFamily, true, true, BLANCO, 8f, ESPACIO_GRUPO);
                                 foreach (var v in new[] { vencidos.Sum(x => x.de1a15), vencidos.Sum(x => x.mas15), vencidos.Sum(x => x.mas30), vencidos.Sum(x => x.mas60), vencidos.Sum(x => x.mas90) })
                                 {
-                                    Celda(tabla.Cell(), VERDE_OSC, v.ToString("N2"), fontFamily, true, true, BLANCO, 8f);
-                                    Celda(tabla.Cell(), VERDE_OSC, Pct(v, tV), fontFamily, true, true, "#cfe0c2", 7.5f);
+                                    Celda(tabla.Cell(), VERDE_OSC, v.ToString("N2"), fontFamily, true, true, BLANCO, 8f, ESPACIO_GRUPO);
+                                    Celda(tabla.Cell(), VERDE_OSC, Pct(v, tV), fontFamily, true, true, "#cfe0c2", 7.5f, ESPACIO_GRUPO);
                                 }
                             });
                         });
@@ -369,7 +390,7 @@ namespace HD_Reporteria.Cobranza
         }
 
         /// <summary>Franja delgada con los datos de contexto del corte.</summary>
-        private static void BandaContexto(IContainer container, string fontFamily, (string k, string v, bool destacado)[] datos)
+        private static void BandaContexto(IContainer container, string fontFamily, (string k, string v, string pct, bool destacado)[] datos)
         {
             container.BorderTop(2).BorderBottom(1).BorderColor(HAIR).PaddingVertical(6).Row(row =>
             {
@@ -387,8 +408,11 @@ namespace HD_Reporteria.Cobranza
                         .Column(c =>
                         {
                             c.Item().AlignLeft().Text(d.k).FontSize(6.5f).FontColor(SUAVE).Bold().FontFamily(fontFamily);
-                            c.Item().AlignLeft().Text(d.v).FontSize(d.destacado ? 10f : 9f)
+                            c.Item().AlignLeft().Text(d.v).FontSize(d.destacado ? 9.5f : 9f)
                                       .FontColor(d.destacado ? VERDE_OSC : TINTA).Bold().FontFamily(fontFamily);
+                            if (!string.IsNullOrEmpty(d.pct))
+                                c.Item().AlignLeft().Text(d.pct + "%").FontSize(7f)
+                                        .FontColor(VERDE).Bold().FontFamily(fontFamily);
                         });
                 }
             });
@@ -436,6 +460,9 @@ namespace HD_Reporteria.Cobranza
         //  Celdas
         // ==================================================================
 
+        /// <summary>Columnas de la tabla de detalle (cambia con la barra de mezcla).</summary>
+        private static uint ColumnasDetalle => MOSTRAR_BARRA_MEZCLA ? 14u : 13u;
+
         private static void CeldaGrupo(IContainer c, string texto, string fontFamily)
         {
             c.Background(VERDE_PROF).BorderRight(1).BorderColor("#ffffff")
@@ -451,9 +478,10 @@ namespace HD_Reporteria.Cobranza
             b.Text(texto).FontSize(7f).Bold().FontColor("#fff").FontFamily(fontFamily);
         }
 
-        private static void BandaGrupo(IContainer c, string nombre, string conteo, string fontFamily)
+        private static void BandaGrupo(IContainer c, string nombre, string conteo, string fontFamily, bool conAire)
         {
-            c.Background(VERDE_TINTE).BorderTop(1).BorderBottom(1).BorderColor(VERDE_BORDE)
+            (conAire ? c.PaddingTop(ESPACIO_GRUPO) : c)
+             .Background(VERDE_TINTE).BorderTop(1).BorderBottom(1).BorderColor(VERDE_BORDE)
              .MinHeight(15).AlignMiddle().PaddingHorizontal(3).PaddingVertical(2).Row(row =>
              {
                  row.AutoItem().AlignMiddle()
@@ -464,9 +492,10 @@ namespace HD_Reporteria.Cobranza
         }
 
         private static void Celda(IContainer c, string fondo, string texto, string fontFamily,
-                                  bool derecha, bool negrita, string color, float size)
+                                  bool derecha, bool negrita, string color, float size, float aireArriba = 0f)
         {
-            var b = c.Background(fondo).BorderBottom(1).BorderColor(HAIR)
+            var b = (aireArriba > 0 ? c.PaddingTop(aireArriba) : c)
+                     .Background(fondo).BorderBottom(1).BorderColor(HAIR)
                      .MinHeight(ALTO_FILA).AlignMiddle().PaddingHorizontal(3).PaddingVertical(1);
             b = derecha ? b.AlignRight() : b.AlignLeft();
 
@@ -477,9 +506,10 @@ namespace HD_Reporteria.Cobranza
             if (negrita) t.Bold();
         }
 
-        private static void CeldaMezcla(IContainer c, string fondo, double jur, double act, double pv, double ven)
+        private static void CeldaMezcla(IContainer c, string fondo, double jur, double act, double pv, double ven, float aireArriba = 0f)
         {
-            var b = c.Background(fondo).BorderBottom(1).BorderColor(HAIR)
+            var b = (aireArriba > 0 ? c.PaddingTop(aireArriba) : c)
+                     .Background(fondo).BorderBottom(1).BorderColor(HAIR)
                      .MinHeight(ALTO_FILA).AlignMiddle().PaddingHorizontal(3);
 
             if (!MOSTRAR_BARRA_MEZCLA) { b.Text(""); return; }
@@ -515,19 +545,22 @@ namespace HD_Reporteria.Cobranza
             string tintaPct = esTotalGeneral ? "#cfe0c2" : VERDE;
             float size = esTotalGeneral ? 8f : TAM_NUM;
 
-            Celda(tabla.Cell().ColumnSpan(2), fondo, etiqueta, fontFamily, false, true, tinta, size);
-            Celda(tabla.Cell(), fondo, cartera.ToString("N2"), fontFamily, true, true, tinta, size);
-            Celda(tabla.Cell(), fondo, saldoFavor.ToString("N2"), fontFamily, true, true, esTotalGeneral ? "#ffd9d4" : ROJO, size);
-            Celda(tabla.Cell(), fondo, neto.ToString("N2"), fontFamily, true, true, tinta, size);
-            Celda(tabla.Cell(), fondo, juridico.ToString("N2"), fontFamily, true, true, tinta, size);
-            Celda(tabla.Cell(), fondo, Pct(juridico, cartera), fontFamily, true, true, tintaPct, 7.5f);
-            Celda(tabla.Cell(), fondo, activo.ToString("N2"), fontFamily, true, true, tinta, size);
-            Celda(tabla.Cell(), fondo, Pct(activo, cartera), fontFamily, true, true, tintaPct, 7.5f);
-            Celda(tabla.Cell(), fondo, porVencer.ToString("N2"), fontFamily, true, true, tinta, size);
-            Celda(tabla.Cell(), fondo, Pct(porVencer, cartera), fontFamily, true, true, tintaPct, 7.5f);
-            Celda(tabla.Cell(), fondo, vencido.ToString("N2"), fontFamily, true, true, tinta, size);
-            Celda(tabla.Cell(), fondo, Pct(vencido, cartera), fontFamily, true, true, tintaPct, 7.5f);
-            CeldaMezcla(tabla.Cell(), fondo, juridico, activo, porVencer, vencido);
+            float aire = ESPACIO_GRUPO;
+
+            Celda(tabla.Cell().ColumnSpan(2), fondo, etiqueta, fontFamily, false, true, tinta, size, aire);
+            Celda(tabla.Cell(), fondo, cartera.ToString("N2"), fontFamily, true, true, tinta, size, aire);
+            Celda(tabla.Cell(), fondo, saldoFavor.ToString("N2"), fontFamily, true, true, esTotalGeneral ? "#ffd9d4" : ROJO, size, aire);
+            Celda(tabla.Cell(), fondo, neto.ToString("N2"), fontFamily, true, true, tinta, size, aire);
+            Celda(tabla.Cell(), fondo, juridico.ToString("N2"), fontFamily, true, true, tinta, size, aire);
+            Celda(tabla.Cell(), fondo, Pct(juridico, cartera), fontFamily, true, true, tintaPct, 7.5f, aire);
+            Celda(tabla.Cell(), fondo, activo.ToString("N2"), fontFamily, true, true, tinta, size, aire);
+            Celda(tabla.Cell(), fondo, Pct(activo, cartera), fontFamily, true, true, tintaPct, 7.5f, aire);
+            Celda(tabla.Cell(), fondo, porVencer.ToString("N2"), fontFamily, true, true, tinta, size, aire);
+            Celda(tabla.Cell(), fondo, Pct(porVencer, cartera), fontFamily, true, true, tintaPct, 7.5f, aire);
+            Celda(tabla.Cell(), fondo, vencido.ToString("N2"), fontFamily, true, true, tinta, size, aire);
+            Celda(tabla.Cell(), fondo, Pct(vencido, cartera), fontFamily, true, true, tintaPct, 7.5f, aire);
+            if (MOSTRAR_BARRA_MEZCLA)
+                CeldaMezcla(tabla.Cell(), fondo, juridico, activo, porVencer, vencido, aire);
         }
 
         // ==================================================================
