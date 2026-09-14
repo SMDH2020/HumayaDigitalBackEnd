@@ -26,6 +26,9 @@ namespace HD.Clientes.Modelos.CRM.Cotizaciones
         public string origen { get; set; }
         public int id_tipo_pago { get; set; }
         public string tipo_pago { get; set; }
+        public int id_linea_cotizacion { get; set; }
+        public string linea_cotizacion { get; set; }
+        public string folio_equip { get; set; }
         public double subtotal { get; set; }
         public double descuento { get; set; }
         public double ajuste { get; set; }

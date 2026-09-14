@@ -140,11 +140,33 @@ namespace HD.Endpoints.Controllers.Credito
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetDDLFiltroAvanzadoClientes()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Datos_CRM datos = new AD_Datos_CRM(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.Obtener_DDL_Filtros_Clientes(usuario);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> GetLocalidadesCRM(string codigo_postal = null, int? idmunicipio = null)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Datos_CRM datos = new AD_Datos_CRM(CadenaConexion);
-            var result = await datos.Listado_localidades(codigo_postal, idmunicipio);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.Listado_localidades(codigo_postal, idmunicipio, usuario);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetLocalidadesCRMFiltroAvanzado(string codigo_postal = null, int? idmunicipio = null)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Datos_CRM datos = new AD_Datos_CRM(CadenaConexion);
+            var result = await datos.Listado_localidades_Filtro_Avanzado(codigo_postal, idmunicipio);
             return Ok(result);
         }
 

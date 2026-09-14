@@ -70,24 +70,23 @@ namespace HD.Clientes.Reportes
 
             var cliente = vista.Clientes?.FirstOrDefault(x => x.idcliente == cot.idcliente);
             var asesor = vista.Asesores?.FirstOrDefault(x => x.IDEmpleado == cot.id_asesor);
-            var propietario = vista.Asesores?.FirstOrDefault(x => x.IDEmpleado == cot.id_propietario);
 
             var mdl = new mdl_Cotizacion_CRM_Imprimir
             {
                 folio_crm = cot.folio,
-                folio_equipo = "",   // TODO: no existe aún en el stored/modelo, se deja vacío
+                folio_EQUIP = cot.folio_equip ?? "",
                 asunto = cot.asunto,
                 apreciable = cot.nombre_contacto,
                 empresa = cliente?.razon_social ?? "",
-                direccion = "",   // no disponible en el catálogo actual de clientes
-                ciudad = "",   // no disponible en el catálogo actual de clientes
+                direccion = "",
+                ciudad = "",
                 sucursal = asesor?.sucursal ?? "",
-                telefono_sucursal = "667 7588200",   // mismo teléfono que se muestra junto al sitio web (aún sin catálogo por sucursal)
+                telefono_sucursal = "667 7588200",
                 sitio_web = "www.humaya.com.mx",
                 asesorventa = asesor?.empleado ?? "",
                 atendio = asesor?.empleado ?? "",
-                atentamente = propietario?.empleado ?? "",
-                fecha = DateTime.Now, // TODO: reemplazar cuando exista fecha de creación real
+                atentamente = cot.responsable ?? "",   // ahora viene resuelto desde el SP (Cotizaciones_Responsables, o 6041 por defecto)
+                fecha = DateTime.Now,
                 vigencia = cot.vigencia.ToString("dd/MM/yyyy"),
                 terminos = "Los precios están sujetos a cambio sin previo aviso. Cotización válida "
                                    + "únicamente durante el periodo de vigencia indicado. Precios netos, no "
@@ -110,7 +109,6 @@ namespace HD.Clientes.Reportes
                 impuesto = d.impuesto,
                 importe = d.importe,
                 importe_total = d.importe_total,
-                // Características del artículo (mismo "orden" del detalle <-> "orden_articulo")
                 caracteristicas = vista.caracteristicas?
                     .Where(x => x.orden_articulo == d.orden)
                     .OrderBy(x => x.orden_caracteristica)
@@ -194,8 +192,8 @@ namespace HD.Clientes.Reportes
             });
         }
 
-        // Los importes quedan alineados a la derecha (igual que el encabezado
-        // "Importe" de la tabla) y ya no se concatena la palabra "Pesos" junto al monto.
+        // Ahora solo se muestra el precio de lista por producto (se quitaron
+        // Descuento e Importe del renglón).
         private static void ImporteDetalle(QuestPDF.Infrastructure.IContainer cell, mdl_Cotizacion_CRM_Detalle_Imprimir m, string moneda)
         {
             cell.AlignRight().Column(cc =>
@@ -205,11 +203,6 @@ namespace HD.Clientes.Reportes
                     txt.Span("Precio de lista: ").FontSize(8);
                     txt.Span(FormatearMoneda(m.precio_lista)).Bold().FontSize(8);
                 });
-
-                if (m.descuento > 0)
-                    cc.Item().AlignRight().Text(txt => { txt.Span("Descuento: ").FontSize(8); txt.Span(FormatearMoneda(m.descuento)).Bold().FontSize(8); });
-
-                cc.Item().AlignRight().Text(txt => { txt.Span("Importe: ").FontSize(8); txt.Span(FormatearMoneda(m.importe_total)).Bold().FontSize(8); });
             });
         }
 
@@ -313,8 +306,8 @@ namespace HD.Clientes.Reportes
                             {
                                 col.Item().AlignRight().Text(txt => { txt.Span("Folio Cotización CRM: ").Bold(); txt.Span(c.folio_crm); });
 
-                                if (!string.IsNullOrWhiteSpace(c.folio_equipo))
-                                    col.Item().AlignRight().Text(txt => { txt.Span("Folio de Cotización Equipo: ").Bold(); txt.Span(c.folio_equipo); });
+                                if (!string.IsNullOrWhiteSpace(c.folio_EQUIP))
+                                    col.Item().AlignRight().Text(txt => { txt.Span("Folio de Cotización Equip: ").Bold(); txt.Span(c.folio_EQUIP); });
 
                                 col.Item().AlignRight().Text(txt => { txt.Span("Asesor de ventas: ").Bold(); txt.Span(c.asesorventa); });
                                 col.Item().AlignRight().Text(c.fecha.ToString("dd/MM/yyyy HH:mm"));
@@ -337,7 +330,7 @@ namespace HD.Clientes.Reportes
                             {
                                 header.Cell().Background("#000").Padding(5).Text("Cant.").Bold().FontColor("#fff");
                                 header.Cell().Background("#000").Padding(5).Text("Descripción").Bold().FontColor("#fff");
-                                header.Cell().Background("#000").Padding(5).AlignRight().Text("Importe").Bold().FontColor("#fff");
+                                header.Cell().Background("#000").Padding(5).AlignRight().Text("Precio de lista").Bold().FontColor("#fff");
                             });
 
                             foreach (var m in modelos)
@@ -414,6 +407,8 @@ namespace HD.Clientes.Reportes
                             row.RelativeItem().AlignRight().Column(col =>
                             {
                                 col.Item().Text(txt => { txt.Span("Folio de cotización CRM: ").FontSize(8); txt.Span(c.folio_crm).Bold().FontSize(8); });
+                                if (!string.IsNullOrWhiteSpace(c.folio_EQUIP))
+                                    col.Item().Text(txt => { txt.Span("Folio de Cotización EQUIP: ").FontSize(8); txt.Span(c.folio_EQUIP).Bold().FontSize(8); });
                                 col.Item().Text(txt => { txt.Span("Asesor de ventas: ").FontSize(8); txt.Span(c.asesorventa).Bold().FontSize(8); });
                             });
                         });
@@ -443,7 +438,7 @@ namespace HD.Clientes.Reportes
                             {
                                 header.Cell().BorderBottom(2).BorderColor("#000").Padding(4).Text("CANT.").Bold();
                                 header.Cell().BorderBottom(2).BorderColor("#000").Padding(4).Text("DESCRIPCIÓN").Bold();
-                                header.Cell().BorderBottom(2).BorderColor("#000").Padding(4).AlignRight().Text("IMPORTE").Bold();
+                                header.Cell().BorderBottom(2).BorderColor("#000").Padding(4).AlignRight().Text("PRECIO DE LISTA").Bold();
                             });
 
                             foreach (var m in modelos)
@@ -526,6 +521,8 @@ namespace HD.Clientes.Reportes
                             row.RelativeItem().AlignRight().Column(col =>
                             {
                                 col.Item().Text(txt => { txt.Span("Folio de cotización CRM: ").FontSize(8); txt.Span(c.folio_crm).Bold().FontSize(8); });
+                                if (!string.IsNullOrWhiteSpace(c.folio_EQUIP))
+                                    col.Item().Text(txt => { txt.Span("Folio de Cotización EQUIP: ").FontSize(8); txt.Span(c.folio_EQUIP).Bold().FontSize(8); });
                                 col.Item().Text(txt => { txt.Span("Asesor de ventas: ").FontSize(8); txt.Span(c.asesorventa).Bold().FontSize(8); });
                             });
                         });
@@ -561,7 +558,7 @@ namespace HD.Clientes.Reportes
                             {
                                 header.Cell().BorderBottom(2).BorderColor("#367C2B").Padding(4).Text("CANT.").Bold();
                                 header.Cell().BorderBottom(2).BorderColor("#367C2B").Padding(4).Text("DESCRIPCIÓN").Bold();
-                                header.Cell().BorderBottom(2).BorderColor("#367C2B").Padding(4).AlignRight().Text("IMPORTE").Bold();
+                                header.Cell().BorderBottom(2).BorderColor("#367C2B").Padding(4).AlignRight().Text("PRECIO DE LISTA").Bold();
                             });
 
                             foreach (var m in modelos)
