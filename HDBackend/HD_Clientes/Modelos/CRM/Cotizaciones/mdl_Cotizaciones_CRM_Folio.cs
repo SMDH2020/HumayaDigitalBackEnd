@@ -23,5 +23,9 @@ namespace HD.Clientes.Modelos.CRM.Cotizaciones
         public double descuento { get; set; }
         public double ajuste { get; set; }
         public double total { get; set; }
+        public int? linea_cotizacion { get; set; }
+        public string? folio_equip { get; set; }
+        public int? id_responsable { get; set; }
+        public string? responsable { get; set; }
     }
 }

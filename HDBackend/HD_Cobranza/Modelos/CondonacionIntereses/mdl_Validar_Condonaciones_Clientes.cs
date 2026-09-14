@@ -10,5 +10,8 @@ namespace HD_Cobranza.Modelos.CondonacionIntereses
     {
         public int total_condonaciones { get; set; }
         public bool tiene_pendiente { get; set; }
+        public string? ultimo_folio { get; set; }
+        public string? ultimo_estatus { get; set; }
+        public int? dias_desde_autorizacion { get; set; }
     }
 }

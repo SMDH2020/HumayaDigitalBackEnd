@@ -77,6 +77,29 @@ namespace HD.Clientes.Consultas.CRM
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<mdl_Filtro_Avanzado_Clientes_View> Obtener_DDL_Filtros_Clientes()
+        {
+            try
+            {
+                var parametros = new
+                {
+                };
+
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var result = await factory.SQL.QueryMultipleAsync("CRM.DDL_Clientes_Filtro_Estados_Municipios", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdl_Filtro_Avanzado_Clientes_View mdl = new mdl_Filtro_Avanzado_Clientes_View();
+                mdl.opciones_estado = result.Read<mdl_Opciones_Estado_CRM>().ToList();
+                mdl.opciones_municipio = result.Read<mdl_Opciones_Municipio_CRM>().ToList();
+
+                factory.SQL.Close();
+                return mdl;
+            }
+            catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
         public async Task<IEnumerable<mdl_Opciones_Localidades_CRM>> Listado_localidades(string codigo_postal = null, int? idmunicipio = null)
         {
             try
@@ -96,6 +119,26 @@ namespace HD.Clientes.Consultas.CRM
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+        public async Task<IEnumerable<mdl_Opciones_Localidades_CRM>> Listado_localidades_Filtro_Avanzado(string codigo_postal = null, int? idmunicipio = null)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    codigo_postal = codigo_postal,
+                    idmunicipio = idmunicipio
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Opciones_Localidades_CRM> result = await factory.SQL.QueryAsync<mdl_Opciones_Localidades_CRM>("CRM.sp_Get_Localidades_CRM_Filtro_Avanzado", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
 
         public async Task<int> GuardarClasificacion(mdl_Guarda_Clasificacion_Cliente_CRM mdl)
         {

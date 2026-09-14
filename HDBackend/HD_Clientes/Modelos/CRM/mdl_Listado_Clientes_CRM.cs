@@ -11,5 +11,9 @@ namespace HD.Clientes.Modelos.CRM
         public int idcliente { get; set; }
         public string rfc { get; set; }
         public string razon_social { get; set; }
+        public int? idLocalidad { get; set; }
+        public string cp { get; set; }
+        public int? idMunicipio { get; set; }
+        public int? idEstado { get; set; }
     }
 }
