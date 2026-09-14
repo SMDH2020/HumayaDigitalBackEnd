@@ -78,12 +78,13 @@ namespace HD.Clientes.Consultas.CRM
             }
         }
 
-        public async Task<mdl_Filtro_Avanzado_Clientes_View> Obtener_DDL_Filtros_Clientes()
+        public async Task<mdl_Filtro_Avanzado_Clientes_View> Obtener_DDL_Filtros_Clientes(int usuario)
         {
             try
             {
                 var parametros = new
                 {
+                    usuario = usuario
                 };
 
                 FactoryConection factory = new FactoryConection(CadenaConexion);
@@ -100,14 +101,15 @@ namespace HD.Clientes.Consultas.CRM
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
-        public async Task<IEnumerable<mdl_Opciones_Localidades_CRM>> Listado_localidades(string codigo_postal = null, int? idmunicipio = null)
+        public async Task<IEnumerable<mdl_Opciones_Localidades_CRM>> Listado_localidades(string codigo_postal = null, int? idmunicipio = null, int usuario)
         {
             try
             {
                 var parametros = new
                 {
                     codigo_postal = codigo_postal,
-                    idmunicipio = idmunicipio
+                    idmunicipio = idmunicipio,
+                    usuario = usuario
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdl_Opciones_Localidades_CRM> result = await factory.SQL.QueryAsync<mdl_Opciones_Localidades_CRM>("CRM.sp_Get_Localidades_CRM", parametros, commandType: System.Data.CommandType.StoredProcedure);

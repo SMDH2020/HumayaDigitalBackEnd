@@ -144,7 +144,8 @@ namespace HD.Endpoints.Controllers.Credito
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Datos_CRM datos = new AD_Datos_CRM(CadenaConexion);
-            var result = await datos.Obtener_DDL_Filtros_Clientes();
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.Obtener_DDL_Filtros_Clientes(usuario);
             return Ok(result);
         }
 
@@ -154,7 +155,8 @@ namespace HD.Endpoints.Controllers.Credito
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Datos_CRM datos = new AD_Datos_CRM(CadenaConexion);
-            var result = await datos.Listado_localidades(codigo_postal, idmunicipio);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.Listado_localidades(codigo_postal, idmunicipio, usuario);
             return Ok(result);
         }
 
