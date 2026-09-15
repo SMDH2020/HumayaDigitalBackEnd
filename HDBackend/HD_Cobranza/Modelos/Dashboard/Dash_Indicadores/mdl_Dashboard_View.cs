@@ -21,6 +21,8 @@
         public IEnumerable<mdl_Fecha_Ultima_Actualizacion>? ultima_actualizacion { get; set; }
         public mdl_cartera_transico? cartera_transito { get; set; }
         public mdl_Intereses_Condonados? intereses_condonados { get; set; }
+        public mdl_Prestamos_Clientes? prestamos_clientes { get; set; }
+
     }
     public class mdl_cartera_transico
     {
