@@ -112,6 +112,7 @@ namespace HD.Clientes.Consultas.CRM.Cotizaciones
                 mdl.Asesores = result.Read<mdl_Opciones_Asesores_Cotizaciones_CRM>().ToList();
                 mdl.Origenes = result.Read<mdl_Opciones_Generales_CRM>().ToList();
                 mdl.TiposPago = result.Read<mdl_Opciones_Generales_CRM>().ToList();
+                mdl.LineaCotizacion = result.Read<mdl_Opciones_Generales_CRM>().ToList();
                 mdl.Cotizacion = result.Read<mdl_Cotizaciones_CRM_Folio>().FirstOrDefault();
                 mdl.Detalle = result.Read<mdl_Cotizaciones_CRM_Folio_Detalle>().ToList();
                 mdl.caracteristicas = result.Read<mdl_Cotizaciones_CRM_Folio_Caracteristicas>().ToList();

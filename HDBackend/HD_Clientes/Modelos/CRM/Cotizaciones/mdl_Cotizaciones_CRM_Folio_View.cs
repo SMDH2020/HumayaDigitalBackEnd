@@ -12,6 +12,8 @@ namespace HD.Clientes.Modelos.CRM.Cotizaciones
         public IEnumerable<mdl_Opciones_Asesores_Cotizaciones_CRM> Asesores { get; set; }
         public IEnumerable<mdl_Opciones_Generales_CRM> Origenes { get; set; }
         public IEnumerable<mdl_Opciones_Generales_CRM> TiposPago { get; set; }
+        public IEnumerable<mdl_Opciones_Generales_CRM> LineaCotizacion { get; set; }
+
         public mdl_Cotizaciones_CRM_Folio Cotizacion { get; set; }
         public IEnumerable<mdl_Cotizaciones_CRM_Folio_Detalle> Detalle { get; set; }
         public IEnumerable<mdl_Cotizaciones_CRM_Folio_Caracteristicas> caracteristicas { get; set; }

@@ -98,5 +98,38 @@ namespace HD.Endpoints.Controllers
             return Ok(resultado);
         }
 
+        [HttpGet("CombustiblePorRango/{jd_machine_id}")]
+        public async Task<IActionResult> CombustiblePorRango(string jd_machine_id, [FromQuery] DateTime? desde, [FromQuery] DateTime? hasta)
+        {
+            string cadenaConexion = _configuracion["ConnectionStrings:Servicio"];
+            AD_Maquina ad = new AD_Maquina(cadenaConexion);
+
+            var resultado = await ad.CombustiblePorRango(jd_machine_id, desde, hasta);
+
+            return Ok(resultado);
+        }
+
+        [HttpGet("HorasOperacionPorRango/{jd_machine_id}")]
+        public async Task<IActionResult> HorasOperacionPorRango(string jd_machine_id, [FromQuery] DateTime? desde, [FromQuery] DateTime? hasta)
+        {
+            string cadenaConexion = _configuracion["ConnectionStrings:Servicio"];
+            AD_Maquina ad = new AD_Maquina(cadenaConexion);
+
+            var resultado = await ad.HorasOperacionPorRango(jd_machine_id, desde, hasta);
+
+            return Ok(resultado);
+        }
+
+        [HttpGet("CombustibleTotales/{jd_machine_id}")]
+        public async Task<IActionResult> CombustibleTotales(string jd_machine_id)
+        {
+            string cadenaConexion = _configuracion["ConnectionStrings:Servicio"];
+            AD_Maquina ad = new AD_Maquina(cadenaConexion);
+
+            var resultado = await ad.CombustibleTotales(jd_machine_id);
+
+            return Ok(resultado);
+        }
+
     }
 }
