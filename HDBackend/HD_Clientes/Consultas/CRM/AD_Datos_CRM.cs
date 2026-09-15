@@ -101,7 +101,7 @@ namespace HD.Clientes.Consultas.CRM
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
-        public async Task<IEnumerable<mdl_Opciones_Localidades_CRM>> Listado_localidades(string codigo_postal = null, int? idmunicipio = null, int usuario)
+        public async Task<IEnumerable<mdl_Opciones_Localidades_CRM>> Listado_localidades(string codigo_postal = null, int? idmunicipio = null)
         {
             try
             {
@@ -109,10 +109,9 @@ namespace HD.Clientes.Consultas.CRM
                 {
                     codigo_postal = codigo_postal,
                     idmunicipio = idmunicipio,
-                    usuario = usuario
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_Opciones_Localidades_CRM> result = await factory.SQL.QueryAsync<mdl_Opciones_Localidades_CRM>("CRM.sp_Get_Localidades_CRM", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdl_Opciones_Localidades_CRM> result = await factory.SQL.QueryAsync<mdl_Opciones_Localidades_CRM>("CRM.sp_Get_Localidades_CRM_", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }
@@ -121,14 +120,15 @@ namespace HD.Clientes.Consultas.CRM
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
-        public async Task<IEnumerable<mdl_Opciones_Localidades_CRM>> Listado_localidades_Filtro_Avanzado(string codigo_postal = null, int? idmunicipio = null)
+        public async Task<IEnumerable<mdl_Opciones_Localidades_CRM>> Listado_localidades_Filtro_Avanzado(int usuario, string codigo_postal = null, int? idmunicipio = null)
         {
             try
             {
                 var parametros = new
                 {
                     codigo_postal = codigo_postal,
-                    idmunicipio = idmunicipio
+                    idmunicipio = idmunicipio,
+                    usuario = usuario
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdl_Opciones_Localidades_CRM> result = await factory.SQL.QueryAsync<mdl_Opciones_Localidades_CRM>("CRM.sp_Get_Localidades_CRM_Filtro_Avanzado", parametros, commandType: System.Data.CommandType.StoredProcedure);
