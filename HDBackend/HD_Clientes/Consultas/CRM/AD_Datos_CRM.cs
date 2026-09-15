@@ -101,7 +101,7 @@ namespace HD.Clientes.Consultas.CRM
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
-        public async Task<IEnumerable<mdl_Opciones_Localidades_CRM>> Listado_localidades(string codigo_postal = null, int? idmunicipio = null, int usuario)
+        public async Task<IEnumerable<mdl_Opciones_Localidades_CRM>> Listado_localidades(int usuario,string codigo_postal = null, int? idmunicipio = null )
         {
             try
             {
