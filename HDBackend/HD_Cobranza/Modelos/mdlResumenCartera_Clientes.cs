@@ -5,6 +5,7 @@
         public int id { get; set; }
         public string? estatus { get; set; }
         public string? linea { get; set; }
+        public int idsucursal { get; set; }
         public string? sucursal { get; set; }
         public string? idcliente { get; set; }
         public string? razonsocial { get; set; }

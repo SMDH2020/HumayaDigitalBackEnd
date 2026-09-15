@@ -216,5 +216,90 @@ namespace HD_CentroMonitoreo.Consultas.Maquina
             }
         }
 
+        public async Task<List<mdl_Combustible>> CombustiblePorRango(string maquina_id, DateTime? fechaInicio, DateTime? fechaFin)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+
+                var parametros = new
+                {
+                    maquina_id = maquina_id,
+                    fecha_inicio = fechaInicio?.Date,
+                    fecha_fin = fechaFin?.Date
+                };
+
+                var result = await factory.SQL.QueryAsync<mdl_Combustible>(
+                    "HumayaDigital_Eventos.csc.SP_Cat_Combustible_PorMaquinaRango",
+                    parametros,
+                    commandType: System.Data.CommandType.StoredProcedure
+                );
+
+                factory.SQL.Close();
+                return result.ToList();
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError,
+                    new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<List<mdl_HorasOperacion>> HorasOperacionPorRango(string maquina_id, DateTime? fechaInicio, DateTime? fechaFin)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+
+                var parametros = new
+                {
+                    maquina_id = int.Parse(maquina_id),
+                    fecha_inicio = fechaInicio?.Date,
+                    fecha_fin = fechaFin?.Date
+                };
+
+                var result = await factory.SQL.QueryAsync<mdl_HorasOperacion>(
+                    "HumayaDigital_Eventos.csc.SP_Cat_HorasOperacion_PorMaquinaRango",
+                    parametros,
+                    commandType: System.Data.CommandType.StoredProcedure
+                );
+
+                factory.SQL.Close();
+                return result.ToList();
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError,
+                    new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<mdl_CombustibleTotales> CombustibleTotales(string maquina_id)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+
+                var parametros = new
+                {
+                    maquina_id = maquina_id
+                };
+
+                var result = await factory.SQL.QueryFirstOrDefaultAsync<mdl_CombustibleTotales>(
+                    "HumayaDigital_Eventos.csc.SP_Cat_Combustible_Totales",
+                    parametros,
+                    commandType: System.Data.CommandType.StoredProcedure
+                );
+
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError,
+                    new { Mensaje = ex.Message });
+            }
+        }
+
     }
-}   
+}

@@ -31,25 +31,25 @@ namespace HD_Cobranza.Capturas
                 factory.SQL.Close();
                 //List<mdlCob_TotalCartera_Detalle> listado = result.ToList();
                 List<mdlCob_TotalCartera_Detalle> listado = result.ToList();
-                if(result.Count()>0)
-                listado.Add(new mdlCob_TotalCartera_Detalle()
-                {
-                    idsucursal = result.First().idsucursal,
-                    sucursal = result.First().sucursal,
-                    departamento = "TOTAL",
-                    mas90 = result.Sum(x => x.mas90),
-                    mas60 = result.Sum(x => x.mas60),
-                    mas30 = result.Sum(x => x.mas30),
-                    mas15 = result.Sum(x => x.mas15),
-                    de1a15 = result.Sum(x => x.de1a15),
-                    vencido = result.Sum(x => x.vencido),
-                    porvencer = result.Sum(x => x.porvencer),
-                    totalcartera = result.Sum(x => x.totalcartera),
-                    saldoafavor = result.Sum(x => x.saldoafavor),
-                    total = result.Sum(x => x.total),
-                    activo = result.Sum(x => x.activo),
-                    juridico = result.Sum(x => x.juridico),
-                });                
+                //if(result.Count()>0)
+                //listado.Add(new mdlCob_TotalCartera_Detalle()
+                //{
+                //    idsucursal = result.First().idsucursal,
+                //    sucursal = result.First().sucursal,
+                //    razonsocial = "TOTAL",
+                //    mas90 = result.Sum(x => x.mas90),
+                //    mas60 = result.Sum(x => x.mas60),
+                //    mas30 = result.Sum(x => x.mas30),
+                //    mas15 = result.Sum(x => x.mas15),
+                //    de1a15 = result.Sum(x => x.de1a15),
+                //    vencido = result.Sum(x => x.vencido),
+                //    porvencer = result.Sum(x => x.porvencer),
+                //    totalcartera = result.Sum(x => x.totalcartera),
+                //    saldoafavor = result.Sum(x => x.saldoafavor),
+                //    total = result.Sum(x => x.total),
+                //    activo = result.Sum(x => x.activo),
+                //    juridico = result.Sum(x => x.juridico),
+                //});                
                 return listado;
             }
             catch (System.Exception ex)
@@ -70,20 +70,24 @@ namespace HD_Cobranza.Capturas
                 var result = await factory.SQL.QueryAsync<mdlResumenCartera_Clientes>("Equip.Credito.sp_Obtener_TotalCartera_Detalle_Cliente", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 List<mdlResumenCartera_Clientes> listado = result.ToList();
-                //if (result.Count() > 0)
-                //    listado.Add(new mdlResumenCartera_Clientes()
-                //    {
-                //        //idsucursal = result.First().idsucursal,
-                //        linea = result.First().linea,
-                //        //departamento = "TOTAL",
-                //        sucursal = result.First().sucursal,
-                //        documento = result.First().documento,
-                //        vencimiento = result.First().vencimiento,
-                //        diasvencido = result.First().diasvencido,
-                //        saldo = result.Sum(x => x.saldo),
-                //        interesbase = result.Sum(x => x.interesbase),
-                //        importe = result.Sum(x => x.importe),
-                //    });
+                if (result.Count() > 0)
+                    listado.Add(new mdlResumenCartera_Clientes()
+                    {
+                        idsucursal = result.First().idsucursal,
+                        linea = result.First().linea,
+                        sucursal = "TOTAL",
+                        //sucursal = result.First().sucursal,
+                        //documento = result.First().documento,
+                        documento = "",
+                        //vencimiento = result.First().vencimiento,
+                        vencimiento = "",
+                        //diasvencido = result.First().diasvencido,
+                        diasvencido = 0,
+                        saldo = result.Sum(x => x.saldo),
+                        interesbase = result.Sum(x => x.interesbase),
+                        importe = result.Sum(x => x.importe),
+                    });
+
                 return listado;
             }
             catch (System.Exception ex)

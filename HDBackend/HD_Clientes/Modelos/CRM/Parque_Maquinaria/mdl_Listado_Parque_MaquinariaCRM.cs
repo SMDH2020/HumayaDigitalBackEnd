@@ -8,6 +8,7 @@ namespace HD.Clientes.Modelos.CRM.Parque_Maquinaria
 {
     public class mdl_Listado_Parque_MaquinariaCRM
     {
+        public int idrelacion { get; set; }
         public int idcliente { get; set; }
         public string razon_social { get; set; }
         public string categoria { get; set; }
