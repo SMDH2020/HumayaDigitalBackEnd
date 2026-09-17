@@ -27,6 +27,7 @@ namespace HD.Clientes.Consultas.Documentos
                     Documentacion = mdl.Documentacion,
                     fase2 = mdl.fase2,
                     jdf = mdl.jdf,
+                    documento_cobranza=mdl.documento_cobranza,
                     dias_vigencia = mdl.dias_vigencia,
                     estatus = mdl.estatus,
                     usuario = mdl.usuario
