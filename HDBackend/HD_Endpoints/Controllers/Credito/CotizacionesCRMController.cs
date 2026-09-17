@@ -160,5 +160,16 @@ namespace HD.Endpoints.Controllers.Credito
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetResponsablesContacto(int idcliente)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Cotizaciones_CRM datos = new AD_Cotizaciones_CRM(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.GetOpcionesContacto(idcliente);
+            return Ok(result);
+        }
+
     }
 }
