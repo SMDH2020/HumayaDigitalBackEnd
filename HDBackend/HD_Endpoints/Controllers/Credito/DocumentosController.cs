@@ -49,6 +49,17 @@ namespace HD.Endpoints.Controllers.Credito
                 return Ok(result);
 
             }
-       }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> Deshabilitar(int iddocumento,int jdf)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Documentos_Deshabilitar datos = new AD_Documentos_Deshabilitar(CadenaConexion);
+            var result = await datos.borrar(iddocumento,jdf);
+            return Ok(result);
+
+        }
+    }
     }
 

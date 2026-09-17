@@ -48,6 +48,7 @@ namespace HD_Cobranza.Capturas.Dashboard.Dash_Indicadores
                 view.ultima_actualizacion = result.Read<mdl_Fecha_Ultima_Actualizacion>().ToList();
                 view.cartera_transito= result.Read<mdl_cartera_transico>().FirstOrDefault();
                 view.intereses_condonados = result.Read<mdl_Intereses_Condonados>().FirstOrDefault();
+                view.prestamos_clientes = result.Read<mdl_Prestamos_Clientes>().FirstOrDefault();
 
                 factory.SQL.Close();
                 return view;
