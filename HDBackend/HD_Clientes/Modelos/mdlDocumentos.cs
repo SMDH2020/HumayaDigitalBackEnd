@@ -27,6 +27,8 @@ namespace HD.Clientes.Modelos
         public int dias_vigencia { get; set; }
 
         public bool estatus { get; set; }
+        public bool documento_cobranza { get; set; }
+
 
         public string? usuario { get; set; } = "";
     }
