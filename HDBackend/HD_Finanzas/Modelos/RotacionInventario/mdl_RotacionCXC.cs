@@ -25,6 +25,7 @@ namespace HD_Finanzas.Modelos.RotacionInventario
         public double rcxc_anual { get; set; }
         public double cartera_optima { get; set; }
         public double diferencia_cartera_optima { get; set; }
+        public double dias_promedio_cobro => rcxc == 0 ? 0 : (365 / rcxc);
 
 
     }

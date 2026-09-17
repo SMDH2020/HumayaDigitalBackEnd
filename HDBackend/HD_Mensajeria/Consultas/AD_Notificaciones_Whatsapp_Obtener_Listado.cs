@@ -19,19 +19,23 @@ namespace HD_Mensajeria.Consultas
 
         public async Task<IEnumerable<mdl_Notificaciones_Whatsapp>> obtenerNotificaciones(string usuario)
         {
+            FactoryConection factory = new FactoryConection(CadenaConexion);
             try
             {
                 var parametros = new
                 {
                     usuario = usuario
                 };
-                FactoryConection factory = new FactoryConection(CadenaConexion);
+          
                 IEnumerable<mdl_Notificaciones_Whatsapp> result = await factory.SQL.QueryAsync<mdl_Notificaciones_Whatsapp>("HD_Mensajeria.dbo.sp_Notificaciones_Whatsapp_Sin_Leer", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
+                factory.Close();
                 return result;
             }
             catch (System.Exception ex)
             {
+                factory.SQL.Close();
+                factory.Close();
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }

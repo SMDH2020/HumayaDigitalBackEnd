@@ -70,6 +70,39 @@ namespace HD.Notifications.Consultas
             }
         }
 
+        public async Task<mdl_Notificacion_Usuarios_Solicitudes_View> obtenerIDEspecifico(NotificacionDto data)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    idencabezado = data.idencabezado,
+                    usuario = data.usuario,
+                    usuarioNotificar = data.usuarioNotificar,
+                    redireccion = data.redireccion,
+                    mensaje = data.Mensaje,
+                    parametro = data.parametro
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                //var result = await factory.SQL.QueryMultipleAsync(", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("HumayaDigital_Eventos.dbo.Obtener_Mensaje_Push_Especifico", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdl_Notificacion_Usuarios_Solicitudes_View view = new mdl_Notificacion_Usuarios_Solicitudes_View();
+                view.notificacionCuerpo = result.Read<mdl_HD_Notificaciones_Usuarios_Solicitudes_Cuerpo>().FirstOrDefault();
+                view.notificacionUsuarios = result.Read<mdl_Usuarios_Especificos>().ToList();
+
+                // Cerrar la conexión
+                factory.SQL.Close();
+
+                // Retornar la tupla con ambos sets
+                return view;
+
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
         //public async Task<mdl_Notificacion_Usuarios_Solicitudes_View> GuardarNotificacionSolicitud(string? folio, string? mensaje, int idreferencia, string? usuario, string? usuarioNotificar)
         //{
         //    try

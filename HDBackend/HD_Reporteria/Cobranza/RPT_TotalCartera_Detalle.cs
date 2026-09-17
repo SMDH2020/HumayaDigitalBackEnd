@@ -1,6 +1,7 @@
 ﻿using HD_Cobranza.Modelos;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 
 namespace HD_Reporteria.Cobranza
 {
@@ -102,45 +103,56 @@ namespace HD_Reporteria.Cobranza
 
                                 foreach (var mdl in resumen)
                                 {
+                                    // Renglon de totales que ya viene en el origen de datos
+                                    bool esTotal = string.Equals((mdl.razonsocial ?? "").Trim(), "TOTAL", StringComparison.OrdinalIgnoreCase);
+                                    string fondo = esTotal ? "#477c2c" : "#ffffff";
+                                    string colorLetra = esTotal ? "#ffffff" : "#000000";
+                                    Func<TextStyle, TextStyle> estiloTotal = x => esTotal ? x.Bold() : x;
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignLeft().Height(20).AlignMiddle().PaddingLeft(3)
-                                   .Text(mdl.idcliente).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().Background(fondo).DefaultTextStyle(estiloTotal).BorderBottom(1).BorderColor("#afb69d").AlignLeft().Height(20).AlignMiddle().PaddingLeft(3)
+                                   .Text(esTotal ? "" : mdl.idcliente.ToString()).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignLeft().Height(30).AlignMiddle()
-                                   .Text(mdl.razonsocial).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().Background(fondo).DefaultTextStyle(estiloTotal).BorderBottom(1).BorderColor("#afb69d").AlignLeft().Height(30).AlignMiddle()
+                                   .Text(mdl.razonsocial).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                   .Text((mdl.totalcartera + mdl.juridico).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().Background(fondo).DefaultTextStyle(estiloTotal).BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
+                                   //.Text((mdl.totalcartera + mdl.juridico).ToString("N2")).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
+                                   .Text((mdl.totalcartera).ToString("N2")).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                   .Text(mdl.saldoafavor.ToString("N2")).FontSize(8).FontColor("#ff2037").FontFamily(fontFamily);
+                                    tabla.Cell().Background(fondo).DefaultTextStyle(estiloTotal).BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
+                                   .Text(mdl.saldoafavor.ToString("N2")).FontSize(8).FontColor(esTotal ? "#ffffff" : "#ff2037").FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                   .Text((mdl.total + mdl.juridico).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().Background(fondo).DefaultTextStyle(estiloTotal).BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
+                                   //.Text((mdl.total + mdl.juridico).ToString("N2")).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
+                                   .Text((mdl.total).ToString("N2")).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                   .Text(mdl.juridico.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().Background(fondo).DefaultTextStyle(estiloTotal).BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
+                                   .Text(mdl.juridico.ToString("N2")).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                   .Text((mdl.juridico / (mdl.totalcartera + mdl.juridico) * 100).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().Background(fondo).DefaultTextStyle(estiloTotal).BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
+                                   //.Text((mdl.juridico / (mdl.totalcartera + mdl.juridico) * 100).ToString("N2")).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
+                                   .Text((mdl.juridico / (mdl.totalcartera) * 100).ToString("N2")).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                   .Text(mdl.activo.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().Background(fondo).DefaultTextStyle(estiloTotal).BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
+                                   .Text(mdl.activo.ToString("N2")).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                   .Text(((mdl.activo / (mdl.totalcartera + mdl.juridico)) * 100).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().Background(fondo).DefaultTextStyle(estiloTotal).BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
+                                   //.Text(((mdl.activo / (mdl.totalcartera + mdl.juridico)) * 100).ToString("N2")).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
+                                   .Text(((mdl.activo / (mdl.totalcartera)) * 100).ToString("N2")).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                   .Text(mdl.porvencer.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().Background(fondo).DefaultTextStyle(estiloTotal).BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
+                                   .Text(mdl.porvencer.ToString("N2")).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                    .Text(((mdl.porvencer / (mdl.totalcartera + mdl.juridico)) * 100).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().Background(fondo).DefaultTextStyle(estiloTotal).BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
+                                    //.Text(((mdl.porvencer / (mdl.totalcartera + mdl.juridico)) * 100).ToString("N2")).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
+                                    .Text(((mdl.porvencer / (mdl.totalcartera)) * 100).ToString("N2")).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                    .Text(mdl.vencido.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().Background(fondo).DefaultTextStyle(estiloTotal).BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
+                                    .Text(mdl.vencido.ToString("N2")).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle().PaddingRight(3)
-                                    .Text(((mdl.vencido / (mdl.totalcartera + mdl.juridico)) * 100).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().Background(fondo).DefaultTextStyle(estiloTotal).BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle().PaddingRight(3)
+                                    //.Text(((mdl.vencido / (mdl.totalcartera + mdl.juridico)) * 100).ToString("N2")).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
+                                    .Text(((mdl.vencido / (mdl.totalcartera)) * 100).ToString("N2")).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
                                 }
                             });
                         });
@@ -234,42 +246,47 @@ namespace HD_Reporteria.Cobranza
 
                                 foreach (var mdl in resumen)
                                 {
+                                    // Renglon de totales que ya viene en el origen de datos
+                                    bool esTotal = string.Equals((mdl.razonsocial ?? "").Trim(), "TOTAL", StringComparison.OrdinalIgnoreCase);
+                                    string fondo = esTotal ? "#477c2c" : "#ffffff";
+                                    string colorLetra = esTotal ? "#ffffff" : "#000000";
+                                    Func<TextStyle, TextStyle> estiloTotal = x => esTotal ? x.Bold() : x;
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignLeft().Height(20).AlignMiddle().PaddingLeft(20)
-                                   .Text(mdl.idcliente).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().Background(fondo).DefaultTextStyle(estiloTotal).BorderBottom(1).BorderColor("#afb69d").AlignLeft().Height(20).AlignMiddle().PaddingLeft(20)
+                                   .Text(esTotal ? "" : mdl.idcliente.ToString()).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignLeft().Height(20).AlignMiddle().PaddingLeft(20)
-                                   .Text(mdl.razonsocial).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().Background(fondo).DefaultTextStyle(estiloTotal).BorderBottom(1).BorderColor("#afb69d").AlignLeft().Height(20).AlignMiddle().PaddingLeft(20)
+                                   .Text(mdl.razonsocial).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                   .Text(mdl.de1a15.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().Background(fondo).DefaultTextStyle(estiloTotal).BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
+                                   .Text(mdl.de1a15.ToString("N2")).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                   .Text((mdl.vencido != 0 ? mdl.de1a15 / mdl.vencido * 100 : 0).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().Background(fondo).DefaultTextStyle(estiloTotal).BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
+                                   .Text((mdl.vencido != 0 ? mdl.de1a15 / mdl.vencido * 100 : 0).ToString("N2")).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                   .Text(mdl.mas15.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().Background(fondo).DefaultTextStyle(estiloTotal).BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
+                                   .Text(mdl.mas15.ToString("N2")).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                   .Text((mdl.vencido != 0 ? mdl.mas15 / mdl.vencido * 100 : 0).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().Background(fondo).DefaultTextStyle(estiloTotal).BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
+                                   .Text((mdl.vencido != 0 ? mdl.mas15 / mdl.vencido * 100 : 0).ToString("N2")).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                   .Text(mdl.mas30.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().Background(fondo).DefaultTextStyle(estiloTotal).BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
+                                   .Text(mdl.mas30.ToString("N2")).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                   .Text((mdl.vencido != 0 ? mdl.mas30 / mdl.vencido * 100 : 0).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().Background(fondo).DefaultTextStyle(estiloTotal).BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
+                                   .Text((mdl.vencido != 0 ? mdl.mas30 / mdl.vencido * 100 : 0).ToString("N2")).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                   .Text(mdl.mas60.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().Background(fondo).DefaultTextStyle(estiloTotal).BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
+                                   .Text(mdl.mas60.ToString("N2")).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                   .Text((mdl.vencido != 0 ? mdl.mas60 / mdl.vencido * 100 : 0).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().Background(fondo).DefaultTextStyle(estiloTotal).BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
+                                   .Text((mdl.vencido != 0 ? mdl.mas60 / mdl.vencido * 100 : 0).ToString("N2")).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
-                                   .Text(mdl.mas90.ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().Background(fondo).DefaultTextStyle(estiloTotal).BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle()
+                                   .Text(mdl.mas90.ToString("N2")).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
 
-                                    tabla.Cell().BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle().PaddingRight(3)
-                                   .Text((mdl.vencido != 0 ? mdl.mas90 / mdl.vencido * 100 : 0).ToString("N2")).FontSize(8).FontFamily(fontFamily);
+                                    tabla.Cell().Background(fondo).DefaultTextStyle(estiloTotal).BorderBottom(1).BorderColor("#afb69d").AlignRight().Height(20).AlignMiddle().PaddingRight(3)
+                                   .Text((mdl.vencido != 0 ? mdl.mas90 / mdl.vencido * 100 : 0).ToString("N2")).FontSize(8).FontColor(colorLetra).FontFamily(fontFamily);
 
 
                                 }

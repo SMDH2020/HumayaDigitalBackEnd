@@ -45,7 +45,13 @@ namespace HD_Cobranza.Reportes
                     rango.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
                     renglon++;
 
-                    var linea = list.GroupBy(item => item.sucursal).ToList();
+                    // El origen agrega un renglon con razonsocial = "TOTAL";
+                    // no debe imprimirse ni entrar en la suma.
+                    var detalle = list
+                        .Where(item => !string.Equals((item.razonsocial ?? "").Trim(), "TOTAL", StringComparison.OrdinalIgnoreCase))
+                        .ToList();
+
+                    var linea = detalle.GroupBy(item => item.sucursal).ToList();
 
                     foreach (var mdl in linea)
                     {
@@ -58,7 +64,7 @@ namespace HD_Cobranza.Reportes
                         rango.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
                         rango.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
                         renglon++;
-                        foreach (mdlCob_TotalCartera_Detalle activos in list.Where(item => item.sucursal == mdl.Key))
+                        foreach (mdlCob_TotalCartera_Detalle activos in detalle.Where(item => item.sucursal == mdl.Key))
                         {
                            double totalcartera = activos.totalcartera + activos.juridico;
                             sheet.Cell(renglon, 1).Value = activos.idcliente;
@@ -78,7 +84,9 @@ namespace HD_Cobranza.Reportes
                         }
 
                     }
-                    renglon = renglon-1;
+                    // OJO: aqui NO se debe retroceder el renglon. Si se hace,
+                    // la fila de TOTALES se escribe encima del ultimo cliente y
+                    // ademas queda fuera del rango de la suma.
                     sheet.Cell(renglon, 1).Value = "";
                     sheet.Cell(renglon, 2).Value = "TOTALES";
                     sheet.Cell(renglon, 3).FormulaA1 = $"SUBTOTAL(9,C5:C{renglon - 1})";

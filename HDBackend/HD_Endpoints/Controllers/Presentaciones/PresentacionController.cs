@@ -57,6 +57,17 @@ namespace HD.Endpoints.Controllers.Presentaciones
             var result = await datos.Actualizar(mdl);
             return Ok(result);
         }
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> Eliminar(Guid presentacionId)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Presentaciones datos = new AD_Presentaciones(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+
+            var result = await datos.Eliminar(presentacionId);
+            return Ok(result);
+        }
         [HttpPost]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> GuardarHtml(mdl_Presentaciones_Html mdl)
