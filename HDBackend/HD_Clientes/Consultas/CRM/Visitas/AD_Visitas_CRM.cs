@@ -18,7 +18,7 @@ namespace HD.Clientes.Consultas.CRM.Visitas
             CadenaConexion = _cadenaconexion;
         }
 
-        public async Task<mdl_Visitas_Programada_View> ListadoVisitasProgramadas(int ejercicio, int periodo, string fechainicio, string fechafin, int vendedor, string adr, string sucursal)
+        public async Task<mdl_Visitas_Programada_View> ListadoVisitasProgramadas(int ejercicio, int periodo, string fechainicio, string fechafin, int vendedor, string adr, string sucursal, string tipo_filtrado)
         {
             try
             {
@@ -30,7 +30,8 @@ namespace HD.Clientes.Consultas.CRM.Visitas
                     fechainicio = fechainicio,
                     fechafin = fechafin,
                     adr = adr,
-                    sucursal = sucursal
+                    sucursal = sucursal,
+                    tipo_filtrado = tipo_filtrado
                 };
 
                 FactoryConection factory = new FactoryConection(CadenaConexion);
@@ -135,6 +136,50 @@ namespace HD.Clientes.Consultas.CRM.Visitas
                 };
 
                 await factory.SQL.ExecuteAsync("CRM.sp_Guardar_Estatus_Visita", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+            }
+            catch (System.Exception ex)
+            {
+                factory.SQL.Close();
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task AgregarComentarioVisita(mdl_Agregar_Comentario_Visita mdl)
+        {
+            FactoryConection factory = new FactoryConection(CadenaConexion);
+            try
+            {
+                var parametros = new
+                {
+                    id_visita = mdl.id_visita,
+                    comentario = mdl.comentario,
+                    usuario = mdl.usuario
+                };
+
+                await factory.SQL.ExecuteAsync("CRM.Agregar_Comentario_Visitas", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+            }
+            catch (System.Exception ex)
+            {
+                factory.SQL.Close();
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task RevertirEstatus(mdl_Revertir_Estatus_Visita mdl)
+        {
+            FactoryConection factory = new FactoryConection(CadenaConexion);
+            try
+            {
+                var parametros = new
+                {
+                    id_visita = mdl.id_visita,
+                    comentario = mdl.comentario,
+                    usuario = mdl.usuario
+                };
+
+                await factory.SQL.ExecuteAsync("CRM.Revertir_Estatus_Visita", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
             }
             catch (System.Exception ex)
