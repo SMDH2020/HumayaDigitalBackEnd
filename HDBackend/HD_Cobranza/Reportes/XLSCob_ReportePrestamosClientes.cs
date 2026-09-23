@@ -23,9 +23,9 @@ namespace HD_Cobranza.Reportes
                     sheet.Cell(renglon, 1).Value = "ORIGEN";
                     sheet.Cell(renglon, 2).Value = "DOCUMENTO";
                     sheet.Cell(renglon, 3).Value = "SERIE";
-                    sheet.Cell(renglon, 4).Value = "FOLIO";
-                    sheet.Cell(renglon, 5).Value = "RAZON SOCIAL";
-                    sheet.Cell(renglon, 6).Value = "RFC";
+                    sheet.Cell(renglon, 4).Value = "RAZON SOCIAL";
+                    sheet.Cell(renglon, 5).Value = "RFC";
+                    sheet.Cell(renglon, 6).Value = "SUCURSAL";
                     sheet.Cell(renglon, 7).Value = "VENCIMIENTO";
                     sheet.Cell(renglon, 8).Value = "IMPORTE FACTURA";
                     sheet.Cell(renglon, 9).Value = "IMPORTE PAGADO";
@@ -45,10 +45,10 @@ namespace HD_Cobranza.Reportes
                     {
                         sheet.Cell(renglon, 1).Value = prestamo.origen_registro;
                         sheet.Cell(renglon, 2).Value = prestamo.documento;
-                        sheet.Cell(renglon, 3).Value = prestamo.serie;
-                        sheet.Cell(renglon, 4).Value = prestamo.folio;
-                        sheet.Cell(renglon, 5).Value = prestamo.razon_social;
-                        sheet.Cell(renglon, 6).Value = prestamo.rfc;
+                        sheet.Cell(renglon, 3).Value = SerieFolio(prestamo.serie, prestamo.folio);
+                        sheet.Cell(renglon, 4).Value = prestamo.razon_social;
+                        sheet.Cell(renglon, 5).Value = prestamo.rfc;
+                        sheet.Cell(renglon, 6).Value = prestamo.sucursal;
 
                         // Las filas de SOLICITUD SIN FACTURACION no traen datos de
                         // facturacion: esas celdas se dejan vacias, no en cero.
@@ -69,7 +69,7 @@ namespace HD_Cobranza.Reportes
                     if (renglon > 5)
                     {
                         renglon++;
-                        sheet.Cell(renglon, 5).Value = "TOTALES";
+                        sheet.Cell(renglon, 6).Value = "TOTALES";
                         sheet.Cell(renglon, 8).FormulaA1 = $"SUBTOTAL(9,H5:H{renglon - 1})";
                         sheet.Cell(renglon, 9).FormulaA1 = $"SUBTOTAL(9,I5:I{renglon - 1})";
                         sheet.Cell(renglon, 10).FormulaA1 = $"SUBTOTAL(9,J5:J{renglon - 1})";
@@ -105,6 +105,19 @@ namespace HD_Cobranza.Reportes
             {
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { errores = ex.Message });
             }
+        }
+
+        // Serie y folio se muestran juntos: "[serie] - [folio]".
+        // Si solo viene uno de los dos, se pinta ese sin el guion.
+        private static string SerieFolio(string? serie, string? folio)
+        {
+            bool haySerie = !string.IsNullOrWhiteSpace(serie);
+            bool hayFolio = !string.IsNullOrWhiteSpace(folio);
+
+            if (haySerie && hayFolio) return serie.Trim() + " - " + folio.Trim();
+            if (haySerie) return serie.Trim();
+            if (hayFolio) return folio.Trim();
+            return "";
         }
     }
 }
