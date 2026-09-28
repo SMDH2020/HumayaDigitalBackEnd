@@ -8,6 +8,9 @@
         public string? folio { get; set; }
         public string? razon_social { get; set; }
         public string? rfc { get; set; }
+        public int idsucursal { get; set; }
+        public string? sucursal { get; set; }
+
         public DateTime? vencimiento { get; set; }
         public decimal? importe_factura { get; set; }
         public decimal? importe_pagado { get; set; }
