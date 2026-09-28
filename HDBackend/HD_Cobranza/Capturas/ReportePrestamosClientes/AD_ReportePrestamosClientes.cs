@@ -12,7 +12,7 @@ namespace HD_Cobranza.Capturas.ReportePrestamosClientes
             CadenaConexion = _cadenaconexion;
         }
 
-        public async Task<IEnumerable<mdlReportePrestamosClientes>> Listado(string? origen_registro, DateTime? fecha_desde, DateTime? fecha_hasta)
+        public async Task<IEnumerable<mdlReportePrestamosClientes>> Listado(string? origen_registro, DateTime? fecha_desde, DateTime? fecha_hasta, string? ADR, string? sucursal)
         {
             try
             {
@@ -24,7 +24,9 @@ namespace HD_Cobranza.Capturas.ReportePrestamosClientes
                 {
                     @origen_registro = origen,
                     @fecha_desde = fecha_desde,
-                    @fecha_hasta = fecha_hasta
+                    @fecha_hasta = fecha_hasta,
+                    @ADR         = ADR,
+                    @sucursal    = sucursal
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdlReportePrestamosClientes> result = await factory.SQL.QueryAsync<mdlReportePrestamosClientes>("Credito.sp_Reporte_Prestamos_Clientes", parametros, commandType: System.Data.CommandType.StoredProcedure, commandTimeout: 180);

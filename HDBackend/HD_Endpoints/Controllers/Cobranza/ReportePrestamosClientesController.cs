@@ -31,27 +31,27 @@ namespace HD.Endpoints.Controllers.Cobranza
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> Listado(string? origen_registro, DateTime? fecha_desde, DateTime? fecha_hasta)
+        public async Task<ActionResult> Listado(string? origen_registro, DateTime? fecha_desde, DateTime? fecha_hasta, string? adr, string? sucursal)
         {
             var validacion = Validar(ref origen_registro, fecha_desde, fecha_hasta);
             if (validacion != null) return validacion;
 
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_ReportePrestamosClientes datos = new AD_ReportePrestamosClientes(CadenaConexion);
-            var result = await datos.Listado(origen_registro, fecha_desde, fecha_hasta);
+            var result = await datos.Listado(origen_registro, fecha_desde, fecha_hasta, adr, sucursal);
             return Ok(result);
         }
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> GenerarExcel(string? origen_registro, DateTime? fecha_desde, DateTime? fecha_hasta)
+        public async Task<ActionResult> GenerarExcel(string? origen_registro, DateTime? fecha_desde, DateTime? fecha_hasta, string? adr, string? sucursal)
         {
             var validacion = Validar(ref origen_registro, fecha_desde, fecha_hasta);
             if (validacion != null) return validacion;
 
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_ReportePrestamosClientes datos = new AD_ReportePrestamosClientes(CadenaConexion);
-            var result = await datos.Listado(origen_registro, fecha_desde, fecha_hasta);
+            var result = await datos.Listado(origen_registro, fecha_desde, fecha_hasta, adr, sucursal);
             var docResult = await XLSCob_ReportePrestamosClientes.CrearExcel(result);
             return Ok(docResult);
         }
