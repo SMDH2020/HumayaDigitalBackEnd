@@ -17,12 +17,12 @@ namespace HD.Endpoints.Controllers.Credito
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ListadoVisitasProgramadas(int ejercicio, int periodo, string fechainicio, string fechafin, int vendedor, string adr, string sucursal)
+        public async Task<ActionResult> ListadoVisitasProgramadas(int ejercicio, int periodo, string fechainicio, string fechafin, int vendedor, string adr, string sucursal, string tipo_filtrado)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Visitas_CRM datos = new AD_Visitas_CRM(CadenaConexion);
             vendedor = int.Parse(Sesion.usuario());
-            var result = await datos.ListadoVisitasProgramadas(ejercicio, periodo, fechainicio, fechafin, vendedor, adr, sucursal);
+            var result = await datos.ListadoVisitasProgramadas(ejercicio, periodo, fechainicio, fechafin, vendedor, adr, sucursal, tipo_filtrado);
             return Ok(result);
         }
 
@@ -65,6 +65,28 @@ namespace HD.Endpoints.Controllers.Credito
             AD_Visitas_CRM datos = new AD_Visitas_CRM(CadenaConexion);
             mdl.createuser = int.Parse(Sesion.usuario());
             await datos.GuardarEstatusVisita(mdl);
+            return Ok(new { mensaje = "datos cargados con exito" });
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarComentariosVisitas(mdl_Agregar_Comentario_Visita mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Visitas_CRM datos = new AD_Visitas_CRM(CadenaConexion);
+            mdl.usuario = int.Parse(Sesion.usuario());
+            await datos.AgregarComentarioVisita(mdl);
+            return Ok(new { mensaje = "datos cargados con exito" });
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> RevertirEstatusVisita(mdl_Revertir_Estatus_Visita mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Visitas_CRM datos = new AD_Visitas_CRM(CadenaConexion);
+            mdl.usuario = int.Parse(Sesion.usuario());
+            await datos.RevertirEstatus(mdl);
             return Ok(new { mensaje = "datos cargados con exito" });
         }
 

@@ -117,6 +117,8 @@ namespace HD.Clientes.Consultas.CRM.Cotizaciones
                 mdl.Detalle = result.Read<mdl_Cotizaciones_CRM_Folio_Detalle>().ToList();
                 mdl.caracteristicas = result.Read<mdl_Cotizaciones_CRM_Folio_Caracteristicas>().ToList();
                 mdl.permisos = result.Read<mdl_Permisos_CRM>().FirstOrDefault();
+                mdl.responsables_contacto = result.Read<mdl_Responsables_Contacto_Cotizaciones_CRM>()?.ToList();
+
 
                 factory.SQL.Close();
                 return mdl;
@@ -126,6 +128,27 @@ namespace HD.Clientes.Consultas.CRM.Cotizaciones
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
         }
+
+        public async Task<IEnumerable<mdl_Responsables_Contacto_Cotizaciones_CRM>> GetOpcionesContacto(int idcliente)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    idcliente
+                };
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                IEnumerable<mdl_Responsables_Contacto_Cotizaciones_CRM> result = await factory.SQL.QueryAsync<mdl_Responsables_Contacto_Cotizaciones_CRM>("CRM.Get_Responsables_Contacto_Cotizacion", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+
         // Genera el PDF de la cotización (mismo generador que usa ImprimirPDF)
         // y lo envía por correo, adjunto, a los destinatarios indicados.
         public async Task<bool> EnviarPorCorreo(string folio, string plantilla, int usuario, IEnumerable<string> destinatarios, string mensajeAdicional)

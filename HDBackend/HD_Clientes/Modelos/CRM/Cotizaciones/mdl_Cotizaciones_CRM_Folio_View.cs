@@ -19,5 +19,7 @@ namespace HD.Clientes.Modelos.CRM.Cotizaciones
         public IEnumerable<mdl_Cotizaciones_CRM_Folio_Caracteristicas> caracteristicas { get; set; }
 
         public mdl_Permisos_CRM permisos { get; set; }
+        public IEnumerable<mdl_Responsables_Contacto_Cotizaciones_CRM>? responsables_contacto { get; set; }
+
     }
 }
