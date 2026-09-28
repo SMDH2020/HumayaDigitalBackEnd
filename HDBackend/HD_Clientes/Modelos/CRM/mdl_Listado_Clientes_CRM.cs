@@ -15,5 +15,6 @@ namespace HD.Clientes.Modelos.CRM
         public string cp { get; set; }
         public int? idMunicipio { get; set; }
         public int? idEstado { get; set; }
+        public string? telefonos { get; set; }
     }
 }

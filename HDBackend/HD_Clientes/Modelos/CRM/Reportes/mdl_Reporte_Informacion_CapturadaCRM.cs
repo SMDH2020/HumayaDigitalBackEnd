@@ -19,5 +19,7 @@ namespace HD.Clientes.Modelos.CRM.Reportes
         public int? idsucursal { get; set; }
         public string sucursal { get; set; }
         public int validado { get; set; }
+        public string? fecha_validacion { get; set; }
+        public string? ultima_modificacion { get; set; }
     }
 }

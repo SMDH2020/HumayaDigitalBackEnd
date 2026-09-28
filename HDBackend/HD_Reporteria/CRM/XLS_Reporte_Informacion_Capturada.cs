@@ -13,6 +13,9 @@ namespace HD_Reporteria.CRM
 
         private static string TextoValidado(int v) => v == 1 ? "Sí" : "No";
 
+        private static string TextoFecha(string v) =>
+            DateTime.TryParse(v, out var fecha) ? fecha.ToString("dd/MM/yyyy") : "";
+
         public static Task<DocResult> GenerarExcel(IEnumerable<mdl_Reporte_Informacion_CapturadaCRM> detalle)
         {
             try
@@ -25,7 +28,7 @@ namespace HD_Reporteria.CRM
                     sheet.Style.Font.FontName = "Calibri";
                     sheet.Style.Font.FontSize = 10;
 
-                    int renglon = XLSEncabezado.Encabezado(ref sheet, "REPORTE DE INFORMACIÓN CAPTURADA - CRM", 7);
+                    int renglon = XLSEncabezado.Encabezado(ref sheet, "REPORTE DE INFORMACIÓN CAPTURADA - CRM", 9);
 
                     sheet.Cell(renglon, 1).Value = "ASESOR";
                     sheet.Cell(renglon, 2).Value = "RFC";
@@ -34,8 +37,11 @@ namespace HD_Reporteria.CRM
                     sheet.Cell(renglon, 5).Value = "ETIQUETA";
                     sheet.Cell(renglon, 6).Value = "SUCURSAL";
                     sheet.Cell(renglon, 7).Value = "VALIDADO";
+                    sheet.Cell(renglon, 8).Value = "FECHA DE VALIDACIÓN";
+                    sheet.Cell(renglon, 9).Value = "ULTIMA MODIFICACIÓN";
 
-                    var rango = sheet.Range(renglon, 1, renglon, 7);
+
+                    var rango = sheet.Range(renglon, 1, renglon, 9);
                     rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#EBECEE");
                     rango.Style.Font.Bold = true;
                     rango.Style.Font.FontSize = 12;
@@ -53,10 +59,12 @@ namespace HD_Reporteria.CRM
                         sheet.Cell(renglon, 5).Value = det.etiqueta_texto;
                         sheet.Cell(renglon, 6).Value = det.sucursal;
                         sheet.Cell(renglon, 7).Value = TextoValidado(det.validado);
+                        sheet.Cell(renglon, 8).Value = TextoFecha(det.fecha_validacion);
+                        sheet.Cell(renglon, 9).Value = TextoFecha(det.ultima_modificacion);
                         renglon++;
                     }
 
-                    sheet.Range(2, 4, renglon - 1, 7).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    sheet.Range(2, 4, renglon - 1, 9).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
 
                     sheet.Columns().AdjustToContents();
                     workbook.SaveAs(ruta);
