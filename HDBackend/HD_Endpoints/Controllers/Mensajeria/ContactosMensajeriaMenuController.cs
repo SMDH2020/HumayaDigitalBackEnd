@@ -1,0 +1,41 @@
+﻿using HD.Security;
+using HD_Cobranza.Modelos.AgregarContacto;
+using HD_Mensajeria.Consultas;
+using Microsoft.AspNetCore.Mvc;
+using Ventas.Consultas.CotizacionesVentas;
+
+namespace HD.Endpoints.Controllers.Mensajeria
+{
+    public class ContactosMensajeriaMenuController : MyBase
+    {
+        private readonly IConfiguration Configuracion;
+        private readonly ISesion Sesion;
+        public ContactosMensajeriaMenuController(IConfiguration configuration, ISesion sesion)
+        {
+            Configuracion = configuration;
+            Sesion = sesion;
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> obtenerContactos(string fechainicio, string fechafin, string adr, string sucursal, string plantilla)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Listado_Contactos_Mensajeria_Menu datos = new AD_Obtener_Listado_Contactos_Mensajeria_Menu(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.obtenerContactos(usuario, fechainicio, fechafin, adr, sucursal, plantilla);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerIndicadore(string fechainicio, string fechafin, string adr, string sucursal, string plantilla, string linea = "")
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Obtener_Listado_Contactos_Mensajeria_Menu datos = new AD_Obtener_Listado_Contactos_Mensajeria_Menu(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.obtenerIndicadores(fechainicio, fechafin, linea, adr, sucursal, plantilla);
+            return Ok(result);
+        }
+    }
+}

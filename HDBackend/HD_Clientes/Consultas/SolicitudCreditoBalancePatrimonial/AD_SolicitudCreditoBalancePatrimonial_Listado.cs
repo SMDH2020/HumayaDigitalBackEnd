@@ -11,17 +11,18 @@ namespace HD.Clientes.Consultas.SolicitudCreditoBalancePatrimonial
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<IEnumerable<mdlSolicitud_Credito_Balance_Patrimonial>> Listado(short filtrar)
+        public async Task<mdlSolicitud_Credito_Balance_Patrimonial> Listado(string folio)
         {
             try
             {
                 var parametros = new
                 {
-                    filtrar
+                    folio
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdlSolicitud_Credito_Balance_Patrimonial> result = await factory.SQL.QueryAsync<mdlSolicitud_Credito_Balance_Patrimonial>("Credito.sp_solicitud_credito_balance_patrimonial_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdlSolicitud_Credito_Balance_Patrimonial result = await factory.SQL.QueryFirstOrDefaultAsync<mdlSolicitud_Credito_Balance_Patrimonial>("Credito.sp_Solicitud_Credito_Balance_Patrimonial_obtener", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
+                if (result is null) result = new mdlSolicitud_Credito_Balance_Patrimonial();
                 return result;
             }
             catch (System.Exception ex)

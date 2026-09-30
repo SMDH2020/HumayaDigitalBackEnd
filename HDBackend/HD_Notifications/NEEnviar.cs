@@ -14,6 +14,7 @@ namespace HD.Notifications
                 client.Port = 587;
                 client.Host = "correo.humaya.com.mx";
                 client.Timeout = 10000;
+                client.EnableSsl = false;
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
                 client.UseDefaultCredentials = false;
                 client.Credentials = new System.Net.NetworkCredential(_correo, _password);

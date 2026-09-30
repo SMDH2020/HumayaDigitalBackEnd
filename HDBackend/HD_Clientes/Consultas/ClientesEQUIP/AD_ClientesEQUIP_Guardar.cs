@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using HD.AccesoDatos;
 using HD.Clientes.Modelos;
+using HD.Clientes.Modelos.CRM;
 
 namespace HD.Clientes.Consultas.ClientesEQUIP
 {
@@ -11,22 +12,42 @@ namespace HD.Clientes.Consultas.ClientesEQUIP
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<bool> Guardar(mdlClientes_EQUIP mdl)
+        public async Task<IEnumerable<mdlClientes_EQUIP>> Guardar(mdlClientes_EQUIP mdl)
         {
             try
             {
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var parametros = new
                 {
-                    idcliente_equip = mdl.idcliente_equip,
                     idcliente = mdl.idcliente,
                     idequip = mdl.idequip,
-                    estatus = mdl.estatus,
+                    idsucursal = mdl.sucursal,
                     usuario = mdl.usuario
                 };
-                await factory.SQL.QueryAsync("Credito.sp_clientes_equip_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result =await factory.SQL.QueryAsync< mdlClientes_EQUIP>("Credito.sp_Clientes_EQUIP_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
-                return true;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+
+        public async Task<IEnumerable<mdlClientes_EQUIP>> GuardarArray(mdl_Guarda_Equip_Array_CRM mdl)
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    idcliente = mdl.idcliente,
+                    equip = mdl.equip,
+                    usuario = mdl.usuario
+                };
+                var result = await factory.SQL.QueryAsync<mdlClientes_EQUIP>("Credito.sp_Clientes_EQUIP_Guardar_Array", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
             }
             catch (Exception ex)
             {

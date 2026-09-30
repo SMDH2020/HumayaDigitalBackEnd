@@ -27,7 +27,7 @@ namespace HD.Clientes.Consultas.ClientesDomicilio
             }
             catch (System.Exception ex)
             {
-                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { mensaje = ex.Message });
             }
         }
     }

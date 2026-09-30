@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Postventa.Modelos
+{
+    public class mdl_Dashboard_View
+    {
+        public mdl_Dashboard_Accesos? accesos { get; set; }
+        public IEnumerable<mdl_Dashboard_Proyecciones>? proyecciones { get; set; }
+        public IEnumerable<mdl_Dashboard_Servicio>? servicio { get; set; }
+        public IEnumerable<mdl_Dashboard_Refacciones>? refacciones { get; set; }
+        public mdl_Dashboard_Cotizaciones? cotizaciones { get; set; }
+        public IEnumerable<mdl_Dashboard_Vencimiento_Garantias>? vencimiento_garantias_temprana { get; set; }
+        public IEnumerable<mdl_Dashboard_Vencimiento_Garantias>? vencimiento_garantias_tardia { get; set; }
+        public IEnumerable<mdl_Dashboard_Vencimiento_Garantias>? vencimiento_garantias_checklist { get; set; }
+        public IEnumerable<mdl_Dashboard_Grafica_Garantia>? vencimiento_garantias_grafica { get; set; }
+        public mdl_Dashboard_Servicios_Pendientes? servicios_pendientes {  get; set; }
+        public mdl_Dashboard_Garantias? power_venta_temprana { get; set; }
+        public mdl_Dashboard_Garantias? power_venta_tardia { get; set; }
+        public mdl_Dashboard_Garantias? power_venta_checklist { get; set; }
+
+        //public string? columnas { get; set; }
+    }
+}

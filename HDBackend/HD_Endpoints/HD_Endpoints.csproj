@@ -1,23 +1,59 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>$(MSBuildProjectName.Replace("_", "."))</RootNamespace>
+    <UserSecretsId>21236b0a-37f5-46b4-a274-57b1560c177d</UserSecretsId>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
+    <PackageReference Include="CsvHelper" Version="32.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.21" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.22" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.19.1" />
+    <PackageReference Include="ModelContextProtocol.AspNetCore" Version="1.4.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.19.1" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CarteraTransito\CarteraTransito.csproj" />
+    <ProjectReference Include="..\HD_AccesoDatos\HD_AccesoDatos.csproj" />
+    <ProjectReference Include="..\HD_Administracion\HD_Administracion.csproj" />
+    <ProjectReference Include="..\HD_Auditoria\HD_Auditoria.csproj" />
+    <ProjectReference Include="..\HD_Buro\HD_Buro.csproj" />
+    <ProjectReference Include="..\HD_CentroMonitoreo\HD_CentroMonitoreo.csproj" />
     <ProjectReference Include="..\HD_Clientes\HD_Clientes.csproj" />
+    <ProjectReference Include="..\HD_Cobranza\HD_Cobranza.csproj" />
     <ProjectReference Include="..\HD_Dashboard\HD_Dashboard.csproj" />
+    <ProjectReference Include="..\HD_Finanzas\HD_Finanzas.csproj" />
+    <ProjectReference Include="..\HD_Fiscal\HD_Fiscal.csproj" />
     <ProjectReference Include="..\HD_Generales\HD_Generales.csproj" />
+    <ProjectReference Include="..\HD_GestionActividades\HD_GestionActividades.csproj" />
+    <ProjectReference Include="..\HD_GestionProyectosTI\HD_GestionProyectosTI.csproj" />
+    <ProjectReference Include="..\HD_Helpers\HD_Helpers.csproj" />
+    <ProjectReference Include="..\HD_Mensajeria\HD_Mensajeria.csproj" />
     <ProjectReference Include="..\HD_Notifications\HD_Notifications.csproj" />
+    <ProjectReference Include="..\HD_RedesSociales\HD_RedesSociales.csproj" />
+    <ProjectReference Include="..\HD_Reporteria\HD_Reporteria.csproj" />
+    <ProjectReference Include="..\HD_Security\HD_Security.csproj" />
+	<ProjectReference Include="..\HD_Ventas\HD_Ventas.csproj" />
+	<ProjectReference Include="..\Postventa\Postventa.csproj" />
+	<ProjectReference Include="..\ProductoAliado\ProductoAliado.csproj" />
+	<ProjectReference Include="..\Teletrabajo\Teletrabajo.csproj" />
+	<ProjectReference Include="..\Usados\Usados.csproj" />
+    <ProjectReference Include="..\Ventas\Ventas.csproj" />
+    <ProjectReference Include="..\Ventas\Ventas.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\Cobranza\RecuperacionCartera\" />
   </ItemGroup>
 
 </Project>

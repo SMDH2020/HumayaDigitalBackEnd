@@ -11,14 +11,14 @@ namespace HD.Clientes.Consultas.SolicitudCreditoSiniestros
         {
             CadenaConexion = _cadenaconexion;
         }
-        public async Task<mdlSolicitud_Credito_Siniestros> BuscarID(string folio)
+        public async Task<mdlSolicitud_Credito_Siniestros> BuscarID(short registro)
         {
             try
             {
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var parametros = new
                 {
-                    folio
+                    registro
                 };
                 mdlSolicitud_Credito_Siniestros result = await factory.SQL.QueryFirstOrDefaultAsync<mdlSolicitud_Credito_Siniestros>("Credito.sp_solicitud_credito_siniestros_obtenerporID", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
