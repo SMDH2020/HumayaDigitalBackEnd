@@ -31,12 +31,12 @@ namespace HD.Endpoints.Controllers.Authenticate
                 AD_Autenticacion datos = new AD_Autenticacion(CadenaConexion);
                 var result = await datos.Autenticar(mdl);
 
-                string? email = result.autenticacion?.email;
-                string? codigoautenticacion = result.autenticacion?.codigoautenticacion;
+                //string? email = result.autenticacion?.email;
+                //string? codigoautenticacion = result.autenticacion?.codigoautenticacion;
 
-                if (email == null) email= string.Empty;
-                if (codigoautenticacion == null) codigoautenticacion = string.Empty;
-                await NE_Auth_CodigoSeguridad.enviar(email , codigoautenticacion);
+                //if (email == null) email= string.Empty;
+                //if (codigoautenticacion == null) codigoautenticacion = string.Empty;
+                //await NE_Auth_CodigoSeguridad.enviar(email , codigoautenticacion);
 
                 string iussuer = Configuracion["Jwt:Issuer"];
                 string audience = Configuracion["Jwt:Audience"];
