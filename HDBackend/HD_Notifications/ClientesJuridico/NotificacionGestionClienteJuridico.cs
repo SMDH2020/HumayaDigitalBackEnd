@@ -1,9 +1,9 @@
 ﻿using HD.Clientes.Modelos.SC_Analisis;
+using HD.Notifications.Modelos;
 using HD_Cobranza.Modelos.Juridico;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,39 +14,27 @@ namespace HD.Notifications.ClientesJuridico
         public static string _Mensaje { get; private set; }
         //         public static void Enviar(string Correo, string _tipoSolicitud, string _folio, string _vendedor, string _cliente, string _linea, string
         //_monto)
-        public static Task<bool> Enviar(mdl_Clientes_Juridico_Correo datos_correo)
+        public static async Task<bool> Enviar(mdl_Correo_M365 config, mdl_Clientes_Juridico_Correo datos_correo)
         {
             try
             {
-                string password = "!HD_Hum4y4D1g1t4l*T1?";
-                string _correo = "HumayaDigital@humaya.com.mx";
-                MailMessage objeto_mail = new MailMessage();
-                SmtpClient client = new SmtpClient();
-                client.Port = 587;
-                client.Host = "correo.humaya.com.mx";
-                client.Timeout = 20000;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new System.Net.NetworkCredential(_correo, password);
-                objeto_mail.From = new MailAddress(_correo);
-                //foreach (mdlCorreo_Notificacion notificacion in datos_correo.notificacion)
-                //{
-                //    objeto_mail.To.Add(new MailAddress(notificacion.correo));
-                //}
-                //objeto_mail.To.Add(datos_correo.correo);
-                objeto_mail.To.Add("desarrolladorti@humaya.com.mx");
+                // Destinatarios: el/los correos del usuario indicado + copia de pruebas a desarrolladorti
+                var destinatarios = (datos_correo.correo ?? string.Empty)
+                    .Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                    .ToList();
+                destinatarios.Add("desarrolladorti@humaya.com.mx");
 
-                objeto_mail.Subject = "GESTION JURIDICA DE " + datos_correo.nombre_cliente;
-                objeto_mail.IsBodyHtml = true;
-                objeto_mail.Body = body(datos_correo);
-                client.EnableSsl = false;
-                client.Send(objeto_mail);
-                return Task.FromResult(true);
+                string[] para = destinatarios
+                    .Distinct(StringComparer.OrdinalIgnoreCase)
+                    .ToArray();
+
+                await NEEnviarM365.Enviar(config, "GESTION JURIDICA DE " + datos_correo.nombre_cliente, body(datos_correo), para);
+                return true;
             }
             catch (Exception ex)
             {
                 _Mensaje = ex.Message;
-                return Task.FromResult(false);
+                return false;
             }
 
         }

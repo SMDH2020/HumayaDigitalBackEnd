@@ -3,6 +3,7 @@ using HD.Clientes.Modelos;
 using HD.Clientes.Modelos.SC_Analisis;
 using HD.Notifications.Analisis;
 using HD.Notifications.Consultas;
+using HD.Notifications.Modelos;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
@@ -33,7 +34,8 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             {
                 ADAnalisisSolicitudNotificacion notificacion = new ADAnalisisSolicitudNotificacion(CadenaConexion);
                 var body = await notificacion.GetBody(mdl);
-                await NotificacionDocumentacion.Enviar(body,mdl.folio);
+                var configCorreo = Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>();
+                await NotificacionDocumentacion.Enviar(configCorreo, body, mdl.folio);
             }
 
             return Ok(result);
