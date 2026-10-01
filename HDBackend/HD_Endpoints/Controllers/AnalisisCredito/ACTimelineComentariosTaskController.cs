@@ -53,7 +53,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             {
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             }
-            if (result.mdldatos.noificar == true) await NotificacionComentarios.Enviar_Mhusa(result);
+            if (result.mdldatos.noificar == true) await NotificacionComentarios.Enviar_Mhusa(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), result);
             return Ok(new
             {
                 documentacion= result.documentacion,
@@ -80,7 +80,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             {
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             }
-            if (result.mdldatos.noificar == true) await NotificacionComentarios.Enviar_Mhusa(result);
+            if (result.mdldatos.noificar == true) await NotificacionComentarios.Enviar_Mhusa(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), result);
 
             var tipoSolictitud = mdl.folio.Substring(0, 2);
             var idevento = mdl.folio.Substring(0, 2) == "PC" ? 3 : 1;
@@ -140,7 +140,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             {
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             }
-            if (result.mdldatos.noificar == true) await NotificacionComentarios.Enviar_Mhusa(result);
+            if (result.mdldatos.noificar == true) await NotificacionComentarios.Enviar_Mhusa(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), result);
             if (result.mdldatos.noificar != true)
             {
                 // Crear un solo objeto mdlSolicitud con idusuario igual a 0
@@ -180,7 +180,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             {
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             }
-            if (result.mdldatos.noificar == true) await NotificacionComentarios.Enviar_Mhusa(result);
+            if (result.mdldatos.noificar == true) await NotificacionComentarios.Enviar_Mhusa(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), result);
             return Ok(new
             {
                 documentacion = result.documentacion,
@@ -205,7 +205,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             {
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             }
-            await NotificacionComentarios.Enviar_Mhusa(result);
+            await NotificacionComentarios.Enviar_Mhusa(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), result);
 
             //enviar notificacion
             var usuariosNotificados = string.Join(",", result.mdlSolicitud?.Select(u => u.idempleado.ToString()) ?? new List<string>());
@@ -242,7 +242,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             {
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             }
-            await NotificacionComentarios.Enviar_Mhusa(result);
+            await NotificacionComentarios.Enviar_Mhusa(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), result);
             //if (result.mdldatos.noificar != true)
             //{
             //    // Crear un solo objeto mdlSolicitud con idusuario igual a 0
@@ -314,7 +314,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             }
             if(result.completado.modificacion == 1 || result.completado.completado == 1)
             {
-                await NotificacionComentarios.EnviarModificacionDocumentosAprobadosCondicionado(result);
+                await NotificacionComentarios.EnviarModificacionDocumentosAprobadosCondicionado(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), result);
             }
             if (result.completado.completado == 0)
             {

@@ -1,5 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Office2016.Excel;
 using HD.Notifications.Analisis;
+using HD.Notifications.Modelos;
 using HD.Security;
 using HD_Auditoria.Consultas.Justificaciones;
 using HD_Auditoria.Consultas.Notificacion_Correo;
@@ -155,7 +156,7 @@ namespace HD.Endpoints.Controllers.Auditoria.Justificaciones
             AD_Justificacion_Auditoria_Enviar_Almacen datos = new AD_Justificacion_Auditoria_Enviar_Almacen(CadenaConexion);
             var result = await datos.Correos(mdl.folio);
 
-             await EnviarRevision.Enviar_Almacen( result, mdl.folio);
+             await EnviarRevision.Enviar_Almacen(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), result, mdl.folio);
 
             return Ok(true);
         }
@@ -168,7 +169,7 @@ namespace HD.Endpoints.Controllers.Auditoria.Justificaciones
             AD_Justificacion_Auditoria_Enviar_Auditor datos = new AD_Justificacion_Auditoria_Enviar_Auditor(CadenaConexion);
             var result = await datos.Correos(mdl.folio);
 
-             await EnviarRevision.Enviar_Auditor(result, mdl.folio);
+             await EnviarRevision.Enviar_Auditor(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), result, mdl.folio);
 
             return Ok(true);
         }
@@ -217,6 +218,7 @@ namespace HD.Endpoints.Controllers.Auditoria.Justificaciones
                 byte[] pdf = Convert.FromBase64String(rpt.documento);
 
                 await EnvioFinalizacionInventario.Enviar_Finalizacion(
+                    config: Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(),
                     datos_correo: result,          // mdl_Notificar_View con .correos
                     folio: mdl.folio,         // folio, fecha_limite_just, diferencias
                     pdfAdjunto: pdf,

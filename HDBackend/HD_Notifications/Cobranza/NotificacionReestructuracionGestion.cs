@@ -1,61 +1,89 @@
-﻿using HD.Clientes.Modelos;
+﻿using Dapper;
+using HD.AccesoDatos;
 using HD.Notifications.Modelos;
+using HD_Cobranza.GestionCobranza.Modelos;
 
-namespace HD.Notifications.Analisis
+namespace HD.Notifications.Cobranza
 {
-    public static class NSolicitud_Enviar
+    // Correo de reestructuracion de gestion de cobranza con el documento adjunto.
+    // Antes vivia en AD_Guarda_Gestion_Cobranza_Reestructuracion.enviarcorreo con SMTP
+    // (la llamada seguia comentada); se movio aqui porque HD_Cobranza no puede
+    // referenciar a HD_Notifications.
+    public static class NotificacionReestructuracionGestion
     {
-        public static string _Mensaje { get; private set; }
-        //         public static void Enviar(string Correo, string _tipoSolicitud, string _folio, string _vendedor, string _cliente, string _linea, string
-        //_monto)
-        public static async Task<bool> Enviar(mdl_Correo_M365 config, mdlSolicitudCredito_Enviar_View datos_correo)
+        public static async Task<string> Enviar(mdl_Correo_M365 config, string CadenaConexion, string _documento, int _idcliente, string comentarios)
         {
-
             try
             {
-                string[] para = (datos_correo.mdlSolicitud ?? Enumerable.Empty<mdlSolicitudCredito_Enviar>())
-                    .Where(x => !string.IsNullOrWhiteSpace(x.correo))
-                    .Select(x => x.correo!.Trim())
-                    .Distinct(StringComparer.OrdinalIgnoreCase)
-                    .ToArray();
+                if (_documento.Contains(","))
+                    _documento = _documento.Split(',')[1];
 
-                //objeto_mail.To.Add(new MailAddress("Guadalupeolivas@humaya.com.mx"));
-                //objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_gerente_sucursal));
-                //objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_vendedor));
-                //if (datos_correo.mdlSolicitud.correo_responsable_credito2 != null)
-                //{
-                //    objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_responsable_credito2));
-                //}
-                //if (datos_correo.mdlSolicitud.correo_responsable_credito3 != null)
-                //{
-                //    objeto_mail.To.Add(new MailAddress(datos_correo.mdlSolicitud.correo_responsable_credito3));
-                //}
+                _documento = _documento.Trim().Replace(" ", "+");
 
-                await NEEnviarM365.Enviar(config, "Nueva solicitud de credito", body(datos_correo), para);
-                return true;
+                byte[] fileBytes = Convert.FromBase64String(_documento);
+
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    @idcliente = _idcliente
+                };
+
+                var result = await factory.SQL.QueryAsync<mdl_Gestion_Cobranza_Reestructuracion>("GestionCobranza.sp_Get_ADR_Clientes", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+
+                List<string> para;
+
+                if (result != null)
+                {
+                    if (result.FirstOrDefault().ADR == 1)
+                    {
+                        //para = new List<string> { "desarrolladorti2@humaya.com.mx", "guadalupeolivas@humaya.com.mx" };
+                        para = new List<string> { "creditosinaloa@humaya.com.mx", "gerenciacobranza@humaya.com.mx", "cobranzasinaloa@humaya.com.mx", "martinzazueta@humaya.com.mx" };
+
+                    }
+                    else
+                    {
+                        //para = new List<string> { "desarrolladorti2@humaya.com.mx", "guadalupeolivas@humaya.com.mx" };
+                        para = new List<string> { "creditonayarit@humaya.com.mx", "gerenciacobranza@humaya.com.mx", "cobranzanayarit@humaya.com.mx", "martinzazueta@humaya.com.mx" };
+                    }
+                }
+                else
+                {
+                    return "Hubo un problema al obtener la región del cliente";
+                }
+
+
+                string cliente = result.FirstOrDefault().razon_social;
+                //List<string> para = new List<string>() { "desarrolladorti2@humaya.com.mx" };
+                string bodyhtml = body(cliente, comentarios);
+
+                var adjuntos = new List<mdl_Correo_Adjunto>
+                {
+                    new mdl_Correo_Adjunto
+                    {
+                        Nombre = "Reestructuracion.pdf",
+                        ContentType = "application/pdf",
+                        Contenido = fileBytes
+                    }
+                };
+
+                await NEEnviarM365.Enviar(config, $"Reestructuración del cliente {cliente}", bodyhtml, para.ToArray(), null, adjuntos);
+                return "Correo enviado con exito";
             }
-
             catch (Exception ex)
             {
-                _Mensaje = ex.Message;
-                return false;
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
             }
-
         }
 
-        static string body(mdlSolicitudCredito_Enviar_View datos_Correo)
-
+        static string body(string _cliente, string _comentarios)
         {
-
             byte[] logo = File.ReadAllBytes("C:\\SMDH\\logo.jpg");
-
             string logo64 = Convert.ToBase64String(logo);
-
             String sHtml;
-
             sHtml = "<HTML>\n" +
                "<HEAD>\n" +
-               "<TITLE>SOLICITUD DE CREDITO</TITLE>\n" +
+               "<TITLE>REESTRUCTURACIÓN</TITLE>\n" +
                "<style> \n" +
                 ".text-container{ \n" +
                     "margin-top:50px; \n" +
@@ -90,7 +118,7 @@ namespace HD.Notifications.Analisis
                 "</style>\n" +
                "</HEAD>\n" +
                "<BODY style=\"text-align:center;\"><P>\n" +
-                "<div>\n" +
+                "<div style=\"margin-bottom:20px;\">\n" +
                     "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" role=\"presentation\">\n" +
                         "<tr>\n" +
                             "<td width=\"10%\" style=\"padding: 0;\"> \n" +
@@ -119,7 +147,7 @@ namespace HD.Notifications.Analisis
                                     "<tr>\n" +
                                         "<td style=\"display: flex; align-items: center;font-size:24px;color:#fff; background-color: #477c2c;\" height=\"70\">\n" +
                                             "<div style=\"margin-left: 50px; \">\n" +
-                                                "SOLICITUD DE CREDITO \n" +
+                                                "REESTRUCTURACION \n" +
                                             "</div>\n" +
                                         "</td>\n" +
                                     "</tr>\n" +
@@ -127,54 +155,20 @@ namespace HD.Notifications.Analisis
                             "</td>\n" +
                         "</tr>\n" +
                     "</table>\n" +
-                "</div>\n"+
+                "</div>\n" +
+
             "<table class=\"tabla-documentacion-vencida\">\n" +
                 "<thead>\n" +
                     "<tr>\n" +
-                        "<th colspan=\"2\" class=\"celda-cliente-titulo\">\n" +
-                           "<div style=\"font-size:18px;\">" + datos_Correo.detail.tipo_credito + "</div>\n" +
+                        "<th class=\"celda-cliente-titulo\">\n" +
+                           "<div style=\"font-size:18px;\">" + "COMENTARIOS" + "</div>\n" +
                         "</th>\n" +
                     "</tr>\n" +
-                "</thead>\n"+
+                "</thead>\n" +
                "<tbody>\n" +
                     "<tr>\n" +
-                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d\">\n" +
-                        "FOLIO \n" +
-                        "</td>\n" +
-                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d;text-align:left;\">\n" +
-                        datos_Correo.detail.folio +
-                        "</td>\n" +
-                    "</tr>\n" +
-                    "<tr>\n" +
-                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d\">\n" +
-                        "VENDEDOR \n" +
-                        "</td>\n" +
-                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d;text-align:left\">\n" +
-                        datos_Correo.detail.vendedor.ToUpper() +
-                        "</td>\n" +
-                    "</tr>\n" +
-                    "<tr>\n" +
-                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d\">\n" +
-                        "CLIENTE \n" +
-                        "</td>\n" +
-                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d; text-align:left\">\n" +
-                        datos_Correo.detail.razon_social.ToUpper() +
-                        "</td>\n" +
-                    "</tr>\n" +
-                    "<tr>\n" +
-                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d\">\n" +
-                        "LINEA \n" +
-                        "</td>\n" +
-                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d;text-align:left\">\n" +
-                        datos_Correo.detail.linea_credito +
-                        "</td>\n" +
-                    "</tr>\n" +
-                    "<tr>\n" +
-                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d\">\n" +
-                        "MONTO \n" +
-                        "</td>\n" +
-                        "<td style=\"padding:4px;border-bottom:1px solid #afb69d;text-align:right\">\n" +
-                        datos_Correo.detail.importe.ToString("N2") +
+                        "<td style=\"padding:4px; text-align:justify;\">\n" +
+                            _comentarios +
                         "</td>\n" +
                     "</tr>\n" +
                "</tbody>\n" +
@@ -183,8 +177,6 @@ namespace HD.Notifications.Analisis
             "</HTML>";
 
             return sHtml;
-
         }
-
     }
 }

@@ -4,6 +4,7 @@ using HD.Clientes.Consultas.PedidoImpresion;
 using HD.Clientes.Consultas.SolicitudCreditoDocumento;
 using HD.Clientes.Modelos;
 using HD.Notifications.Analisis;
+using HD.Notifications.Modelos;
 using HD.Notifications.Consultas;
 using HD.Notifications.NotificacionesApp;
 using HD.Security;
@@ -351,7 +352,7 @@ namespace HD.Endpoints.Controllers.Credito
             }
             if (result.completado.completado == 1)
             {
-                await NotificacionComentarios.EnviarCargaDocumentosAprobadosCondicionado(result);
+                await NotificacionComentarios.EnviarCargaDocumentosAprobadosCondicionado(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), result);
             }
             if (result.completado.completado == 0)
             {
@@ -384,7 +385,7 @@ namespace HD.Endpoints.Controllers.Credito
 
             if (result.notificar.notificar == 1)
             {
-                await NotificacionComentarios.EnviarCargaDocumentosVendedor(result, mdl.folio);
+                await NotificacionComentarios.EnviarCargaDocumentosVendedor(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), result, mdl.folio);
 
                 //enviar notificacion
                 var usuariosNotificados = string.Join(",", result.mdlSolicitud?.Select(u => u.idempleado.ToString()) ?? new List<string>());

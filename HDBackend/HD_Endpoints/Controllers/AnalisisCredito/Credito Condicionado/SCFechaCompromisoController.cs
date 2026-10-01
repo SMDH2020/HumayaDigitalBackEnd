@@ -3,6 +3,7 @@ using HD.Clientes.Consultas.AnalisisCredito;
 using HD.Clientes.Consultas.Credito_Condicionado;
 using HD.Clientes.Modelos.SC_Analisis.Credito_Condicionados;
 using HD.Notifications.Analisis;
+using HD.Notifications.Modelos;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
 
@@ -59,7 +60,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Credito_Condicionado
             {
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             }
-            await NotificacionComentarios.EnviarOperacionCondicionada(result);
+            await NotificacionComentarios.EnviarOperacionCondicionada(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), result);
             return Ok(new { socket=result.mdlSolicitud});
 
         }

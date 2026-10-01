@@ -41,7 +41,8 @@ namespace HD.Notifications
         /// <param name="_body">Cuerpo en HTML.</param>
         /// <param name="para">Destinatarios.</param>
         /// <param name="copia">Destinatarios en copia. Opcional.</param>
-        public static async Task<string> Enviar(mdl_Correo_M365 config, string _asunto, string _body, string[] para, string[]? copia = null)
+        /// <param name="adjuntos">Archivos adjuntos o imagenes en linea (cid). Opcional. Graph limita el mensaje completo a ~4 MB en esta llamada.</param>
+        public static async Task<string> Enviar(mdl_Correo_M365 config, string _asunto, string _body, string[] para, string[]? copia = null, IEnumerable<mdl_Correo_Adjunto>? adjuntos = null)
         {
             try
             {
@@ -69,6 +70,25 @@ namespace HD.Notifications
                         ccRecipients = (copia ?? Array.Empty<string>())
                             .Where(x => !string.IsNullOrWhiteSpace(x))
                             .Select(x => new { emailAddress = new { address = x.Trim() } })
+                            .ToArray(),
+                        attachments = (adjuntos ?? Enumerable.Empty<mdl_Correo_Adjunto>())
+                            .Where(a => a != null && a.Contenido != null && a.Contenido.Length > 0)
+                            .Select(a =>
+                            {
+                                var adjunto = new Dictionary<string, object>
+                                {
+                                    { "@odata.type", "#microsoft.graph.fileAttachment" },
+                                    { "name", a.Nombre },
+                                    { "contentType", a.ContentType },
+                                    { "contentBytes", Convert.ToBase64String(a.Contenido) }
+                                };
+                                if (!string.IsNullOrWhiteSpace(a.ContentId))
+                                {
+                                    adjunto["isInline"] = true;
+                                    adjunto["contentId"] = a.ContentId!;
+                                }
+                                return adjunto;
+                            })
                             .ToArray()
                     },
                     saveToSentItems = config.GuardarEnEnviados

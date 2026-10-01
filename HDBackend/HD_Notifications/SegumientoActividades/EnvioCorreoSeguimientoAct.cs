@@ -1,23 +1,21 @@
-using System.Net.Mail;
-using System.Net.Mime;
+using HD.Notifications.Modelos;
 
 namespace HD.Notifications.SeguimientoActividades
 {
-    // Mecánica de envío (SMTP + logo embebido) compartida por
+    // Mecánica de envío (Microsoft Graph + logo en línea) compartida por
     // NotificacionSeguimientoAct y NotificacionSeguimientoActComentario --
-    // antes cada una traía su propio bloque de SmtpClient/MailMessage
+    // antes cada una traía su propio bloque de envío
     // casi idéntico.
     internal static class EnvioCorreoSeguimientoAct
     {
-        private const string Password = "!HD_Hum4y4D1g1t4l*T1?";
-        private const string CorreoOrigen = "HumayaDigital@humaya.com.mx";
         private const string RutaLogo = "C:\\SMDH\\logo.jpg";
 
-        public static async Task<bool> Enviar(string asunto, string html, List<string> destinatarios)
+        public static async Task<bool> Enviar(mdl_Correo_M365 config, string asunto, string html, List<string> destinatarios)
         {
             destinatarios = (destinatarios ?? new List<string>())
                 .Where(c => !string.IsNullOrWhiteSpace(c))
-                .Distinct()
+                .Select(c => c.Trim())
+                .Distinct(StringComparer.OrdinalIgnoreCase)
                 .ToList();
 
             if (destinatarios.Count == 0)
@@ -28,44 +26,20 @@ namespace HD.Notifications.SeguimientoActividades
 
             try
             {
-                bool incluirLogo = File.Exists(RutaLogo);
-
-                using var client = new SmtpClient
+                // El logo va como imagen en línea (cid:logoHumaya), igual que antes con LinkedResource.
+                var adjuntos = new List<mdl_Correo_Adjunto>();
+                if (File.Exists(RutaLogo))
                 {
-                    Port = 587,
-                    Host = "correo.humaya.com.mx",
-                    Timeout = 20000,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    Credentials = new System.Net.NetworkCredential(CorreoOrigen, Password),
-                    EnableSsl = false
-                };
-
-                using var mensaje = new MailMessage
-                {
-                    From = new MailAddress(CorreoOrigen),
-                    Subject = asunto,
-                    IsBodyHtml = true
-                };
-
-                foreach (var correo in destinatarios)
-                    mensaje.To.Add(new MailAddress(correo));
-
-                var vistaHtml = AlternateView.CreateAlternateViewFromString(html, null, "text/html");
-
-                if (incluirLogo)
-                {
-                    var logo = new LinkedResource(RutaLogo, "image/jpeg")
+                    adjuntos.Add(new mdl_Correo_Adjunto
                     {
-                        ContentId = "logoHumaya",
-                        TransferEncoding = TransferEncoding.Base64
-                    };
-                    vistaHtml.LinkedResources.Add(logo);
+                        Nombre = "logo.jpg",
+                        ContentType = "image/jpeg",
+                        Contenido = await File.ReadAllBytesAsync(RutaLogo),
+                        ContentId = "logoHumaya"
+                    });
                 }
 
-                mensaje.AlternateViews.Add(vistaHtml);
-
-                await client.SendMailAsync(mensaje);
+                await NEEnviarM365.Enviar(config, asunto, html, destinatarios.ToArray(), null, adjuntos);
                 return true;
             }
             catch (Exception ex)

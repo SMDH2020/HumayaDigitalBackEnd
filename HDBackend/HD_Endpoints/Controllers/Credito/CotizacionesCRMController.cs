@@ -2,6 +2,8 @@
 using HD.Clientes.Consultas.CRM.Reportes;
 using HD.Clientes.Modelos.CRM.Cotizaciones;
 using HD.Clientes.Reportes;
+using HD.Notifications.CRM;
+using HD.Notifications.Modelos;
 using HD.Security;
 using HD.Clientes.Consultas.SolicitudCreditoDocumento;
 using Microsoft.AspNetCore.Mvc;
@@ -144,7 +146,9 @@ namespace HD.Endpoints.Controllers.Credito
             AD_Cotizaciones_CRM datos = new AD_Cotizaciones_CRM(CadenaConexion);
             int usuario = int.Parse(Sesion.usuario());
 
-            await datos.EnviarPorCorreo(mdl.folio, mdl.plantilla, usuario, mdl.destinatarios, mdl.mensaje);
+            var vista = await datos.ObtenerPorFolio(mdl.folio, usuario);
+            var configCorreo = Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>();
+            await NotificacionCotizacionCRM.Enviar(configCorreo, vista, mdl.plantilla, mdl.destinatarios, mdl.mensaje);
 
             return Ok(new { enviado = true });
         }
