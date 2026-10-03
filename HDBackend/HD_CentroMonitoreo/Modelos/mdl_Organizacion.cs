@@ -10,5 +10,7 @@ namespace HD_CentroMonitoreo.Modelos
     {
         public string? jd_org_id { get; set; }
         public string? nombre { get; set; }
+        public int total_equipos { get; set; }
+
     }
 }
