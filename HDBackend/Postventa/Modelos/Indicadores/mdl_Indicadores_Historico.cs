@@ -6,17 +6,13 @@ using System.Threading.Tasks;
 
 namespace Postventa.Modelos.Indicadores
 {
-    public class mdl_Indicadores_Detalle
+    public class mdl_Indicadores_Historico
     {
-        public string Cliente { get; set; }
-        public string Telefono { get; set; }
-        public int? idresponsable { get; set; }
-        public string Responsable { get; set; }
-        public int? IDSucursal { get; set; }
-        public string Sucursal { get; set; }
+        public int Ejercicio { get; set; }
+        public int Periodo { get; set; }
+        public int MensajesEnviados { get; set; }
         public int FacturadosTotal { get; set; }
         public decimal MontoTotal { get; set; }
-        public int MensajesEnviados { get; set; }
         public int FacturadosMensajeria { get; set; }
         public decimal MontoMensajeria { get; set; }
     }

@@ -35,9 +35,11 @@ namespace Postventa.Consultas.Indicadores
                 var result = await factory.SQL.QueryMultipleAsync("Postventa.sp_indicadores_posventa", parametros, commandTimeout: 120, commandType: System.Data.CommandType.StoredProcedure);
                 var view = new mdl_Indicadores_Postventa_View();
                 view.Header = result.Read<mdl_Header_Indicadores>().FirstOrDefault();
-                view.TopMasFacturan = result.Read<mdl_Tops_Responsables_Indicadores>().ToList();
-                view.TopMenosFacturan = result.Read<mdl_Tops_Responsables_Indicadores>().ToList();
+                view.Desglose = result.Read<mdl_Desglose_Indicadores>().ToList();
+                //view.TopMenosFacturan = result.Read<mdl_Tops_Responsables_Indicadores>().ToList();
                 view.Detalle = result.Read<mdl_Indicadores_Detalle>().ToList();
+                view.Historico = result.Read<mdl_Indicadores_Historico>().ToList();
+
 
                 factory.SQL.Close();
                 return view;
