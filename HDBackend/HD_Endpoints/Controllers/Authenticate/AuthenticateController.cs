@@ -1,6 +1,7 @@
 ﻿using HD.Generales.Autenticate;
 using HD.Generales.Consultas;
 using HD.Notifications.Autentication;
+using HD.Notifications.Modelos;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,9 +35,16 @@ namespace HD.Endpoints.Controllers.Authenticate
                 //string? email = result.autenticacion?.email;
                 //string? codigoautenticacion = result.autenticacion?.codigoautenticacion;
 
-                //if (email == null) email= string.Empty;
-                //if (codigoautenticacion == null) codigoautenticacion = string.Empty;
-                //await NE_Auth_CodigoSeguridad.enviar(email , codigoautenticacion);
+                if (email == null) email = string.Empty;
+                if (codigoautenticacion == null) codigoautenticacion = string.Empty;
+
+                // ── Envio del codigo de autenticacion por Microsoft 365 ──
+                if (!string.IsNullOrWhiteSpace(email))
+                {
+                    var configCorreo = Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>();
+                    await NE_Auth_CodigoSeguridad.enviar(configCorreo, email, codigoautenticacion);
+                }
+
 
                 string iussuer = Configuracion["Jwt:Issuer"];
                 string audience = Configuracion["Jwt:Audience"];

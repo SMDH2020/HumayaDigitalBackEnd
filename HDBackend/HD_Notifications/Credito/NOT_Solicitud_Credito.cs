@@ -1,65 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
+﻿using HD.Notifications.Modelos;
 
-namespace HD.Clientes.Notificaciones
+namespace HD.Notifications.Credito
 {
+    // Antes vivia en HD_Clientes/Notificaciones con SMTP; se movio a HD_Notifications
+    // porque HD_Clientes no puede referenciar a HD_Notifications.
     public class NOT_Solicitud_Credito
     {
         public static string _Mensaje { get; private set; }
-        public static void Enviar(string Correo, string _tipoSolicitud, string _folio, string _vendedor, string _cliente, string _linea, string _monto)
-
+        public static async Task Enviar(mdl_Correo_M365 config, string Correo, string _tipoSolicitud, string _folio, string _vendedor, string _cliente, string _linea, string _monto)
         {
-
             try
-
             {
-
-                string password = "RC_2023?MH*";
-
-                MailMessage objeto_mail = new MailMessage();
-
-                SmtpClient client = new SmtpClient();
-
-                client.Port = 587;
-
-                client.Host = "correo.humaya.com.mx";
-
-                client.Timeout = 10000;
-
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-
-                client.UseDefaultCredentials = false;
-
-                client.Credentials = new System.Net.NetworkCredential("relojchecador@humaya.com.mx", password);
-
-                objeto_mail.From = new MailAddress("relojchecador@humaya.com.mx");
-
-                objeto_mail.To.Add(new MailAddress(Correo));
-
-                objeto_mail.Subject = "Nueva solicitud de credito";
-
-                objeto_mail.IsBodyHtml = true;
-
-                objeto_mail.Body = body( _tipoSolicitud,  _folio,  _vendedor,  _cliente,  _linea,  _monto);
-
-                client.EnableSsl = false;
-
-                client.Send(objeto_mail);
-
+                await NEEnviarM365.Enviar(config, "Nueva solicitud de credito", body(_tipoSolicitud, _folio, _vendedor, _cliente, _linea, _monto), new[] { Correo });
             }
-
             catch (Exception ex)
-
             {
-
                 _Mensaje = ex.Message;
-
             }
-
         }
 
         static string body(string _tipoSolicitud, string _folio, string _vendedor, string _cliente, string _linea, string _monto )

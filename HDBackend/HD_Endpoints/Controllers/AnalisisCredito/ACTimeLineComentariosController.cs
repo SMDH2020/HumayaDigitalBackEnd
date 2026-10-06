@@ -3,6 +3,7 @@ using HD.Clientes.Consultas.AnalisisCredito.JDF_Condicionado;
 using HD.Clientes.Modelos;
 using HD.Clientes.Modelos.SC_Analisis;
 using HD.Notifications.Analisis;
+using HD.Notifications.Modelos;
 using HD.Notifications.Consultas;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
@@ -38,7 +39,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             {
                 ADAnalisisNotificacionFacturacion notificacion = new ADAnalisisNotificacionFacturacion(CadenaConexion);
                 var body = await notificacion.GetBody(mdl);
-                await NotificacionComentarios.Enviar(body);
+                await NotificacionComentarios.Enviar(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), body);
                 var response = new mdlAnalisis_Mhusa_Resultado
                 {
                     estado = result.estado,
@@ -52,7 +53,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
                 {
                     return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
                 }
-                await NotificacionComentarios.Enviar_Mhusa(result);
+                await NotificacionComentarios.Enviar_Mhusa(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), result);
 
                 if (mdl.idproceso == 29 || mdl.idproceso == 38 || mdl.idproceso == 1520 )
                 {
@@ -110,7 +111,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             {
                 ADAnalisisNotificacionFacturacion notificacion = new ADAnalisisNotificacionFacturacion(CadenaConexion);
                 var body = await notificacion.GetBody(mdl);
-                await NotificacionComentarios.Enviar(body);
+                await NotificacionComentarios.Enviar(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), body);
                 var response = new mdlAnalisis_Mhusa_Resultado
                 {
                     estado = result.estado,
@@ -124,7 +125,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
                 {
                     return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
                 }
-                await NotificacionComentarios.Enviar_Mhusa(result);
+                await NotificacionComentarios.Enviar_Mhusa(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), result);
 
                 //enviar notificacion
                 var usuariosNotificados = string.Join(",", result.mdlSolicitud?.Select(u => u.idempleado.ToString()) ?? new List<string>());
@@ -166,7 +167,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             }
 
-            await NotificacionComentarios.Enviar_Mhusa(result);
+            await NotificacionComentarios.Enviar_Mhusa(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), result);
             return Ok(new
                 {
                     estado = result.estado,
@@ -193,7 +194,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
                 {
                     return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
                 }
-                await NotificacionComentarios.Enviar_Mhusa(result);
+                await NotificacionComentarios.Enviar_Mhusa(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), result);
                 return Ok(new
                 {
                     estado = result.estado,
@@ -223,7 +224,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             {
                 ADAnalisisNotificacionFacturacion notificacion = new ADAnalisisNotificacionFacturacion(CadenaConexion);
                 var body = await notificacion.GetBody(mdl);
-                await NotificacionComentarios.Enviar(body);
+                await NotificacionComentarios.Enviar(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), body);
                 var response = new mdlAnalisis_Mhusa_Resultado
                 {
                     estado = result.estado,
@@ -237,7 +238,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
                 {
                     return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
                 }
-                await NotificacionComentarios.Enviar_Mhusa(result);
+                await NotificacionComentarios.Enviar_Mhusa(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), result);
 
 
                 if (mdl.idproceso == 35 || mdl.idproceso == 1100 || mdl.idproceso == 1010|| mdl.idproceso == 1150)
@@ -299,7 +300,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             {
                 ADAnalisisNotificacionFacturacion notificacion = new ADAnalisisNotificacionFacturacion(CadenaConexion);
                 var body = await notificacion.GetBodyPrecalificacion(mdl);
-                await NotificacionComentarios.Enviar(body);
+                await NotificacionComentarios.Enviar(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), body);
                 var response = new mdlAnalisis_Mhusa_Resultado
                 {
                     estado = result.estado,
@@ -313,7 +314,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
                 {
                     return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
                 }
-                await NotificacionComentarios.Enviar_Mhusa(result);
+                await NotificacionComentarios.Enviar_Mhusa(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), result);
 
                 var response = new mdlAnalisis_Mhusa_Resultado
                 {

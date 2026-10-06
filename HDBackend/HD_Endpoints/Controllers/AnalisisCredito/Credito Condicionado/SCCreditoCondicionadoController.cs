@@ -4,6 +4,7 @@ using HD.Clientes.Modelos.SC_Analisis;
 using HD.Clientes.Modelos;
 using HD.Clientes.Modelos.SC_Analisis.Credito_Condicionados;
 using HD.Notifications.Analisis;
+using HD.Notifications.Modelos;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
 using HD.Notifications.Consultas;
@@ -88,7 +89,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Credito_Condicionado
             }
             else
             {
-                await NotificacionComentarios.Enviar_Mhusa(result);
+                await NotificacionComentarios.Enviar_Mhusa(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), result);
 
                 //enviar notificacion
                 var usuariosNotificados = string.Join(",", result.mdlSolicitud.Select(u => u.idempleado.ToString()) ?? new List<string>());
@@ -126,7 +127,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Credito_Condicionado
             }
             else
             {
-                await NotificacionComentarios.Enviar_Mhusa(result);
+                await NotificacionComentarios.Enviar_Mhusa(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), result);
 
             }
             var response = new mdlAnalisis_Mhusa_Resultado

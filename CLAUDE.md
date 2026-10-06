@@ -292,3 +292,9 @@ return Task.FromResult(new DocResult { documento = Convert.ToBase64String(docbyt
 - Cuando falte información para decidir (formato de un campo, si una columna la
   devuelve el SP), **plantear la duda antes de generar**, no adivinar.
 - Marcar explícitamente cualquier suposición que se haya hecho al entregar.
+
+## Envío de correos (Microsoft 365)
+- Todo correo sale por `HD.Notifications.NEEnviarM365.Enviar(config, asunto, bodyHtml, para[], copia?, adjuntos?)` (Microsoft Graph, config en appsettings sección `CorreoM365`). NO usar SmtpClient/MailMessage ni `NEEnviar` (SMTP viejo, deprecado).
+- El controller lee la config: `Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>()` y se la pasa a la clase de notificación como primer parámetro.
+- Adjuntos e imágenes en línea (`cid:`) con `mdl_Correo_Adjunto` (ContentId = imagen en línea). Límite ~4 MB por mensaje.
+- Las clases que envían viven en `HD_Notifications` (o en un proyecto que lo referencie: Auditoria, Generales). HD_Clientes y HD_Cobranza NO pueden referenciarlo (dependencia circular): el AD solo regresa datos y el envío se hace desde el controller con una clase de HD_Notifications.

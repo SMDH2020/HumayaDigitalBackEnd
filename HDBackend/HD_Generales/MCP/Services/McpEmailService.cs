@@ -1,32 +1,23 @@
 ﻿using HD.Generales.MCP.Config;
-using System.Net;
-using System.Net.Mail;
+using HD.Notifications;
+using HD.Notifications.Modelos;
 
 namespace HD.Generales.MCP.Services
 {
     public class McpEmailService
     {
         private readonly McpAuthConfig _config;
+        private readonly mdl_Correo_M365 _correo;
 
-        public McpEmailService(McpAuthConfig config)
+        public McpEmailService(McpAuthConfig config, mdl_Correo_M365 correo)
         {
             _config = config;
+            _correo = correo;
         }
 
-        public void EnviarCodigoMfa(string emailDestino, string nombre, string codigo)
+        public async Task EnviarCodigoMfa(string emailDestino, string nombre, string codigo)
         {
-            using var smtp = new SmtpClient(_config.SmtpHost, _config.SmtpPuerto)
-            {
-                Credentials = new NetworkCredential(_config.SmtpUsuario, _config.SmtpPassword),
-                EnableSsl = true
-            };
-
-            var msg = new MailMessage
-            {
-                From = new MailAddress(_config.EmailRemitente, "Humaya Digital"),
-                Subject = "Tu código de verificación MCP",
-                IsBodyHtml = true,
-                Body = $@"
+            string cuerpo = $@"
                 <div style='font-family:Arial;max-width:400px;margin:auto;padding:30px'>
                     <h2 style='color:#367C2B'>Humaya Digital – MCP</h2>
                     <p>Hola <strong>{nombre}</strong>,</p>
@@ -40,11 +31,9 @@ namespace HD.Generales.MCP.Services
                         Expira en <strong>10 minutos</strong>.<br>
                         Si no solicitaste este acceso, ignora este correo.
                     </p>
-                </div>"
-            };
+                </div>";
 
-            msg.To.Add(emailDestino);
-            smtp.Send(msg);
+            await NEEnviarM365.Enviar(_correo, "Tu código de verificación MCP", cuerpo, new[] { emailDestino });
         }
     }
 }
