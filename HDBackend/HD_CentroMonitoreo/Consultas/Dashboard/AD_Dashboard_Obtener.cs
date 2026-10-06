@@ -60,6 +60,8 @@ namespace HD_CentroMonitoreo.Consultas.Dashboard
                 List<mdl_Dashboard_Sucursal> sucursales;
                 List<mdl_Dashboard_Atencion_Fila> atencion;
                 List<mdl_Organizacion> top;
+                List<mdl_Dashboard_Flota_Conectada> flota_conectada;
+
 
                 using (var multi = await factory.SQL.QueryMultipleAsync("HumayaDigital_Eventos.csc.sp_CentroMonitoreo_Dashboard", parametros, commandType: System.Data.CommandType.StoredProcedure))
                 {
@@ -71,6 +73,7 @@ namespace HD_CentroMonitoreo.Consultas.Dashboard
                     sucursales = (await multi.ReadAsync<mdl_Dashboard_Sucursal>()).ToList();
                     atencion = (await multi.ReadAsync<mdl_Dashboard_Atencion_Fila>()).ToList();
                     top = (await multi.ReadAsync<mdl_Organizacion>()).ToList();
+                    flota_conectada = (await multi.ReadAsync<mdl_Dashboard_Flota_Conectada>()).ToList();
                 }
 
                 factory.SQL.Close();
@@ -129,6 +132,25 @@ namespace HD_CentroMonitoreo.Consultas.Dashboard
                         equipos_completos=tecnologias.equipos_completos,
                         sucursales = sucursales
                     },
+                    flota_conectada = flota_conectada
+                        .Select(f => new mdl_Dashboard_Flota_Conectada_API
+                        {
+                            jd_org_id = f.jd_org_id,
+                            organizacion = f.organizacion,
+                            sucursal = f.sucursal,
+                            es_flota_propia = f.es_flota_propia,
+                            total_equipos = f.total_equipos,
+                            equipos_conectados = f.equipos_conectados,
+                            equipos_completos = f.equipos_completos,
+                            datos_reportados = new mdl_Dashboard_DatosReportados
+                            {
+                                horometro = f.horometro,
+                                combustible = f.combustible,
+                                ubicacion = f.ubicacion,
+                                alertas = f.alertas
+                            }
+                        })
+                        .ToList(),
                     atencion_requerida = ArmarAtencion(atencion),
                     organizaciones_mas_equipos = top.OrderByDescending(o => o.total_equipos).ToList(),
                     fecha_actualizacion = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")
