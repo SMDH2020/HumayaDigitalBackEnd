@@ -27,10 +27,10 @@ namespace HD.Endpoints.Controllers.Authenticate
                 AD_UsuarioSesion datos = new AD_UsuarioSesion(CadenaConexion);
                 var result = await datos.UsuarioSesion(Login);
 
-                if (result.modulos.Count() == 0 || result.menus.Count() == 0)
-                {
-                    return BadRequest(new { mensaje = "No cuenta con permisos para acceder a la aplicación, favor de comunicarse con el administrador del sistema" });
-                }
+                //if (result.modulos.Count() == 0 || result.menus.Count() == 0)
+                //{
+                //    return BadRequest(new { mensaje = "No cuenta con permisos para acceder a la aplicación, favor de comunicarse con el administrador del sistema" });
+                //}
                 string iussuer = Configuracion["Jwt:Issuer"];
                 string audience = Configuracion["Jwt:Audience"];
                 string securitytkey = Configuracion["Jwt:Login"];

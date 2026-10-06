@@ -24,6 +24,8 @@ namespace HD_Cobranza.Modelos.CondonacionIntereses
         public int? idautoriza { get; set; }
         public string? autoriza { get; set; }
         public string? Comentarios { get; set; }
+        public int idregla { get; set; }
+        public string? regla { get; set; }
         public int idcreador { get; set; }
         public string? creador { get; set; }
         public DateTime createdate { get; set; }
