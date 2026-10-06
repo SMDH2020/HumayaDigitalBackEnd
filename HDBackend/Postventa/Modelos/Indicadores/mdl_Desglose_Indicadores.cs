@@ -6,17 +6,20 @@ using System.Threading.Tasks;
 
 namespace Postventa.Modelos.Indicadores
 {
-    public class mdl_Header_Indicadores
+    public class mdl_Desglose_Indicadores
     {
-        // Mensajes (cuadran con el tablero de mensajeria, solo posventa)
+        public string Grupo { get; set; }
+        public string Clave { get; set; }
+        public string Seccion { get; set; }
+
+        // Mensajes (suman igual que el header)
         public int enviados { get; set; }
         public int entregados { get; set; }
-        public decimal? pct_entregados { get; set; }
         public int leidos { get; set; }
         public int con_error { get; set; }
         public int numero_erroneo { get; set; }
 
-        // Interacciones (cuadran con el tablero de mensajeria, solo posventa)
+        // Interacciones (suman igual que el header)
         public int interacciones { get; set; }
         public int interesados { get; set; }
         public int no_interesados { get; set; }
@@ -33,10 +36,5 @@ namespace Postventa.Modelos.Indicadores
         public decimal? pct_facturados_con_mensaje { get; set; }
         public decimal? pct_monto_con_mensaje { get; set; }
 
-        // De los leidos, cuantos terminaron facturados
-        public int folios_leidos { get; set; }
-        public int leidos_facturados { get; set; }
-        public decimal monto_leidos_facturados { get; set; }
-        public decimal? pct_leidos_facturados { get; set; }
     }
 }
