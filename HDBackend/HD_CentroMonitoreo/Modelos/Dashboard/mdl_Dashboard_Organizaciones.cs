@@ -8,6 +8,9 @@
         public int total_equipos { get; set; }
         public int tractores { get; set; }
         public mdl_Dashboard_DatosReportados datos_reportados { get; set; } = new mdl_Dashboard_DatosReportados();
+        public mdl_Dashboard_DatosReportados datos_reportados_organizaciones { get; set; } = new mdl_Dashboard_DatosReportados();
+        public int equipos_completos { get; set; }
+
         public List<mdl_Dashboard_Sucursal> sucursales { get; set; } = new List<mdl_Dashboard_Sucursal>();
     }
 }

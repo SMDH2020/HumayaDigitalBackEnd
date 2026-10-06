@@ -119,6 +119,14 @@ namespace HD_CentroMonitoreo.Consultas.Dashboard
                             combustible = tecnologias.combustible,
                             alertas = tecnologias.alertas
                         },
+                        datos_reportados_organizaciones = new mdl_Dashboard_DatosReportados
+                        {
+                            horometro = tecnologias.organizaciones_horometro,
+                            ubicacion = tecnologias.organizaciones_ubicacion,
+                            combustible = tecnologias.organizaciones_combustible,
+                            alertas = tecnologias.organizaciones_alertas
+                        },
+                        equipos_completos=tecnologias.equipos_completos,
                         sucursales = sucursales
                     },
                     atencion_requerida = ArmarAtencion(atencion),
