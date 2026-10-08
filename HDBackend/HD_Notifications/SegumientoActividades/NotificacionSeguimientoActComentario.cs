@@ -1,3 +1,5 @@
+using HD.Notifications.Modelos;
+
 namespace HD.Notifications.SeguimientoActividades
 {
     // Correo de "nuevo comentario" del módulo de Seguimiento de
@@ -12,7 +14,7 @@ namespace HD.Notifications.SeguimientoActividades
         // paraCreador: true si el destinatario es quien levantó el ticket
         // (comentó el responsable), false si son los responsables de la
         // sala (comentó el creador) -- solo cambia el texto del título.
-        public static Task<bool> Enviar(mdlSeguimiento_Email datos, List<string> destinatarios, bool paraCreador = true)
+        public static Task<bool> Enviar(mdl_Correo_M365 config, mdlSeguimiento_Email datos, List<string> destinatarios, bool paraCreador = true)
         {
             var datosCorreo = new DatosCorreoSeguimientoAct
             {
@@ -30,7 +32,7 @@ namespace HD.Notifications.SeguimientoActividades
 
             string html = PlantillaCorreoSeguimientoAct.Renderizar(datosCorreo, EnvioCorreoSeguimientoAct.LogoDisponible());
 
-            return EnvioCorreoSeguimientoAct.Enviar(asunto, html, destinatarios);
+            return EnvioCorreoSeguimientoAct.Enviar(config, asunto, html, destinatarios);
         }
     }
 }

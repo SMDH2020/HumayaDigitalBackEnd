@@ -1,9 +1,10 @@
 ﻿using HD_Auditoria.Modelos.Justificaciones;
 using HD_Auditoria.Modelos.Programar_Inventario;
+using HD.Notifications;
+using HD.Notifications.Modelos;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net.Mail;
 using System.Threading.Tasks;
 
 namespace HD_Auditoria.Consultas.Notificacion_Correo
@@ -16,7 +17,8 @@ namespace HD_Auditoria.Consultas.Notificacion_Correo
         /// <param name="folio">Datos del inventario (folio, fecha_limite_just, diferencias)</param>
         /// <param name="pdfAdjunto">Bytes del PDF generado previamente (null = sin adjunto)</param>
         /// <param name="nombreArchivoPdf">Nombre que tendrá el archivo en el correo</param>
-        public static Task<bool> Enviar_Finalizacion(
+        public static async Task<bool> Enviar_Finalizacion(
+            mdl_Correo_M365 config,
             mdl_Notificar_Finalizacion_View datos_correo,
             string? folio,
             byte[] pdfAdjunto = null,
@@ -24,58 +26,42 @@ namespace HD_Auditoria.Consultas.Notificacion_Correo
         {
             try
             {
-                string password = "!HD_Hum4y4D1g1t4l*T1?";
-                string _correo = "HumayaDigital@humaya.com.mx";
-
-                MailMessage objeto_mail = new MailMessage();
-                SmtpClient client = new SmtpClient
-                {
-                    Port = 587,
-                    Host = "correo.humaya.com.mx",
-                    Timeout = 20000,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    Credentials = new System.Net.NetworkCredential(_correo, password),
-                    EnableSsl = false
-                };
-
-                objeto_mail.From = new MailAddress(_correo);
-
                 // ── Destinatarios desde la lista de correos ──────────────────
-                foreach (mdl_Notificar_Correo notificacion in datos_correo.correos)
-                {
-                    objeto_mail.To.Add(new MailAddress(notificacion.Correo));
-                }
+                string[] para = datos_correo.correos
+                    .Select(n => n.Correo)
+                    .Where(c => !string.IsNullOrWhiteSpace(c))
+                    .Select(c => c!.Trim())
+                    .Distinct(StringComparer.OrdinalIgnoreCase)
+                    .ToArray();
                 //objeto_mail.To.Add("desarrolladorti@humaya.com.mx");
                 //objeto_mail.To.Add("guadalupeolivas@humaya.com.mx");
 
-
                 // ── Asunto ───────────────────────────────────────────────────
-                objeto_mail.Subject = $"Inventario {folio} — Finalizado";
+                string asunto = $"Inventario {folio} — Finalizado";
 
                 // ── Cuerpo ───────────────────────────────────────────────────
-                objeto_mail.IsBodyHtml = true;
-                objeto_mail.Body = BodyFinalizacion(folio);
+                string cuerpo = BodyFinalizacion(folio);
 
                 // ── Adjunto PDF ──────────────────────────────────────────────
+                var adjuntos = new List<mdl_Correo_Adjunto>();
                 if (pdfAdjunto != null && pdfAdjunto.Length > 0)
                 {
-                    var stream = new MemoryStream(pdfAdjunto);
-                    var attachment = new Attachment(stream, nombreArchivoPdf, "application/pdf");
-                    objeto_mail.Attachments.Add(attachment);
+                    adjuntos.Add(new mdl_Correo_Adjunto
+                    {
+                        Nombre = nombreArchivoPdf,
+                        ContentType = "application/pdf",
+                        Contenido = pdfAdjunto
+                    });
                 }
 
-                client.Send(objeto_mail);
+                await NEEnviarM365.Enviar(config, asunto, cuerpo, para, null, adjuntos);
 
-                // Liberar adjuntos después de enviar
-                objeto_mail.Attachments.Dispose();
-
-                return Task.FromResult(true);
+                return true;
             }
             catch (Exception ex)
             {
                 _Mensaje = ex.Message;
-                return Task.FromResult(false);
+                return false;
             }
         }
 

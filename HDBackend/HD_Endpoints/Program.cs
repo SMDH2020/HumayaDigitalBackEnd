@@ -78,6 +78,7 @@ builder.Services.AddScoped<ISesion, Sesion>();
 // ── MCP: servicios de autenticación exclusivos (independientes del JWT de la API) ──
 var mcpConfig = builder.Configuration.GetSection("McpAuth").Get<McpAuthConfig>();
 builder.Services.AddSingleton(mcpConfig);
+builder.Services.AddSingleton(builder.Configuration.GetSection("CorreoM365").Get<HD.Notifications.Modelos.mdl_Correo_M365>()!);
 builder.Services.AddScoped<McpDataService>();
 builder.Services.AddScoped<McpEmailService>();
 builder.Services.AddScoped<McpJwtService>();
