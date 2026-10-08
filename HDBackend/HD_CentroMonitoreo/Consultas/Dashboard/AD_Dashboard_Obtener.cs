@@ -152,7 +152,14 @@ namespace HD_CentroMonitoreo.Consultas.Dashboard
                         })
                         .ToList(),
                     atencion_requerida = ArmarAtencion(atencion),
-                    organizaciones_mas_equipos = top.OrderByDescending(o => o.total_equipos).ToList(),
+                    organizaciones_mensajes_leidos = top.Select(m => new mdl_Organizacion
+                    {
+                        jd_org_id = m.jd_org_id,
+                        nombre = m.nombre,
+                        mensajes_generados = m.mensajes_generados,
+                        mensajes_entregados = m.mensajes_entregados,
+                        mensajes_leidos = m.mensajes_leidos
+                    }).ToList(),
                     fecha_actualizacion = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")
                 };
 

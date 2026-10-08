@@ -7,7 +7,7 @@
         public mdl_Dashboard_Mensajeria mensajeria { get; set; } = new mdl_Dashboard_Mensajeria();
         public mdl_Dashboard_Organizaciones organizaciones { get; set; } = new mdl_Dashboard_Organizaciones();
         public List<mdl_Dashboard_Atencion> atencion_requerida { get; set; } = new List<mdl_Dashboard_Atencion>();
-        public List<mdl_Organizacion> organizaciones_mas_equipos { get; set; } = new List<mdl_Organizacion>();
+        public List<mdl_Organizacion> organizaciones_mensajes_leidos { get; set; } = new List<mdl_Organizacion>();
         public List<mdl_Dashboard_Flota_Conectada_API> flota_conectada { get; set; } = new List<mdl_Dashboard_Flota_Conectada_API>();
 
 
