@@ -38,5 +38,6 @@ namespace Postventa.Modelos.Indicadores
         public int leidos_facturados { get; set; }
         public decimal monto_leidos_facturados { get; set; }
         public decimal? pct_leidos_facturados { get; set; }
+        public decimal? total_posventa { get; set; }
     }
 }
