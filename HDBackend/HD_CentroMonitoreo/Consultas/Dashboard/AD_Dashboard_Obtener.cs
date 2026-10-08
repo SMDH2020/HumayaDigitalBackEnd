@@ -204,6 +204,7 @@ namespace HD_CentroMonitoreo.Consultas.Dashboard
                     titulo = f.titulo,
                     descripcion = f.descripcion,
                     jd_org_id = string.IsNullOrWhiteSpace(f.jd_org_id) ? null : f.jd_org_id,
+                    maquina_id = f.maquina_id,
                     fecha_evento=f.fecha_evento
                 })
                 .OrderBy(a => Rango(a.prioridad))

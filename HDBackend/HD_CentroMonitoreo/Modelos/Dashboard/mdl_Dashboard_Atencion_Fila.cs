@@ -10,6 +10,8 @@
         public string? titulo { get; set; }
         public string? descripcion { get; set; }
         public string? jd_org_id { get; set; }
+        public int maquina_id { get; set; }
+
         public DateTime fecha_evento { get; set; }
 
     }
