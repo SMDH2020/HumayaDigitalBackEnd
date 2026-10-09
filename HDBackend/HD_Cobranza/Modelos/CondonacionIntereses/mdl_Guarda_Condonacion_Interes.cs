@@ -19,6 +19,8 @@ namespace HD_Cobranza.Modelos.CondonacionIntereses
         public double Imoratorio_porcentaje { get; set; }
         public double Imoratorio_descuento { get; set; }
         public double Imoratorio_pagado { get; set; }
+        public int idreglaa_aplicada { get; set; }
+
         public string? Comentarios { get; set; }
         public string facturas { get; set; }
 
