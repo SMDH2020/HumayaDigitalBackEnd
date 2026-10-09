@@ -56,7 +56,7 @@ namespace HD_Cobranza.Reportes
                     foreach (var mdl in linea)
                     {
                         sheet.Cell(renglon, 1).Value = mdl.Key;
-                        rango = sheet.Range(renglon, 1, renglon, 18);
+                        rango = sheet.Range(renglon, 1, renglon, 13);
                         rango.Style.Fill.BackgroundColor = XLColor.FromArgb(218, 230, 190);
                         rango.Style.Font.Bold = true;
                         rango.Style.Font.FontSize = 10;
@@ -101,7 +101,7 @@ namespace HD_Cobranza.Reportes
                     sheet.Cell(renglon, 12).FormulaA1 = $"SUBTOTAL(9,L5:L{renglon - 1})";
                     sheet.Cell(renglon, 13).FormulaA1 = $"=L{renglon}/C{renglon}";
 
-                    rango = sheet.Range(renglon, 1, renglon , 18);
+                    rango = sheet.Range(renglon, 1, renglon , 13);
                     rango.Style.Font.Bold = true;
                     rango.Style.Fill.BackgroundColor = XLColor.FromHtml("#e5e6e6");
 

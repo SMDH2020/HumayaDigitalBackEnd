@@ -10,10 +10,10 @@ namespace Postventa.Modelos.Indicadores
     {
         public int Ejercicio { get; set; }
         public int Periodo { get; set; }
-        public int MensajesEnviados { get; set; }
-        public int FacturadosTotal { get; set; }
         public decimal MontoTotal { get; set; }
-        public int FacturadosMensajeria { get; set; }
         public decimal MontoMensajeria { get; set; }
+        public decimal MontoRefacciones { get; set; }
+        public decimal MontoServicio { get; set; }
+
     }
 }
