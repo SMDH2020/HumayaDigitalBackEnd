@@ -17,13 +17,14 @@ namespace HD_Mensajeria.Consultas
             CadenaConexion = _cadenaconexion;
         }
 
-        public async Task<IEnumerable<mdl_Obtener_Chat_Mensajes>> obtenerChat(string numeroTelefono)
+        public async Task<IEnumerable<mdl_Obtener_Chat_Mensajes>> obtenerChat(string numeroTelefono, string? seccion)
         {
             try
             {
                 var parametros = new
                 {
-                    numeroTelefono = numeroTelefono
+                    numeroTelefono = numeroTelefono,
+                    seccion = seccion
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdl_Obtener_Chat_Mensajes> result = await factory.SQL.QueryAsync<mdl_Obtener_Chat_Mensajes>("HD_Mensajeria.dbo.sp_Obtener_Chat_Mensajes", parametros, commandType: System.Data.CommandType.StoredProcedure);
