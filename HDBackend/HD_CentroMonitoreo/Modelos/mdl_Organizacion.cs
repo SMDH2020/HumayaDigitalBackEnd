@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HD_CentroMonitoreo.Modelos
+{
+    public class mdl_Organizacion
+    {
+        public string? jd_org_id { get; set; }
+        public string? nombre { get; set; }
+        public int mensajes_generados { get; set; }
+        public int mensajes_entregados { get; set; }
+        public int mensajes_leidos { get; set; }
+
+    }
+}

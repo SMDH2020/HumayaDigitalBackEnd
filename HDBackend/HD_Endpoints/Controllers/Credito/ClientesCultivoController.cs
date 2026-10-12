@@ -35,6 +35,18 @@ namespace HD.Endpoints.Controllers.Credito
             return Ok(result);
 
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> CancelaCultivo(int idcliente, int registro)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_ClientesCultivo_Listado datos = new AD_ClientesCultivo_Listado(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.Cancela_Cultivo(idcliente, registro, usuario);
+            return Ok(result);
+
+        }
         [HttpGet]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> Listado(int idcliente)

@@ -21,9 +21,20 @@ namespace HD.Endpoints.Controllers.Credito
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_ClientesDatosContacto_Guardar datos = new AD_ClientesDatosContacto_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
-           var result= await datos.Guardar(mdl);
+            var result= await datos.Guardar(mdl);
             return Ok(new { mensaje = "datos cargados con exito",listado=result });
+        }
 
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarArray(mdlClientes_Datos_Contacto_Array mdl)
+        {
+
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_ClientesDatosContacto_Guardar datos = new AD_ClientesDatosContacto_Guardar(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.GuardarArray(mdl);
+            return Ok(new { mensaje = "datos cargados con exito", listado = result });
         }
 
         [HttpGet]
@@ -33,6 +44,16 @@ namespace HD.Endpoints.Controllers.Credito
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_ClientesDatosContacto_Listado datos = new AD_ClientesDatosContacto_Listado(CadenaConexion);
             var result = await datos.Listado(idcliente);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ListadoContactosRegistrados(int idcliente, string mediocontacto)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_ClientesDatosContacto_Listado datos = new AD_ClientesDatosContacto_Listado(CadenaConexion);
+            var result = await datos.GetDatosRegistrados(idcliente, mediocontacto);
             return Ok(result);
         }
 

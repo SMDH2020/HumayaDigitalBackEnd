@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HD.Clientes.Modelos.CRM
+{
+    public class mdl_Listado_Clientes_CRM
+    {
+        public int idcliente { get; set; }
+        public string rfc { get; set; }
+        public string razon_social { get; set; }
+        public int? idLocalidad { get; set; }
+        public string cp { get; set; }
+        public int? idMunicipio { get; set; }
+        public int? idEstado { get; set; }
+        public string? telefonos { get; set; }
+    }
+}
