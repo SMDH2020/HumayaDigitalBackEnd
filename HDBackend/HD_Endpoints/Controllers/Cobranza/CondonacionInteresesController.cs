@@ -1,5 +1,6 @@
 ﻿using HD.Notifications;
 using HD.Notifications.Modelos;
+using HD.Notifications.Cobranza;
 using HD.Security;
 using HD_Cobranza.Capturas.CondonacionIntereses;
 using HD_Cobranza.Capturas.ConvenioPago;
@@ -126,17 +127,14 @@ namespace HD.Endpoints.Controllers.Cobranza
 
                 try
                 {
-                    string smtpHost = "correo.humaya.com.mx";
-                    int smtpPort = 587;
-                    bool smtpSecure = false;
-                    string smtpUser = "HumayaDigital@humaya.com.mx";
-                    string smtpPass = "!HD_Hum4y4D1g1t4l*T1?";
+                    var vistaCondonacion = await datos.ObtenerCondonacionPorFolio(condonacion.Folio);
 
-                    await datos.EnviarCorreoCondonacion(
+                    await NotificacionCondonacionIntereses.Enviar(
+                        Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(),
+                        vistaCondonacion?.condonacion,
                         condonacion.Folio,
                         "solicitud",
-                        condonacion.correos_notificar,
-                        smtpHost, smtpPort, smtpSecure, smtpUser, smtpPass);
+                        condonacion.correos_notificar);
                 }
                 catch (System.Exception ex)
                 {
@@ -230,19 +228,16 @@ namespace HD.Endpoints.Controllers.Cobranza
 
                 try
                 {
-                    string smtpHost = "correo.humaya.com.mx";
-                    int smtpPort = 587;
-                    bool smtpSecure = false;
-                    string smtpUser = "HumayaDigital@humaya.com.mx";
-                    string smtpPass = "!HD_Hum4y4D1g1t4l*T1?";
-
                     string tipoEvento = autorizacion.Estatus == "A" ? "aprobada" : "rechazada";
 
-                    await datos.EnviarCorreoCondonacion(
+                    var vistaCondonacion = await datos.ObtenerCondonacionPorFolio(autorizacion.Folio!);
+
+                    await NotificacionCondonacionIntereses.Enviar(
+                        Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(),
+                        vistaCondonacion?.condonacion,
                         autorizacion.Folio!,
                         tipoEvento,
-                        autorizacion.correo_creador,
-                        smtpHost, smtpPort, smtpSecure, smtpUser, smtpPass);
+                        autorizacion.correo_creador);
                 }
                 catch (System.Exception ex)
                 {

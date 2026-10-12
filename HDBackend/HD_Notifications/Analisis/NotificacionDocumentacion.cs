@@ -1,9 +1,9 @@
 ﻿using HD.Clientes.Modelos.SC_Analisis;
 using HD.Clientes.Modelos.SC_Analisis.Modal;
+using HD.Notifications.Modelos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,23 +15,11 @@ namespace HD.Notifications.Analisis
         public static string _Mensaje { get; private set; }
         //         public static void Enviar(string Correo, string _tipoSolicitud, string _folio, string _vendedor, string _cliente, string _linea, string
         //_monto)
-        public static Task<bool> Enviar(mdlSC_Analisis_Credito datos_correo,string folio)
+        public static async Task<bool> Enviar(mdl_Correo_M365 config, mdlSC_Analisis_Credito datos_correo, string folio)
         {
 
             try
             {
-                string password = "!HD_Hum4y4D1g1t4l*T1?";
-                string _correo = "HumayaDigital@humaya.com.mx";
-                MailMessage objeto_mail = new MailMessage();
-                SmtpClient client = new SmtpClient();
-                client.Port = 587;
-                client.Host = "correo.humaya.com.mx";
-                client.Timeout = 20000;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new System.Net.NetworkCredential(_correo, password);
-                objeto_mail.From = new MailAddress(_correo);
-
                 //objeto_mail.To.Add(new MailAddress(datos_correo.email.correo_responsable_credito));
                 //if (datos_correo.email.correo_responsable_credito2 != null)
                 //{
@@ -44,26 +32,23 @@ namespace HD.Notifications.Analisis
                 //objeto_mail.To.Add(new MailAddress(datos_correo.email.correo_gerente_sucursal));
                 //objeto_mail.To.Add(new MailAddress(datos_correo.email.correo_vendedor));
 
-                foreach (mdlCorreo_Notificacion notificacion in datos_correo.email)
-                {
-                    objeto_mail.To.Add(new MailAddress(notificacion.correo));
-                }
+                string[] para = (datos_correo.email ?? Enumerable.Empty<mdlCorreo_Notificacion>())
+                    .Where(n => !string.IsNullOrWhiteSpace(n.correo))
+                    .Select(n => n.correo!.Trim())
+                    .Distinct(StringComparer.OrdinalIgnoreCase)
+                    .ToArray();
 
                 //objeto_mail.To.Add(new MailAddress("desarrolladorti@humaya.com.mx"));
                 //objeto_mail.To.Add(new MailAddress("desarrolladorti2@humaya.com.mx"));
 
-                objeto_mail.Subject = "VALIDACION DE DOCUMENTOS: " + folio;
-                objeto_mail.IsBodyHtml = true;
-                objeto_mail.Body = body(datos_correo);
-                client.EnableSsl = false;
-                client.Send(objeto_mail);
-                return Task.FromResult(true);
+                await NEEnviarM365.Enviar(config, "VALIDACION DE DOCUMENTOS: " + folio, body(datos_correo), para);
+                return true;
             }
 
             catch (Exception ex)
             {
                 _Mensaje = ex.Message;
-                return Task.FromResult(false);
+                return false;
             }
 
         }

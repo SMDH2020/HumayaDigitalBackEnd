@@ -39,7 +39,7 @@ namespace HD.Endpoints.Controllers.MCP
 
         // ── POST: Usuario envía email + contraseña
         [HttpPost("login_authorize")]
-        public ContentResult AutenticarCredenciales([FromForm] string email,
+        public async Task<ContentResult> AutenticarCredenciales([FromForm] string email,
                                                     [FromForm] string password,
                                                     [FromForm] string redirect_uri,
                                                     [FromForm] string state)
@@ -54,7 +54,7 @@ namespace HD.Endpoints.Controllers.MCP
             var codigo = new Random().Next(100000, 999999).ToString();
             _data.GuardarMfaCodigo(codigoId, usuario.McpUsuarioId, codigo, redirect_uri, state);
 
-            _email.EnviarCodigoMfa(usuario.Email, usuario.Nombre, codigo);
+            await _email.EnviarCodigoMfa(usuario.Email, usuario.Nombre, codigo);
 
             return Content(MfaHtml(codigoId.ToString(), error: null, baseUrl: baseUrl), "text/html");
         }

@@ -59,13 +59,18 @@ namespace HD_Cobranza.Reportes
                         sheet.Cell(renglon, 10).Value = activos.importe;
                         renglon++;
                     }
-                    sheet.Cell(renglon, 8).FormulaA1 = $"SUBTOTAL(9,G5:G{renglon - 1})";
-                    sheet.Cell(renglon, 9).FormulaA1 = $"SUBTOTAL(9,H5:H{renglon - 1})";
-                    sheet.Cell(renglon, 10).FormulaA1 = $"SUBTOTAL(9,I5:I{renglon - 1})";
+                    sheet.Cell(renglon, 7).Value = "TOTALES: ";
+                    sheet.Cell(renglon, 8).FormulaA1 = $"SUBTOTAL(9,H5:H{renglon - 1})";
+                    sheet.Cell(renglon, 9).FormulaA1 = $"SUBTOTAL(9,I5:I{renglon - 1})";
+                    sheet.Cell(renglon, 10).FormulaA1 = $"SUBTOTAL(9,J5:J{renglon - 1})";
 
                     sheet.Column(8).Style.NumberFormat.Format = "#,##0.00";
                     sheet.Column(9).Style.NumberFormat.Format = "#,##0.00";
                     sheet.Column(10).Style.NumberFormat.Format = "#,##0.00";
+
+                    var rangoTotales = sheet.Range(renglon, 7, renglon, 10);
+                    rangoTotales.Style.Fill.BackgroundColor = XLColor.LightGray;
+                    rangoTotales.Style.Font.Bold = true;
 
                     sheet.Columns().AdjustToContents();
                     workbook.SaveAs(ruta);

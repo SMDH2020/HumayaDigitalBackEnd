@@ -1,10 +1,10 @@
 ﻿using HD.Clientes.Modelos;
 using HD.Clientes.Modelos.SC_Analisis;
 using HD.Clientes.Modelos.SC_Analisis.Credito_Condicionados;
+using HD.Notifications.Modelos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,189 +13,139 @@ namespace HD.Notifications.Analisis
     public class NotificacionComentarios
     {
         public static string _Mensaje { get; private set; }
+
+        // Limpia vacios y repetidos antes de mandar a Microsoft Graph.
+        private static string[] Destinatarios(IEnumerable<string?> correos)
+        {
+            return correos
+                .Where(c => !string.IsNullOrWhiteSpace(c))
+                .Select(c => c!.Trim())
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToArray();
+        }
         //         public static void Enviar(string Correo, string _tipoSolicitud, string _folio, string _vendedor, string _cliente, string _linea, string
         //_monto)
-        public static Task<bool> Enviar(mdlAnalisis_Email_View datos_correo)
+        public static async Task<bool> Enviar(mdl_Correo_M365 config, mdlAnalisis_Email_View datos_correo)
         {
             try
             {
-                string password = "!HD_Hum4y4D1g1t4l*T1?";
-                string _correo = "HumayaDigital@humaya.com.mx";
-                MailMessage objeto_mail = new MailMessage();
-                SmtpClient client = new SmtpClient();
-                client.Port = 587;
-                client.Host = "correo.humaya.com.mx";
-                client.Timeout = 20000;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new System.Net.NetworkCredential(_correo, password);
-                objeto_mail.From = new MailAddress(_correo);
+                var para = new List<string?>();
                 //foreach (mdlCorreo_Notificacion notificacion in datos_correo.notificacion)
                 //{
                 //    objeto_mail.To.Add(new MailAddress(notificacion.correo));
                 //}
-                objeto_mail.To.Add(datos_correo.detalle.correo_gerente_sucursal);
-                objeto_mail.To.Add(datos_correo.detalle.correo_vendedor);
-                objeto_mail.To.Add(datos_correo.detalle.correo_responsable_credito);
+                para.Add(datos_correo.detalle.correo_gerente_sucursal);
+                para.Add(datos_correo.detalle.correo_vendedor);
+                para.Add(datos_correo.detalle.correo_responsable_credito);
                 //objeto_mail.To.Add(datos_correo.detalle.correo_responsable_credito2);
                 //objeto_mail.To.Add(datos_correo.detalle.correo_responsable_credito3);
 
-                objeto_mail.Subject = datos_correo.detalle.asunto + datos_correo.detalle.proceso;
-                objeto_mail.IsBodyHtml = true;
-                objeto_mail.Body = body(datos_correo);
-                client.EnableSsl = false;
-                client.Send(objeto_mail);
-                return Task.FromResult(true);
+                string asunto = datos_correo.detalle.asunto + datos_correo.detalle.proceso;
+                string cuerpo = body(datos_correo);
+                await NEEnviarM365.Enviar(config, asunto, cuerpo, Destinatarios(para));
+                return true;
             }
             catch (Exception ex)
             {
                 _Mensaje = ex.Message;
-                return Task.FromResult(false);
+                return false;
             }
 
         }
 
 
-        public static Task<bool> Enviar_Mhusa (mdlAnalisis_Mhusa datos_correo)
+        public static async Task<bool> Enviar_Mhusa(mdl_Correo_M365 config, mdlAnalisis_Mhusa datos_correo)
         {
             try
             {
-                string password = "!HD_Hum4y4D1g1t4l*T1?";
-                string _correo = "HumayaDigital@humaya.com.mx";
-                MailMessage objeto_mail = new MailMessage();
-                SmtpClient client = new SmtpClient();
-                client.Port = 587;
-                client.Host = "correo.humaya.com.mx";
-                client.Timeout = 20000;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new System.Net.NetworkCredential(_correo, password);
-                objeto_mail.From = new MailAddress(_correo);
+                var para = new List<string?>();
                 foreach (mdlSolicitudCredito_Enviar notificacion in datos_correo.mdlSolicitud)
                 {
-                    objeto_mail.To.Add(new MailAddress(notificacion.correo));
+                    para.Add(notificacion.correo);
                 }
 
                 //objeto_mail.To.Add("desarrolladorti@humaya.com.mx");
 
-                objeto_mail.Subject = datos_correo.mdldatos.asunto;
-                objeto_mail.IsBodyHtml = true;
-                objeto_mail.Body = bodyMhusa(datos_correo);
-                client.EnableSsl = false;
-                client.Send(objeto_mail);
-                return Task.FromResult(true);
+                string asunto = datos_correo.mdldatos.asunto;
+                string cuerpo = bodyMhusa(datos_correo);
+                await NEEnviarM365.Enviar(config, asunto, cuerpo, Destinatarios(para));
+                return true;
             }
             catch (Exception ex)
             {
                 _Mensaje = ex.Message;
-                return Task.FromResult(false);
+                return false;
             }
 
         }
-        public static Task<bool> EnviarProcesoFinalizado(IEnumerable <mdlCorreo_Notificacion> datos_correo, string folio)
+        public static async Task<bool> EnviarProcesoFinalizado(mdl_Correo_M365 config, IEnumerable <mdlCorreo_Notificacion> datos_correo, string folio)
         {
             try
             {
-                string password = "!HD_Hum4y4D1g1t4l*T1?";
-                string _correo = "HumayaDigital@humaya.com.mx";
-                MailMessage objeto_mail = new MailMessage();
-                SmtpClient client = new SmtpClient();
-                client.Port = 587;
-                client.Host = "correo.humaya.com.mx";
-                client.Timeout = 20000;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new System.Net.NetworkCredential(_correo, password);
-                objeto_mail.From = new MailAddress(_correo);
+                var para = new List<string?>();
                 foreach (mdlCorreo_Notificacion notificacion in datos_correo)
                 {
-                    objeto_mail.To.Add(new MailAddress(notificacion.correo));
+                    para.Add(notificacion.correo);
                 }
-                objeto_mail.Subject = "SOLICITUD: " + folio;
-                objeto_mail.IsBodyHtml = true;
-                objeto_mail.Body = body(folio);
-                client.EnableSsl = false;
-                client.Send(objeto_mail);
-                return Task.FromResult(true);
+                string asunto = "SOLICITUD: " + folio;
+                string cuerpo = body(folio);
+                await NEEnviarM365.Enviar(config, asunto, cuerpo, Destinatarios(para));
+                return true;
             }
             catch (Exception ex)
             {
                 _Mensaje = ex.Message;
-                return Task.FromResult(false);
+                return false;
             }
 
         }
 
-        public static Task<bool> EnviarOperacionCondicionada(mdlSC_Credito_Condicionado datos_correo)
+        public static async Task<bool> EnviarOperacionCondicionada(mdl_Correo_M365 config, mdlSC_Credito_Condicionado datos_correo)
         {
             try
             {
-                string password = "!HD_Hum4y4D1g1t4l*T1?";
-                string _correo = "HumayaDigital@humaya.com.mx";
-                MailMessage objeto_mail = new MailMessage();
-                SmtpClient client = new SmtpClient();
-                client.Port = 587;
-                client.Host = "correo.humaya.com.mx";
-                client.Timeout = 20000;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new System.Net.NetworkCredential(_correo, password);
-                objeto_mail.From = new MailAddress(_correo);
+                var para = new List<string?>();
                 foreach (mdlSolicitudCredito_Enviar notificacion in datos_correo.mdlSolicitud)
                 {
-                    objeto_mail.To.Add(new MailAddress(notificacion.correo));
+                    para.Add(notificacion.correo);
                 }
 
                 //objeto_mail.To.Add("desarrolladorti@humaya.com.mx");
 
-                objeto_mail.Subject = datos_correo.mdldatos.asunto;
-                objeto_mail.IsBodyHtml = true;
-                objeto_mail.Body = bodyCondicionado(datos_correo);
-                client.EnableSsl = false;
-                client.Send(objeto_mail);
-                return Task.FromResult(true);
+                string asunto = datos_correo.mdldatos.asunto;
+                string cuerpo = bodyCondicionado(datos_correo);
+                await NEEnviarM365.Enviar(config, asunto, cuerpo, Destinatarios(para));
+                return true;
             }
             catch (Exception ex)
             {
                 _Mensaje = ex.Message;
-                return Task.FromResult(false);
+                return false;
             }
 
         }
 
-        public static Task<bool> EnviarNotificacionOperacionCondicionada(mdl_Notificacion_Correo_Solicitud_Condicionada_View datos_correo)
+        public static async Task<bool> EnviarNotificacionOperacionCondicionada(mdl_Correo_M365 config, mdl_Notificacion_Correo_Solicitud_Condicionada_View datos_correo)
         {
             try
             {
-                string password = "!HD_Hum4y4D1g1t4l*T1?";
-                string _correo = "HumayaDigital@humaya.com.mx";
-                MailMessage objeto_mail = new MailMessage();
-                SmtpClient client = new SmtpClient();
-                client.Port = 587;
-                client.Host = "correo.humaya.com.mx";
-                client.Timeout = 20000;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new System.Net.NetworkCredential(_correo, password);
-                objeto_mail.From = new MailAddress(_correo);
+                var para = new List<string?>();
                 foreach (mdlSolicitudCredito_Enviar notificacion in datos_correo.mdlSolicitud)
                 {
-                    objeto_mail.To.Add(new MailAddress(notificacion.correo));
+                    para.Add(notificacion.correo);
                 }
 
                 //objeto_mail.To.Add("desarrolladorti@humaya.com.mx");
 
-                objeto_mail.Subject = datos_correo.mdldatos.asunto;
-                objeto_mail.IsBodyHtml = true;
-                objeto_mail.Body = bodyNotificacionCondicionado(datos_correo);
-                client.EnableSsl = false;
-                client.Send(objeto_mail);
-                return Task.FromResult(true);
+                string asunto = datos_correo.mdldatos.asunto;
+                string cuerpo = bodyNotificacionCondicionado(datos_correo);
+                await NEEnviarM365.Enviar(config, asunto, cuerpo, Destinatarios(para));
+                return true;
             }
             catch (Exception ex)
             {
                 _Mensaje = ex.Message;
-                return Task.FromResult(false);
+                return false;
             }
 
         }
@@ -317,76 +267,54 @@ namespace HD.Notifications.Analisis
         }
 
 
-        public static Task<bool> EnviarNotificacionFacturacion(mdlAnalisis_Email_Facturacion datos_correo)
+        public static async Task<bool> EnviarNotificacionFacturacion(mdl_Correo_M365 config, mdlAnalisis_Email_Facturacion datos_correo)
         {
 
             try
             {
-                string password = "!HD_Hum4y4D1g1t4l*T1?";
-                string _correo = "HumayaDigital@humaya.com.mx";
-                MailMessage objeto_mail = new MailMessage();
-                SmtpClient client = new SmtpClient();
-                client.Port = 587;
-                client.Host = "correo.humaya.com.mx";
-                client.Timeout = 20000;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new System.Net.NetworkCredential(_correo, password);
-                objeto_mail.From = new MailAddress(_correo);
+                var para = new List<string?>();
 
-                objeto_mail.To.Add(new MailAddress(datos_correo.correo_responsable_credito));
+                para.Add(datos_correo.correo_responsable_credito);
                 if (datos_correo.correo_responsable_credito2 != null)
                 {
-                    objeto_mail.To.Add(new MailAddress(datos_correo.correo_responsable_credito2));
+                    para.Add(datos_correo.correo_responsable_credito2);
                 }
                 if (datos_correo.correo_responsable_credito3 != null)
                 {
-                    objeto_mail.To.Add(new MailAddress(datos_correo.correo_responsable_credito3));
+                    para.Add(datos_correo.correo_responsable_credito3);
                 }
-                objeto_mail.To.Add(new MailAddress(datos_correo.correo_gerente_sucursal));
-                objeto_mail.To.Add(new MailAddress(datos_correo.correo_vendedor));
+                para.Add(datos_correo.correo_gerente_sucursal);
+                para.Add(datos_correo.correo_vendedor);
                 if (datos_correo.correo_responsable_cajera != null)
                 {
-                    objeto_mail.To.Add(new MailAddress(datos_correo.correo_responsable_cajera));
+                    para.Add(datos_correo.correo_responsable_cajera);
                 }
 
                 //objeto_mail.To.Add(new MailAddress("desarrolladorti@humaya.com.mx"));
                 //objeto_mail.To.Add(new MailAddress("desarrolladorti2@humaya.com.mx"));
 
-                objeto_mail.Subject = datos_correo.asunto + datos_correo.proceso;
-                objeto_mail.IsBodyHtml = true;
-                objeto_mail.Body = body(datos_correo);
-                client.EnableSsl = false;
-                client.Send(objeto_mail);
-                return Task.FromResult(true);
+                string asunto = datos_correo.asunto + datos_correo.proceso;
+                string cuerpo = body(datos_correo);
+                await NEEnviarM365.Enviar(config, asunto, cuerpo, Destinatarios(para));
+                return true;
             }
 
             catch (Exception ex)
             {
                 _Mensaje = ex.Message;
-                return Task.FromResult(false);
+                return false;
             }
 
         }
 
-        public static Task<bool> EnviarModificacionDocumentosAprobadosCondicionado(mdl_Analisis_Documentacion_Aceptada_Condicionado_View datos_correo)
+        public static async Task<bool> EnviarModificacionDocumentosAprobadosCondicionado(mdl_Correo_M365 config, mdl_Analisis_Documentacion_Aceptada_Condicionado_View datos_correo)
         {
             try
             {
-                string password = "!HD_Hum4y4D1g1t4l*T1?";
-                string _correo = "HumayaDigital@humaya.com.mx";
-                MailMessage objeto_mail = new MailMessage();
-                SmtpClient client = new SmtpClient();
-                client.Port = 587;
-                client.Host = "correo.humaya.com.mx";
-                client.Timeout = 20000;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new System.Net.NetworkCredential(_correo, password);
-                objeto_mail.From = new MailAddress(_correo);
+                var para = new List<string?>();
                 foreach (mdlSolicitudCredito_Enviar notificacion in datos_correo.mdlSolicitud)
                 {
-                    objeto_mail.To.Add(new MailAddress(notificacion.correo));
+                    para.Add(notificacion.correo);
                 }
                 //objeto_mail.To.Add("desarrolladorti@humaya.com.mx");
                 //objeto_mail.To.Add(datos_correo.detalle.correo_vendedor);
@@ -394,39 +322,27 @@ namespace HD.Notifications.Analisis
                 //objeto_mail.To.Add(datos_correo.detalle.correo_responsable_credito2);
                 //objeto_mail.To.Add(datos_correo.detalle.correo_responsable_credito3);
 
-                objeto_mail.Subject = datos_correo.mdldatos.asunto + ' ' + datos_correo.mdldatos.folio;
-                objeto_mail.IsBodyHtml = true;
-                objeto_mail.Body = bodyAnalisisDocumentacionAceptadaCondicionado(datos_correo.mdldatos);
-                client.EnableSsl = false;
-                client.Send(objeto_mail);
-                return Task.FromResult(true);
+                string asunto = datos_correo.mdldatos.asunto + ' ' + datos_correo.mdldatos.folio;
+                string cuerpo = bodyAnalisisDocumentacionAceptadaCondicionado(datos_correo.mdldatos);
+                await NEEnviarM365.Enviar(config, asunto, cuerpo, Destinatarios(para));
+                return true;
             }
             catch (Exception ex)
             {
                 _Mensaje = ex.Message;
-                return Task.FromResult(false);
+                return false;
             }
 
         }
 
-        public static Task<bool> EnviarCargaDocumentosAprobadosCondicionado(mdl_Cargar_Documentacion_Aceptada_Condicionado_View datos_correo)
+        public static async Task<bool> EnviarCargaDocumentosAprobadosCondicionado(mdl_Correo_M365 config, mdl_Cargar_Documentacion_Aceptada_Condicionado_View datos_correo)
         {
             try
             {
-                string password = "!HD_Hum4y4D1g1t4l*T1?";
-                string _correo = "HumayaDigital@humaya.com.mx";
-                MailMessage objeto_mail = new MailMessage();
-                SmtpClient client = new SmtpClient();
-                client.Port = 587;
-                client.Host = "correo.humaya.com.mx";
-                client.Timeout = 20000;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new System.Net.NetworkCredential(_correo, password);
-                objeto_mail.From = new MailAddress(_correo);
+                var para = new List<string?>();
                 foreach (mdlSolicitudCredito_Enviar notificacion in datos_correo.mdlSolicitud)
                 {
-                    objeto_mail.To.Add(new MailAddress(notificacion.correo));
+                    para.Add(notificacion.correo);
                 }
                 //objeto_mail.To.Add("desarrolladorti@humaya.com.mx");
                 //objeto_mail.To.Add(datos_correo.detalle.correo_vendedor);
@@ -434,39 +350,27 @@ namespace HD.Notifications.Analisis
                 //objeto_mail.To.Add(datos_correo.detalle.correo_responsable_credito2);
                 //objeto_mail.To.Add(datos_correo.detalle.correo_responsable_credito3);
 
-                objeto_mail.Subject = datos_correo.mdldatos.asunto + ' ' + datos_correo.mdldatos.folio;
-                objeto_mail.IsBodyHtml = true;
-                objeto_mail.Body = bodyAnalisisDocumentacionAceptadaCondicionado(datos_correo.mdldatos);
-                client.EnableSsl = false;
-                client.Send(objeto_mail);
-                return Task.FromResult(true);
+                string asunto = datos_correo.mdldatos.asunto + ' ' + datos_correo.mdldatos.folio;
+                string cuerpo = bodyAnalisisDocumentacionAceptadaCondicionado(datos_correo.mdldatos);
+                await NEEnviarM365.Enviar(config, asunto, cuerpo, Destinatarios(para));
+                return true;
             }
             catch (Exception ex)
             {
                 _Mensaje = ex.Message;
-                return Task.FromResult(false);
+                return false;
             }
 
         }
 
-        public static Task<bool> EnviarCargaDocumentosVendedor(mdlSolicitud_CRedito_Documentacion_Email datos_correo, string folio)
+        public static async Task<bool> EnviarCargaDocumentosVendedor(mdl_Correo_M365 config, mdlSolicitud_CRedito_Documentacion_Email datos_correo, string folio)
         {
             try
             {
-                string password = "!HD_Hum4y4D1g1t4l*T1?";
-                string _correo = "HumayaDigital@humaya.com.mx";
-                MailMessage objeto_mail = new MailMessage();
-                SmtpClient client = new SmtpClient();
-                client.Port = 587;
-                client.Host = "correo.humaya.com.mx";
-                client.Timeout = 20000;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new System.Net.NetworkCredential(_correo, password);
-                objeto_mail.From = new MailAddress(_correo);
+                var para = new List<string?>();
                 foreach (mdlSolicitudCredito_Enviar notificacion in datos_correo.mdlSolicitud)
                 {
-                    objeto_mail.To.Add(new MailAddress(notificacion.correo));
+                    para.Add(notificacion.correo);
                 }
                 //objeto_mail.To.Add("desarrolladorti@humaya.com.mx");
                 //objeto_mail.To.Add(datos_correo.detalle.correo_vendedor);
@@ -474,58 +378,44 @@ namespace HD.Notifications.Analisis
                 //objeto_mail.To.Add(datos_correo.detalle.correo_responsable_credito2);
                 //objeto_mail.To.Add(datos_correo.detalle.correo_responsable_credito3);
 
-                objeto_mail.Subject = "Carga de Documentos";
-                objeto_mail.IsBodyHtml = true;
-                objeto_mail.Body = bodyAnalisisDocumentacionCargaVendedor(datos_correo.notificar, folio);
-                client.EnableSsl = false;
-                client.Send(objeto_mail);
-                return Task.FromResult(true);
+                string asunto = "Carga de Documentos";
+                string cuerpo = bodyAnalisisDocumentacionCargaVendedor(datos_correo.notificar, folio);
+                await NEEnviarM365.Enviar(config, asunto, cuerpo, Destinatarios(para));
+                return true;
             }
             catch (Exception ex)
             {
                 _Mensaje = ex.Message;
-                return Task.FromResult(false);
+                return false;
             }
 
         }
 
-        public static Task<bool> EnviarAutorizarFacturacion(mdlAnalisisAutorizacionFacturacion_Email datos_correo)
+        public static async Task<bool> EnviarAutorizarFacturacion(mdl_Correo_M365 config, mdlAnalisisAutorizacionFacturacion_Email datos_correo)
         {
 
             try
             {
-                string password = "!HD_Hum4y4D1g1t4l*T1?";
-                string _correo = "HumayaDigital@humaya.com.mx";
-                MailMessage objeto_mail = new MailMessage();
-                SmtpClient client = new SmtpClient();
-                client.Port = 587;
-                client.Host = "correo.humaya.com.mx";
-                client.Timeout = 20000;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new System.Net.NetworkCredential(_correo, password);
-                objeto_mail.From = new MailAddress(_correo);
-                objeto_mail.To.Add(new MailAddress(datos_correo.correo_cajera));
-                objeto_mail.To.Add(new MailAddress(datos_correo.correo_responsable_credito));
-                objeto_mail.To.Add(new MailAddress(datos_correo.correo_gerente_sucursal));
-                objeto_mail.To.Add(new MailAddress(datos_correo.correo_vendedor));
+                var para = new List<string?>();
+                para.Add(datos_correo.correo_cajera);
+                para.Add(datos_correo.correo_responsable_credito);
+                para.Add(datos_correo.correo_gerente_sucursal);
+                para.Add(datos_correo.correo_vendedor);
 
                 //objeto_mail.To.Add(new MailAddress("desarrolladorti2@hunaya.com.mx"));
                 //objeto_mail.To.Add(new MailAddress("desarrolladorti@humaya.com.mx"));
 
 
-                objeto_mail.Subject = datos_correo.asunto + datos_correo.proceso;
-                objeto_mail.IsBodyHtml = true;
-                objeto_mail.Body = body(datos_correo);
-                client.EnableSsl = false;
-                client.Send(objeto_mail);
-                return Task.FromResult(true);
+                string asunto = datos_correo.asunto + datos_correo.proceso;
+                string cuerpo = body(datos_correo);
+                await NEEnviarM365.Enviar(config, asunto, cuerpo, Destinatarios(para));
+                return true;
             }
 
             catch (Exception ex)
             {
                 _Mensaje = ex.Message;
-                return Task.FromResult(false);
+                return false;
             }
 
         }

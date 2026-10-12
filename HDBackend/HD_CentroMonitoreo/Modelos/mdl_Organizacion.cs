@@ -10,5 +10,9 @@ namespace HD_CentroMonitoreo.Modelos
     {
         public string? jd_org_id { get; set; }
         public string? nombre { get; set; }
+        public int mensajes_generados { get; set; }
+        public int mensajes_entregados { get; set; }
+        public int mensajes_leidos { get; set; }
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using HD.Clientes.Consultas.AnalisisCredito;
 using HD.Clientes.Modelos.SC_Analisis;
 using HD.Notifications.Analisis;
+using HD.Notifications.Modelos;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,7 +22,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             ADAnalisisNotificacion notificacion = new ADAnalisisNotificacion(CadenaConexion);
             var body = await notificacion.GetBody(mdl);
-            await NotificacionComentarios.Enviar(body);
+            await NotificacionComentarios.Enviar(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), body);
             return Ok(new { mensaje = "Correo enviado con exito" });
         }
     }

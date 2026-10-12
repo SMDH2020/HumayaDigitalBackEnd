@@ -8,29 +8,36 @@ namespace Postventa.Modelos.Indicadores
 {
     public class mdl_Header_Indicadores
     {
-        public int total_registros { get; set; }
-        public int mensajes_enviados { get; set; }
-        public int facturados_total { get; set; }
-        public decimal monto_facturado_total { get; set; }
-        public int mensajes_con_error { get; set; }
-        public int mensajes_entregados { get; set; }
-        public int mensajes_leidos { get; set; }
-        public int facturados_con_mensaje { get; set; }
-        public decimal? pct_facturados_con_mensaje { get; set; }   // NULL si facturados_total = 0
+        // Mensajes (cuadran con el tablero de mensajeria, solo posventa)
+        public int enviados { get; set; }
+        public int entregados { get; set; }
+        public decimal? pct_entregados { get; set; }
+        public int leidos { get; set; }
+        public int con_error { get; set; }
+        public int numero_erroneo { get; set; }
 
-        // Complementarios
-        public int sin_mensaje { get; set; }
-        public int con_respuesta { get; set; }
-
-        // Tarjeta de interacciones
+        // Interacciones (cuadran con el tablero de mensajeria, solo posventa)
         public int interacciones { get; set; }
         public int interesados { get; set; }
         public int no_interesados { get; set; }
         public int respuesta_libre { get; set; }
         public int atendidos { get; set; }
         public int sin_atender { get; set; }
-        public decimal monto_facturado { get; set; }
-        public decimal ticket_promedio { get; set; }
-        public int mensajes_sin_responsable { get; set; }
+
+        // Facturacion
+        public int folios { get; set; }
+        public int facturados_total { get; set; }
+        public decimal monto_facturado_total { get; set; }
+        public int facturados_con_mensaje { get; set; }
+        public decimal monto_facturado_con_mensaje { get; set; }
+        public decimal? pct_facturados_con_mensaje { get; set; }
+        public decimal? pct_monto_con_mensaje { get; set; }
+
+        // De los leidos, cuantos terminaron facturados
+        public int folios_leidos { get; set; }
+        public int leidos_facturados { get; set; }
+        public decimal monto_leidos_facturados { get; set; }
+        public decimal? pct_leidos_facturados { get; set; }
+        public decimal? total_posventa { get; set; }
     }
 }

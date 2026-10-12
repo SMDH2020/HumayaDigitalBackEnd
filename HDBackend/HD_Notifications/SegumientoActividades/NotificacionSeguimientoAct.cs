@@ -1,3 +1,5 @@
+using HD.Notifications.Modelos;
+
 namespace HD.Notifications.SeguimientoActividades
 {
     // Correo de "ticket creado" (estatus = C) y de "cambio de estatus"
@@ -12,7 +14,7 @@ namespace HD.Notifications.SeguimientoActividades
     // según el caso y la pasa explícita -- ver SeguimientoActController.
     public static class NotificacionSeguimientoAct
     {
-        public static Task<bool> Enviar(mdlSeguimiento_Email datos, List<string> destinatarios)
+        public static Task<bool> Enviar(mdl_Correo_M365 config, mdlSeguimiento_Email datos, List<string> destinatarios)
         {
             bool esCreacion = datos.estatus == "C";
 
@@ -33,7 +35,7 @@ namespace HD.Notifications.SeguimientoActividades
 
             string html = PlantillaCorreoSeguimientoAct.Renderizar(datosCorreo, EnvioCorreoSeguimientoAct.LogoDisponible());
 
-            return EnvioCorreoSeguimientoAct.Enviar(asunto, html, destinatarios);
+            return EnvioCorreoSeguimientoAct.Enviar(config, asunto, html, destinatarios);
         }
     }
 }

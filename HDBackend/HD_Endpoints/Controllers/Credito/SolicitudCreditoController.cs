@@ -2,6 +2,7 @@
 using HD.Clientes.Modelos;
 using HD.Endpoints.Controllers.Eventos;
 using HD.Notifications.Analisis;
+using HD.Notifications.Modelos;
 using HD.Notifications.Consultas;
 using HD.Notifications.NotificacionesApp;
 using HD.Security;
@@ -81,7 +82,8 @@ namespace HD.Endpoints.Controllers.Credito
 
             if (result != null)
             {
-                await NSolicitud_Enviar.Enviar(result);
+                var configCorreo = Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>();
+                await NSolicitud_Enviar.Enviar(configCorreo, result);
             }
             return Ok(new { mensaje });
 
@@ -101,7 +103,8 @@ namespace HD.Endpoints.Controllers.Credito
             //enviar correo
             if (result != null)
             {
-                await NSolicitud_Enviar.Enviar(result);
+                var configCorreo = Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>();
+                await NSolicitud_Enviar.Enviar(configCorreo, result);
             }
 
             //guardar log de actividad en app

@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using HD.Notifications.Modelos;
+using Dapper;
 using HD.AccesoDatos;
 using HD.Endpoints.Controllers;
 using HD.Generales.Consultas;
@@ -120,7 +121,7 @@ namespace HD.Endpoints.Controllers.GestionActividades
                 // Ticket recién creado -- se avisa a los responsables de la
                 // sala para que se enteren de que hay algo nuevo por atender.
                 var destinatariosCreacion = CorreosSeguimientoAct.ObtenerCorreosResponsables(seguimiento.idSala, cadenaConexion);
-                await NotificacionSeguimientoAct.Enviar(modeloCorreo, destinatariosCreacion);
+                await NotificacionSeguimientoAct.Enviar(_configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), modeloCorreo, destinatariosCreacion);
 
                 return Ok(new { mensaje = "Guardado correctamente" });
             }
@@ -167,7 +168,7 @@ namespace HD.Endpoints.Controllers.GestionActividades
                 };
 
                 var destinatariosEdicion = CorreosSeguimientoAct.ObtenerCorreosResponsables(data.idSala, cadenaConexion);
-                await NotificacionSeguimientoAct.Enviar(modeloCorreo, destinatariosEdicion);
+                await NotificacionSeguimientoAct.Enviar(_configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), modeloCorreo, destinatariosEdicion);
 
                 return Ok(new { mensaje = "Seguimiento editado correctamente" });
             }
@@ -258,7 +259,7 @@ namespace HD.Endpoints.Controllers.GestionActividades
                     ? new List<string> { contactoCreador!.Correo! }
                     : new List<string>();
 
-                await NotificacionSeguimientoAct.Enviar(modeloCorreo, destinatariosEstatus);
+                await NotificacionSeguimientoAct.Enviar(_configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), modeloCorreo, destinatariosEstatus);
 
                 return Ok(new { mensaje = "Estatus actualizado correctamente" });
             }
@@ -556,7 +557,7 @@ namespace HD.Endpoints.Controllers.GestionActividades
                     accionPor = nombreActor
                 };
 
-                await NotificacionSeguimientoActComentario.Enviar(modeloCorreo, destinatariosComentario, paraCreador: !actorEsCreador);
+                await NotificacionSeguimientoActComentario.Enviar(_configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), modeloCorreo, destinatariosComentario, paraCreador: !actorEsCreador);
 
                 return Ok(new { mensaje = "Comentario agregado correctamente" });
             }

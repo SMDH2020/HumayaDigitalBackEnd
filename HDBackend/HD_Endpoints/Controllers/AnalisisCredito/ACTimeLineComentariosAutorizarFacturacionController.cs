@@ -1,6 +1,7 @@
 ﻿using HD.Clientes.Consultas.AnalisisCredito;
 using HD.Clientes.Modelos.SC_Analisis;
 using HD.Notifications.Analisis;
+using HD.Notifications.Modelos;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,7 +29,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito
             }
             ADAnalisisNotificacion notificacion = new ADAnalisisNotificacion(CadenaConexion);
             var body = await notificacion.GetBodyAutorizacionFacturacion(mdl);
-            await NotificacionComentarios.EnviarAutorizarFacturacion(body);
+            await NotificacionComentarios.EnviarAutorizarFacturacion(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), body);
             return Ok(result);
         }
     }

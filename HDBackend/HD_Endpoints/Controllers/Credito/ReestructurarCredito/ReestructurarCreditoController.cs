@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using HD.Clientes.Consultas.ReestructurarCredito;
 using HD.Clientes.Consultas.SolicitudCredito;
 using HD.Notifications.Analisis;
+using HD.Notifications.Modelos;
 using HD.Notifications.Consultas;
 using System.Globalization;
 using HD.Clientes.Consultas.PedidoCondicionesCredito;
@@ -130,7 +131,8 @@ namespace HD.Endpoints.Controllers.Credito.ReestructurarCredito
 
             if (result != null)
             {
-                await NSolicitud_Enviar.Enviar(result);
+                var configCorreo = Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>();
+                await NSolicitud_Enviar.Enviar(configCorreo, result);
 
                 //enviar notificacion
                 var usuariosNotificados = string.Join(",", result.mdlSolicitud?.Select(u => u.idempleado.ToString()) ?? new List<string>());

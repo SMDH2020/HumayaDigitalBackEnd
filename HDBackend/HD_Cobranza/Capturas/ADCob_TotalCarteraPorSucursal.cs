@@ -20,7 +20,7 @@ namespace HD_Cobranza.Capturas
                 {
                     adr = adr,
                     sucursal = sucursal,
-                    usuario = usuario
+                    usuario = 1
                 };
                 var result = await factory.SQL.QueryAsync<mdlCob_TotalCarteraPorSucursal>("Credito.sp_obtener_resumen_cartera_por_Sucursal_Filtrado", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();

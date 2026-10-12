@@ -1,5 +1,6 @@
 ﻿using HD.Notifications.Analisis;
 using HD.Notifications.ClientesJuridico;
+using HD.Notifications.Modelos;
 using HD.Security;
 using HD_Cobranza.Capturas.ConvenioPago;
 using HD_Cobranza.Capturas.Juridico;
@@ -34,7 +35,8 @@ namespace HD.Endpoints.Controllers.Cobranza
             {
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             }
-            await NotificacionGestionClienteJuridico.Enviar(result);
+            var configCorreo = Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>();
+            await NotificacionGestionClienteJuridico.Enviar(configCorreo, result);
             return Ok(result);          
         }
 
@@ -63,7 +65,8 @@ namespace HD.Endpoints.Controllers.Cobranza
             {
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             }
-            await NotificacionGestionClienteJuridico.Enviar(result);
+            var configCorreo = Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>();
+            await NotificacionGestionClienteJuridico.Enviar(configCorreo, result);
             return Ok(result);
         }
 

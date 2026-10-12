@@ -3,6 +3,7 @@ using HD.Clientes.Consultas.AnalisisCredito.JDF;
 using HD.Clientes.Consultas.Credito_Condicionado;
 using HD.Clientes.Modelos.SC_Analisis.JDF;
 using HD.Notifications.Analisis;
+using HD.Notifications.Modelos;
 using HD.Notifications.Consultas;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
@@ -141,7 +142,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
             {
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             }
-            await NotificacionComentarios.EnviarNotificacionOperacionCondicionada(resultado);
+            await NotificacionComentarios.EnviarNotificacionOperacionCondicionada(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), resultado);
             return Ok(new { mensaje = "Datos Cargados cone exito" });
         }
 
@@ -164,7 +165,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
             {
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             }
-            await NotificacionComentarios.EnviarNotificacionOperacionCondicionada(resultado);
+            await NotificacionComentarios.EnviarNotificacionOperacionCondicionada(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), resultado);
 
 
             //enviar notificacion
@@ -196,7 +197,7 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.JDF
             {
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             }
-            await NotificacionComentarios.Enviar_Mhusa(result);
+            await NotificacionComentarios.Enviar_Mhusa(Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(), result);
 
             //enviar notificacion
             var usuariosNotificados = string.Join(",", result.mdlSolicitud?.Select(u => u.idempleado.ToString()) ?? new List<string>());
