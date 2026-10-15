@@ -27,6 +27,7 @@
         public float tasa {  get; set; }
         public float tasa_moratoria { get; set; }
         public string folio_solicitud { get; set; }
+        public string en_transito { get; set; }
         //public string? descripcion { get; set; }
 
         //public double intereses { get; set; }

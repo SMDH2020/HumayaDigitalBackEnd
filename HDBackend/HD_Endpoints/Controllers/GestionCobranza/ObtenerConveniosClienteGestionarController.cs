@@ -15,11 +15,11 @@ namespace HD.Endpoints.Controllers.GestionCobranza
         }
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> Convenios(int idcliente, int card)
+        public async Task<ActionResult> Convenios(int idcliente, int periodo, int ejercicio)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Obtener_Convenios_Cliente_Gestionar datos = new AD_Obtener_Convenios_Cliente_Gestionar(CadenaConexion);
-            var result = await datos.ObtenerConvenios(idcliente, card);
+            var result = await datos.ObtenerConvenios(idcliente, periodo, ejercicio);
             return Ok(result);
         }
 
