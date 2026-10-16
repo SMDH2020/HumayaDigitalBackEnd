@@ -12,6 +12,8 @@ namespace HD.Clientes.Modelos.SC_Analisis.Modal
         //public IEnumerable<mdl_Tabla_Diferencias_Tasas>? resumen_tasas { get; set; }
         public IEnumerable<mdl_Tabla_Diferencias_Facturacion>? resumen_facturacion { get; set; }
         public IEnumerable<mdl_Tabla_Documentos_Faltantes>? documentos_faltantes { get; set; }
+        public IEnumerable<mdl_Tabla_Documentos_Faltantes>? facturas { get; set; }
+
 
     }
 }

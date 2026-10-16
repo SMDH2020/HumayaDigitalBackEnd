@@ -39,6 +39,18 @@ namespace HD.Endpoints.Controllers.AnalisisCredito.Modal
 
         }
 
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarVisualizacion(mdl_Visualizacion_Factura mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Visualizacion_Factura_Guardar datos = new AD_Visualizacion_Factura_Guardar(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.GuardarVisualizacion(mdl);
+            return Ok(result);
+
+        }
+
         [HttpGet]
         [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> ModificarIDCliente(int idcliente, string folio)
