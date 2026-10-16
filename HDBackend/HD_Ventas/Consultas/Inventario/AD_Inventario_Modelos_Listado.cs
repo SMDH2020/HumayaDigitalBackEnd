@@ -12,7 +12,7 @@ namespace HD_Ventas.Consultas.Inventario
             CadenaConexion = _cadenaconexion;
         }
 
-        public async Task<IEnumerable<mdl_Inventario_Modelos_Listado>> Listado()
+        public async Task<mdl_Inventario_Modelos_Listado_View> Listado()
         {
             try
             {
@@ -20,9 +20,12 @@ namespace HD_Ventas.Consultas.Inventario
                 {
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdl_Inventario_Modelos_Listado> result = await factory.SQL.QueryAsync<mdl_Inventario_Modelos_Listado>("Ventas.sp_Inventario_Modelos_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("Ventas.sp_Inventario_Modelos_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdl_Inventario_Modelos_Listado_View mdl = new mdl_Inventario_Modelos_Listado_View();
+                mdl.inventario = result.Read<mdl_Inventario_Modelos_Listado>().ToList();
+                mdl.departamentos = result.Read<mdl_Inventario_Departamentos>().ToList();
                 factory.SQL.Close();
-                return result;
+                return mdl;
             }
             catch (System.Exception ex)
             {
