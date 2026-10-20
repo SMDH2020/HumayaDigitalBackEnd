@@ -35,5 +35,15 @@ namespace HD.Endpoints.Controllers.Ventas
             var result = await datos.Guardar(mdl, UsuarioServicio);
             return Ok(new { ok = true, recibidos = result.recibidos, nuevos = result.nuevos, actualizados = result.actualizados, pendientes_detalle = result.pendientes_detalle });
         }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> Detalle(mdl_PedidosJD_Detalle_Guardar mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_PedidosJD_Detalle_Guardar datos = new AD_PedidosJD_Detalle_Guardar(CadenaConexion);
+            var result = await datos.Guardar(mdl);
+            return Ok(new { ok = true, pedidos = result.pedidos, lineas = result.lineas, comentarios = result.comentarios });
+        }
     }
 }
