@@ -33,7 +33,7 @@ namespace HD.Endpoints.Controllers.Ventas
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_PedidosJD_Lista_Guardar datos = new AD_PedidosJD_Lista_Guardar(CadenaConexion);
             var result = await datos.Guardar(mdl, UsuarioServicio);
-            return Ok(new { ok = true, recibidos = result.recibidos, nuevos = result.nuevos, actualizados = result.actualizados });
+            return Ok(new { ok = true, recibidos = result.recibidos, nuevos = result.nuevos, actualizados = result.actualizados, pendientes_detalle = result.pendientes_detalle });
         }
     }
 }

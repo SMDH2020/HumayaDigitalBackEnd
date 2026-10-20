@@ -17,7 +17,8 @@ namespace HD_Ventas.Consultas.PedidosJD
         /// <summary>
         /// Hace upsert de la lista de pedidos a John Deere. El detalle viaja al SP como JSON plano
         /// (una fila por pedido) para desarmarse con OPENJSON.
-        /// Devuelve cuantos pedidos se recibieron, cuantos fueron nuevos y cuantos se actualizaron.
+        /// Devuelve cuantos pedidos se recibieron, cuantos fueron nuevos y cuantos se actualizaron,
+        /// mas el detalle de los pedidos pendientes de capturar su detalle (segundo result set del SP).
         /// Las cadenas vacias se mandan como null y las fechas en formato yyyy-MM-dd.
         /// </summary>
         public async Task<mdl_PedidosJD_Lista_Guardar_Resultado> Guardar(mdl_PedidosJD_Lista_Guardar mdl, int usuario)
@@ -38,7 +39,9 @@ namespace HD_Ventas.Consultas.PedidosJD
                     json = JsonConvert.SerializeObject(pedidos, configuracionJson),
                     usuario = usuario
                 };
-                mdl_PedidosJD_Lista_Guardar_Resultado result = await factory.SQL.QueryFirstAsync<mdl_PedidosJD_Lista_Guardar_Resultado>("Ventas.sp_PedidosJD_Lista_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var resultSets = await factory.SQL.QueryMultipleAsync("Ventas.sp_PedidosJD_Lista_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdl_PedidosJD_Lista_Guardar_Resultado result = resultSets.ReadFirst<mdl_PedidosJD_Lista_Guardar_Resultado>();
+                result.pendientes_detalle = resultSets.Read<mdl_PedidosJD_Pendiente>().ToList();
                 factory.SQL.Close();
                 return result;
             }

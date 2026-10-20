@@ -5,5 +5,6 @@
         public int recibidos { get; set; }
         public int nuevos { get; set; }
         public int actualizados { get; set; }
+        public List<mdl_PedidosJD_Pendiente> pendientes_detalle { get; set; } = new List<mdl_PedidosJD_Pendiente>();
     }
 }
