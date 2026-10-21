@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Consultas\ObjetivosModelos\" />
     <Folder Include="Modelos\Usados\Inventario\" />
   </ItemGroup>
 
