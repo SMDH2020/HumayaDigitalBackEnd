@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Math;
+using HD.AccesoDatos;
 using HD.Security;
 using HD_Cobranza.GestionCobranza.Capturas;
 using HD_Cobranza.Reportes;
@@ -6,10 +7,11 @@ using HD_Ventas.Consultas;
 using HD_Ventas.Modelos;
 using Microsoft.AspNetCore.Mvc;
 using Postventa.Consultas.Dashboard;
+using Ventas.Consultas;
 using Ventas.Consultas.CotizacionesVentas;
 using Ventas.Modelos.CotizacionesVentas;
+using Ventas.Modelos.EquipoEntregado;
 using Ventas.Reportes;
-using HD.AccesoDatos;
 
 namespace HD.Endpoints.Controllers.Ventas
 {
@@ -195,6 +197,42 @@ namespace HD.Endpoints.Controllers.Ventas
             AD_Cultivos_Listado datos = new AD_Cultivos_Listado(CadenaConexion);
             var result = await datos.Listado(adr);
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ObtenerEquipoEntregado(
+        string folio_cotizacion, int orden_cotizacion, int idcliente)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Equipo_Entregado datos = new AD_Equipo_Entregado(CadenaConexion);
+            var result = await datos.ObtenerInfo(folio_cotizacion, orden_cotizacion, idcliente);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> ConsultarSolicitudCredito(string folio_solicitud)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Equipo_Entregado datos = new AD_Equipo_Entregado(CadenaConexion);
+            var result = await datos.ObtenerSolicitudByFolio(folio_solicitud);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GuardarEquipoEntregado(mdl_Guardar_Equipo_Entregado mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Equipo_Entregado datos = new AD_Equipo_Entregado(CadenaConexion);
+            mdl.usuario = int.Parse(Sesion.usuario());
+            await datos.GuardarEquipoEntregado(mdl);
+
+            return Ok(new
+            {
+                mensaje = "Guardado Correctamente",
+            });
         }
     }
 }

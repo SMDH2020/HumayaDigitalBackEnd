@@ -40,6 +40,7 @@ namespace HD.Clientes.Consultas.CRM
                 mdl.documentacionJDF = result.Read<mdl_Dashboard_CRM_Expediente_Digital>().FirstOrDefault();
                 mdl.visitas = result.Read<mdl_Dashboard_CRM_Visitas>().FirstOrDefault();
                 mdl.parque_maquinaria = result.Read<mdl_Dashboard_CRM_Parque_Maquinaria>().FirstOrDefault();
+                mdl.proceso_6_contactos = result.Read<mdl_Dashboard_CRM_Proc_Contactos>().FirstOrDefault();
 
 
                 if (mdl.referencias == null)
