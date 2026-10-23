@@ -1,0 +1,41 @@
+using Dapper;
+using HD.AccesoDatos;
+using HD_GestionProyectosTI.Modelos;
+using System.Data.SqlClient;
+
+namespace HD_GestionProyectosTI.Consultas.VersionesAlcance
+{
+    public class AD_TI_AprobacionesAlcance_Registrar
+    {
+        private string CadenaConexion;
+        public AD_TI_AprobacionesAlcance_Registrar(string _cadenaconexion) { CadenaConexion = _cadenaconexion; }
+
+        public async Task Registrar(mdl_TI_AprobacionAlcance mdl, int usuarioId)
+        {
+            try
+            {
+                var parametros = new
+                {
+                    mdl.VersionAlcanceId,
+                    mdl.TipoAprobador,
+                    mdl.EstadoDecision,
+                    mdl.Comentario,
+                    usuarioId
+                };
+
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                await factory.SQL.ExecuteAsync(
+                    "dbo.sp_TI_AprobacionesAlcance_Registrar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+            }
+            catch (SqlException ex) when (ex.Number >= 50000)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.BadRequest, new { Mensaje = ex.Message });
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+        }
+    }
+}
