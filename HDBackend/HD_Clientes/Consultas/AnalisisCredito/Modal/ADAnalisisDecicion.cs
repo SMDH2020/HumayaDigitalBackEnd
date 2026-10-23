@@ -54,6 +54,7 @@ namespace HD.Clientes.Consultas.AnalisisCredito.Modal
                 //view.resumen_tasas = result.Read<mdl_Tabla_Diferencias_Tasas>().ToList();
                 view.resumen_facturacion = result.Read<mdl_Tabla_Diferencias_Facturacion>().ToList();
                 view.documentos_faltantes = result.Read<mdl_Tabla_Documentos_Faltantes>().ToList();
+                view.facturas = result.Read<mdl_Tabla_Documentos_Faltantes>().ToList();
 
                 if (view.estado is null) view.estado = new mdlSCAnalisis_Decicion();
 
@@ -149,6 +150,7 @@ namespace HD.Clientes.Consultas.AnalisisCredito.Modal
                 //view.resumen_tasas = result.Read<mdl_Tabla_Diferencias_Tasas>().ToList();
                 view.resumen_facturacion = result.Read<mdl_Tabla_Diferencias_Facturacion>().ToList();
                 view.documentos_faltantes = result.Read<mdl_Tabla_Documentos_Faltantes>().ToList();
+                view.facturas = result.Read<mdl_Tabla_Documentos_Faltantes>().ToList();
                 if (view.estado is null) view.estado = new mdlSCAnalisis_Decicion();
 
                 factory.SQL.Close();

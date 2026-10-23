@@ -68,7 +68,7 @@ namespace HD.Endpoints.Controllers.Cobranza
 
         [HttpPost]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ObtenerLimiteUsuario()
+        public async Task<ActionResult> ObtenerInfo()
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Condonacion_Intereses datos = new AD_Condonacion_Intereses(CadenaConexion);

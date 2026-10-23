@@ -11,7 +11,12 @@ namespace HD.Clientes.Modelos.SC_Analisis.Modal
         public string Folio { get; set; }
         public int IdDocumento { get; set; }
         public string? Documento { get; set; }
+        public int Registro { get; set; }
+
         public bool Cargado { get; set; }
+        public string? Archivo { get; set; }
+        public string? Extension { get; set; }
+        public bool Visualizacion { get; set; }
 
     }
 }
