@@ -20,7 +20,7 @@ namespace HD_Ventas.Consultas.Inventario
                 {
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                var result = await factory.SQL.QueryMultipleAsync("Ventas.sp_Inventario_Modelos_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await factory.SQL.QueryMultipleAsync("Ventas.sp_Inventario_Modelos_Generales_Listado", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 mdl_Inventario_Modelos_Listado_View mdl = new mdl_Inventario_Modelos_Listado_View();
                 mdl.inventario = result.Read<mdl_Inventario_Modelos_Listado>().ToList();
                 mdl.departamentos = result.Read<mdl_Inventario_Departamentos>().ToList();

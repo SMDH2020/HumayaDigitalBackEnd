@@ -27,7 +27,7 @@ namespace HD_Ventas.Consultas.Inventario
                     usuario = usuario
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                await factory.SQL.ExecuteAsync("Ventas.sp_Inventario_Modelos_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                await factory.SQL.ExecuteAsync("Ventas.sp_Inventario_Modelos_Generales_Guardar", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
             }
             catch (System.Exception ex)
