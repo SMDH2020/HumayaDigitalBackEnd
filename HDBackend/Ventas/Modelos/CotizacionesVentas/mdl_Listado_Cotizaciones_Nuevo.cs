@@ -11,6 +11,8 @@ namespace Ventas.Modelos.CotizacionesVentas
         public string folio { get; set; }
         public int asesorventa { get; set; }
         public string nombre_asesor { get; set; }
+        public string equipo_entregado { get; set; }
+        public int orden { get; set; }
         public int idcliente { get; set; }
         public string razon_social { get; set; }
         public string asunto { get; set; }

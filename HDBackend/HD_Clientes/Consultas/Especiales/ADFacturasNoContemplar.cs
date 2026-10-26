@@ -22,6 +22,7 @@ namespace HD.Clientes.Consultas.Especiales
                     comentarios = mdl.comentarios,
                     estatus = mdl.estatus,
                     usuario = mdl.usuario,
+                    categoria = mdl.categoria
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var result = await factory.SQL.QueryMultipleAsync("Credito.sp_Facturas_no_contemplar", parametros, commandType: System.Data.CommandType.StoredProcedure);
@@ -77,6 +78,24 @@ namespace HD.Clientes.Consultas.Especiales
                     documento = documento,
                 };
                 var result = await factory.SQL.QueryAsync<mdlFacturasNoContemplar_Buscar>("Credito.sp_Buscar_Factura_Documento", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                factory.SQL.Close();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { mensaje = ex.Message });
+            }
+        }
+
+        public async Task<IEnumerable<mdlCategoriasFacturaDDL>> CategoriasDDL()
+        {
+            try
+            {
+                FactoryConection factory = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                };
+                var result = await factory.SQL.QueryAsync<mdlCategoriasFacturaDDL>("Credito.sp_Categorias_Facturas_DDL", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

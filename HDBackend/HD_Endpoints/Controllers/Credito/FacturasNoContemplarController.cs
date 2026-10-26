@@ -60,6 +60,17 @@ namespace HD.Endpoints.Controllers.Credito
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> CategoriasDDL()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            ADFacturasNoContemplar datos = new ADFacturasNoContemplar(CadenaConexion);
+            var result = await datos.CategoriasDDL();
+            return Ok(result);
+
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
         public async Task<ActionResult> InfoFactura(int documento)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];

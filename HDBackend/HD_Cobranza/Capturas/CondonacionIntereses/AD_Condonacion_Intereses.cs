@@ -19,7 +19,7 @@ namespace HD_Cobranza.Capturas.CondonacionIntereses
             CadenaConexion = _cadenaconexion;
         }
 
-        public async Task<mdl_Limite_Condonacion_Usuario> ObtenerLimiteUsuario(int usuario)
+        public async Task<mdl_Info_Condonacion_View> ObtenerLimiteUsuario(int usuario)
         {
             try
             {
@@ -29,11 +29,18 @@ namespace HD_Cobranza.Capturas.CondonacionIntereses
                     @usuario = usuario,
                 };
 
-                var result = await
-                factory.SQL.QueryFirstOrDefaultAsync<mdl_Limite_Condonacion_Usuario>("Cartera_Clientes.CondonacionInteres.sp_Obtener_Limite_Condonacion_Usuario",
-                parametros, commandType: System.Data.CommandType.StoredProcedure);
+                //var result = await
+
+                var result = await factory.SQL.QueryMultipleAsync("Cartera_Clientes.CondonacionInteres.sp_Obtener_informacion_Condonacion", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                mdl_Info_Condonacion_View info = new mdl_Info_Condonacion_View();
+                info.limites_usuario = result.Read<mdl_Limite_Condonacion_Usuario>().FirstOrDefault();
+                info.reglas = result.Read<mdl_Reglas_Condonacion>().ToList();
                 factory.SQL.Close();
-                return result;
+                return info;
+                //factory.SQL.QueryFirstOrDefaultAsync<mdl_Limite_Condonacion_Usuario>("Cartera_Clientes.CondonacionInteres.sp_Obtener_Limite_Condonacion_Usuario",
+                //parametros, commandType: System.Data.CommandType.StoredProcedure);
+                //factory.SQL.Close();
+                //return result;
             }
             catch (System.Exception ex)
             {
@@ -61,11 +68,12 @@ namespace HD_Cobranza.Capturas.CondonacionIntereses
                     @Imoratorio_descuento = mdl.Imoratorio_descuento,
                     @Imoratorio_pagado = mdl.Imoratorio_pagado,
                     @Comentarios = mdl.Comentarios,
+                    @idreglaa_aplicada = mdl.idreglaa_aplicada,
                     @facturas = mdl.facturas,
                 };
 
                 var result = await
-                factory.SQL.QueryAsync<mdl_Guarda_Condonacion_Interes>("Cartera_Clientes.CondonacionInteres.sp_Guardar_Condonacion_Interes",
+                factory.SQL.QueryAsync<mdl_Guarda_Condonacion_Interes>("Cartera_Clientes.CondonacionInteres.sp_Guardar_Condonacion_Interes_2",
                 parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;

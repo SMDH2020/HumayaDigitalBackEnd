@@ -1,4 +1,5 @@
-﻿using HD.Notifications.Analisis;
+﻿using HD.Notifications;
+using HD.Notifications.Analisis;
 using HD.Notifications.ClientesJuridico;
 using HD.Notifications.Modelos;
 using HD.Security;
@@ -61,12 +62,46 @@ namespace HD.Endpoints.Controllers.Cobranza
             AD_Clientes_Juridico_Credito_Guardar datos = new AD_Clientes_Juridico_Credito_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             var result = await datos.Guardar(mdl);
+
             if (result is null)
             {
                 return BadRequest(new { mensaje = "Error al enviar correo, no se encontro información" });
             }
+
             var configCorreo = Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>();
-            await NotificacionGestionClienteJuridico.Enviar(configCorreo, result);
+
+            var destinatarios = (result.correo ?? string.Empty)
+                .Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                .ToList();
+            destinatarios.Add("desarrolladorti@humaya.com.mx");
+
+            var datosCorreo = new mdl_Datos_Correo
+            {
+                Seccion = "Gestión de crédito",
+                Titulo = "Gestión jurídica de cliente",
+                //Accion = "Enviado a " + result.estatus,
+                Cuerpo =
+                {
+                    new("Enviado a ", result.estatus),
+                    new("Cliente", result.nombre_cliente),
+                },
+                Comentario = result.comentarios,
+                Instrucciones = "Ingresa al sistema para ver el detalle completo de esta gestión."
+            };
+
+            try
+            {
+                await NotificacionGeneral.Enviar(
+                    configCorreo,
+                    "GESTION JURIDICA DE " + result.nombre_cliente,
+                    datosCorreo,
+                    destinatarios);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"ERROR al enviar correo de gestión jurídica: {ex.Message}");
+            }
+
             return Ok(result);
         }
 
