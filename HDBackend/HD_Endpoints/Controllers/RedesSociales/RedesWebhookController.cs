@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HD.Endpoints.Controllers.RedesSociales
 {
-    // Reenvía las peticiones de generación de imagen a n8n desde el servidor,
-    // evitando que el navegador del cliente llame directo a la IP interna por HTTP.
     [ApiController]
     [Route("api/[controller]")]
     public class RedesWebhookController : MyBase
@@ -22,10 +20,7 @@ namespace HD.Endpoints.Controllers.RedesSociales
         [HttpPost("GenerarImagen")]
         public async Task<IActionResult> GenerarImagen(RedesSocialesBody payload)
         {
-            //EscribirLog("CONTROLLER GENERAR IMAGEN ");
-            //EscribirLog("Payload: " + payload.ToString());
-
-            //return Ok(payload);
+           
             return await ReenviarAN8n("redes-generar-imagen", payload);
         }
 
@@ -41,9 +36,9 @@ namespace HD.Endpoints.Controllers.RedesSociales
         {
             try
             {
-                //EscribirLog($"INICIO ReenviarAN8n");
-                //EscribirLog($"Ruta: {ruta}");
-                //EscribirLog($"ValueKind: {payload.Folio}");
+                
+                
+                
 
                 if (string.IsNullOrWhiteSpace(payload.Folio))
                 {
@@ -58,18 +53,18 @@ namespace HD.Endpoints.Controllers.RedesSociales
 
                 var json = JsonSerializer.Serialize(payload);
 
-                //EscribirLog($"Payload recibido: {json}");
+                
 
                 var url = $"{N8N_BASE_URL}{ruta}";
 
-                //EscribirLog($"URL n8n: {url}");
+                
 
                 var client = _httpClientFactory.CreateClient();
 
                 client.Timeout = TimeSpan.FromSeconds(120);
 
-                //EscribirLog("HttpClient creado");
-                //EscribirLog("Enviando petición a n8n...");
+                
+                
 
                 var contenido = new StringContent(
                     json,
@@ -80,14 +75,14 @@ namespace HD.Endpoints.Controllers.RedesSociales
                     url,
                     contenido);
 
-                //EscribirLog(
-                //    $"Respuesta n8n: {(int)respuesta.StatusCode} {respuesta.StatusCode}");
+                
+                
 
                 var cuerpo = await respuesta.Content.ReadAsStringAsync();
 
-                //EscribirLog($"Respuesta n8n: {cuerpo}");
+                
 
-                //EscribirLog("FIN OK");
+                
 
                 return new ContentResult
                 {
@@ -98,8 +93,7 @@ namespace HD.Endpoints.Controllers.RedesSociales
             }
             catch (Exception ex)
             {
-                //EscribirLog("EXCEPCIÓN:");
-                //EscribirLog(ex.ToString());
+                
 
                 return StatusCode(502, new
                 {
