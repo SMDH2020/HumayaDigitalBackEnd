@@ -128,19 +128,67 @@ namespace HD.Endpoints.Controllers.Cobranza
                 try
                 {
                     var vistaCondonacion = await datos.ObtenerCondonacionPorFolio(condonacion.Folio);
+                    var c = vistaCondonacion?.condonacion;
 
-                    await NotificacionCondonacionIntereses.Enviar(
-                        Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(),
-                        vistaCondonacion?.condonacion,
-                        condonacion.Folio,
-                        "solicitud",
-                        condonacion.correos_notificar);
+                    if (c != null)
+                    {
+                        var destinatarios = (condonacion.correos_notificar ?? string.Empty)
+                            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                            .ToList();
+
+                        var datosCorreo = new mdl_Datos_Correo
+                        {
+                            Folio = c.Folio,
+                            Seccion = "Condonación de intereses",
+                            Titulo = "Nueva solicitud de condonación de interés",
+                            Accion = "Pendiente de autorización",
+                            EstiloAccion = new EstiloAccion("#fff7ed", "#ef6c00", "#fed7aa"),
+                            Cuerpo =
+                            {
+                                new("Cliente", c.razon_social),
+                                new("Solicita", c.creador),
+                                new("Fecha", c.createdate.ToString("dd/MM/yyyy HH:mm")),
+                                new("Saldo total", $"${c.Saldo:N2}"),
+                                new("Interés normal",
+                                    $"Saldo ${c.Inormal_saldo:N2} · {c.Inormal_porcentaje}% condonado · " +
+                                    $"Descuento ${c.Inormal_descuento:N2} · Pagado ${(c.Inormal_saldo - c.Inormal_descuento):N2}"),
+                                new("Interés moratorio",
+                                    $"Saldo ${c.Imoratorio_saldo:N2} · {c.Imoratorio_porcentaje}% condonado · " +
+                                    $"Descuento ${c.Imoratorio_descuento:N2} · Pagado ${(c.Imoratorio_saldo - c.Imoratorio_descuento):N2}"),
+                            },
+                            Comentario = c.Comentarios,
+                            Instrucciones = "Ingresa al sistema para autorizar o rechazar esta solicitud."
+                        };
+
+                        await NotificacionGeneral.Enviar(
+                            Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(),
+                            $"Nueva solicitud de condonación {condonacion.Folio}",
+                            datosCorreo,
+                            destinatarios);
+                    }
                 }
                 catch (System.Exception ex)
                 {
                     // No se detiene el guardado si falla el envío del correo.
                     Console.WriteLine($"[GuardarCondonacion] Error notificación correo: {ex}");
                 }
+
+                //try
+                //{
+                //    var vistaCondonacion = await datos.ObtenerCondonacionPorFolio(condonacion.Folio);
+
+                //    await NotificacionCondonacionIntereses.Enviar(
+                //        Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>(),
+                //        vistaCondonacion?.condonacion,
+                //        condonacion.Folio,
+                //        "solicitud",
+                //        condonacion.correos_notificar);
+                //}
+                //catch (System.Exception ex)
+                //{
+                //    // No se detiene el guardado si falla el envío del correo.
+                //    Console.WriteLine($"[GuardarCondonacion] Error notificación correo: {ex}");
+                //}
             }
 
             return Ok(result);

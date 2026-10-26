@@ -33,7 +33,28 @@ namespace HD.Notifications.SeguimientoActividades
             string asunto = (esCreacion ? "Nuevo ticket de soporte" : "Actualización de tu ticket")
                 + (string.IsNullOrWhiteSpace(datos.folio) ? "" : " · Folio " + datos.folio);
 
-            string html = PlantillaCorreoSeguimientoAct.Renderizar(datosCorreo, EnvioCorreoSeguimientoAct.LogoDisponible());
+            //string html = PlantillaCorreoSeguimientoAct.Renderizar(datosCorreo, EnvioCorreoSeguimientoAct.LogoDisponible());
+
+            var (etiqueta, fondo, color, borde) = PlantillaCorreoSeguimientoAct.EstiloEstatus(datos.estatus);
+
+            var datosC = new mdl_Datos_Correo
+            {
+                Folio = datosCorreo.Folio,
+                Seccion = "Seguimiento de actividades",
+                Titulo = datosCorreo.TituloPrincipal,
+                Accion = etiqueta,
+                EstiloAccion = new EstiloAccion(fondo, color, borde),
+                Cuerpo =
+                {
+                    new("Actividad", datosCorreo.Actividad),
+                    new("Sala", datosCorreo.Sala),
+                    new(datosCorreo.SubtituloPersona, datosCorreo.NombrePersona),
+                },
+                Comentario = datosCorreo.Comentario,
+                Instrucciones = "Ingresa al sistema de Seguimiento de Actividades para ver el detalle completo de este ticket."
+            };
+
+            string html = GenerarCorreo.Renderizar(datosC);
 
             return EnvioCorreoSeguimientoAct.Enviar(config, asunto, html, destinatarios);
         }

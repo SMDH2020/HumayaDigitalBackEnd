@@ -3,6 +3,8 @@
     public class mdlFacturasnocontemplar_List
     {
         public string? documento { get; set; }
+        public string? categoria { get; set; }
+        public string? categoria_desc { get; set; }
         public string razonsocial { get; set; }
         public string fecha { get; set; }
         public double importefactura { get; set; }
