@@ -34,9 +34,9 @@ namespace HD_Finanzas.AccesoDatos.Actions
         }
         public async Task<IEnumerable<mdlEstadoResultadosEbitda>> GetEstadoResultadosEbitda(Fmdl_EstadoResultadosRolado vm,string usuario)
         {
+            FactoryConection conection = new FactoryConection(CadenaConexion);
             try
             {
-                FactoryConection conection = new FactoryConection(CadenaConexion);
                 var parametros = new
                 {
                     fechainicio = vm.fechainicio,
@@ -53,6 +53,10 @@ namespace HD_Finanzas.AccesoDatos.Actions
             catch (Exception ex)
             {
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, ex.Message);
+            }
+            finally
+            {
+                conection.Close();
             }
         }
         public async Task<List<Fmdl_EstadoResultados_View>> GetEstadoResultadosByDireccionRolado(Fmdl_EstadoResultadosRolado vm, string usuario)

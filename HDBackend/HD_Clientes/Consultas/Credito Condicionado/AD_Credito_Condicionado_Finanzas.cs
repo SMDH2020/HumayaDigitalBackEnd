@@ -30,8 +30,11 @@ namespace HD.Clientes.Consultas.Credito_Condicionado
             }
             catch (Exception ex)
             {
-                factory.SQL.Close();
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, new { Mensaje = ex.Message });
+            }
+            finally
+            {
+                factory.Close();
             }
         }
     }
