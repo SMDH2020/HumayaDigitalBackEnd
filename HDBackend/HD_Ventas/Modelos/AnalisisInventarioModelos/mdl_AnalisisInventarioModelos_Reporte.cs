@@ -20,6 +20,7 @@
         public int objetivo_resto { get; set; }
         public int dif_objetivo_resto { get; set; }
         public int inventario_actual { get; set; }
+        public int meses_inventario { get; set; }
         public int pedidos_resto { get; set; }
         public int diferencia_stock { get; set; }
 
