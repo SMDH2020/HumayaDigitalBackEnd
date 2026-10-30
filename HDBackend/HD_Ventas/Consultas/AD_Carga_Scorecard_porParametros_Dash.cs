@@ -107,7 +107,7 @@ namespace HD_Ventas.Consultas
                     comparativa = comparativa
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                IEnumerable<mdlCarga_Scorecard_porVendedor_Dash_TablaAsesor_Importes> result = await factory.SQL.QueryAsync<mdlCarga_Scorecard_porVendedor_Dash_TablaAsesor_Importes>("Ventas.Obtener_Scorecard_porParametro_Tabla_Asesor_Importes", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                IEnumerable<mdlCarga_Scorecard_porVendedor_Dash_TablaAsesor_Importes> result = await factory.SQL.QueryAsync<mdlCarga_Scorecard_porVendedor_Dash_TablaAsesor_Importes>("Ventas.Obtener_Scorecard_porParametro_Tabla_Asesor_Importes_v2", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 factory.SQL.Close();
                 return result;
             }

@@ -42,46 +42,36 @@ namespace HD_Auditoria.Reporteria
                     rango.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
                     renglon++;
 
-                    float totalImporte = 0;
+                    // Mismo ordenamiento que el PDF: por sku y, dentro del sku, primero el mayor importe.
+                    // Cada renglon se escribe con sus propios valores (el SP ya los trae por posicion).
+                    var detalle = view.detalle
+                        .OrderBy(x => x.sku)
+                        .ThenByDescending(x => Math.Abs(x.importe_dif))
+                        .ToList();
 
-                    HashSet<string> skusProcesados = new HashSet<string>();
-                    view.detalle = view.detalle
-                    .OrderBy(x => x.sku)
-                    .ToList();
                     // Llenar la tabla con los datos
-                    foreach (var det in view.detalle)
+                    foreach (var det in detalle)
                     {
-                        bool skuYaExiste = skusProcesados.Contains(det.sku);
+                        sheet.Cell(renglon, 1).Value = det.familia;
+                        sheet.Cell(renglon, 2).Value = det.sku;
+                        sheet.Cell(renglon, 3).Value = det.descripcion;
+                        sheet.Cell(renglon, 4).Value = det.posicion;
+                        sheet.Cell(renglon, 5).Value = det.existencia;
+                        sheet.Cell(renglon, 6).Value = det.conteo;
 
-                        if (!skuYaExiste)
-                        {
-                            // 🔥 REGISTRO COMPLETO
-                            sheet.Cell(renglon, 1).Value = det.familia;
-                            sheet.Cell(renglon, 2).Value = det.sku;
-                            sheet.Cell(renglon, 3).Value = det.descripcion;
-                            sheet.Cell(renglon, 4).Value = det.posicion;
-                            sheet.Cell(renglon, 5).Value = det.existencia;
-                            sheet.Cell(renglon, 6).Value = det.conteo;
+                        // Igual que el PDF: diferencia e importe en 0 se muestran vacios
+                        if (det.diferencias != 0)
                             sheet.Cell(renglon, 7).Value = det.diferencias;
 
-                            sheet.Cell(renglon, 8).Value =
-                                det.tipo_diferencia == "F" ? "FALTANTE" :
-                                det.tipo_diferencia == "S" ? "SOBRANTE" :
-                                "";
+                        sheet.Cell(renglon, 8).Value =
+                            det.tipo_diferencia == "F" ? "FALTANTE" :
+                            det.tipo_diferencia == "S" ? "SOBRANTE" :
+                            "";
 
+                        if (det.importe_dif != 0)
                             sheet.Cell(renglon, 9).Value = det.importe_dif;
-                            sheet.Cell(renglon, 10).Value = det.comentario;
 
-                            skusProcesados.Add(det.sku);
-                        }
-                        else
-                        {
-                            sheet.Cell(renglon, 1).Value = det.familia;
-                            sheet.Cell(renglon, 2).Value = det.sku;
-                            sheet.Cell(renglon, 3).Value = det.descripcion;
-                            sheet.Cell(renglon, 4).Value = det.posicion;
-                            sheet.Cell(renglon, 6).Value = det.conteo;
-                        }
+                        sheet.Cell(renglon, 10).Value = det.comentario;
 
                         renglon++;
                     }
