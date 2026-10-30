@@ -39,6 +39,7 @@
     <ProjectReference Include="..\HD_GestionProyectosTI\HD_GestionProyectosTI.csproj" />
     <ProjectReference Include="..\HD_Helpers\HD_Helpers.csproj" />
     <ProjectReference Include="..\HD_Mensajeria\HD_Mensajeria.csproj" />
+    <ProjectReference Include="..\HD_Nomina\HD_Nomina.csproj" />
     <ProjectReference Include="..\HD_Notifications\HD_Notifications.csproj" />
     <ProjectReference Include="..\HD_RedesSociales\HD_RedesSociales.csproj" />
     <ProjectReference Include="..\HD_Reporteria\HD_Reporteria.csproj" />

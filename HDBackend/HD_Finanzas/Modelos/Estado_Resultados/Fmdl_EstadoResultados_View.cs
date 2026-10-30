@@ -3,6 +3,7 @@
     public class Fmdl_EstadoResultados_View
     {
         public int index { get; set; }
+        public string? iddepartamento { get; set; }
         public string? departamento { get; set; }
         public string? concepto { get; set; }
         public short orden { get; set; }

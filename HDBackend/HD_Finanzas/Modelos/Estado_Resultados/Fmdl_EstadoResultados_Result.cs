@@ -2,6 +2,7 @@
 {
     internal class Fmdl_EstadoResultados_Result
     {
+        public string? iddepartamento { get; set; }
         public string? departamento { get; set; }
         public string? concepto { get; set; }
         public short orden { get; set; }
