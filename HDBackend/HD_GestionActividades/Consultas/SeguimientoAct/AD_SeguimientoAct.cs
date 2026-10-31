@@ -18,62 +18,76 @@ namespace HD_GestionActividades.Consultas.SeguimientoAct
         {
             FactoryConection factory = new FactoryConection(CadenaConexion);
 
-            var parametros = new
+            try
             {
-                id = seguimiento.idSolicitud,
-                idSala = seguimiento.idSala,
-                idActividad = seguimiento.idActividad,
-                comentarios = seguimiento.comentarios,
-                evidencia = seguimiento.evidencia,
-                user = seguimiento.usuario,
-                prioridad = seguimiento.prioridad,
-                idSucursal = seguimiento.idSucursal,
-                idDepartamento = seguimiento.idDepartamento,
-                datosExtra = seguimiento.datosExtra
-            };
+                var parametros = new
+                {
+                    id = seguimiento.idSolicitud,
+                    idSala = seguimiento.idSala,
+                    idActividad = seguimiento.idActividad,
+                    comentarios = seguimiento.comentarios,
+                    evidencia = seguimiento.evidencia,
+                    user = seguimiento.usuario,
+                    prioridad = seguimiento.prioridad,
+                    idSucursal = seguimiento.idSucursal,
+                    idDepartamento = seguimiento.idDepartamento,
+                    datosExtra = seguimiento.datosExtra
+                };
 
-            var idGenerado = await factory.SQL.QueryFirstOrDefaultAsync<int>(
-                "Seguimiento_Actividades..SP_Cat_SeguimientoAct_Guardar",
-                parametros,
-                commandType: System.Data.CommandType.StoredProcedure
-            );
+                var idGenerado = await factory.SQL.QueryFirstOrDefaultAsync<int>(
+                    "Seguimiento_Actividades..SP_Cat_SeguimientoAct_Guardar",
+                    parametros,
+                    commandType: System.Data.CommandType.StoredProcedure
+                );
 
-            return idGenerado;
+                return idGenerado;
+            }
+            finally
+            {
+                factory.Close();
+            }
         }
 
         public async Task EditarAsync(mdl_SeguimientoAct seguimiento)
         {
             FactoryConection factory = new FactoryConection(CadenaConexion);
 
-            var parametros = new
+            try
             {
-                idSolicitud = seguimiento.idSolicitud,
-                idSala = seguimiento.idSala,
-                idActividad = seguimiento.idActividad,
-                comentarios = seguimiento.comentarios,
-                evidencia = seguimiento.evidencia,
-                estatus = seguimiento.estatus,
-                prioridad = seguimiento.prioridad
-            };
+                var parametros = new
+                {
+                    idSolicitud = seguimiento.idSolicitud,
+                    idSala = seguimiento.idSala,
+                    idActividad = seguimiento.idActividad,
+                    comentarios = seguimiento.comentarios,
+                    evidencia = seguimiento.evidencia,
+                    estatus = seguimiento.estatus,
+                    prioridad = seguimiento.prioridad
+                };
 
-            await factory.SQL.ExecuteAsync(
-                "Seguimiento_Actividades..SP_Cat_SeguimientoAct_Editar",
-                parametros,
-                commandType: System.Data.CommandType.StoredProcedure
-            );
+                await factory.SQL.ExecuteAsync(
+                    "Seguimiento_Actividades..SP_Cat_SeguimientoAct_Editar",
+                    parametros,
+                    commandType: System.Data.CommandType.StoredProcedure
+                );
 
-            var parametrosHistorial = new
+                var parametrosHistorial = new
+                {
+                    idSolicitud = seguimiento.idSolicitud,
+                    estatus = seguimiento.estatus,
+                    user = seguimiento.usuario
+                };
+
+                await factory.SQL.ExecuteAsync(
+                    "Seguimiento_Actividades..SP_Cat_SeguimientoAct_CambiarEstatus",
+                    parametrosHistorial,
+                    commandType: System.Data.CommandType.StoredProcedure
+                );
+            }
+            finally
             {
-                idSolicitud = seguimiento.idSolicitud,
-                estatus = seguimiento.estatus,
-                user = seguimiento.usuario
-            };
-
-            await factory.SQL.ExecuteAsync(
-                "Seguimiento_Actividades..SP_Cat_SeguimientoAct_CambiarEstatus",
-                parametrosHistorial,
-                commandType: System.Data.CommandType.StoredProcedure
-            );
+                factory.Close();
+            }
         }
 
 
@@ -87,74 +101,102 @@ namespace HD_GestionActividades.Consultas.SeguimientoAct
         {
             FactoryConection factory = new FactoryConection(CadenaConexion);
 
-            var parametros = new
+            try
             {
-                idSolicitud,
-                estatus,
-                user
-            };
+                var parametros = new
+                {
+                    idSolicitud,
+                    estatus,
+                    user
+                };
 
-            await factory.SQL.ExecuteAsync(
-                "Seguimiento_Actividades..SP_Cat_SeguimientoAct_CambiarEstatus",
-                parametros,
-                commandType: System.Data.CommandType.StoredProcedure
-            );
+                await factory.SQL.ExecuteAsync(
+                    "Seguimiento_Actividades..SP_Cat_SeguimientoAct_CambiarEstatus",
+                    parametros,
+                    commandType: System.Data.CommandType.StoredProcedure
+                );
+            }
+            finally
+            {
+                factory.Close();
+            }
         }
 
         public async Task<List<mdl_SeguimientoAct>> ListadoAsync(int idUsuario)
         {
             FactoryConection factory = new FactoryConection(CadenaConexion);
 
-            var parametros = new
+            try
             {
-                idUsuario
-            };
+                var parametros = new
+                {
+                    idUsuario
+                };
 
-            var result = await factory.SQL.QueryAsync<mdl_SeguimientoAct>(
-                "Seguimiento_Actividades..SP_Cat_SeguimientoAct_Listado",
-                parametros,
-                commandType: System.Data.CommandType.StoredProcedure
-            );
+                var result = await factory.SQL.QueryAsync<mdl_SeguimientoAct>(
+                    "Seguimiento_Actividades..SP_Cat_SeguimientoAct_Listado",
+                    parametros,
+                    commandType: System.Data.CommandType.StoredProcedure
+                );
 
-            return result.ToList();
+                return result.ToList();
+            }
+            finally
+            {
+                factory.Close();
+            }
         }
 
         public async Task<mdl_SeguimientoAct> ObtenerAsync(int idSolicitud, int idUsuario)
         {
             FactoryConection factory = new FactoryConection(CadenaConexion);
 
-            var parametros = new
+            try
             {
-                idSolicitud,
-                idUsuario
-            };
+                var parametros = new
+                {
+                    idSolicitud,
+                    idUsuario
+                };
 
-            var result = await factory.SQL.QueryFirstOrDefaultAsync<mdl_SeguimientoAct>(
-                "Seguimiento_Actividades..SP_Cat_SeguimientoAct_Obtener",
-                parametros,
-                commandType: System.Data.CommandType.StoredProcedure
-            );
+                var result = await factory.SQL.QueryFirstOrDefaultAsync<mdl_SeguimientoAct>(
+                    "Seguimiento_Actividades..SP_Cat_SeguimientoAct_Obtener",
+                    parametros,
+                    commandType: System.Data.CommandType.StoredProcedure
+                );
 
-            return result;
+                return result;
+            }
+            finally
+            {
+                factory.Close();
+            }
         }
 
         public async Task<string> EliminarPorIDAsync(int idSolicitud, int user)
         {
             FactoryConection factory = new FactoryConection(CadenaConexion);
 
-            var parametros = new
+            try
             {
-                idSolicitud,
-                user
-            };
+                var parametros = new
+                {
+                    idSolicitud,
+                    user
+                };
 
-            await factory.SQL.ExecuteAsync(
-                "Seguimiento_Actividades..SP_Cat_SeguimientoAct_EliminarPorID",
-                parametros,
-                commandType: System.Data.CommandType.StoredProcedure
-            );
+                await factory.SQL.ExecuteAsync(
+                    "Seguimiento_Actividades..SP_Cat_SeguimientoAct_EliminarPorID",
+                    parametros,
+                    commandType: System.Data.CommandType.StoredProcedure
+                );
 
-            return "Registro eliminado correctamente";
+                return "Registro eliminado correctamente";
+            }
+            finally
+            {
+                factory.Close();
+            }
         }
 
 
@@ -163,18 +205,25 @@ namespace HD_GestionActividades.Consultas.SeguimientoAct
         {
             FactoryConection factory = new FactoryConection(CadenaConexion);
 
-            var parametros = new
+            try
             {
-                idSolicitud
-            };
+                var parametros = new
+                {
+                    idSolicitud
+                };
 
-            var result = await factory.SQL.QueryAsync<mdl_SeguimientoAct>(
-                "Seguimiento_Actividades..SP_Cat_SeguimientoAct_Historial_Listado",
-                parametros,
-                commandType: System.Data.CommandType.StoredProcedure
-            );
+                var result = await factory.SQL.QueryAsync<mdl_SeguimientoAct>(
+                    "Seguimiento_Actividades..SP_Cat_SeguimientoAct_Historial_Listado",
+                    parametros,
+                    commandType: System.Data.CommandType.StoredProcedure
+                );
 
-            return result.ToList();
+                return result.ToList();
+            }
+            finally
+            {
+                factory.Close();
+            }
         }
 
 
@@ -182,77 +231,112 @@ namespace HD_GestionActividades.Consultas.SeguimientoAct
         {
             FactoryConection factory = new FactoryConection(CadenaConexion);
 
-            var parametros = new
+            try
             {
-                idSolicitud,
-                comentario,
-                user
-            };
+                var parametros = new
+                {
+                    idSolicitud,
+                    comentario,
+                    user
+                };
 
-            await factory.SQL.ExecuteAsync(
-                "Seguimiento_Actividades..SP_Cat_SeguimientoAct_AgregarComentario",
-                parametros,
-                commandType: System.Data.CommandType.StoredProcedure
-            );
+                await factory.SQL.ExecuteAsync(
+                    "Seguimiento_Actividades..SP_Cat_SeguimientoAct_AgregarComentario",
+                    parametros,
+                    commandType: System.Data.CommandType.StoredProcedure
+                );
+            }
+            finally
+            {
+                factory.Close();
+            }
         }
 
         public async Task<int> ConteoNoRevisadosAsync(int idUsuario)
         {
             FactoryConection factory = new FactoryConection(CadenaConexion);
 
-            return await factory.SQL.QueryFirstOrDefaultAsync<int>(
-                "Seguimiento_Actividades..SP_Cat_SeguimientoAct_ConteoNoRevisados",
-                new { idUsuario },
-                commandType: CommandType.StoredProcedure
-            );
+            try
+            {
+                return await factory.SQL.QueryFirstOrDefaultAsync<int>(
+                    "Seguimiento_Actividades..SP_Cat_SeguimientoAct_ConteoNoRevisados",
+                    new { idUsuario },
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+            finally
+            {
+                factory.Close();
+            }
         }
 
         public async Task MarcarRevisadoAsync(int idUsuario)
         {
             FactoryConection factory = new FactoryConection(CadenaConexion);
 
-            await factory.SQL.ExecuteAsync(
-                "Seguimiento_Actividades..SP_Cat_SeguimientoAct_MarcarRevisado",
-                new { idUsuario },
-                commandType: CommandType.StoredProcedure
-            );
+            try
+            {
+                await factory.SQL.ExecuteAsync(
+                    "Seguimiento_Actividades..SP_Cat_SeguimientoAct_MarcarRevisado",
+                    new { idUsuario },
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+            finally
+            {
+                factory.Close();
+            }
         }
 
         public async Task CalificarAsync(int idSolicitud, int calificacion, string comentario, int user)
         {
             FactoryConection factory = new FactoryConection(CadenaConexion);
 
-            var parametros = new
+            try
             {
-                idSolicitud,
-                calificacion,
-                comentario,
-                user
-            };
+                var parametros = new
+                {
+                    idSolicitud,
+                    calificacion,
+                    comentario,
+                    user
+                };
 
-            await factory.SQL.ExecuteAsync(
-                "Seguimiento_Actividades..SP_Cat_SeguimientoAct_Calificar",
-                parametros,
-                commandType: CommandType.StoredProcedure
-            );
+                await factory.SQL.ExecuteAsync(
+                    "Seguimiento_Actividades..SP_Cat_SeguimientoAct_Calificar",
+                    parametros,
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+            finally
+            {
+                factory.Close();
+            }
         }
 
         public async Task ReactivarAsync(int idSolicitud, string comentario, int user)
         {
             FactoryConection factory = new FactoryConection(CadenaConexion);
 
-            var parametros = new
+            try
             {
-                idSolicitud,
-                comentario,
-                user
-            };
+                var parametros = new
+                {
+                    idSolicitud,
+                    comentario,
+                    user
+                };
 
-            await factory.SQL.ExecuteAsync(
-                "Seguimiento_Actividades..SP_Cat_SeguimientoAct_Reactivar",
-                parametros,
-                commandType: CommandType.StoredProcedure
-            );
+                await factory.SQL.ExecuteAsync(
+                    "Seguimiento_Actividades..SP_Cat_SeguimientoAct_Reactivar",
+                    parametros,
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+            finally
+            {
+                factory.Close();
+            }
         }
 
         // ---------------------------------------------------------------
@@ -268,41 +352,62 @@ namespace HD_GestionActividades.Consultas.SeguimientoAct
         {
             FactoryConection factory = new FactoryConection(CadenaConexion);
 
-            var parametros = new { idSolicitud, idActividad, user };
+            try
+            {
+                var parametros = new { idSolicitud, idActividad, user };
 
-            await factory.SQL.ExecuteAsync(
-                "Seguimiento_Actividades..SP_Cat_SeguimientoAct_SubActividad_Clonar",
-                parametros,
-                commandType: CommandType.StoredProcedure
-            );
+                await factory.SQL.ExecuteAsync(
+                    "Seguimiento_Actividades..SP_Cat_SeguimientoAct_SubActividad_Clonar",
+                    parametros,
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+            finally
+            {
+                factory.Close();
+            }
         }
 
         public async Task<List<mdl_SeguimientoAct_SubActividad>> SubActividadesAsync(int idSolicitud)
         {
             FactoryConection factory = new FactoryConection(CadenaConexion);
 
-            var parametros = new { idSolicitud };
+            try
+            {
+                var parametros = new { idSolicitud };
 
-            var result = await factory.SQL.QueryAsync<mdl_SeguimientoAct_SubActividad>(
-                "Seguimiento_Actividades..SP_Cat_SeguimientoAct_SubActividad_Listado",
-                parametros,
-                commandType: CommandType.StoredProcedure
-            );
+                var result = await factory.SQL.QueryAsync<mdl_SeguimientoAct_SubActividad>(
+                    "Seguimiento_Actividades..SP_Cat_SeguimientoAct_SubActividad_Listado",
+                    parametros,
+                    commandType: CommandType.StoredProcedure
+                );
 
-            return result.ToList();
+                return result.ToList();
+            }
+            finally
+            {
+                factory.Close();
+            }
         }
 
         public async Task MarcarSubActividadAsync(int idSegActSubActividad, bool completado, int user)
         {
             FactoryConection factory = new FactoryConection(CadenaConexion);
 
-            var parametros = new { idSegActSubActividad, completado, user };
+            try
+            {
+                var parametros = new { idSegActSubActividad, completado, user };
 
-            await factory.SQL.ExecuteAsync(
-                "Seguimiento_Actividades..SP_Cat_SeguimientoAct_SubActividad_Marcar",
-                parametros,
-                commandType: CommandType.StoredProcedure
-            );
+                await factory.SQL.ExecuteAsync(
+                    "Seguimiento_Actividades..SP_Cat_SeguimientoAct_SubActividad_Marcar",
+                    parametros,
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+            finally
+            {
+                factory.Close();
+            }
         }
 
         // 0 si el ticket no tiene checklist, o si ya se completó todo --
@@ -311,13 +416,20 @@ namespace HD_GestionActividades.Consultas.SeguimientoAct
         {
             FactoryConection factory = new FactoryConection(CadenaConexion);
 
-            var parametros = new { idSolicitud };
+            try
+            {
+                var parametros = new { idSolicitud };
 
-            return await factory.SQL.QueryFirstOrDefaultAsync<int>(
-                "Seguimiento_Actividades..SP_Cat_SeguimientoAct_SubActividad_ContarPendientes",
-                parametros,
-                commandType: CommandType.StoredProcedure
-            );
+                return await factory.SQL.QueryFirstOrDefaultAsync<int>(
+                    "Seguimiento_Actividades..SP_Cat_SeguimientoAct_SubActividad_ContarPendientes",
+                    parametros,
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+            finally
+            {
+                factory.Close();
+            }
         }
     }
 
