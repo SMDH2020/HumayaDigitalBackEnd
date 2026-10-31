@@ -21,7 +21,7 @@ namespace HD_Nomina.Modelos.Dashboard
         public int Sexo { get; set; }              // 0 = mujer, 1 = hombre
         public string nombre_jefe { get; set; }
         public string cargo_contable { get; set; }
-        public float sueldo_diario { get; set; }
-        public float sueldo_promedio { get; set; }
+        public float sueldodiario { get; set; }
+        public float sueldopromedio { get; set; }
     }
 }

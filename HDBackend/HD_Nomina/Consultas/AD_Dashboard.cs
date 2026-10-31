@@ -15,12 +15,21 @@ namespace HD_Nomina.Consultas
             CadenaConexion = _cadenaconexion;
         }
 
-        public async Task<mdl_Dashboard_View> obtenerDashboard()
+        public async Task<mdl_Dashboard_View> obtenerDashboard(int? periodo_inicio = null, int? periodo_fin = null,
+                                                       int? ejercicio_inicio = null, int? ejercicio_fin = null,
+                                                       string adr = "0", string sucursales = "0", string departamentos = "0")
         {
             try
             {
                 var parametros = new
                 {
+                    periodo_inicio,
+                    periodo_fin,
+                    ejercicio_inicio,
+                    ejercicio_fin,
+                    adr,
+                    sucursales,
+                    departamentos
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 var result = await factory.SQL.QueryMultipleAsync("Nomina.sp_Dashboard_Nomina", parametros, commandType: System.Data.CommandType.StoredProcedure);
