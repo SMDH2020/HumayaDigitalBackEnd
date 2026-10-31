@@ -33,6 +33,50 @@ namespace HD.Endpoints.Controllers.Finanzas
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> DDLTipoReporteER()
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            FAD_EstadoResultados datos = new FAD_EstadoResultados(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.Get_Filtro_Tipos_Reportes(usuario);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetDesgloseGastos(mdl_Filtro_Desglose_Gastos mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            FAD_EstadoResultados datos = new FAD_EstadoResultados(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.GetDesgloseGastos(mdl);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetDesgloseGastosDetalle(mdl_Filtro_Desglose_Gastos_Detalle mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            FAD_EstadoResultados datos = new FAD_EstadoResultados(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.GetDesgloseGastosDetalle(mdl);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetDesgloseGastosTotalesDetalle(mdl_Filtro_Desglose_Gastos_Detalle mdl)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            FAD_EstadoResultados datos = new FAD_EstadoResultados(CadenaConexion);
+            mdl.usuario = Sesion.usuario();
+            var result = await datos.GetDesgloseGastosTotalesDetalle(mdl);
+            return Ok(result);
+        }
+
 
         [HttpPost]
         [Route("/api/[controller]/[action]")]
@@ -42,6 +86,17 @@ namespace HD.Endpoints.Controllers.Finanzas
             string usuario = Sesion.usuario();
             FAD_EstadoResultados estadoresultados = new FAD_EstadoResultados(CadenaConexion);
             var result = await estadoresultados.GetEstadoResultadosByDireccionRolado(prm, usuario);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetEstadoResultadosByDireccionRoladoDesgloseGastos(Fmdl_EstadoResultadosRolado prm)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            string usuario = Sesion.usuario();
+            FAD_EstadoResultados estadoresultados = new FAD_EstadoResultados(CadenaConexion);
+            var result = await estadoresultados.GetEstadoResultadosByDireccionRoladoDesgloseGastos(prm, usuario);
             return Ok(result);
         }
 

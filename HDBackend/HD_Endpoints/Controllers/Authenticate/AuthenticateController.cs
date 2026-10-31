@@ -1,5 +1,6 @@
 ﻿using HD.Generales.Autenticate;
 using HD.Generales.Consultas;
+using HD.Notifications;
 using HD.Notifications.Autentication;
 using HD.Notifications.Modelos;
 using HD.Security;
@@ -42,7 +43,22 @@ namespace HD.Endpoints.Controllers.Authenticate
                 if (!string.IsNullOrWhiteSpace(email))
                 {
                     var configCorreo = Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>();
-                    await NE_Auth_CodigoSeguridad.enviar(configCorreo, email, codigoautenticacion);
+                    //await NE_Auth_CodigoSeguridad.enviar(configCorreo, email, codigoautenticacion);
+                    var datosCorreo = new mdl_Datos_Correo
+                    {
+                        Seccion = "Inicio de sesión",
+                        Titulo = "Tu código de autenticación",
+                        //Accion = "Código",
+                        Cuerpo = { new("Código",codigoautenticacion)},
+                        Instrucciones = "Ingresa este código en la pantalla de acceso para continuar. " +
+                        "Si no intentaste iniciar sesión, ignora este mensaje."
+                    };
+
+                    await NotificacionGeneral.Enviar(
+                        configCorreo,
+                        "Código de autenticación",
+                        datosCorreo,
+                        new List<string> { email });
                 }
 
 

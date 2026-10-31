@@ -18,11 +18,11 @@ namespace HD.Endpoints.Controllers.Mensajeria
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> obtenerMensajes(string numeroTelefono)
+        public async Task<ActionResult> obtenerMensajes(string numeroTelefono, string? seccion)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Obtener_Chat_Mensajes datos = new AD_Obtener_Chat_Mensajes(CadenaConexion);
-            var result = await datos.obtenerChat(numeroTelefono);
+            var result = await datos.obtenerChat(numeroTelefono, seccion);
             return Ok(result);
         }
 

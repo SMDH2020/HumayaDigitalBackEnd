@@ -30,6 +30,7 @@
     <ProjectReference Include="..\HD_Buro\HD_Buro.csproj" />
     <ProjectReference Include="..\HD_CentroMonitoreo\HD_CentroMonitoreo.csproj" />
     <ProjectReference Include="..\HD_Clientes\HD_Clientes.csproj" />
+    <ProjectReference Include="..\HD_Checador\HD_Checador.csproj" />
     <ProjectReference Include="..\HD_Cobranza\HD_Cobranza.csproj" />
     <ProjectReference Include="..\HD_Dashboard\HD_Dashboard.csproj" />
     <ProjectReference Include="..\HD_Finanzas\HD_Finanzas.csproj" />
@@ -39,6 +40,7 @@
     <ProjectReference Include="..\HD_GestionProyectosTI\HD_GestionProyectosTI.csproj" />
     <ProjectReference Include="..\HD_Helpers\HD_Helpers.csproj" />
     <ProjectReference Include="..\HD_Mensajeria\HD_Mensajeria.csproj" />
+    <ProjectReference Include="..\HD_Nomina\HD_Nomina.csproj" />
     <ProjectReference Include="..\HD_Notifications\HD_Notifications.csproj" />
     <ProjectReference Include="..\HD_RedesSociales\HD_RedesSociales.csproj" />
     <ProjectReference Include="..\HD_Reporteria\HD_Reporteria.csproj" />
