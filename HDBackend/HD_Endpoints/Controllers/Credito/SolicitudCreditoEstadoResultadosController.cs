@@ -18,7 +18,7 @@ namespace HD.Endpoints.Controllers.Credito
         public async Task<ActionResult> Post(mdlSolicitud_Credito_Estado_Resultados mdl)
         {
 
-            string CadenaConexion = Configuracion["ConnectionStrings:Login"];
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_SolicitudCreditoEstadoResultados_Guardar datos = new AD_SolicitudCreditoEstadoResultados_Guardar(CadenaConexion);
             mdl.usuario = Sesion.usuario();
             await datos.Guardar(mdl);
@@ -27,12 +27,12 @@ namespace HD.Endpoints.Controllers.Credito
         }
 
         [HttpGet]
-        [Route("/api/[controller]/[action]/{id}")]
-        public async Task<ActionResult> Listado(short filtrar)
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> Listado(string folio)
         {
-            string CadenaConexion = Configuracion["ConnectionStrings:Login"];
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_SolicitudCreditoEstadoResultados_Listado datos = new AD_SolicitudCreditoEstadoResultados_Listado(CadenaConexion);
-            var result = await datos.Listado(filtrar);
+            var result = await datos.Listado(folio);
             return Ok(result);
 
         }

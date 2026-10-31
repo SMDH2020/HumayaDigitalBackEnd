@@ -1,6 +1,8 @@
 ﻿using HD.Generales.Autenticate;
 using HD.Generales.Consultas;
+using HD.Notifications;
 using HD.Notifications.Autentication;
+using HD.Notifications.Modelos;
 using HD.Security;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,8 +19,9 @@ namespace HD.Endpoints.Controllers.Authenticate
             Configuracion = configuration;
         }
         [HttpPost]
-        public async Task<ActionResult>Post(mdlLogin mdl)
-        {
+        public async Task<ActionResult> Post(mdlLogin mdl)
+        { 
+
             if (mdl is null)
             {
                 return BadRequest("Error en datos enviados");
@@ -27,15 +30,37 @@ namespace HD.Endpoints.Controllers.Authenticate
             {
                 string CadenaConexion = Configuracion["ConnectionStrings:Login"];
 
-                 AD_Autenticacion datos = new AD_Autenticacion(CadenaConexion);
+                AD_Autenticacion datos = new AD_Autenticacion(CadenaConexion);
                 var result = await datos.Autenticar(mdl);
 
                 string? email = result.autenticacion?.email;
                 string? codigoautenticacion = result.autenticacion?.codigoautenticacion;
 
-                if (email == null) email= string.Empty;
+                if (email == null) email = string.Empty;
                 if (codigoautenticacion == null) codigoautenticacion = string.Empty;
-                //await NE_Auth_CodigoSeguridad.enviar(email , codigoautenticacion);
+
+                // ── Envio del codigo de autenticacion por Microsoft 365 ──
+                if (!string.IsNullOrWhiteSpace(email))
+                {
+                    var configCorreo = Configuracion.GetSection("CorreoM365").Get<mdl_Correo_M365>();
+                    //await NE_Auth_CodigoSeguridad.enviar(configCorreo, email, codigoautenticacion);
+                    var datosCorreo = new mdl_Datos_Correo
+                    {
+                        Seccion = "Inicio de sesión",
+                        Titulo = "Tu código de autenticación",
+                        //Accion = "Código",
+                        Cuerpo = { new("Código",codigoautenticacion)},
+                        Instrucciones = "Ingresa este código en la pantalla de acceso para continuar. " +
+                        "Si no intentaste iniciar sesión, ignora este mensaje."
+                    };
+
+                    await NotificacionGeneral.Enviar(
+                        configCorreo,
+                        "Código de autenticación",
+                        datosCorreo,
+                        new List<string> { email });
+                }
+
 
                 string iussuer = Configuracion["Jwt:Issuer"];
                 string audience = Configuracion["Jwt:Audience"];
@@ -44,7 +69,7 @@ namespace HD.Endpoints.Controllers.Authenticate
                 string? usuario = result.sesion?.idusuario;
                 if(usuario == null) usuario = string.Empty;
 
-                var token = await JwtManager.GenerarTocken(usuario, usuario, securitytkey, iussuer, audience,10080);
+                var token = await JwtManager.GenerarTocken(usuario, usuario, securitytkey, iussuer, audience,43200,"WEB");
                 return Ok(new { usuario = result.sesion, token });
             }
             else
