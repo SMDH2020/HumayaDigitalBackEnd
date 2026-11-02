@@ -89,8 +89,8 @@ builder.Services.AddMcpServer()
     .WithTools<PresentacionesTools>()
     .WithTools<FinanzasTools>()
     .WithTools<VendedoresTools>()
-    .WithTools<CobranzaTools>()
-    .WithTools<NominaTools>();
+    .WithTools<CobranzaTools>();
+    //.WithTools<NominaTools>();
 
 var app = builder.Build();
 
