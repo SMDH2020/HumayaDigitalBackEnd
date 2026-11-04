@@ -84,14 +84,14 @@ namespace HD.Endpoints.Controllers.MCP.Tools
         [Description("""
             Obtiene el Scorecard DESGLOSADO POR VENDEDOR de Maquinaria del Humaya (distribuidor John Deere).
             Retorna una fila por cada combinación de sucursal + vendedor + línea de negocio con:
-            sucursal, vendedor, línea, unidades_objetivo, unidades_vendidas, importe_real.
+            sucursal, vendedor, línea, unidades_objetivo, importe_objetivo, unidades_vendidas, importe_real.
             Permite ver el desempeño individual de cada vendedor en cada sucursal y línea.
             Filtra por rango de período: ejercicio inicio, mes inicio, ejercicio fin, mes fin.
             Ejemplos de uso:
             - "últimos 6 meses" desde enero 2026 hasta junio 2026 → ejercicio_inicio=2026, periodo_inicio=1, ejercicio_fin=2026, periodo_fin=6
             - "primer trimestre 2025" → ejercicio_inicio=2025, periodo_inicio=1, ejercicio_fin=2025, periodo_fin=3
             """)]
-        public async Task<IEnumerable<mdlMCP_Scorecard_Vendedor>> Obtener_Scorecard_Detalle_Por_Vendedor(
+        public async Task<object> Obtener_Scorecard_Detalle_Por_Vendedor(
 
             [Description("Año de inicio del período. Ejemplo: 2026")]
             string ejercicio_inicio,
@@ -105,13 +105,24 @@ namespace HD.Endpoints.Controllers.MCP.Tools
             [Description("Mes fin del período (número, 1-12). Ejemplo: 6 para junio")]
             string periodo_fin)
         {
-            AD_MCP_Scorecard_Vendedor datos = new AD_MCP_Scorecard_Vendedor(_conn);
-            var result = await datos.ObtenerScorecard(
-                int.Parse(ejercicio_inicio),
-                int.Parse(periodo_inicio),
-                int.Parse(ejercicio_fin),
-                int.Parse(periodo_fin));
-            return result;
+            try
+            {
+                AD_MCP_Scorecard_Vendedor datos = new AD_MCP_Scorecard_Vendedor(_conn);
+                var result = await datos.ObtenerScorecard(
+                    int.Parse(ejercicio_inicio),
+                    int.Parse(periodo_inicio),
+                    int.Parse(ejercicio_fin),
+                    int.Parse(periodo_fin));
+                return result;
+            }
+            catch (HD.AccesoDatos.Excepciones ex)
+            {
+                return new { error = true, mensaje = System.Text.Json.JsonSerializer.Serialize(ex.errores), tipo = "Excepciones" };
+            }
+            catch (Exception ex)
+            {
+                return new { error = true, mensaje = ex.Message, inner = ex.InnerException?.Message, tipo = ex.GetType().Name };
+            }
         }
     }
 }
