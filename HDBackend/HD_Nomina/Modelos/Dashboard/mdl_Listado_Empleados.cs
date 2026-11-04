@@ -23,5 +23,6 @@ namespace HD_Nomina.Modelos.Dashboard
         public string cargo_contable { get; set; }
         public float sueldodiario { get; set; }
         public float sueldopromedio { get; set; }
+        public byte[]? foto { get; set; }
     }
 }
