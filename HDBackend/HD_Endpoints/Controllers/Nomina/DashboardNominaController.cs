@@ -17,27 +17,32 @@ namespace HD.Endpoints.Controllers.Nomina
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> ObtenerDashboard(int? periodo_inicio = null, int? periodo_fin = null,
-                                             int? ejercicio_inicio = null, int? ejercicio_fin = null,
-                                             string adr = "0", string sucursales = "0", string departamentos = "0")
+        public async Task<ActionResult> ObtenerDashboard(int ejercicio, string adr, string sucursales, string departamentos, string header)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Dashboard datos = new AD_Dashboard(CadenaConexion);
-            var result = await datos.obtenerDashboard(periodo_inicio, periodo_fin, ejercicio_inicio, ejercicio_fin,
-                                                      adr, sucursales, departamentos);
+            var result = await datos.obtenerDashboard(ejercicio, adr, sucursales, departamentos, header);
+            return Ok(result);
+        }
+
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetFotoEmpleado(int idempleado)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_Dashboard datos = new AD_Dashboard(CadenaConexion);
+            var result = await datos.GetFotoEmpleado(idempleado);
             return Ok(result);
         }
 
         [HttpGet]
         [Route("/api/[controller]/[action]")]
-        public async Task<ActionResult> GenerarExcelListadoEmpleados(int? periodo_inicio = null, int? periodo_fin = null,
-                                                                     int? ejercicio_inicio = null, int? ejercicio_fin = null,
-                                                                     string adr = "0", string sucursales = "0", string departamentos = "0")
+        public async Task<ActionResult> GenerarExcelListadoEmpleados(int ejercicio, string adr, string sucursales, string departamentos, string header)
         {
             string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
             AD_Dashboard datos = new AD_Dashboard(CadenaConexion);
-            var result = await datos.obtenerDashboard(periodo_inicio, periodo_fin, ejercicio_inicio, ejercicio_fin,
-                                                      adr, sucursales, departamentos);
+            var result = await datos.obtenerDashboard(ejercicio, adr, sucursales, departamentos, header);
             var docresult = await XLS_Listado_Empleados.GenerarExcel(result.listado_empleado);
             return Ok(docresult);
         }
