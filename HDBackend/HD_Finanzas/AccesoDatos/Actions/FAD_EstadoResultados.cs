@@ -88,7 +88,8 @@ namespace HD_Finanzas.AccesoDatos.Actions
                     Departamentos = vm.departamentos,
                     Sucursales = vm.sucursales,
                     ADR = vm.adr,
-                    usuario = vm.usuario
+                    usuario = vm.usuario,
+                    importe_proy = vm.importe_proy
                 };
                 var result = await conection.SQL.QueryFirstOrDefaultAsync<mdl_Desglose_Gastos>("PixelCode..sp_GastosDesglose_HD", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 return result;
@@ -112,7 +113,8 @@ namespace HD_Finanzas.AccesoDatos.Actions
                     sucursales = vm.sucursales,
                     adr = vm.adr,
                     usuario = vm.usuario,
-                    tipo = vm.tipo
+                    tipo = vm.tipo,
+                    importe_proy = vm.importe_proy
                 };
                 var result = await conection.SQL.QueryAsync<mdl_Desglose_Gastos_Detalle>("PixelCode..sp_GastosDesglose_Detalle_HD", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 return result;
@@ -136,7 +138,8 @@ namespace HD_Finanzas.AccesoDatos.Actions
                     sucursales = vm.sucursales,
                     adr = vm.adr,
                     usuario = vm.usuario,
-                    tipo = vm.tipo
+                    tipo = vm.tipo,
+                    importe_proy = vm.importe_proy
                 };
                 var result = await conection.SQL.QueryAsync<mdl_Desglose_Gastos_Detalle>("PixelCode..sp_GastosDesglose_Totales_HD", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 return result;
