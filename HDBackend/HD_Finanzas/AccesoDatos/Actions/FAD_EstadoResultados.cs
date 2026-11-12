@@ -716,21 +716,43 @@ namespace HD_Finanzas.AccesoDatos.Actions
                 throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, ex.Message);
             }
         }
-        public async Task<List<Fmdl_EstadoResultados_View>> GetEstadoResultadosByDireccionRolado_Claude(string fecha_inicio,string Fecha_fin,string departamento, string sucursal, string adr,string usuario)
+        public async Task<List<Fmdl_EstadoResultados_View>> GetEstadoResultadosByDireccionRolado_Claude(string fecha_inicio,string Fecha_fin,string departamento, string sucursal, string adr,string usuario, string? escenario = null)
         {
             try
             {
                 FactoryConection factory = new FactoryConection(CadenaConexion);
-                var parametros = new
+                Dapper.SqlMapper.GridReader result;
+
+                // Cuando se proporciona un escenario especial (ej: 4001, 4003) usar el SP que acepta
+                // escenario como parámetro entero, ya que el SP Claude extrae el año de la fecha
+                // y SQL Server no admite años > 2079 en smalldatetime.
+                if (!string.IsNullOrEmpty(escenario))
                 {
-                    fechainicio1 = fecha_inicio,
-                    fechafin1 = Fecha_fin,
-                    Departamentos = departamento,
-                    Sucursales = sucursal,
-                    ADR = adr,
-                    usuario = usuario
-                };
-                var result = await factory.SQL.QueryMultipleAsync("PixelCode.dbo.SP_EstadoResultadosByDireccion_Rolado_HD_Escenarios_Claude", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                    var parametrosEsc = new
+                    {
+                        fechainicio = fecha_inicio,
+                        fechafin = Fecha_fin,
+                        escenario = escenario,
+                        Departamentos = departamento,
+                        Sucursales = sucursal,
+                        ADR = adr,
+                        usuario = usuario
+                    };
+                    result = await factory.SQL.QueryMultipleAsync("PixelCode.dbo.SP_EstadoResultadosByDireccion_Rolado_HD_Escenarios", parametrosEsc, commandType: System.Data.CommandType.StoredProcedure);
+                }
+                else
+                {
+                    var parametros = new
+                    {
+                        fechainicio1 = fecha_inicio,
+                        fechafin1 = Fecha_fin,
+                        Departamentos = departamento,
+                        Sucursales = sucursal,
+                        ADR = adr,
+                        usuario = usuario
+                    };
+                    result = await factory.SQL.QueryMultipleAsync("PixelCode.dbo.SP_EstadoResultadosByDireccion_Rolado_HD_Escenarios_Claude", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                }
 
                 List<Fmdl_EstadoResultados_Result> ERNow = result.Read<Fmdl_EstadoResultados_Result>().ToList();
                 List<Fmdl_EstadoResultados_Result> ERLast = result.Read<Fmdl_EstadoResultados_Result>().ToList();

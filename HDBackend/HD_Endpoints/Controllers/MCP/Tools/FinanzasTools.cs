@@ -21,12 +21,12 @@ namespace HD.Endpoints.Controllers.MCP.Tools
             Filtra por rango de fechas, región (ADR), departamento y sucursal.
             Cuando el usuario pida "todo", "grupo" o varias regiones a la vez, usar 0 en adr, departamento y sucursal.
             """)]
-        public async Task<List<Fmdl_EstadoResultados_View>> Obtener_Estado_Resultados(
+        public async Task<object> Obtener_Estado_Resultados(
 
-            [Description("Fecha inicio del período en formato dd/mm/yyyy. Ejemplo: 01/01/2025")]
+            [Description("Fecha inicio del período en formato dd/mm/yyyy. Ejemplo: 01/01/2025. Para escenarios especiales (4001, 4003) usar fechas del año base (ej: 01/01/2027)")]
             string fecha_inicio,
 
-            [Description("Fecha fin del período en formato dd/mm/yyyy. Ejemplo: 31/03/2025")]
+            [Description("Fecha fin del período en formato dd/mm/yyyy. Ejemplo: 31/03/2025. Para escenarios especiales (4001, 4003) usar fechas del año base (ej: 31/12/2027)")]
             string fecha_fin,
 
             [Description("""
@@ -72,12 +72,26 @@ namespace HD.Endpoints.Controllers.MCP.Tools
                 32 = Tecuala
                 52 = San Vicente
                 """)]
-            string sucursal)
+            string sucursal,
+
+            [Description("""
+                Escenario / ejercicio presupuestal. Dejar vacío para el año normal (extrae el año de fecha_inicio).
+                Usar cuando el año del escenario no coincide con el año calendario (ej: 4001 = Escenario 2, 4003 = Escenario 3).
+                En ese caso pasar fecha_inicio/fecha_fin con fechas de 2027 y el código de escenario aquí.
+                """)]
+            string? escenario = null)
         {
-            FAD_EstadoResultados estadoresultados = new FAD_EstadoResultados(_conn);
-            var result = await estadoresultados.GetEstadoResultadosByDireccionRolado_Claude(
-                fecha_inicio, fecha_fin, departamento, sucursal, adr, "8919");
-            return result;
+            try
+            {
+                FAD_EstadoResultados estadoresultados = new FAD_EstadoResultados(_conn);
+                var result = await estadoresultados.GetEstadoResultadosByDireccionRolado_Claude(
+                    fecha_inicio, fecha_fin, departamento, sucursal, adr, "8919", escenario);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return new { error = true, mensaje = ex.Message, innerException = ex.InnerException?.Message };
+            }
         }
     }
 }

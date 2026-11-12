@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Estado de Resultados Comparativo 2027 vs 2026</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;font-size:11px;background:#fff;color:#222}
+.header-main{background:#2d5a1b;color:#fff;text-align:center;padding:9px 4px;font-weight:bold;font-size:13px;letter-spacing:.02em}
+.header-sub{background:#367C2B;color:#FFDE00;text-align:center;padding:3px;font-size:10px;font-weight:bold}
+table{width:100%;border-collapse:collapse}
+th{background:#367C2B;color:#fff;padding:5px 4px;text-align:center;font-size:10px;font-weight:bold;border:1px solid #2d5a1b;white-space:nowrap}
+th:first-child{text-align:left}
+td{padding:3px 4px;border:0.5px solid #ddd;vertical-align:middle;white-space:nowrap}
+.dept-row td{background:#367C2B;color:#fff;font-weight:bold;font-size:11px;text-transform:uppercase;padding:5px 6px}
+.subtotal td{font-weight:bold;background:#f0f5ee}
+.total-row td{font-weight:bold;background:#e6ede4}
+.grand-total td{font-weight:bold;background:#367C2B;color:#fff}
+.r{text-align:right}
+.neg{color:#c00}
+.pos{color:#060}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;vertical-align:middle;margin-right:2px}
+.dot-g{background:#22aa22}
+.dot-y{background:#FFDE00;border:1px solid #cc9900}
+.dot-r{background:#cc2222}
+.section-gap{height:4px;background:#fff}
+.pct-cell{color:#666;font-size:10px}
+</style>
+</head>
+<body>
+<div class="header-main">ESTADO DE RESULTADOS COMPARATIVO DE ENERO A DICIEMBRE DEL 2027 CONTRA 2026</div>
+<div class="header-sub">ESCENARIO 1 &nbsp;|&nbsp; PROYECCIÓN 2027 (Presupuesto del Sistema) vs REAL 2026 (Ene-Oct Real + Nov-Dic Estimado con Oct)</div>
+<table>
+<thead>
+<tr>
+  <th style="width:200px">CONCEPTO</th>
+  <th style="width:110px">PROYECCIÓN 2027</th>
+  <th style="width:48px">%</th>
+  <th style="width:110px">REAL 2026</th>
+  <th style="width:48px">%</th>
+  <th style="width:110px">DIFERENCIA</th>
+  <th style="width:48px">%</th>
+</tr>
+</thead>
+<tbody id="tbody"></tbody>
+</table>
+<div style="font-size:9px;color:#666;padding:6px 4px;border-top:1px solid #ccc">
+  PROYECCIÓN 2027: Presupuesto 2027 cargado en el sistema (proyimporte). &nbsp;|&nbsp;
+  REAL 2026: Enero–Octubre 2026 real + Noviembre–Diciembre estimado (datos de Octubre 2026). &nbsp;|&nbsp;
+  DIFERENCIA = Proyección 2027 − Real 2026. &nbsp;|&nbsp; Generado: 09/11/2026.
+</div>
+<script>
+// p27 = PROYECCIÓN 2027 (API proyimporte 2027)
+// p26 = REAL 2026 (Ene-Oct actual + 2×Oct)
+const data = [
+  {dep:"MAQUINARIA", rows:[
+    {c:"Maquinaria Nueva",             p27:270584651,    p26:257746619,  tipo:"bruto"},
+    {c:"Descuentos",                   p27:0,            p26:9371865,    tipo:"desc"},
+    {c:"Ventas Netas",                 p27:270584651,    p26:248374754,  tipo:"subtotal", vn:true},
+    {c:"Costo de Venta",               p27:229996953.35, p26:210986995,  tipo:"costo"},
+    {c:"Utilidad Bruta",               p27:40587697.65,  p26:37387757,   tipo:"subtotal"},
+    {c:"Gastos de Departamento",       p27:22830253.32,  p26:24180097,   tipo:"gasto"},
+    {c:"Utilidad de Operación",        p27:17757444.33,  p26:13207660,   tipo:"total"},
+  ]},
+  {dep:"REFACCIONES", rows:[
+    {c:"Refacciones",                  p27:146268939,    p26:160263299,  tipo:"bruto"},
+    {c:"Descuentos",                   p27:0,            p26:11483914,   tipo:"desc"},
+    {c:"Ventas Netas",                 p27:146268939,    p26:148779386,  tipo:"subtotal", vn:true},
+    {c:"Costo de Venta",               p27:109235340.77, p26:112224423,  tipo:"costo"},
+    {c:"Utilidad Bruta",               p27:37033598.23,  p26:36554963,   tipo:"subtotal"},
+    {c:"Gastos de Departamento",       p27:21295815.3,   p26:21162179,   tipo:"gasto"},
+    {c:"Utilidad de Operación",        p27:15737782.92,  p26:15392783,   tipo:"total"},
+  ]},
+  {dep:"SERVICIO", rows:[
+    {c:"Servicio",                     p27:45074800,     p26:36015556,   tipo:"bruto"},
+    {c:"Trabajos Foráneos",            p27:7225069,      p26:10636440,   tipo:"bruto"},
+    {c:"Descuentos",                   p27:0,            p26:424855,     tipo:"desc"},
+    {c:"Ventas Netas",                 p27:52299869,     p26:46227141,   tipo:"subtotal", vn:true},
+    {c:"Costo de Venta Servicio",      p27:25834917.31,  p26:19922743,   tipo:"costo"},
+    {c:"Costo Trab. Foráneos",         p27:5992537.96,   p26:9874504,    tipo:"costo"},
+    {c:"Utilidad Bruta",               p27:20472413.73,  p26:16429892,   tipo:"subtotal"},
+    {c:"Gastos de Departamento",       p27:13677227.06,  p26:13209956,   tipo:"gasto"},
+    {c:"Utilidad de Operación",        p27:6795186.67,   p26:3219936,    tipo:"total"},
+  ]},
+  {dep:"PRODUCTOS ALIADOS", rows:[
+    {c:"Productos Aliados",            p27:30313045,     p26:26736211,   tipo:"bruto"},
+    {c:"Descuentos",                   p27:0,            p26:25340,      tipo:"desc"},
+    {c:"Ventas Netas",                 p27:30313045,     p26:26710871,   tipo:"subtotal", vn:true},
+    {c:"Costo de Venta",               p27:24250436,     p26:22083110,   tipo:"costo"},
+    {c:"Utilidad Bruta",               p27:6062609,      p26:4627762,    tipo:"subtotal"},
+    {c:"Gastos de Departamento",       p27:4075676.01,   p26:4280368,    tipo:"gasto"},
+    {c:"Utilidad de Operación",        p27:1986932.99,   p26:347393,     tipo:"total"},
+  ]},
+  {dep:"FERRETERÍA", rows:[
+    {c:"Ferretería",                   p27:23320604,     p26:20304668,   tipo:"bruto"},
+    {c:"Descuentos",                   p27:0,            p26:325095,     tipo:"desc"},
+    {c:"Ventas Netas",                 p27:23320604,     p26:19979573,   tipo:"subtotal", vn:true},
+    {c:"Costo de Venta",               p27:19717570.68,  p26:16986156,   tipo:"costo"},
+    {c:"Utilidad Bruta",               p27:3603033.32,   p26:2993417,    tipo:"subtotal"},
+    {c:"Gastos de Departamento",       p27:2429438.98,   p26:2388852,    tipo:"gasto"},
+    {c:"Utilidad de Operación",        p27:1173594.34,   p26:604565,     tipo:"total"},
+  ]},
+  {dep:"SISTEMAS DE RIEGO", rows:[
+    {c:"Sistema de Riego",             p27:38143395,     p26:40118835,   tipo:"bruto"},
+    {c:"Descuentos",                   p27:0,            p26:190108,     tipo:"desc"},
+    {c:"Ventas Netas",                 p27:38143395,     p26:39928727,   tipo:"subtotal", vn:true},
+    {c:"Costo de Venta",               p27:32014986.38,  p26:34025730,   tipo:"costo"},
+    {c:"Utilidad Bruta",               p27:6128408.62,   p26:5902994,    tipo:"subtotal"},
+    {c:"Gastos de Departamento",       p27:5352856.16,   p26:5350215,    tipo:"gasto"},
+    {c:"Utilidad de Operación",        p27:775552.46,    p26:552779,     tipo:"total"},
+  ]},
+  {dep:"AMS", rows:[
+    {c:"Venta de AMS",                 p27:4885000,      p26:7276873,    tipo:"bruto"},
+    {c:"Renta de AMS",                 p27:1812000,      p26:1820697,    tipo:"bruto"},
+    {c:"Descuentos",                   p27:0,            p26:250328,     tipo:"desc"},
+    {c:"Ventas Netas",                 p27:6697000,      p26:8847242,    tipo:"subtotal", vn:true},
+    {c:"Costo de Venta",               p27:3388724.5,    p26:4907666,    tipo:"costo"},
+    {c:"Utilidad Bruta",               p27:3308275.5,    p26:3939576,    tipo:"subtotal"},
+    {c:"Gastos de Departamento",       p27:2245125.92,   p26:2256610,    tipo:"gasto"},
+    {c:"Utilidad de Operación",        p27:1063149.58,   p26:1682968,    tipo:"total"},
+  ]},
+  {dep:"DRONES", rows:[
+    {c:"Venta Bruta",                  p27:46850960,     p26:46244863,   tipo:"bruto"},
+    {c:"Descuentos",                   p27:0,            p26:10360,      tipo:"desc"},
+    {c:"Ventas Netas",                 p27:46850960,     p26:46234502,   tipo:"subtotal", vn:true},
+    {c:"Costo de Venta",               p27:36215792.08,  p26:35507027,   tipo:"costo"},
+    {c:"Utilidad Bruta",               p27:10635167.92,  p26:10727476,   tipo:"subtotal"},
+    {c:"Gastos de Departamento",       p27:6584403.18,   p26:5912271,    tipo:"gasto"},
+    {c:"Utilidad de Operación",        p27:4050764.74,   p26:4815202,    tipo:"total"},
+  ]},
+  {dep:"SEMINUEVOS", rows:[
+    {c:"Venta Bruta",                  p27:36629170,     p26:35432000,   tipo:"bruto"},
+    {c:"Descuentos",                   p27:0,            p26:25410,      tipo:"desc"},
+    {c:"Ventas Netas",                 p27:36629170,     p26:35406590,   tipo:"subtotal", vn:true},
+    {c:"Costo de Venta",               p27:36488362.59,  p26:38494681,   tipo:"costo"},
+    {c:"Utilidad Bruta",               p27:140807.41,    p26:-3088091,   tipo:"subtotal"},
+    {c:"Gastos de Departamento",       p27:3341371.5,    p26:3482137,    tipo:"gasto"},
+    {c:"Utilidad de Operación",        p27:-3200564.09,  p26:-6570227,   tipo:"total"},
+  ]},
+];
+
+const fmt = n => {
+  if(n===0) return '-';
+  const neg = n < 0;
+  const s = Math.abs(n).toLocaleString('es-MX',{minimumFractionDigits:0,maximumFractionDigits:0});
+  return (neg?'(':'')+s+(neg?')':'');
+};
+const fmtPct = n => n===null?'':n.toFixed(1)+'%';
+const fmtDiff = n => {
+  if(n===0) return '-';
+  const cl = n>0?'pos':'neg';
+  const s = Math.abs(n).toLocaleString('es-MX',{minimumFractionDigits:0,maximumFractionDigits:0});
+  return `<span class="${cl}">${n>0?'+':'-'}${s}</span>`;
+};
+const indicator = (p27,p26,tipo) => {
+  if(!p26||tipo==='desc'||tipo==='bruto') return '';
+  const r = p27/p26;
+  let cls;
+  if(tipo==='costo'||tipo==='gasto') cls=r<=1.05?'dot-g':r<=1.15?'dot-y':'dot-r';
+  else cls=r>=0.95?'dot-g':r>=0.80?'dot-y':'dot-r';
+  return `<span class="dot ${cls}"></span>`;
+};
+
+const tbody = document.getElementById('tbody');
+let gt27_vn=0,gt26_vn=0,gt27_cv=0,gt26_cv=0,gt27_ub=0,gt26_ub=0,gt27_gd=0,gt26_gd=0,gt27_uop=0,gt26_uop=0;
+
+data.forEach(dept => {
+  const vnRow = dept.rows.find(r=>r.vn);
+  const vn27 = vnRow?.p27||1, vn26 = vnRow?.p26||1;
+  const dh = tbody.insertRow(); dh.className='dept-row';
+  dh.innerHTML=`<td colspan="7">${dept.dep}</td>`;
+
+  dept.rows.forEach(r=>{
+    const diff=r.p27-r.p26;
+    const diffPct=r.p26!==0?diff/Math.abs(r.p26)*100:null;
+    const pct27=r.tipo!=='bruto'?r.p27/vn27*100:null;
+    const pct26=r.tipo!=='bruto'?r.p26/vn26*100:null;
+    const bold=r.tipo==='subtotal'||r.tipo==='total';
+    const indent=['bruto','desc','costo','gasto'].includes(r.tipo);
+    const tr=tbody.insertRow();
+    if(r.tipo==='subtotal') tr.className='subtotal';
+    if(r.tipo==='total') tr.className='total-row';
+    tr.innerHTML=`
+      <td style="font-weight:${bold?'bold':'normal'};padding-left:${indent?'16':'5'}px">${r.c}</td>
+      <td class="r" style="font-weight:${bold?'bold':'normal'}">${fmt(r.p27)}</td>
+      <td class="r pct-cell">${r.vn?'100%':fmtPct(pct27)}</td>
+      <td class="r" style="font-weight:${bold?'bold':'normal'}">${indicator(r.p27,r.p26,r.tipo)}${fmt(r.p26)}</td>
+      <td class="r pct-cell">${r.vn?'100%':fmtPct(pct26)}</td>
+      <td class="r">${fmtDiff(diff)}</td>
+      <td class="r ${diff>=0?'pos':'neg'}">${diffPct!==null?fmtPct(diffPct):''}</td>
+    `;
+    if(r.vn){gt27_vn+=r.p27;gt26_vn+=r.p26;}
+    if(r.tipo==='costo'){gt27_cv+=r.p27;gt26_cv+=r.p26;}
+    if(r.c==='Utilidad Bruta'){gt27_ub+=r.p27;gt26_ub+=r.p26;}
+    if(r.tipo==='gasto'){gt27_gd+=r.p27;gt26_gd+=r.p26;}
+    if(r.tipo==='total'){gt27_uop+=r.p27;gt26_uop+=r.p26;}
+  });
+  const sp=tbody.insertRow(); sp.className='section-gap';
+  sp.innerHTML='<td colspan="7"></td>';
+});
+
+const addRow=(label,p27,p26,bold,cls)=>{
+  const diff=p27-p26,diffPct=p26?diff/Math.abs(p26)*100:null;
+  const pct27=gt27_vn?p27/gt27_vn*100:0,pct26=gt26_vn?p26/gt26_vn*100:0;
+  const tr=tbody.insertRow(); tr.className=cls||'';
+  tr.innerHTML=`
+    <td style="font-weight:${bold?'bold':'normal'}">${label}</td>
+    <td class="r" style="font-weight:${bold?'bold':'normal'}">${fmt(p27)}</td>
+    <td class="r pct-cell">${fmtPct(pct27)}</td>
+    <td class="r" style="font-weight:${bold?'bold':'normal'}">${fmt(p26)}</td>
+    <td class="r pct-cell">${fmtPct(pct26)}</td>
+    <td class="r">${fmtDiff(diff)}</td>
+    <td class="r ${diff>=0?'pos':'neg'}">${diffPct!==null?fmtPct(diffPct):''}</td>
+  `;
+};
+
+const gtH=tbody.insertRow(); gtH.className='dept-row';
+gtH.innerHTML='<td colspan="7">CONSOLIDADO GRUPO</td>';
+addRow('Ventas Totales',         gt27_vn,  gt26_vn,  true,  'subtotal');
+addRow('Costos de Venta',        gt27_cv,  gt26_cv,  false, '');
+addRow('Utilidad Bruta',         gt27_ub,  gt26_ub,  true,  'subtotal');
+addRow('Gastos de Departamento', gt27_gd,  gt26_gd,  false, '');
+addRow('Utilidad de Operación',  gt27_uop, gt26_uop, true,  'grand-total');
+</script>
+</body>
+</html>
