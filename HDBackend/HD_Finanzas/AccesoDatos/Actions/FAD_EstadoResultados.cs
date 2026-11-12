@@ -113,6 +113,7 @@ namespace HD_Finanzas.AccesoDatos.Actions
                     sucursales = vm.sucursales,
                     adr = vm.adr,
                     usuario = vm.usuario,
+                    escenario = vm.escenario,
                     tipo = vm.tipo,
                     importe_proy = vm.importe_proy
                 };
@@ -138,6 +139,7 @@ namespace HD_Finanzas.AccesoDatos.Actions
                     sucursales = vm.sucursales,
                     adr = vm.adr,
                     usuario = vm.usuario,
+                    escenario = vm.escenario,
                     tipo = vm.tipo,
                     importe_proy = vm.importe_proy
                 };
