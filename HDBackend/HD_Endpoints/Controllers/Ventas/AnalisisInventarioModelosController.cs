@@ -3,6 +3,7 @@ using HD_Ventas.Consultas.AnalisisInventarioModelos;
 using HD_Ventas.Consultas.ObjetivosModelos;
 using HD_Ventas.Modelos.AnalisisInventarioModelos;
 using HD_Ventas.Modelos.ObjetivosModelos;
+using HD_Ventas.Reportes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HD.Endpoints.Controllers.Ventas
@@ -28,6 +29,19 @@ namespace HD.Endpoints.Controllers.Ventas
             int usuario = int.Parse(Sesion.usuario());
             var result = await datos.Reporte(inicio_tendencia, fin_tendencia, inicio_resto, fin_resto, inicio_proyeccion, fin_proyeccion, comparativo, sucursal, adr, usuario);
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/[action]")]
+        // Mismos parametros que Reporte. titulo es opcional (si no se envia: "Analizar tendencia de inventario - Ene 2026 - Oct 2026"). Regresa DocResult { documento (base64), filename }
+        public async Task<ActionResult> ReporteExcel(int inicio_tendencia, int fin_tendencia, int inicio_resto, int fin_resto, int inicio_proyeccion, int fin_proyeccion, int comparativo, string sucursal = "0", string adr = "0", string? titulo = null)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_AnalisisInventarioModelos_Reporte datos = new AD_AnalisisInventarioModelos_Reporte(CadenaConexion);
+            int usuario = int.Parse(Sesion.usuario());
+            var result = await datos.Reporte(inicio_tendencia, fin_tendencia, inicio_resto, fin_resto, inicio_proyeccion, fin_proyeccion, comparativo, sucursal, adr, usuario);
+            var docResult = await XLSVen_Analisis_Inventario_Modelos.GenerarExcel(result, titulo, inicio_tendencia, fin_tendencia, inicio_resto, fin_resto, inicio_proyeccion, fin_proyeccion, comparativo);
+            return Ok(docResult);
         }
 
         [HttpPost]
