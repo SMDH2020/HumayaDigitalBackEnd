@@ -33,7 +33,14 @@ namespace HD.Endpoints.Controllers.Jhony
                 var client = _httpClientFactory.CreateClient();
                 client.Timeout = TimeSpan.FromSeconds(90);
 
-                var json = JsonSerializer.Serialize(new { message = payload.Mensaje.Trim() });
+                var historial = (payload.Historial ?? new List<JhonyHistorialItem>())
+                    .Select(h => new { rol = h.Rol, texto = h.Texto.Trim() });
+                var json = JsonSerializer.Serialize(new
+                {
+                    message = payload.Mensaje.Trim(),
+                    historial,
+                    contexto_anterior = NormalizarContexto(payload.ContextoAnterior)
+                });
                 var contenido = new StringContent(json, Encoding.UTF8, "application/json");
 
                 var respuesta = await client.PostAsync(N8N_JHONY_URL, contenido);
@@ -57,6 +64,23 @@ namespace HD.Endpoints.Controllers.Jhony
                 return StatusCode(502, new { ok = false, respuesta = MENSAJE_ERROR });
             }
         }
+
+        // Acepta el contexto solo si es un objeto JSON válido y lo regresa compacto; si no, se descarta.
+        private static string? NormalizarContexto(string? contexto)
+        {
+            if (string.IsNullOrWhiteSpace(contexto)) return null;
+            try
+            {
+                using var documento = JsonDocument.Parse(contexto);
+                return documento.RootElement.ValueKind == JsonValueKind.Object
+                    ? JsonSerializer.Serialize(documento.RootElement)
+                    : null;
+            }
+            catch (JsonException)
+            {
+                return null;
+            }
+        }
     }
 
     public class JhonyPreguntaBody
@@ -64,5 +88,24 @@ namespace HD.Endpoints.Controllers.Jhony
         [Required]
         [StringLength(500, MinimumLength = 1)]
         public string Mensaje { get; set; } = string.Empty;
+
+        // Mensajes previos de la conversación (contexto para preguntas de seguimiento).
+        [MaxLength(10)]
+        public List<JhonyHistorialItem> Historial { get; set; } = new();
+
+        // JSON interpretado de la pregunta anterior (lo genera n8n y el front lo regresa).
+        [StringLength(4000)]
+        public string? ContextoAnterior { get; set; }
+    }
+
+    public class JhonyHistorialItem
+    {
+        [Required]
+        [RegularExpression("^(usuario|jhony)$")]
+        public string Rol { get; set; } = string.Empty;
+
+        [Required]
+        [StringLength(2000, MinimumLength = 1)]
+        public string Texto { get; set; } = string.Empty;
     }
 }

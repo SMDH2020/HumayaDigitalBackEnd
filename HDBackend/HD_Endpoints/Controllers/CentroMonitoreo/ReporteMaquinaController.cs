@@ -40,7 +40,7 @@ namespace HD.Endpoints.Controllers
             try
             {
                 var client = _httpClientFactory.CreateClient();
-                client.Timeout = TimeSpan.FromSeconds(240);
+                client.Timeout = TimeSpan.FromSeconds(240); 
 
                 var json = JsonSerializer.Serialize(new
                 {
