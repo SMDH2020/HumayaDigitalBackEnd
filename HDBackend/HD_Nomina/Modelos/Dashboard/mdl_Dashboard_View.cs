@@ -14,6 +14,8 @@ namespace HD_Nomina.Modelos.Dashboard
         public List<mdl_Estructura_Jefe>? estructura_jefes { get; set; }
         public List<mdl_Empleados_Puesto>? empleados_Puestos { get; set; }
         public List<mdl_Listado_Empleados>? listado_empleado { get; set; }
+        public List<mdl_Personal_Cargo_Contable>? personal_cargo_contable { get; set; }
+
 
     }
 }

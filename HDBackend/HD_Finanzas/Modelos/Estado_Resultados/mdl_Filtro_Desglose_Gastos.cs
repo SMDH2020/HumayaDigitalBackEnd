@@ -14,5 +14,6 @@ namespace HD_Finanzas.Modelos.Estado_Resultados
         public string? departamentos { get; set; }
         public string? sucursales { get; set; }
         public string? usuario { get; set; }
+        public decimal importe_proy { get; set; }
     }
 }

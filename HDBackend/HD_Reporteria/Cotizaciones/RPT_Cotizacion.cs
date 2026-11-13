@@ -167,6 +167,17 @@ namespace HD_Reporteria.Cotizaciones
             public string documento { get; set; }
         }
 
+        //// ==================== TEMPORAL (pruebas locales) ====================
+        //// Cantidad de drones a cotizar en esta prueba
+        //const int CANTIDAD_DRONES_TEMP = 10;
+
+        //// Identifica la partida del dron. Ajusta el criterio si el nombre no contiene "DRON"
+        //// (por ejemplo: m.modelo == "XXXX" o por id de producto).
+        //static bool EsDronTemp(mdl_Detalle_Cotizacion_Imprimir m) =>
+        //    (m.modelo ?? "").IndexOf("DRON", StringComparison.OrdinalIgnoreCase) >= 0 ||
+        //    (m.descripcion ?? "").IndexOf("DRON", StringComparison.OrdinalIgnoreCase) >= 0;
+        //// =====================================================================
+
 
         public static RPT_Result GenerarPDF(IEnumerable<mdl_Cotizacion_Imprimir> detalle)
         {
@@ -179,9 +190,25 @@ namespace HD_Reporteria.Cotizaciones
                 {
                     modelos = JsonConvert.DeserializeObject<List<mdl_Detalle_Cotizacion_Imprimir>>(jsonEscapado);
                 }
-                double sumaPrecioLista = modelos.Sum(m => m.precio_lista);
-                double sumaDescuentoPromocion = modelos.Sum(m => m.descuento_promocion);
-                double sumaPrecioPromocion = modelos.Sum(m => m.precio_promocion);
+
+                //// ==================== TEMPORAL: drones x10 ====================
+                //// Se asume que el stored devuelve el precio UNITARIO del dron.
+                //// Si ya viene el total de las 10 piezas, quita las multiplicaciones y deja solo m.cantidad.
+                //foreach (var m in modelos.Where(EsDronTemp))
+                //{
+                //    m.cantidad = CANTIDAD_DRONES_TEMP;
+                //    //m.precio_lista        *= CANTIDAD_DRONES_TEMP;
+                //    //m.descuento_promocion *= CANTIDAD_DRONES_TEMP;
+                //    //m.precio_promocion    *= CANTIDAD_DRONES_TEMP;
+                //    m.descuento_adicional *= CANTIDAD_DRONES_TEMP;
+                //    m.precio_venta        *= CANTIDAD_DRONES_TEMP;
+                //}
+                // ==============================================================
+
+                //// TEMPORAL: el dron suma precio unitario x cantidad
+                double sumaPrecioLista = modelos.Sum(m => /*EsDronTemp(m) ? m.precio_lista * m.cantidad :*/ m.precio_lista);
+                double sumaDescuentoPromocion = modelos.Sum(m => /*EsDronTemp(m) ? m.descuento_promocion * m.cantidad :*/ m.descuento_promocion);
+                double sumaPrecioPromocion = modelos.Sum(m => /*EsDronTemp(m) ? m.precio_promocion * m.cantidad :*/ m.precio_promocion);
                 double sumaDescuento = modelos.Sum(m => m.descuento_adicional);
                 double sumaPrecioTotal = modelos.Sum(m => m.precio_venta);
 
@@ -321,7 +348,10 @@ namespace HD_Reporteria.Cotizaciones
                                 int c = 1;
                                 foreach (var modelo in modelos)
                                 {
-                                    bool esLineaEspecial = modelo.idlinea == 8 || modelo.idlinea == 9;
+                                    //// TEMPORAL: el dron se imprime con toda su info (características, puntos de valor)
+                                    //// y con imagen chica estilo refacción; nunca se trata como línea especial.
+                                    //bool esDron = EsDronTemp(modelo);
+                                    bool esLineaEspecial = (modelo.idlinea == 8 || modelo.idlinea == 9) /*&& !esDron*/;
 
                                     tabla.Cell().BorderBottom(1).BorderRight(1).BorderColor("#477c2c").Padding(5).AlignCenter().Text(c.ToString()).FontSize(9);
 
@@ -330,18 +360,22 @@ namespace HD_Reporteria.Cotizaciones
                                     {
                                         col.Item().Text(modelo.modelo + " / " + modelo.descripcion).Bold().FontSize(9).FontFamily(fontFamily);
 
-                                        string raw = modelo.caracteristicas_json;
+                                        string raw = modelo.caracteristicas_json ?? "";
 
                                         if (!esLineaEspecial)
                                         {
                                             col.Item().PaddingTop(3).Text("Características del equipo:").FontSize(9).FontFamily(fontFamily);
 
-                                            int startIndex = raw.IndexOf("\"descripcion\":\"") + "\"descripcion\":\"".Length;
-                                            int endIndex = raw.IndexOf("\"", startIndex);
-
-                                            string descripcionSolo = (startIndex > -1 && endIndex > startIndex)
-                                                ? raw.Substring(startIndex, endIndex - startIndex)
-                                                : "";
+                                            string patronDesc = "\"descripcion\":\"";
+                                            int posDesc = raw.IndexOf(patronDesc);
+                                            string descripcionSolo = "";
+                                            if (posDesc != -1)
+                                            {
+                                                int startIndex = posDesc + patronDesc.Length;
+                                                int endIndex = raw.IndexOf("\"", startIndex);
+                                                if (endIndex > startIndex)
+                                                    descripcionSolo = raw.Substring(startIndex, endIndex - startIndex);
+                                            }
 
                                             descripcionSolo = descripcionSolo
                                                 .Replace("\\n", "\n")
@@ -374,7 +408,8 @@ namespace HD_Reporteria.Cotizaciones
 
                                             if (imagen != null)
                                             {
-                                                float anchoImagen = esLineaEspecial ? 80 : 150;
+                                                //// TEMPORAL: el dron usa el tamaño chico de refacción
+                                                float anchoImagen = (esLineaEspecial /*|| esDron*/) ? 80 : 150;
                                                 row.RelativeItem().Width(anchoImagen).Image(imagen);
                                             }
 

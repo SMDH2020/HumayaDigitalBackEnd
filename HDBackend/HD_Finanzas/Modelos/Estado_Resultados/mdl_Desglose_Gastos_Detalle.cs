@@ -13,6 +13,7 @@ namespace HD_Finanzas.Modelos.Estado_Resultados
         public string tipo { get; set; }
         public string tipo_gasto { get; set; }
         public float importe { get; set; }
-
+        public float proyeccion { get; set; }
+        public float importe_anterior { get; set; }
     }
 }

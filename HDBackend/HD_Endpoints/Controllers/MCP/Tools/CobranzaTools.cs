@@ -81,6 +81,10 @@ namespace HD.Endpoints.Controllers.MCP.Tools
                     "D");
                 return result;
             }
+            catch (HD.AccesoDatos.Excepciones ex)
+            {
+                throw new Exception($"Error en obtener_rotacion_cxc: {System.Text.Json.JsonSerializer.Serialize(ex.errores)}");
+            }
             catch (Exception ex)
             {
                 throw new Exception($"Error en obtener_rotacion_cxc: {ex.Message} | Inner: {ex.InnerException?.Message}");

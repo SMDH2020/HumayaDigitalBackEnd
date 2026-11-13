@@ -23,10 +23,10 @@ namespace HD_Ventas.Consultas
             {
                 var parametros = new
                 {
-                    ejercicio_inicio = ejercicio_inicio,
-                    periodo_inicio   = periodo_inicio,
-                    ejercicio_fin    = ejercicio_fin,
-                    periodo_fin      = periodo_fin
+                    ejercicioInicio = ejercicio_inicio,
+                    periodoInicio   = periodo_inicio,
+                    ejercicioFin    = ejercicio_fin,
+                    periodoFin      = periodo_fin
                 };
                 FactoryConection factory = new FactoryConection(CadenaConexion);
                 IEnumerable<mdlMCP_Scorecard_Vendedor> result = await factory.SQL.QueryAsync<mdlMCP_Scorecard_Vendedor>(
