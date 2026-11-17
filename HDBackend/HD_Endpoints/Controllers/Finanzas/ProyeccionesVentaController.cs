@@ -30,5 +30,35 @@ namespace HD.Endpoints.Controllers.Finanzas
             string usuario = Sesion.usuario();
             return Ok(await nvl.ObtenerProyeccion(vm, usuario));
         }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetProyeccionesDesglose(mdl_Filtro_Proyecciones_Desglose_HD vm)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_ProyeccionesVentas nvl = new AD_ProyeccionesVentas(CadenaConexion);
+            vm.usuario = int.Parse(Sesion.usuario());
+            return Ok(await nvl.GetDesgloseProyeccion(vm));
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetProyeccionesDesgloseDetalle(mdl_Filtro_Proyecciones_Desglose_Detalle_HD vm)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_ProyeccionesVentas nvl = new AD_ProyeccionesVentas(CadenaConexion);
+            vm.usuario = int.Parse(Sesion.usuario());
+            return Ok(await nvl.GetDesgloseProyeccionDetalle(vm));
+        }
+
+        [HttpPost]
+        [Route("/api/[controller]/[action]")]
+        public async Task<ActionResult> GetProyeccionesDesgloseDetalleTotales(mdl_Filtro_Proyecciones_Desglose_Detalle_HD vm)
+        {
+            string CadenaConexion = Configuracion["ConnectionStrings:Servicio"];
+            AD_ProyeccionesVentas nvl = new AD_ProyeccionesVentas(CadenaConexion);
+            vm.usuario = int.Parse(Sesion.usuario());
+            return Ok(await nvl.GetDesgloseProyeccionDetalleTotales(vm));
+        }
     }
 }
