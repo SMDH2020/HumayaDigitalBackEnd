@@ -345,7 +345,7 @@ namespace HD_Finanzas.AccesoDatos
                 var parametros = new
                 {
                     ejercicio = vm.ejercicio,
-                    ejercicioant = vm.ejercicio,
+                    ejercicioant = vm.ejercicioant,
                     periodos = vm.periodos,
                     ADR = vm.adr,
                     Sucursales = vm.sucursales,
