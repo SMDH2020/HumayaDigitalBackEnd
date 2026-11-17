@@ -1,5 +1,6 @@
 using Dapper;
 using HD.AccesoDatos;
+using HD_Finanzas.Modelos.Estado_Resultados;
 using HD_Finanzas.Modelos.ProyeccionesVentas;
 
 namespace HD_Finanzas.AccesoDatos
@@ -43,6 +44,7 @@ namespace HD_Finanzas.AccesoDatos
                 {
                     mdl_Proyecciones_Venta obj = new mdl_Proyecciones_Venta();
                     obj.index = index;
+                    obj.idDepartamento = objProy.idDepartamento;
                     obj.concepto = objProy.concepto;
                     obj.departamento = objProy.departamento;
                     obj.proyimporte = Math.Round(objProy.importe);
@@ -131,6 +133,39 @@ namespace HD_Finanzas.AccesoDatos
                 index += 1;
                 double proyGastos = view.Where(x => x.orden == 6).Sum(x => x.importe);
                 double realGastos = view.Where(x => x.orden == 6).Sum(x => x.proyimporte);
+
+                // ===== NUEVA FILA: Total Gastos = gastos departamentales + desglose (ERGastos) =====
+                double sumGstProy = ERGastos.Sum(g =>
+                {
+                    var p = ProyGastos.FirstOrDefault(x => x.departamento == g.departamento);
+                    return p is null ? 0 : Math.Round(p.importe, 2);
+                });
+                double sumGstReal = ERGastos.Sum(g => Math.Round(g.importe, 2));
+
+                double totalGastosProy = Math.Round(proyGastos, 2) + sumGstProy;
+                double totalGastosReal = Math.Round(realGastos, 2) + sumGstReal;
+
+                double totalGastosProyPor = ProyVentasNetas == 0 || totalGastosProy == 0 ? 0
+                    : Math.Round(totalGastosProy / ProyVentasNetas * 100, 2);
+                double totalGastosRealPor = RealVentasNetas == 0 || totalGastosReal == 0 ? 0
+                    : Math.Round(totalGastosReal / RealVentasNetas * 100, 2);
+
+                view.Add(new mdl_Proyecciones_Venta
+                {
+                    index = index,
+                    departamento = "VENTAS NETAS",
+                    concepto = "Gastos Totales",
+                    orden = 10,
+                    importe = Math.Round(totalGastosProy, 2),
+                    por = totalGastosProyPor,
+                    proyimporte = Math.Round(totalGastosReal, 2),
+                    proypor = totalGastosRealPor,
+                    indicador = ObtenerIndicador(false, "Gastos de Departamento", totalGastosProy, totalGastosReal, totalGastosProyPor, totalGastosRealPor),
+                    diffimporte = Math.Round(totalGastosProy - totalGastosReal, 2),
+                    diffpor = totalGastosProy == 0 || totalGastosReal == 0 ? 0
+                        : Math.Round((totalGastosProy - totalGastosReal) / totalGastosReal * 100, 2)
+                });
+                index += 1;
 
                 view.Add(new mdl_Proyecciones_Venta
                 {
@@ -295,6 +330,85 @@ namespace HD_Finanzas.AccesoDatos
 
                 return view;
 
+            }
+            catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        public async Task<mdl_Proyecciones_Desglose_HD> GetDesgloseProyeccion(mdl_Filtro_Proyecciones_Desglose_HD vm)
+        {
+            try
+            {
+                FactoryConection conection = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    ejercicio = vm.ejercicio,
+                    ejercicioant = vm.ejercicio,
+                    periodos = vm.periodos,
+                    ADR = vm.adr,
+                    Sucursales = vm.sucursales,
+                    Departamentos = vm.departamentos,
+                    usuario = vm.usuario,
+                    importe_proy = vm.importe_proy
+                };
+                var result = await conection.SQL.QueryFirstOrDefaultAsync<mdl_Proyecciones_Desglose_HD>("PixelCode..sp_GastosDesglose_HD_Proyecciones", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        public async Task<IEnumerable<mdl_Proyecciones_Desglose_Detalle_HD>> GetDesgloseProyeccionDetalle(mdl_Filtro_Proyecciones_Desglose_Detalle_HD vm)
+        {
+            try
+            {
+                FactoryConection conection = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    ejercicio = vm.ejercicio,
+                    ejercicioant = vm.ejercicio,
+                    periodos = vm.periodos,
+                    ADR = vm.adr,
+                    Sucursales = vm.sucursales,
+                    Departamentos = vm.Departamentos,
+                    usuario = vm.usuario,
+                    escenario = vm.escenario,
+                    tipo = vm.tipo,
+                    importe_proy = vm.importe_proy
+                };
+                var result = await conection.SQL.QueryAsync<mdl_Proyecciones_Desglose_Detalle_HD>("PixelCode..sp_GastosDesglose_Detalle_HD_Proyecciones", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Excepciones(System.Net.HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        public async Task<IEnumerable<mdl_Proyecciones_Desglose_Detalle_HD>> GetDesgloseProyeccionDetalleTotales(mdl_Filtro_Proyecciones_Desglose_Detalle_HD vm)
+        {
+            try
+            {
+                FactoryConection conection = new FactoryConection(CadenaConexion);
+                var parametros = new
+                {
+                    ejercicio = vm.ejercicio,
+                    ejercicioant = vm.ejercicio,
+                    periodos = vm.periodos,
+                    ADR = vm.adr,
+                    Sucursales = vm.sucursales,
+                    Departamentos = vm.Departamentos,
+                    usuario = vm.usuario,
+                    escenario = vm.escenario,
+                    tipo = vm.tipo,
+                    importe_proy = vm.importe_proy
+                };
+                var result = await conection.SQL.QueryAsync<mdl_Proyecciones_Desglose_Detalle_HD>("PixelCode..sp_GastosDesglose_Totales_HD_Proyecciones", parametros, commandType: System.Data.CommandType.StoredProcedure);
+                return result;
             }
             catch (Exception ex)
             {

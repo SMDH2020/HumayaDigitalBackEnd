@@ -3,6 +3,7 @@ namespace HD_Finanzas.Modelos.ProyeccionesVentas
 {
     public class mdl_Estado_Resultados
     {
+        public int? idDepartamento { get; set; }
         public string departamento { get; set; }
         public string concepto { get; set; }
         public short orden { get; set; }
