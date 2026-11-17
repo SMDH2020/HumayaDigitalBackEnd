@@ -756,6 +756,7 @@ namespace HD_Finanzas.AccesoDatos.Actions
                     result = await factory.SQL.QueryMultipleAsync("PixelCode.dbo.SP_EstadoResultadosByDireccion_Rolado_HD_Escenarios_Claude", parametros, commandType: System.Data.CommandType.StoredProcedure);
                 }
 
+
                 List<Fmdl_EstadoResultados_Result> ERNow = result.Read<Fmdl_EstadoResultados_Result>().ToList();
                 List<Fmdl_EstadoResultados_Result> ERLast = result.Read<Fmdl_EstadoResultados_Result>().ToList();
 
