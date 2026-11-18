@@ -85,6 +85,7 @@ namespace HD.Generales.Consultas
                 mdlLoginResult? usuario = result.Read<mdlLoginResult>().FirstOrDefault();
                 IEnumerable<mdlPresas_Niveles> presas = result.Read<mdlPresas_Niveles>().ToList();
                 IEnumerable <mdl_Rel_Menus_Mobile> menu = result.Read<mdl_Rel_Menus_Mobile>().ToList();
+                IEnumerable<mdlRoles> roles = result.Read<mdlRoles>().ToList();
                 factory.SQL.Close();
 
                 if (usuario == null) { usuario = new mdlLoginResult(); }
@@ -93,9 +94,9 @@ namespace HD.Generales.Consultas
                 {
                     usuario = usuario,
                     presas = presas,
-                    menu = menu
+                    menu = menu,
+                    roles = roles
                 };
-
             }
             catch (Exception ex)
             {
